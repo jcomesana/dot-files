@@ -219,7 +219,11 @@ if has("termguicolors")
 endif
 
 " Color scheme
-:colo PaperColor
+if has('win32') || has('win64')
+    :colo PaperColor
+else
+    :colo darkblue
+endif
 
 " ---- Extra functionallity ----
 " to visualize manpages
@@ -248,7 +252,7 @@ endif
 
 " Plugin calendar
 let g:calendar_monday = 1
-let g:calendar_mruler = 'Xan,Feb,Mar,Abr,Mai,Xuñ,Xul,Ago,Sep,Out,Nov,Dec'
+let g:calendar_mruler = 'Xan,Feb,Mar,Abr,Mai,XuÃ±,Xul,Ago,Sep,Out,Nov,Dec'
 let g:calendar_wruler = 'Do Lu Ma Me Xo Ve Sa'
 
 " Plugin tagbar
