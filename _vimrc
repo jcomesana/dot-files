@@ -2,10 +2,11 @@
 
 if !isdirectory($HOME.'/.vim')
     call mkdir($HOME.'/.vim', 'p')
+    call mkdir($HOME.'/.vim/autoload', 'p')
     call mkdir($HOME.'/.vim/backups', 'p')
     call mkdir($HOME.'/.vim/swap', 'p')
     call mkdir($HOME.'/.vim/undodir', 'p')
-    :echom system('git clone https://github.com/VundleVim/Vundle.vim.git '.$HOME.'/.vim/bundle/Vundle.vim')
+    :echom system('curl -fLo '.$HOME.'/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
 endif
 " ---- Windows ----
 if has('win32') || has('win64')
@@ -14,92 +15,85 @@ if has('win32') || has('win64')
     set shell=c:\windows\system32\cmd.exe   " shell
 endif
 
-" ---- Vundle ----
-" Start vundle
-filetype off                   " required!
-
-set runtimepath+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle
-" required!
-Plugin 'VundleVim/Vundle.vim'
-
-" My Bundles here:
+" ---- vim-plug ----
+call plug#begin('~/.vim/plugged')
+" My plugins here
 "
-Plugin 'CharTab'
-Plugin 'yegappan/mru'
-Plugin 'lifepillar/vim-mucomplete'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'Rip-Rip/clang_complete'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'mattn/calendar-vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
-" Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'tpope/vim-fugitive'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'skywind3000/asyncrun.vim'
-Plugin 'inkarkat/vim-mark'
+Plug 'vim-scripts/CharTab'
+Plug 'yegappan/mru'
+Plug 'maralla/completor.vim'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'mattn/calendar-vim'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'tpope/vim-fugitive'
+Plug 'jiangmiao/auto-pairs'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'inkarkat/vim-ingo-library'
+Plug 'inkarkat/vim-mark'
 " Games
-Plugin 'johngrib/vim-game-snake'
-Plugin 'vim-scripts/TeTrIs.vim'
-Plugin 'johngrib/vim-game-code-break'
+Plug 'johngrib/vim-game-snake'
+Plug 'vim-scripts/TeTrIs.vim'
+Plug 'johngrib/vim-game-code-break'
 " For python
-Plugin 'w0rp/ale'
-Plugin 'Vimjas/vim-python-pep8-indent'
+Plug 'w0rp/ale'
+Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
-Plugin 'Darkdevel'
-Plugin 'earendel'
-Plugin 'iceberg'
-Plugin 'Lucius'
-Plugin 'moria'
-Plugin 'ajh17/Spacegray.vim'
-Plugin 'ajmwagar/vim-dues'
-Plugin 'alessandroyorba/alduin'
-Plugin 'alessandroyorba/sierra'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'arcticicestudio/nord-vim'
-Plugin 'ayu-theme/ayu-vim'
-Plugin 'baines/vim-colorscheme-thaumaturge'
-Plugin 'beigebrucewayne/hacked_ayu.vim'
-Plugin 'danilo-augusto/vim-afterglow'
-Plugin 'dikiaap/minimalist'
-Plugin 'elmindreda/vimcolors'
-Plugin 'exitface/synthwave.vim'
-Plugin 'fneu/breezy'
-Plugin 'hzchirs/vim-material'
-Plugin 'jnurmine/Zenburn'
-Plugin 'KabbAmine/yowish.vim'
-Plugin 'lifepillar/vim-solarized8'
-Plugin 'ltlollo/diokai'
-Plugin 'lu-ren/SerialExperimentsLain'
-Plugin 'mkarmona/colorsbox'
-Plugin 'monkoose/boa.vim'
-Plugin 'morhetz/gruvbox'
-Plugin 'nightsense/carbonized'
-Plugin 'nightsense/seabird'
-Plugin 'nightsense/vim-crunchbang'
-Plugin 'nightsense/willy'
-Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'reewr/vim-monokai-phoenix'
-Plugin 'rhysd/vim-color-spring-night'
-Plugin 'roosta/vim-srcery'
-Plugin 'sjl/badwolf'
-Plugin 'sonobre/briofita_vim'
-Plugin 'vim-scripts/mayansmoke'
-Plugin 'vim-scripts/peaksea'
-Plugin 'vim-scripts/Sift'
-Plugin 'yuttie/hydrangea-vim'
-Plugin 'zcodes/vim-colors-basic'
-Plugin 'zeis/vim-kolor'
+Plug 'vim-scripts/Darkdevel'
+Plug 'vim-scripts/earendel'
+Plug 'vim-scripts/Lucius'
+Plug 'vim-scripts/moria'
+Plug 'ajh17/Spacegray.vim'
+Plug 'ajmwagar/vim-dues'
+Plug 'alessandroyorba/alduin'
+Plug 'alessandroyorba/sierra'
+Plug 'altercation/vim-colors-solarized'
+Plug 'arcticicestudio/nord-vim'
+Plug 'ayu-theme/ayu-vim'
+Plug 'Badacadabra/vim-archery'
+Plug 'baines/vim-colorscheme-thaumaturge'
+Plug 'beigebrucewayne/hacked_ayu.vim'
+Plug 'cocopon/iceberg.vim'
+Plug 'danilo-augusto/vim-afterglow'
+Plug 'dikiaap/minimalist'
+Plug 'elmindreda/vimcolors'
+Plug 'exitface/synthwave.vim'
+Plug 'fneu/breezy'
+Plug 'hzchirs/vim-material'
+Plug 'jnurmine/Zenburn'
+Plug 'KabbAmine/yowish.vim'
+Plug 'lifepillar/vim-solarized8'
+Plug 'ltlollo/diokai'
+Plug 'lu-ren/SerialExperimentsLain'
+Plug 'mkarmona/colorsbox'
+Plug 'monkoose/boa.vim'
+Plug 'morhetz/gruvbox'
+Plug 'nightsense/carbonized'
+Plug 'nightsense/nemo'
+Plug 'nightsense/office'
+Plug 'nightsense/seabird'
+Plug 'nightsense/seagrey'
+Plug 'nightsense/stellarized'
+Plug 'nightsense/vim-crunchbang'
+Plug 'nightsense/willy'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'reewr/vim-monokai-phoenix'
+Plug 'rhysd/vim-color-spring-night'
+Plug 'roosta/vim-srcery'
+Plug 'sjl/badwolf'
+Plug 'sonobre/briofita_vim'
+Plug 'vim-scripts/mayansmoke'
+Plug 'vim-scripts/peaksea'
+Plug 'vim-scripts/Sift'
+Plug 'yuttie/hydrangea-vim'
+Plug 'zcodes/vim-colors-basic'
+Plug 'zeis/vim-kolor'
 
-call vundle#end()            " required
-filetype plugin indent on    " required
-" Final vundle
-"
+call plug#end()
+" ---- End vim-plug ---
+
 set nocompatible
 filetype on
 
@@ -219,11 +213,12 @@ if has("termguicolors")
 endif
 
 " Color scheme
-if has('win32') || has('win64')
-    :colo PaperColor
+if !empty($VIMCOLOR)
+    let env_vim_color = $VIMCOLOR
 else
-    :colo darkblue
+    let env_vim_color = 'darkblue'
 endif
+execute 'colorscheme '.env_vim_color
 
 " ---- Extra functionallity ----
 " to visualize manpages
@@ -265,37 +260,20 @@ let g:tagbar_expand = 0
 nnoremap <silent> <F11> :NERDTreeToggle<CR>
 let NERDTreeIgnore=['\.pyc$', '\~$', '\.bak'] "ignore files in NERDTree
 
-" Plugin CtrlP
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-
 " Plugin mru
 highlight link MRUFileName LineNr
 let MRU_Max_Menu_Entries = 20
 let MRU_Max_Entries = 1000
 
-" Plugin vim-mucomplete
-set shortmess+=c
-set belloff+=ctrlg
-set noinfercase
-set completeopt+=menuone,noinsert,noselect
-" let g:clang_user_options = '-std=c99'
-let g:clang_user_options = '-std=c++11'
-let g:clang_complete_auto = 1
-let g:clang_library_path = 'd:\Program Files\LLVM\bin\libclang.dll'
-let g:mucomplete#enable_auto_at_startup = 1
-inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
-
-" Plugin jedi-vim
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 1
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#use_splits_not_buffers = "bottom"
-let g:jedi#show_call_signatures = "0"
+" Plugin completor
+let g:completor_python_binary = 'python3'
+let g:completor_clang_binary = 'clang++-5.0'
+let g:completor_completion_delay = 40
+let g:completor_min_chars = 3
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+set completeopt+=longest
 
 " Plugin vim-fugitive
 " run with AsyncRun
@@ -317,7 +295,7 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " Plugin ale
 let g:ale_linters = {
-\   'python': ['pylint', 'flake8'],
+\   'python': ['pylint', 'flake8', 'mypy'],
 \   'cpp': ['cppcheck', 'clang'],
 \}
 let g:python_max_len = 120
@@ -334,6 +312,9 @@ let g:ale_python_flake8_executable = 'python3'
 let g:ale_python_flake8_args = '-m flake8 --max-line-length='.g:python_max_len
 let g:ale_python_pylint_executable = g:ale_python_flake8_executable
 let g:ale_python_pylint_options = '-m pylint'
+let g:ale_python_mypy_options = '--ignore-missing-imports'
+" C++
+let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++1z'
 " movement
 nmap <silent> <M-k> <Plug>(ale_previous_wrap)
 nmap <silent> <M-j> <Plug>(ale_next_wrap)
@@ -344,8 +325,8 @@ let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
 nmap <F2> \be
 
 " Plugin auto-pairs
-au Filetype cpp let g:AutoPairsMapCR = 0
+" au Filetype cpp let g:AutoPairsMapCR = 0
 let g:AutoPairsShortcutFastWrap = '<C-Right>'
 
-" Plugin MARK
+" Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
