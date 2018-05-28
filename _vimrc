@@ -21,7 +21,9 @@ call plug#begin('~/.vim/plugged')
 "
 Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
-Plug 'maralla/completor.vim'
+Plug 'lifepillar/vim-mucomplete'
+Plug 'Rip-Rip/clang_complete'
+Plug 'davidhalter/jedi-vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
@@ -54,7 +56,6 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'Badacadabra/vim-archery'
 Plug 'baines/vim-colorscheme-thaumaturge'
-Plug 'beigebrucewayne/hacked_ayu.vim'
 Plug 'cocopon/iceberg.vim'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'dikiaap/minimalist'
@@ -64,7 +65,9 @@ Plug 'fneu/breezy'
 Plug 'hzchirs/vim-material'
 Plug 'jnurmine/Zenburn'
 Plug 'KabbAmine/yowish.vim'
+Plug 'lifepillar/vim-gruvbox8'
 Plug 'lifepillar/vim-solarized8'
+Plug 'lmintmate/blue-mood-vim'
 Plug 'ltlollo/diokai'
 Plug 'lu-ren/SerialExperimentsLain'
 Plug 'mkarmona/colorsbox'
@@ -81,7 +84,9 @@ Plug 'nightsense/willy'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'rhysd/vim-color-spring-night'
+Plug 'romainl/flattened'
 Plug 'roosta/vim-srcery'
+Plug 'schickele/vim'
 Plug 'sjl/badwolf'
 Plug 'sonobre/briofita_vim'
 Plug 'vim-scripts/mayansmoke'
@@ -127,6 +132,19 @@ set splitright      " vertical splits to the right
 set clipboard=unnamed " use system clipboard
 set timeoutlen=2000 " longer time to react to a control key
 " status line
+" Function for ALE copied from the docs
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? '[Ok] ' : printf(
+    \   '[E:%d, W:%d] ',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
 set statusline=%t       " tail of the filename
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, " file encoding
 set statusline+=%{&ff}] " file format
@@ -135,7 +153,7 @@ set statusline+=%m      " modified flag
 set statusline+=%r      " read only flag
 set statusline+=%y      " filetype
 set statusline+=%=      " left/right separator
-set statusline+=[%{ALEGetStatusLine()}]\  " ale status
+set statusline+=%{LinterStatus()}
 set statusline+=C:%03c,\  " cursor column
 set statusline+=L:%03l    " line
 set statusline+=\ %P       " percent through file
@@ -171,9 +189,6 @@ set foldmethod=syntax
 " vertical movement with wrapped lines
 nnoremap j gj
 nnoremap k gk
-" use C-E, C-Y also in insert mode
-inoremap <C-E> <C-X><C-E>
-inoremap <C-Y> <C-X><C-Y>
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 " wrap lines only with arrow keys
@@ -244,6 +259,7 @@ if !exists("my_auto_commands_loaded")
 endif
 
 " ---- Plugins ----
+let g:python_binary = 'python3'
 
 " Plugin calendar
 let g:calendar_monday = 1
@@ -265,15 +281,31 @@ highlight link MRUFileName LineNr
 let MRU_Max_Menu_Entries = 20
 let MRU_Max_Entries = 1000
 
-" Plugin completor
-let g:completor_python_binary = 'python3'
-let g:completor_clang_binary = 'clang++-5.0'
-let g:completor_completion_delay = 40
-let g:completor_min_chars = 3
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
-set completeopt+=longest
+" Plugin vim-mucomplete
+set completeopt+=menuone
+set completeopt+=noselect
+set completeopt+=noinsert
+set shortmess+=c   " Shut off completion messages
+set belloff+=ctrlg " If Vim beeps during completion
+let g:mucomplete#enable_auto_at_startup = 1
+
+" Plugin clang_complete
+if has('win32') || has('win64')
+    let g:clang_library_path = 'd:\Program Files\LLVM\bin\libclang.dll'
+elseif filereadable('/usr/lib/x86_64-linux-gnu/libclang-6.0.so')
+    let g:clang_library_path = '/usr/lib/x86_64-linux-gnu/libclang-6.0.so'
+else
+    let g:clang_library_path = '/usr/lib/arm-linux-gnueabihf/libclang-6.0.so.1'
+endif
+let g:clang_user_options = '-std=c++17'
+let g:clang_complete_auto = 1
+
+" Plugin jedi-vim
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 1
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#use_splits_not_buffers = "bottom"
+let g:jedi#show_call_signatures = "0"
 
 " Plugin vim-fugitive
 " run with AsyncRun
@@ -308,12 +340,13 @@ let g:ale_sign_column_always = 0
 " list
 let g:ale_open_list = 0
 " python
-let g:ale_python_flake8_executable = 'python3'
+let g:ale_python_flake8_executable = g:python_binary
 let g:ale_python_flake8_args = '-m flake8 --max-line-length='.g:python_max_len
 let g:ale_python_pylint_executable = g:ale_python_flake8_executable
 let g:ale_python_pylint_options = '-m pylint'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 " C++
+let g:ale_cpp_clang_executable = 'clang++-6.0'
 let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++1z'
 " movement
 nmap <silent> <M-k> <Plug>(ale_previous_wrap)
