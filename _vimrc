@@ -87,7 +87,9 @@ Plug 'rhysd/vim-color-spring-night'
 Plug 'romainl/flattened'
 Plug 'roosta/vim-srcery'
 Plug 'schickele/vim'
+Plug 'Siphalor/vim-atomified'
 Plug 'sjl/badwolf'
+Plug 'skreek/skeletor.vim'
 Plug 'sonobre/briofita_vim'
 Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/peaksea'
@@ -341,7 +343,7 @@ let g:ale_sign_column_always = 0
 let g:ale_open_list = 0
 " python
 let g:ale_python_flake8_executable = g:python_binary
-let g:ale_python_flake8_args = '-m flake8 --max-line-length='.g:python_max_len
+let g:ale_python_flake8_options = '-m flake8 --max-line-length='.g:python_max_len
 let g:ale_python_pylint_executable = g:ale_python_flake8_executable
 let g:ale_python_pylint_options = '-m pylint'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
@@ -358,7 +360,7 @@ let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
 nmap <F2> \be
 
 " Plugin auto-pairs
-" au Filetype cpp let g:AutoPairsMapCR = 0
+au Filetype cpp let g:AutoPairsMapCR = 0
 let g:AutoPairsShortcutFastWrap = '<C-Right>'
 
 " Plugin Mark
