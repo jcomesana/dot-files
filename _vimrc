@@ -35,6 +35,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
+Plug 'yegappan/grep'
 " Games
 Plug 'johngrib/vim-game-snake'
 Plug 'vim-scripts/TeTrIs.vim'
@@ -308,6 +309,7 @@ let g:jedi#popup_select_first = 1
 let g:jedi#auto_vim_configuration = 0
 let g:jedi#use_splits_not_buffers = "bottom"
 let g:jedi#show_call_signatures = "0"
+let g:pymode_rope = 1
 
 " Plugin vim-fugitive
 " run with AsyncRun
@@ -329,8 +331,8 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " Plugin ale
 let g:ale_linters = {
-\   'python': ['pylint', 'flake8', 'mypy'],
-\   'cpp': ['cppcheck', 'clang'],
+\   'python': ['pylint', 'flake8'],
+\   'cpp': ['clang'],
 \}
 let g:python_max_len = 120
 " when to lint
@@ -360,8 +362,16 @@ let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
 nmap <F2> \be
 
 " Plugin auto-pairs
-au Filetype cpp let g:AutoPairsMapCR = 0
 let g:AutoPairsShortcutFastWrap = '<C-Right>'
+" suggested mucomplete config to avoid conflicts with auto-pairs
+let g:AutoPairsMapCR = 0
+imap <Plug>MyCR <Plug>(MUcompleteCR)<Plug>AutoPairsReturn
+imap <cr> <Plug>MyCR
+
+let g:AutoPairsMapSpace = 0
+imap <silent> <expr> <space> pumvisible()
+    \ ? "<space>"
+    \ : "<c-r>=AutoPairsSpace()<cr>"
 
 " Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
