@@ -363,15 +363,7 @@ nmap <F2> \be
 
 " Plugin auto-pairs
 let g:AutoPairsShortcutFastWrap = '<C-Right>'
-" suggested mucomplete config to avoid conflicts with auto-pairs
-let g:AutoPairsMapCR = 0
-imap <Plug>MyCR <Plug>(MUcompleteCR)<Plug>AutoPairsReturn
-imap <cr> <Plug>MyCR
-
-let g:AutoPairsMapSpace = 0
-imap <silent> <expr> <space> pumvisible()
-    \ ? "<space>"
-    \ : "<c-r>=AutoPairsSpace()<cr>"
+au Filetype cpp let g:AutoPairsMapCR = 0
 
 " Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
