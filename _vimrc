@@ -36,6 +36,7 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 Plug 'yegappan/grep'
+Plug 'itchyny/lightline.vim'
 " Games
 Plug 'johngrib/vim-game-snake'
 Plug 'vim-scripts/TeTrIs.vim'
@@ -114,7 +115,7 @@ set expandtab
 " ---- UI Config ----
 set title           " set the window title
 set modeline
-set showmode        " show the current mode
+set noshowmode        " mode handled by lightline
 set showcmd         " show partial command in the last line of the screen
 set cmdheight=2     " number of lines for the command-line
 set history=50      " keep 50 lines of command line history
@@ -142,24 +143,24 @@ function! LinterStatus() abort
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
 
-    return l:counts.total == 0 ? '[Ok] ' : printf(
-    \   '[E:%d, W:%d] ',
+    return l:counts.total == 0 ? '[Ok]' : printf(
+    \   '[E:%d, W:%d]',
     \   all_non_errors,
     \   all_errors
     \)
 endfunction
-set statusline=%t       " tail of the filename
-set statusline+=[%{strlen(&fenc)?&fenc:'none'}, " file encoding
-set statusline+=%{&ff}] " file format
-set statusline+=%h      " help file flag
-set statusline+=%m      " modified flag
-set statusline+=%r      " read only flag
-set statusline+=%y      " filetype
-set statusline+=%=      " left/right separator
-set statusline+=%{LinterStatus()}
-set statusline+=C:%03c,\  " cursor column
-set statusline+=L:%03l    " line
-set statusline+=\ %P       " percent through file
+"set statusline=%t       " tail of the filename
+"set statusline+=[%{strlen(&fenc)?&fenc:'none'}, " file encoding
+"set statusline+=%{&ff}] " file format
+"set statusline+=%h      " help file flag
+"set statusline+=%m      " modified flag
+"set statusline+=%r      " read only flag
+"set statusline+=%y      " filetype
+"set statusline+=%=      " left/right separator
+"set statusline+=%{LinterStatus()}
+"set statusline+=C:%03c,\  " cursor column
+"set statusline+=L:%03l    " line
+"set statusline+=\ %P       " percent through file
 
 " ---- Syntax highlighting ----
 syntax enable
@@ -363,7 +364,27 @@ nmap <F2> \be
 
 " Plugin auto-pairs
 let g:AutoPairsShortcutFastWrap = '<C-Right>'
-au Filetype cpp let g:AutoPairsMapCR = 0
+" au Filetype cpp let g:AutoPairsMapCR = 0
+" suggested mucomplete config to avoid conflicts with auto-pairs
+let g:AutoPairsMapSpace = 0
+imap <silent> <expr> <space> pumvisible()
+    \ ? "<space>"
+    \ : "<c-r>=AutoPairsSpace()<cr>"
 
 " Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
+
+" Plugin lightline
+let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'alestatus', 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \   'alestatus': 'LinterStatus'
+      \ },
+      \ }
