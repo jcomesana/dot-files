@@ -93,6 +93,7 @@ Plug 'Siphalor/vim-atomified'
 Plug 'sjl/badwolf'
 Plug 'skreek/skeletor.vim'
 Plug 'sonobre/briofita_vim'
+Plug 'tjammer/blayu.vim'
 Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/peaksea'
 Plug 'vim-scripts/Sift'
@@ -115,7 +116,8 @@ set expandtab
 " ---- UI Config ----
 set title           " set the window title
 set modeline
-set noshowmode        " mode handled by lightline
+set number
+set noshowmode      " mode handled by lightline
 set showcmd         " show partial command in the last line of the screen
 set cmdheight=2     " number of lines for the command-line
 set history=50      " keep 50 lines of command line history
@@ -295,7 +297,11 @@ let g:mucomplete#enable_auto_at_startup = 1
 
 " Plugin clang_complete
 if has('win32') || has('win64')
-    let g:clang_library_path = 'd:\Program Files\LLVM\bin\libclang.dll'
+    if filereadable('c:\Program Files\LLVM\bin\libclang.dll')
+        let g:clang_library_path = 'c:\Program Files\LLVM\bin\libclang.dll'
+    else
+        let g:clang_library_path = 'd:\Program Files\LLVM\bin\libclang.dll'
+    endif
 elseif filereadable('/usr/lib/x86_64-linux-gnu/libclang-6.0.so')
     let g:clang_library_path = '/usr/lib/x86_64-linux-gnu/libclang-6.0.so'
 else
