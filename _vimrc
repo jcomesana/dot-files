@@ -23,7 +23,7 @@ Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'Rip-Rip/clang_complete'
-Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim', {'tag': '0.9.0'}
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
@@ -37,6 +37,7 @@ Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 Plug 'yegappan/grep'
 Plug 'itchyny/lightline.vim'
+Plug 'mrk21/yaml-vim'
 " Games
 Plug 'johngrib/vim-game-snake'
 Plug 'vim-scripts/TeTrIs.vim'
@@ -264,6 +265,11 @@ if !exists("my_auto_commands_loaded")
     augroup END
 endif
 
+" ---- yaml settings ----
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+
 " ---- Plugins ----
 let g:python_binary = 'python3'
 
@@ -370,7 +376,7 @@ nmap <F2> \be
 
 " Plugin auto-pairs
 let g:AutoPairsShortcutFastWrap = '<C-Right>'
-" au Filetype cpp let g:AutoPairsMapCR = 0
+au Filetype cpp let g:AutoPairsMapCR = 0
 
 " Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
