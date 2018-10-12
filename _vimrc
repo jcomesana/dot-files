@@ -38,10 +38,6 @@ Plug 'inkarkat/vim-mark'
 Plug 'yegappan/grep'
 Plug 'itchyny/lightline.vim'
 Plug 'mrk21/yaml-vim'
-" Games
-Plug 'johngrib/vim-game-snake'
-Plug 'vim-scripts/TeTrIs.vim'
-Plug 'johngrib/vim-game-code-break'
 " For python
 Plug 'w0rp/ale'
 Plug 'Vimjas/vim-python-pep8-indent'
@@ -94,6 +90,7 @@ Plug 'Siphalor/vim-atomified'
 Plug 'sjl/badwolf'
 Plug 'skreek/skeletor.vim'
 Plug 'sonobre/briofita_vim'
+Plug 'szorfein/fromthehell.vim'
 Plug 'tjammer/blayu.vim'
 Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/peaksea'
@@ -267,7 +264,7 @@ endif
 
 " ---- yaml settings ----
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
 
 
 " ---- Plugins ----
