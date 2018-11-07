@@ -1,0 +1,116 @@
+-- vim: ts=4 sw=4 ai cindent syntax=lua
+--[[
+    Based on .conkyrc by fabsh <fabsh@lamerk.org>
+]]
+conky.config = {
+    -------------------------------------
+    --  Color Scheme
+    -------------------------------------
+    default_color = "000000",
+    color1 = "FFFFFF",
+    color2 = "000000",
+    color3 = "1254A2",
+    color4 = "5294E2",
+
+
+    -------------------------------------
+    --  Generic Settings
+    -------------------------------------
+    background = true,
+    update_interval = 3,
+    double_buffer = true,
+    no_buffers = true,
+    draw_shades = false,
+    draw_outline = false,
+    draw_borders = true,
+    draw_graph_borders = true,
+    show_graph_scale = false,
+    show_graph_range = false,
+
+
+    -------------------------------------
+    --  Window Specifications
+    -------------------------------------
+    gap_x = 60,
+    gap_y = 16,
+    minimum_height = 280,
+    minimum_width = 60,
+    own_window = true,
+    own_window_type = "desktop",
+    own_window_transparent = false,
+    own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+    border_width = 1,
+    border_inner_margin = 4,
+    border_outer_margin = 4,
+    stippled_borders = 1,
+    alignment = "middle_right",
+    own_window_argb_visual = true,
+    own_window_argb_value = 255,
+    own_window_class = "conky",
+    own_window_colour = "E0E0E0",
+
+    -------------------------------------
+    --  Text Settings
+    -------------------------------------
+    use_xft = true,
+    xftalpha = 1,
+    font = "Droid Sans:size=10",
+    text_buffer_size = 256,
+    override_utf8_locale = true,
+    uppercase = false,
+    use_spacer = 'none',
+
+
+
+    total_run_times = 0,
+    if_up_strictness = 'address',
+    cpu_avg_samples = 2,
+    net_avg_samples = 2,
+
+    -- Title template
+    template1 = [[${color2}\1 ${hr 2}${voffset 4}]],
+    -- CPU template
+    template2 = [[${color2}${offset 10}\1: ${color3}${cpu \1}% ${alignr}${color4}${cpugraph \1 10,75}]],
+    -- File system template
+    template3 = [[${color3}${offset 10}${fs_used \1} / ${fs_size \1} ${alignr}${color4}${fs_bar 8,60 \1}]],
+    -- Network interface template
+    template4 = [[${if_up \1}${voffset 4}${color2}${offset 10}${font Droid Sans:pixelsize=13:bold}\1${font}\n${offset 10}${voffset 4}IP: ${alignr}${color3}${addr \1}\n${color2}${offset 10}Subida: ${color3}${upspeed \1}${alignr}${color4}${upspeedgraph \1 8,60 black black}\n${color2}${offset 10}Baixada: ${color3}${downspeed \1}${alignr}${color4}${downspeedgraph \1 8,60 black black}${endif}]],
+}
+
+conky.text = [[
+${template1 SISTEMA}
+${font Cantarell:size=14:bold}${nodename} ${kernel}${font}
+
+Uptime: ${alignr}${color3}${uptime}
+
+${template1 CARGA}
+${offset 10}${color2}Promedio: $alignr ${color3}$loadavg
+${offset 10}${color2}Temperatura: $alignr ${color3}$acpitemp C
+
+${template1 CPU}
+${template2 cpu0}
+${template2 cpu1}
+${template2 cpu2}
+${template2 cpu3}
+${template2 cpu4}
+${template2 cpu5}
+${template2 cpu6}
+${template2 cpu7}
+${offset 10}${color2}Frecuencia: $alignr ${color3}$freq_g GHz
+${offset 10}${color2}Procesos: $alignr ${color3}$processes
+${offset 10}${color2}En execución: $alignr ${color3}$running_processes
+
+${template1 MEMORIA}
+${color2}${offset 10}RAM: ${color3}$memperc% ${alignr}${color4}${membar 8,60}
+${color2}${offset 10}SWAP: ${color3}$swapperc% ${alignr}${color4}${swapbar 8,60}
+
+${template1 DISCO}
+${offset 10}${color2}Root:
+${template3 /}
+${offset 10}${color2}Home:
+${template3 /home}
+
+${template1 REDE}
+${template4 wlp3s0}
+${template4 eth0}
+]]
