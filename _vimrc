@@ -23,7 +23,7 @@ Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'Rip-Rip/clang_complete'
-Plug 'davidhalter/jedi-vim', {'tag': '0.9.0'}
+Plug 'davidhalter/jedi-vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
@@ -269,6 +269,7 @@ autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
 
 " ---- Plugins ----
 let g:python_binary = 'python3'
+py3 import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
 
 " Plugin calendar
 let g:calendar_monday = 1
@@ -297,6 +298,7 @@ set completeopt+=noinsert
 set shortmess+=c   " Shut off completion messages
 set belloff+=ctrlg " If Vim beeps during completion
 let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#minimum_prefix_length = 3
 
 " Plugin clang_complete
 if has('win32') || has('win64')
@@ -356,11 +358,11 @@ let g:ale_open_list = 0
 " python
 let g:ale_python_flake8_executable = g:python_binary
 let g:ale_python_flake8_options = '-m flake8 --max-line-length='.g:python_max_len
-let g:ale_python_pylint_executable = g:ale_python_flake8_executable
+let g:ale_python_pylint_executable = g:python_binary
 let g:ale_python_pylint_options = '-m pylint'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 " C++
-let g:ale_cpp_clang_executable = 'clang++-6.0'
+let g:ale_cpp_clang_executable = 'clang++-7'
 let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++1z'
 " movement
 nmap <silent> <M-k> <Plug>(ale_previous_wrap)
@@ -369,7 +371,7 @@ nmap <silent> <M-j> <Plug>(ale_next_wrap)
 let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
 
 " Plugin bufexplorer
-nmap <F2> \be
+nmap <F7> \be
 
 " Plugin auto-pairs
 let g:AutoPairsShortcutFastWrap = '<C-Right>'
