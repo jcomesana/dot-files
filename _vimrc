@@ -364,6 +364,7 @@ if executable('clangd')
         \ 'whitelist': ['c', 'cpp'],
         \ })
 elseif executable('cquery')
+    " Take a look to https://github.com/MaskRay/ccls/
     au User lsp_setup call lsp#register_server({
           \ 'name': 'cquery',
           \ 'cmd': {server_info->['cquery']},
@@ -374,10 +375,12 @@ elseif executable('cquery')
 endif
 
 if executable('pyls')
+    " All settings: https://github.com/palantir/python-language-server/blob/develop/vscode-client/package.json
     au User lsp_setup call lsp#register_server({
         \ 'name': 'pyls',
         \ 'cmd': {server_info->['pyls']},
         \ 'whitelist': ['python'],
+        \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:true}, 'pyflakes': {'enabled': v:true}}}},
         \ })
 endif
 
