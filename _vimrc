@@ -21,9 +21,12 @@ call plug#begin('~/.vim/plugged')
 "
 Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
-Plug 'lifepillar/vim-mucomplete'
-Plug 'Rip-Rip/clang_complete'
-Plug 'davidhalter/jedi-vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
@@ -39,7 +42,6 @@ Plug 'yegappan/grep'
 Plug 'itchyny/lightline.vim'
 Plug 'mrk21/yaml-vim'
 " For python
-Plug 'w0rp/ale'
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
 Plug 'vim-scripts/Darkdevel'
@@ -55,6 +57,7 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'Badacadabra/vim-archery'
 Plug 'baines/vim-colorscheme-thaumaturge'
+Plug 'benburrill/potato-colors'
 Plug 'cocopon/iceberg.vim'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'dikiaap/minimalist'
@@ -70,7 +73,6 @@ Plug 'lmintmate/blue-mood-vim'
 Plug 'ltlollo/diokai'
 Plug 'lu-ren/SerialExperimentsLain'
 Plug 'mkarmona/colorsbox'
-Plug 'monkoose/boa.vim'
 Plug 'morhetz/gruvbox'
 Plug 'nightsense/carbonized'
 Plug 'nightsense/nemo'
@@ -136,19 +138,6 @@ set splitright      " vertical splits to the right
 set clipboard=unnamed " use system clipboard
 set timeoutlen=2000 " longer time to react to a control key
 " status line
-" Function for ALE copied from the docs
-function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-
-    return l:counts.total == 0 ? '[Ok]' : printf(
-    \   '[E:%d, W:%d]',
-    \   all_non_errors,
-    \   all_errors
-    \)
-endfunction
 "set statusline=%t       " tail of the filename
 "set statusline+=[%{strlen(&fenc)?&fenc:'none'}, " file encoding
 "set statusline+=%{&ff}] " file format
@@ -172,8 +161,9 @@ let python_highlight_indent_errors=0
 " ---- Searching ----
 set incsearch       " do incremental searching
 set hlsearch        " highlight search matches
-set ignorecase      " case insensitive searching ...
+set noignorecase      " case sensitive searching ...
 set smartcase       " ... except when using capital letters
+set noinfercase
 
 " ---- Indentation and formating ----
 set autoindent
@@ -269,7 +259,9 @@ autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
 
 " ---- Plugins ----
 let g:python_binary = 'python3'
-py3 import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
+if has('win32') || has('win64')
+    py3 import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
+endif
 
 " Plugin calendar
 let g:calendar_monday = 1
@@ -291,14 +283,6 @@ highlight link MRUFileName LineNr
 let MRU_Max_Menu_Entries = 20
 let MRU_Max_Entries = 1000
 
-" Plugin vim-mucomplete
-set completeopt+=menuone
-set completeopt+=noselect
-set completeopt+=noinsert
-set shortmess+=c   " Shut off completion messages
-set belloff+=ctrlg " If Vim beeps during completion
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#minimum_prefix_length = 3
 
 " Plugin clang_complete
 if has('win32') || has('win64')
@@ -341,41 +325,12 @@ let g:NERDCommentEmptyLines = 1
 " enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-" Plugin ale
-let g:ale_linters = {
-\   'python': ['pylint', 'flake8'],
-\   'cpp': ['clang'],
-\}
-let g:python_max_len = 120
-" when to lint
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_delay = 500
-let g:ale_lint_on_enter = 1
-let g:ale_sign_column_always = 0
-" list
-let g:ale_open_list = 0
-" python
-let g:ale_python_flake8_executable = g:python_binary
-let g:ale_python_flake8_options = '-m flake8 --max-line-length='.g:python_max_len
-let g:ale_python_pylint_executable = g:python_binary
-let g:ale_python_pylint_options = '-m pylint'
-let g:ale_python_mypy_options = '--ignore-missing-imports'
-" C++
-let g:ale_cpp_clang_executable = 'clang++-7'
-let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++1z'
-" movement
-nmap <silent> <M-k> <Plug>(ale_previous_wrap)
-nmap <silent> <M-j> <Plug>(ale_next_wrap)
-" status format
-let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
-
 " Plugin bufexplorer
 nmap <F7> \be
 
 " Plugin auto-pairs
 let g:AutoPairsShortcutFastWrap = '<C-Right>'
-au Filetype cpp let g:AutoPairsMapCR = 0
+" au Filetype cpp let g:AutoPairsMapCR = 0
 
 " Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
@@ -387,10 +342,65 @@ let g:lightline = {
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
-      \              [ 'alestatus', 'fileformat', 'fileencoding', 'filetype' ] ]
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
-      \   'alestatus': 'LinterStatus'
       \ },
       \ }
+
+" Plugin vim-lsp
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_signs_enabled = 1           " enable signs
+let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '‼'}
+let g:lsp_signs_hint = {'text': '→'}
+
+if executable('clangd')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clangd',
+        \ 'cmd': {server_info->['clangd']},
+        \ 'whitelist': ['c', 'cpp'],
+        \ })
+endif
+
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
+" Plugin asyncomplete
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+set completeopt-=preview
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+let g:asyncomplete_auto_popup = 0
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ asyncomplete#force_refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'whitelist': ['*'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor')
+    \ }))
