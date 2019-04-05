@@ -363,6 +363,14 @@ if executable('clangd')
         \ 'cmd': {server_info->['clangd']},
         \ 'whitelist': ['c', 'cpp'],
         \ })
+elseif executable('cquery')
+    au User lsp_setup call lsp#register_server({
+          \ 'name': 'cquery',
+          \ 'cmd': {server_info->['cquery']},
+          \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+          \ 'initialization_options': { 'cacheDirectory': '~/.vim/swap/cquery' },
+          \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
+          \ })
 endif
 
 if executable('pyls')
@@ -378,9 +386,9 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 imap <c-space> <Plug>(asyncomplete_force_refresh)
-set completeopt-=preview
+set completeopt+=preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-let g:asyncomplete_auto_popup = 0
+let g:asyncomplete_auto_popup = 1
 function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
