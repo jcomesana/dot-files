@@ -363,8 +363,15 @@ if executable('clangd')
         \ 'cmd': {server_info->['clangd']},
         \ 'whitelist': ['c', 'cpp'],
         \ })
+elseif executable('ccls')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'ccls',
+      \ 'cmd': {server_info->['ccls']},
+      \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+      \ 'initialization_options': {'cache': {'directory': '~/.vim/swap/ccls' }},
+      \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
+      \ })
 elseif executable('cquery')
-    " Take a look to https://github.com/MaskRay/ccls/
     au User lsp_setup call lsp#register_server({
           \ 'name': 'cquery',
           \ 'cmd': {server_info->['cquery']},
