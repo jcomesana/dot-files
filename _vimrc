@@ -163,7 +163,7 @@ set incsearch       " do incremental searching
 set hlsearch        " highlight search matches
 set noignorecase      " case sensitive searching ...
 set smartcase       " ... except when using capital letters
-set noinfercase
+set noinfercase     " ... and in keyword completion
 
 " ---- Indentation and formating ----
 set autoindent
@@ -355,7 +355,7 @@ let g:lsp_signs_enabled = 1           " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'}
-let g:lsp_signs_hint = {'text': '→'}
+let g:lsp_signs_hint = {'text': '⇒'}
 
 if executable('clangd')
     au User lsp_setup call lsp#register_server({
@@ -368,7 +368,7 @@ elseif executable('ccls')
       \ 'name': 'ccls',
       \ 'cmd': {server_info->['ccls']},
       \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
-      \ 'initialization_options': {'cache': {'directory': '~/.vim/swap/ccls' }},
+      \ 'initialization_options': {'cache': {'directory': '.ccls_cache' }},
       \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
       \ })
 elseif executable('cquery')
@@ -376,7 +376,7 @@ elseif executable('cquery')
           \ 'name': 'cquery',
           \ 'cmd': {server_info->['cquery']},
           \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
-          \ 'initialization_options': { 'cacheDirectory': '~/.vim/swap/cquery' },
+          \ 'initialization_options': { 'cacheDirectory': '.cquery_cache' },
           \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
           \ })
 endif
@@ -387,7 +387,12 @@ if executable('pyls')
         \ 'name': 'pyls',
         \ 'cmd': {server_info->['pyls']},
         \ 'whitelist': ['python'],
-        \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:true}, 'pyflakes': {'enabled': v:true}}}},
+        \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:false},
+        \                                           'pyflakes': {'enabled': v:true},
+        \                                           'mccabe': {'enabled': v:true},
+        \                                           'pycodestyle': {'enabled': v:true, 'maxLineLength': 250},
+        \                                           'jedi_hover': {'enabled': v:true},
+        \                                           'jedi_completion': {'enabled': v:true}}}},
         \ })
 endif
 
@@ -399,6 +404,7 @@ imap <c-space> <Plug>(asyncomplete_force_refresh)
 set completeopt+=preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:asyncomplete_auto_popup = 1
+
 function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
