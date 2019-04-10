@@ -397,11 +397,14 @@ if executable('pyls')
 endif
 
 " Plugin asyncomplete
+set completeopt+=preview
+set belloff+=ctrlg
+set signcolumn=yes
+set shortmess+=c
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 imap <c-space> <Plug>(asyncomplete_force_refresh)
-set completeopt+=preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:asyncomplete_auto_popup = 1
 
