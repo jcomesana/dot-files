@@ -356,6 +356,8 @@ let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal 
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'}
 let g:lsp_signs_hint = {'text': '⇒'}
+let g:lsp_signs_information = {'text': '🛈'}
+let g:lsp_text_edit_enabled = 0
 
 if executable('clangd')
     au User lsp_setup call lsp#register_server({
@@ -399,14 +401,14 @@ endif
 " Plugin asyncomplete
 set completeopt+=preview
 set belloff+=ctrlg
-set signcolumn=yes
 set shortmess+=c
+let g:asyncomplete_auto_popup = 1
+
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 imap <c-space> <Plug>(asyncomplete_force_refresh)
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-let g:asyncomplete_auto_popup = 1
 
 function! s:check_back_space() abort
     let col = col('.') - 1
