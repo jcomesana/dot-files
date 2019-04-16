@@ -27,6 +27,7 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'Shougo/echodoc.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
@@ -44,62 +45,42 @@ Plug 'mrk21/yaml-vim'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
-Plug 'vim-scripts/Darkdevel'
 Plug 'vim-scripts/earendel'
-Plug 'vim-scripts/Lucius'
 Plug 'vim-scripts/moria'
-Plug 'ajh17/Spacegray.vim'
 Plug 'ajmwagar/vim-dues'
 Plug 'alessandroyorba/alduin'
 Plug 'alessandroyorba/sierra'
 Plug 'altercation/vim-colors-solarized'
-Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'Badacadabra/vim-archery'
-Plug 'baines/vim-colorscheme-thaumaturge'
 Plug 'benburrill/potato-colors'
-Plug 'cocopon/iceberg.vim'
 Plug 'danilo-augusto/vim-afterglow'
-Plug 'dikiaap/minimalist'
-Plug 'elmindreda/vimcolors'
-Plug 'exitface/synthwave.vim'
 Plug 'fneu/breezy'
 Plug 'hzchirs/vim-material'
 Plug 'jnurmine/Zenburn'
-Plug 'KabbAmine/yowish.vim'
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'lifepillar/vim-solarized8'
 Plug 'lmintmate/blue-mood-vim'
 Plug 'ltlollo/diokai'
 Plug 'lu-ren/SerialExperimentsLain'
 Plug 'mkarmona/colorsbox'
-Plug 'morhetz/gruvbox'
-Plug 'nightsense/carbonized'
-Plug 'nightsense/nemo'
-Plug 'nightsense/office'
 Plug 'nightsense/seabird'
 Plug 'nightsense/seagrey'
-Plug 'nightsense/stellarized'
 Plug 'nightsense/vim-crunchbang'
 Plug 'nightsense/willy'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'rhysd/vim-color-spring-night'
-Plug 'romainl/flattened'
 Plug 'roosta/vim-srcery'
 Plug 'schickele/vim'
 Plug 'Siphalor/vim-atomified'
-Plug 'sjl/badwolf'
 Plug 'skreek/skeletor.vim'
 Plug 'sonobre/briofita_vim'
 Plug 'szorfein/fromthehell.vim'
 Plug 'tjammer/blayu.vim'
 Plug 'vim-scripts/mayansmoke'
-Plug 'vim-scripts/peaksea'
 Plug 'vim-scripts/Sift'
 Plug 'yuttie/hydrangea-vim'
 Plug 'zcodes/vim-colors-basic'
-Plug 'zeis/vim-kolor'
 
 call plug#end()
 " ---- End vim-plug ---
@@ -283,30 +264,6 @@ highlight link MRUFileName LineNr
 let MRU_Max_Menu_Entries = 20
 let MRU_Max_Entries = 1000
 
-
-" Plugin clang_complete
-if has('win32') || has('win64')
-    if filereadable('c:\Program Files\LLVM\bin\libclang.dll')
-        let g:clang_library_path = 'c:\Program Files\LLVM\bin\libclang.dll'
-    else
-        let g:clang_library_path = 'd:\Program Files\LLVM\bin\libclang.dll'
-    endif
-elseif filereadable('/usr/lib/x86_64-linux-gnu/libclang-6.0.so')
-    let g:clang_library_path = '/usr/lib/x86_64-linux-gnu/libclang-6.0.so'
-else
-    let g:clang_library_path = '/usr/lib/arm-linux-gnueabihf/libclang-6.0.so.1'
-endif
-let g:clang_user_options = '-std=c++17'
-let g:clang_complete_auto = 1
-
-" Plugin jedi-vim
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 1
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#use_splits_not_buffers = "bottom"
-let g:jedi#show_call_signatures = "0"
-let g:pymode_rope = 1
-
 " Plugin vim-fugitive
 " run with AsyncRun
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
@@ -330,6 +287,7 @@ nmap <F7> \be
 
 " Plugin auto-pairs
 let g:AutoPairsShortcutFastWrap = '<C-Right>'
+let g:AutoPairsMapSpace = 0
 " au Filetype cpp let g:AutoPairsMapCR = 0
 
 " Plugin Mark
@@ -348,6 +306,8 @@ let g:lightline = {
       \   'gitbranch': 'fugitive#head',
       \ },
       \ }
+" Plugin echodoc
+let g:echodoc#enable_at_startup	= 1
 
 " Plugin vim-lsp
 let g:lsp_diagnostics_enabled = 1
