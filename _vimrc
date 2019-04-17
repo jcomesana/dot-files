@@ -27,7 +27,6 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
-Plug 'Shougo/echodoc.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim'
 Plug 'majutsushi/tagbar'
@@ -36,7 +35,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
-Plug 'skywind3000/asyncrun.vim'
+" Plug 'skywind3000/asyncrun.vim'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 Plug 'yegappan/grep'
@@ -264,10 +263,6 @@ highlight link MRUFileName LineNr
 let MRU_Max_Menu_Entries = 20
 let MRU_Max_Entries = 1000
 
-" Plugin vim-fugitive
-" run with AsyncRun
-command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
-
 " Plugin NERDCommenter
 " add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -306,8 +301,6 @@ let g:lightline = {
       \   'gitbranch': 'fugitive#head',
       \ },
       \ }
-" Plugin echodoc
-let g:echodoc#enable_at_startup	= 1
 
 " Plugin vim-lsp
 let g:lsp_diagnostics_enabled = 1
@@ -317,7 +310,6 @@ let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'}
 let g:lsp_signs_hint = {'text': '⇒'}
 let g:lsp_signs_information = {'text': '🛈'}
-let g:lsp_text_edit_enabled = 0
 
 if executable('clangd')
     au User lsp_setup call lsp#register_server({
@@ -370,16 +362,16 @@ inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 imap <c-space> <Plug>(asyncomplete_force_refresh)
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" function! s:check_back_space() abort
+"     let col = col('.') - 1
+"     return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction
+"
+" inoremap <silent><expr> <TAB>
+"   \ pumvisible() ? "\<C-n>" :
+"   \ <SID>check_back_space() ? "\<TAB>" :
+"   \ asyncomplete#force_refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
     \ 'name': 'file',
