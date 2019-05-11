@@ -216,21 +216,26 @@ execute 'colorscheme '.env_vim_color
 
 " Protect large files from sourcing and other overhead. Files become read only
 " http://vim.wikia.com/wiki/Faster_loading_of_large_files
-if !exists("my_auto_commands_loaded")
-  let my_auto_commands_loaded = 1
-  " Large files are > 10M
-  " Set options:
-  " eventignore+=FileType (no syntax highlighting etc
-  " assumes FileType always on)
-  " noswapfile (save copy of file)
-  " bufhidden=unload (save memory when other file is viewed)
-  " buftype=nowrite (file is read-only)
-  " undolevels=-1 (no undo possible)
-  let g:LargeFile = 1024 * 1024 * 10
-  augroup LargeFile
-    autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
-    augroup END
-endif
+" file is large from 10mb
+let g:LargeFile = 1024 * 1024 * 10
+augroup LargeFile
+  au!
+  autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
+augroup END
+
+function! LargeFile()
+ " no syntax highlighting etc
+ set eventignore+=FileType
+ " save memory when other file is viewed
+ setlocal bufhidden=unload
+ " is read-only (write with :w new_filename)
+ setlocal buftype=nowrite
+ " no undo possible
+ setlocal undolevels=-1
+ setlocal noundofile
+ " display message
+ autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
+endfunction
 
 " ---- yaml settings ----
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
