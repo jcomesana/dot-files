@@ -97,6 +97,7 @@ set expandtab
 set title           " set the window title
 set modeline
 set number
+set signcolumn=yes
 set noshowmode      " mode handled by lightline
 set showcmd         " show partial command in the last line of the screen
 set cmdheight=2     " number of lines for the command-line
@@ -314,7 +315,8 @@ let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal 
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'}
 let g:lsp_signs_hint = {'text': '⇒'}
-let g:lsp_signs_information = {'text': '🛈'}
+let g:lsp_signs_information = {'text': 'ℹ'}
+let g:lsp_textprop_enabled = 0
 
 if executable('clangd')
     au User lsp_setup call lsp#register_server({
