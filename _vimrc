@@ -35,7 +35,6 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
-" Plug 'skywind3000/asyncrun.vim'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 Plug 'yegappan/grep'
@@ -107,7 +106,7 @@ set wildignore=*.bak,*.o,*~,*.pyc,*.lib,*.swp
 set wildmode=list:longest,full
 set shortmess=at    " abbreviate messages (file names too long, etc)
 set lazyredraw      " redraw only when it is needed
-set updatetime=2000 " milliseconds, period of inactivity before writting to swap file
+set updatetime=1000 " milliseconds, period of inactivity before writting to swap file
 set cursorline      " highlight current line
 set ruler           " show the cursor position all the time
 set laststatus=2    " show always the status line
@@ -203,6 +202,8 @@ if has("termguicolors")
 endif
 
 " Color scheme
+" with cursorline highlight just the number
+au ColorScheme * highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 if !empty($VIMCOLOR)
     let env_vim_color = $VIMCOLOR
 else
@@ -220,22 +221,24 @@ execute 'colorscheme '.env_vim_color
 " file is large from 10mb
 let g:LargeFile = 1024 * 1024 * 10
 augroup LargeFile
-  au!
-  autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
+    au!
+    autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
 augroup END
 
 function! LargeFile()
- " no syntax highlighting etc
- set eventignore+=FileType
- " save memory when other file is viewed
- setlocal bufhidden=unload
- " is read-only (write with :w new_filename)
- setlocal buftype=nowrite
- " no undo possible
- setlocal undolevels=-1
- setlocal noundofile
- " display message
- autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
+    " no syntax highlighting etc
+    set eventignore+=FileType
+    " save memory when other file is viewed
+    setlocal bufhidden=unload
+    " is read-only (write with :w new_filename)
+    setlocal buftype=nowrite
+    " no undo possible
+    setlocal undolevels=-1
+    setlocal noundofile
+    " disable swap file
+    setlocal noswapfile
+    " display message
+    autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
 
 " ---- yaml settings ----
@@ -312,10 +315,10 @@ let g:lightline = {
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_signs_enabled = 1           " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
-let g:lsp_signs_error = {'text': '✗'}
-let g:lsp_signs_warning = {'text': '‼'}
-let g:lsp_signs_hint = {'text': '⇒'}
-let g:lsp_signs_information = {'text': 'ℹ'}
+let g:lsp_signs_error = {'text': 'e'}
+let g:lsp_signs_warning = {'text': 'w'}
+let g:lsp_signs_hint = {'text': '*'}
+let g:lsp_signs_information = {'text': 'i'}
 let g:lsp_textprop_enabled = 0
 
 if executable('clangd')
