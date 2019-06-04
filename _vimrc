@@ -34,7 +34,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-fugitive'
-Plug 'jiangmiao/auto-pairs'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 Plug 'yegappan/grep'
@@ -94,7 +93,7 @@ set expandtab
 
 " ---- UI Config ----
 set title           " set the window title
-set modeline
+set nomodeline
 set number
 set signcolumn=yes
 set noshowmode      " mode handled by lightline
@@ -151,7 +150,18 @@ filetype indent on  " filetype specific indent rules
 set cinkeys=0{,0},0),:,0#,!^F,o,O,e,;,.,-,*<Return>,;,=
 set cinoptions=>s,e0,n0,f0,{0,}0,^0,:s,=s,l0,gs,hs,ps,ts,+s,c3,C0,(s,us,U0,w0,m0,j0,)20,*30
 set formatoptions=cqt
-"set omnifunc=syntaxcomplete#Complete    " vim popup completion
+
+" ---- Auto close parentheses
+inoremap ( ()<Left>
+inoremap <expr> ) getline('.')[getpos('.')[2] - 1] == ')' ? '<Right>' : ')'
+inoremap { {}<Left>
+inoremap <expr> } getline('.')[getpos('.')[2] - 1] == '}' ? '<Right>' : '}'
+inoremap [ []<Left>
+inoremap <expr> ] getline('.')[getpos('.')[2] - 1] == ']' ? '<Right>' : ']'
+inoremap < <><Left>
+inoremap <expr> > getline('.')[getpos('.')[2] - 1] == '>' ? '<Right>' : '>'
+inoremap <expr> " getline('.')[getpos('.')[2] - 1] == '"' ? '<Right>' : '""<Left>'
+inoremap <expr> ' getline('.')[getpos('.')[2] - 1] == "'" ? '<Right>' : "''<Left>"
 
 " ---- Folding ----
 set foldenable
@@ -288,11 +298,6 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " Plugin bufexplorer
 nmap <F7> \be
-
-" Plugin auto-pairs
-let g:AutoPairsShortcutFastWrap = '<C-Right>'
-let g:AutoPairsMapSpace = 0
-" au Filetype cpp let g:AutoPairsMapCR = 0
 
 " Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
