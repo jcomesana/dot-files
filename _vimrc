@@ -39,6 +39,7 @@ Plug 'inkarkat/vim-mark'
 Plug 'yegappan/grep'
 Plug 'itchyny/lightline.vim'
 Plug 'mrk21/yaml-vim'
+Plug 'ciaranm/securemodelines'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
@@ -62,7 +63,6 @@ Plug 'lu-ren/SerialExperimentsLain'
 Plug 'mkarmona/colorsbox'
 Plug 'nightsense/seabird'
 Plug 'nightsense/seagrey'
-Plug 'nightsense/vim-crunchbang'
 Plug 'nightsense/willy'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'reewr/vim-monokai-phoenix'
@@ -93,7 +93,7 @@ set expandtab
 
 " ---- UI Config ----
 set title           " set the window title
-set nomodeline
+set modeline
 set number
 set signcolumn=yes
 set noshowmode      " mode handled by lightline
