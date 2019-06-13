@@ -23,12 +23,12 @@ Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete.vim', { 'for': ['python', 'cpp', 'c', 'groovy', 'vim', 'xml', 'json'] }
+Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'mattn/calendar-vim'
+Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'CalendarVR'] }
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
@@ -40,6 +40,7 @@ Plug 'yegappan/grep'
 Plug 'itchyny/lightline.vim'
 Plug 'mrk21/yaml-vim', { 'for': ['yaml'] }
 Plug 'ciaranm/securemodelines'
+Plug 'PProvost/vim-ps1'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
@@ -246,6 +247,8 @@ function! LargeFile()
     setlocal noundofile
     " disable swap file
     setlocal noswapfile
+    " disable asyncomplete
+    let b:asyncomplete_enable = 2
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
@@ -323,7 +326,7 @@ let g:lsp_signs_error = {'text': 'e'}
 let g:lsp_signs_warning = {'text': 'w'}
 let g:lsp_signs_hint = {'text': '*'}
 let g:lsp_signs_information = {'text': 'i'}
-let g:lsp_textprop_enabled = 0
+let g:lsp_textprop_enabled = 0 " only on debian
 
 if executable('clangd')
     au User lsp_setup call lsp#register_server({
