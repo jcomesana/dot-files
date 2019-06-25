@@ -311,14 +311,28 @@ let g:lightline = {
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
-      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \              [ 'lsp_diagnostics', 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
+      \   'lsp_diagnostics': 'ShowDiagnosticsCount'
       \ },
       \ }
 
 " Plugin vim-lsp
+" Function for showing diagnostics copied from ALE
+function! ShowDiagnosticsCount() abort
+    let l:counts = lsp#get_buffer_diagnostics_counts()
+
+    return l:counts.error + l:counts.warning + l:counts.information + l:counts.hint == 0 ? '[Ok]' : printf(
+    \   '[E:%d, W:%d, I:%d, H:%d]',
+    \   l:counts["error"],
+    \   l:counts["warning"],
+    \   l:counts["information"],
+    \   l:counts["hint"],
+    \)
+endfunction
+
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_signs_enabled = 1           " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
