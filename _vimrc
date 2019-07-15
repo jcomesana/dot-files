@@ -66,6 +66,7 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'roosta/vim-srcery'
+Plug 'sainnhe/vim-color-forest-night'
 Plug 'schickele/vim'
 Plug 'skreek/skeletor.vim'
 Plug 'sonobre/briofita_vim'
@@ -335,7 +336,11 @@ let g:lsp_signs_error = {'text': 'e'}
 let g:lsp_signs_warning = {'text': 'w'}
 let g:lsp_signs_hint = {'text': '*'}
 let g:lsp_signs_information = {'text': 'i'}
-let g:lsp_textprop_enabled = 0 " only on debian
+let g:lsp_preview_float = 1
+let g:lsp_highlights_enabled = 1
+let g:lsp_highlight_references_enabled = 1
+let g:lsp_textprop_enabled = 0
+autocmd FileType python,cpp,c nmap <C-h> <plug>(lsp-hover)
 
 if executable('clangd')
     au User lsp_setup call lsp#register_server({
