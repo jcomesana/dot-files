@@ -1,12 +1,12 @@
 " Create initial folders
 
-if !isdirectory($HOME.'/.vim')
-    call mkdir($HOME.'/.vim', 'p')
-    call mkdir($HOME.'/.vim/autoload', 'p')
-    call mkdir($HOME.'/.vim/backups', 'p')
-    call mkdir($HOME.'/.vim/swap', 'p')
-    call mkdir($HOME.'/.vim/undodir', 'p')
-    :echom system('curl -fLo '.$HOME.'/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+if !isdirectory(expand('~/.vim'))
+    call mkdir(expand('~/.vim', 'p'))
+    call mkdir(expand('~/.vim/autoload', 'p'))
+    call mkdir(expand('~/.vim/backups', 'p'))
+    call mkdir(expand('~/.vim/swap', 'p'))
+    call mkdir(expand('~/.vim/undodir', 'p'))
+    :echom system('curl -fLo '.expand('~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'))
 endif
 " ---- Windows ----
 if has('win32') || has('win64')
@@ -30,9 +30,9 @@ Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'CalendarVR'] }
 Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jlanzarotta/bufexplorer'
+Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
@@ -270,10 +270,6 @@ nnoremap <silent> <F12> :TagbarToggle<CR>
 let g:tagbar_left = 0
 let g:tagbar_width = 45
 let g:tagbar_expand = 0
-
-" Plugin NERDTree
-nnoremap <silent> <F11> :NERDTreeToggle<CR>
-let NERDTreeIgnore=['\.pyc$', '\~$', '\.bak'] "ignore files in NERDTree
 
 " Plugin mru
 highlight link MRUFileName LineNr
