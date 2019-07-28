@@ -21,12 +21,7 @@ call plug#begin('~/.vim/plugged')
 "
 Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
-Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'w0rp/ale'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'CalendarVR'] }
 Plug 'majutsushi/tagbar'
@@ -296,6 +291,59 @@ nmap <F7> \be
 " Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
 
+" Plugin ale
+let g:ale_linters = {
+\   'python': ['pylint', 'flake8', 'pyls'],
+\   'cpp': ['clang', 'ccls'],
+\}
+let g:ale_completion_enabled = 1
+let g:ale_set_balloons = 1
+let g:ale_set_highlights =1
+let g:ale_set_signs = 1
+let g:python_max_len = 120
+" when to lint
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_delay = 500
+let g:ale_lint_on_enter = 1
+let g:ale_sign_column_always = 0
+" list
+let g:ale_open_list = 0
+" python
+let g:ale_python_flake8_executable = g:python_binary
+let g:ale_python_flake8_options = '-m flake8 --max-line-length='.g:python_max_len
+let g:ale_python_pylint_executable = g:python_binary
+let g:ale_python_pylint_options = '-m pylint'
+let g:ale_python_mypy_options = '--ignore-missing-imports'
+let g:ale_python_pyls_use_global = 1
+let g:ale_python_pyls_config = {'pyls': {'plugins': {'pydocstyle': {'enabled': v:false},
+         \                                           'pyflakes': {'enabled': v:true},
+         \                                           'mccabe': {'enabled': v:true},
+         \                                           'pycodestyle': {'enabled': v:true, 'maxLineLength': 250},
+         \                                           'jedi_hover': {'enabled': v:true},
+         \                                           'jedi_completion': {'enabled': v:true}}}}
+" C++
+let g:ale_cpp_clang_executable = 'clang++-7'
+let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++1z'
+" movement
+nmap <silent> <M-k> <Plug>(ale_previous_wrap)
+nmap <silent> <M-j> <Plug>(ale_next_wrap)
+" status format
+let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
+" Function for ALE copied from the docs
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? '[Ok]' : printf(
+    \   '[E:%d, W:%d]',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
 " Plugin lightline
 let g:lightline = {
       \ 'active': {
@@ -303,112 +351,10 @@ let g:lightline = {
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
-      \              [ 'lsp_diagnostics', 'fileformat', 'fileencoding', 'filetype' ] ]
+      \              [ 'alestatus', 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
-      \   'lsp_diagnostics': 'ShowDiagnosticsCount'
+      \   'alestatus': 'LinterStatus'
       \ },
       \ }
-
-" Plugin vim-lsp
-" Function for showing diagnostics copied from ALE
-function! ShowDiagnosticsCount() abort
-    let l:counts = lsp#get_buffer_diagnostics_counts()
-
-    return l:counts.error + l:counts.warning + l:counts.information + l:counts.hint == 0 ? '[Ok]' : printf(
-    \   '[E:%d, W:%d, I:%d, H:%d]',
-    \   l:counts["error"],
-    \   l:counts["warning"],
-    \   l:counts["information"],
-    \   l:counts["hint"],
-    \)
-endfunction
-
-let g:lsp_diagnostics_enabled = 1
-let g:lsp_signs_enabled = 1           " enable signs
-let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
-let g:lsp_signs_error = {'text': 'e'}
-let g:lsp_signs_warning = {'text': 'w'}
-let g:lsp_signs_hint = {'text': '*'}
-let g:lsp_signs_information = {'text': 'i'}
-let g:lsp_preview_float = 1
-let g:lsp_highlights_enabled = 1
-let g:lsp_highlight_references_enabled = 1
-let g:lsp_textprop_enabled = 0
-autocmd FileType python,cpp,c nmap <C-h> <plug>(lsp-hover)
-
-if executable('clangd')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'clangd',
-        \ 'cmd': {server_info->['clangd']},
-        \ 'whitelist': ['c', 'cpp'],
-        \ })
-elseif executable('ccls')
-    au User lsp_setup call lsp#register_server({
-      \ 'name': 'ccls',
-      \ 'cmd': {server_info->['ccls']},
-      \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
-      \ 'initialization_options': {'cache': {'directory': '.ccls_cache' }},
-      \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
-      \ })
-elseif executable('cquery')
-    au User lsp_setup call lsp#register_server({
-          \ 'name': 'cquery',
-          \ 'cmd': {server_info->['cquery']},
-          \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
-          \ 'initialization_options': { 'cacheDirectory': '.cquery_cache' },
-          \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
-          \ })
-endif
-
-if executable('pyls')
-    " All settings: https://github.com/palantir/python-language-server/blob/develop/vscode-client/package.json
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle': {'enabled': v:false},
-        \                                           'pyflakes': {'enabled': v:true},
-        \                                           'mccabe': {'enabled': v:true},
-        \                                           'pycodestyle': {'enabled': v:true, 'maxLineLength': 250},
-        \                                           'jedi_hover': {'enabled': v:true},
-        \                                           'jedi_completion': {'enabled': v:true}}}},
-        \ })
-endif
-
-" Plugin asyncomplete
-set completeopt+=preview
-set belloff+=ctrlg
-set shortmess+=c
-let g:asyncomplete_auto_popup = 1
-
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
-imap <c-space> <Plug>(asyncomplete_force_refresh)
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" function! s:check_back_space() abort
-"     let col = col('.') - 1
-"     return !col || getline('.')[col - 1]  =~ '\s'
-" endfunction
-"
-" inoremap <silent><expr> <TAB>
-"   \ pumvisible() ? "\<C-n>" :
-"   \ <SID>check_back_space() ? "\<TAB>" :
-"   \ asyncomplete#force_refresh()
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-    \ 'name': 'buffer',
-    \ 'whitelist': ['*'],
-    \ 'completor': function('asyncomplete#sources#buffer#completor')
-    \ }))
