@@ -303,7 +303,8 @@ let g:ale_set_signs = 1
 let g:python_max_len = 120
 " when to lint
 let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_delay = 500
 let g:ale_lint_on_enter = 1
 let g:ale_sign_column_always = 0
