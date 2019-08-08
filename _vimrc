@@ -177,6 +177,12 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" ---- Completion options ----
+set completeopt+=menuone
+set completeopt+=noinsert
+set shortmess+=c    " Shut off completion messages
+set belloff+=ctrlg  " If Vim beeps during completion
+
 " ---- Backups, autoread, autosave ----
 set autoread                        " read a file automatically when it changes outside
 set autowrite                       " write the contents of a file when moving to another buffer
@@ -300,7 +306,7 @@ let g:ale_completion_enabled = 1
 let g:ale_set_balloons = 1
 let g:ale_set_highlights =1
 let g:ale_set_signs = 1
-let g:python_max_len = 120
+let g:python_max_len = 200
 " when to lint
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 'normal'
@@ -336,12 +342,13 @@ function! LinterStatus() abort
     let l:counts = ale#statusline#Count(bufnr(''))
 
     let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
+    let l:all_warnings = l:counts.warning + l:counts.style_warning
 
     return l:counts.total == 0 ? '[Ok]' : printf(
-    \   '[E:%d, W:%d]',
-    \   all_non_errors,
-    \   all_errors
+    \   '[E:%d, W:%d, I:%d]',
+    \   all_errors,
+    \   all_warnings,
+    \   l:counts.info
     \)
 endfunction
 
