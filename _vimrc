@@ -46,6 +46,7 @@ Plug 'alessandroyorba/sierra'
 Plug 'altercation/vim-colors-solarized'
 Plug 'ayu-theme/ayu-vim'
 Plug 'benburrill/potato-colors'
+Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'fneu/breezy'
 Plug 'hzchirs/vim-material'
@@ -56,7 +57,6 @@ Plug 'lmintmate/blue-mood-vim'
 Plug 'lu-ren/SerialExperimentsLain'
 Plug 'mkarmona/colorsbox'
 Plug 'nightsense/seagrey'
-Plug 'nightsense/willy'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'rhysd/vim-color-spring-night'
@@ -171,6 +171,12 @@ set whichwrap=<,>,[,]
 " to go through buffers
 :map <F8> :bprevious<RETURN>
 :map <F9> :bnext<RETURN>
+" and ignore qf
+augroup qf
+    autocmd!
+    autocmd FileType qf set nobuflisted
+augroup END
+
 " split navigations
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
