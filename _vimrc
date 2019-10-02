@@ -46,8 +46,8 @@ Plug 'alessandroyorba/sierra'
 Plug 'altercation/vim-colors-solarized'
 Plug 'ayu-theme/ayu-vim'
 Plug 'benburrill/potato-colors'
-Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 Plug 'danilo-augusto/vim-afterglow'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'fneu/breezy'
 Plug 'hzchirs/vim-material'
 Plug 'jnurmine/Zenburn'
@@ -370,5 +370,8 @@ let g:lightline = {
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
       \   'alestatus': 'LinterStatus'
+      \ },
+      \ 'component': {
+      \ 'lineinfo': '%4l:%-3v',
       \ },
       \ }
