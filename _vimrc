@@ -22,6 +22,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
 Plug 'w0rp/ale'
+Plug 'natebosch/vim-lsc'
+Plug 'ajh17/VimCompletesMe'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'CalendarVR'] }
 Plug 'majutsushi/tagbar'
@@ -186,6 +188,7 @@ nnoremap <C-H> <C-W><C-H>
 " ---- Completion options ----
 set completeopt+=menuone
 set completeopt+=noinsert
+set completeopt+=noselect
 set shortmess+=c    " Shut off completion messages
 set belloff+=ctrlg  " If Vim beeps during completion
 
@@ -305,8 +308,8 @@ let g:mwDefaultHighlightingPalette = 'extended'
 
 " Plugin ale
 let g:ale_linters = {
-\   'python': ['pylint', 'flake8', 'pyls'],
-\   'cpp': ['clang', 'ccls'],
+\   'python': ['pylint', 'flake8'],
+\   'cpp': ['clang'],
 \}
 let g:ale_completion_enabled = 1
 let g:ale_set_balloons = 1
@@ -375,3 +378,33 @@ let g:lightline = {
       \ 'lineinfo': '%4l:%-3v',
       \ },
       \ }
+
+" Plugin vim-lsc
+let g:lsc_server_commands = {
+ \  'python': {
+ \    'command': 'pyls',
+ \    'log_level': -1,
+ \    'suppress_stderr': v:true,
+ \  },
+\ 'cpp': {
+\    'command': 'ccls',
+\    'message_hooks': {
+\        'initialize': {
+\            'initializationOptions': {'cache': {'directory': '/tmp/ccls/cache'}},
+\            'rootUri': {m, p -> lsc#uri#documentUri(fnamemodify(findfile('compile_commands.json', expand('%:p') . ';'), ':p:h'))}
+\        },
+\    },
+\    'suppress_stderr': v:true,
+\  },
+\}
+let g:lsc_auto_map = {
+ \  'GoToDefinition': 'gd',
+ \  'FindReferences': 'gr',
+ \  'Rename': 'gR',
+  \ 'ShowHover': 'K',
+ \  'Completion': 'omnifunc',
+ \}
+let g:lsc_enable_autocomplete  = v:true
+let g:lsc_enable_diagnostics   = v:true
+let g:lsc_reference_highlights = v:true
+let g:lsc_trace_level          = 'off'
