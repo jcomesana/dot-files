@@ -332,6 +332,7 @@ let g:ale_python_pylint_executable = g:python_binary
 let g:ale_python_pylint_options = '-m pylint'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 let g:ale_python_pyls_use_global = 1
+" https://github.com/palantir/python-language-server/blob/develop/vscode-client/package.json
 let g:ale_python_pyls_config = {'pyls': {'plugins': {'pydocstyle': {'enabled': v:false},
          \                                           'pyflakes': {'enabled': v:true},
          \                                           'mccabe': {'enabled': v:true},
@@ -380,23 +381,31 @@ let g:lightline = {
       \ }
 
 " Plugin vim-lsc
-let g:lsc_server_commands = {
- \  'python': {
- \    'command': 'pyls',
- \    'log_level': -1,
- \    'suppress_stderr': v:true,
- \  },
-\ 'cpp': {
-\    'command': 'ccls',
-\    'message_hooks': {
-\        'initialize': {
-\            'initializationOptions': {'cache': {'directory': '/tmp/ccls/cache'}},
-\            'rootUri': {m, p -> lsc#uri#documentUri(fnamemodify(findfile('compile_commands.json', expand('%:p') . ';'), ':p:h'))}
-\        },
-\    },
-\    'suppress_stderr': v:true,
-\  },
-\}
+if executable('pyls')
+    let g:lsc_server_commands = {
+        \  'python': {
+        \    'command': 'pyls',
+        \    'log_level': -1,
+        \    'suppress_stderr': v:true,
+        \  },
+    \}
+endif
+
+if executable('ccls')
+    let g:lsc_server_commands = {
+        \ 'cpp': {
+        \    'command': 'ccls',
+        \    'message_hooks': {
+        \        'initialize': {
+        \            'initializationOptions': {'cache': {'directory': '/tmp/ccls/cache'}},
+        \            'rootUri': {m, p -> lsc#uri#documentUri(fnamemodify(findfile('compile_commands.json', expand('%:p') . ';'), ':p:h'))}
+        \        },
+        \    },
+        \    'suppress_stderr': v:true,
+        \  },
+    \}
+endif
+
 let g:lsc_auto_map = {
  \  'GoToDefinition': 'gd',
  \  'FindReferences': 'gr',
@@ -405,6 +414,6 @@ let g:lsc_auto_map = {
  \  'Completion': 'omnifunc',
  \}
 let g:lsc_enable_autocomplete  = v:true
-let g:lsc_enable_diagnostics   = v:true
+let g:lsc_enable_diagnostics   = v:false
 let g:lsc_reference_highlights = v:true
 let g:lsc_trace_level          = 'off'
