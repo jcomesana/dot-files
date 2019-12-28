@@ -1,29 +1,41 @@
 " Create initial folders
+if has('nvim')
+    " let s:editor_root=expand("~/.config/nvim")
+    let s:editor_root=expand("~/.vim")
+else
+    let s:editor_root=expand("~/.vim")
+endif
 
-if !isdirectory(expand('~/.vim'))
-    call mkdir(expand('~/.vim', 'p'))
-    call mkdir(expand('~/.vim/autoload', 'p'))
-    call mkdir(expand('~/.vim/backups', 'p'))
-    call mkdir(expand('~/.vim/swap', 'p'))
-    call mkdir(expand('~/.vim/undodir', 'p'))
-    :echom system('curl -fLo '.expand('~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'))
+if !isdirectory(s:editor_root . '/autoload')
+    call mkdir(s:editor_root, 'p')
+    call mkdir(s:editor_root . '/autoload', 'p')
+    call mkdir(s:editor_root . '/backups', 'p')
+    call mkdir(s:editor_root . '/swap', 'p')
+    call mkdir(s:editor_root . '/undodir', 'p')
+    :echom system('curl -fLo '.s:editor_root.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'))
 endif
 " ---- Windows ----
 if has('win32') || has('win64')
-    " use '.vim' instead of 'vimfiles'
-    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+    let &rtp = &rtp . ',' . s:editor_root . ',' . s:editor_root.'/after'
     set shell=c:\windows\system32\cmd.exe   " shell
 endif
 
 " ---- vim-plug ----
-call plug#begin('~/.vim/plugged')
+call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
 Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
 Plug 'w0rp/ale'
-Plug 'natebosch/vim-lsc'
 Plug 'ajh17/VimCompletesMe'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'CalendarVR'] }
 Plug 'majutsushi/tagbar'
@@ -187,16 +199,18 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " ---- Completion options ----
-set completeopt+=menuone
-set completeopt+=noinsert
-set completeopt+=noselect
-set shortmess+=c    " Shut off completion messages
+"set completeopt+=menuone
+"set completeopt+=noinsert
+"set completeopt+=noselect
+"set shortmess+=c    " Shut off completion messages
 set belloff+=ctrlg  " If Vim beeps during completion
 
 " ---- Backups, autoread, autosave ----
 set autoread                        " read a file automatically when it changes outside
 set autowrite                       " write the contents of a file when moving to another buffer
+if !has('nvim')
 set swapsync=""                     " to keep changes in the swap file more time in memory
+endif
 set backup                          " backup and location
 set backupdir=~/.vim/backups//,.
 :au FocusLost * silent! wa          " autosave when focus is lost
@@ -221,8 +235,10 @@ endif
 " Color scheme
 " with cursorline highlight just the number
 au ColorScheme * highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-if !empty($VIMCOLOR)
+if !has('nvim') && !empty($VIMCOLOR)
     let env_vim_color = $VIMCOLOR
+elseif has('nvim') && !empty($NVIMCOLOR)
+    let env_vim_color = $NVIMCOLOR
 else
     let env_vim_color = 'darkblue'
 endif
@@ -263,7 +279,6 @@ endfunction
 " ---- yaml settings ----
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
-
 
 " ---- Plugins ----
 let g:python_binary = 'python3'
@@ -341,8 +356,8 @@ let g:ale_python_pyls_config = {'pyls': {'plugins': {'pydocstyle': {'enabled': v
          \                                           'jedi_hover': {'enabled': v:true},
          \                                           'jedi_completion': {'enabled': v:true}}}}
 " C++
-let g:ale_cpp_clang_executable = 'clang++-7'
-let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++1z'
+let g:ale_cpp_clang_executable = 'clang++-9'
+let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++17'
 " movement
 nmap <silent> <M-k> <Plug>(ale_previous_wrap)
 nmap <silent> <M-j> <Plug>(ale_next_wrap)
@@ -381,40 +396,22 @@ let g:lightline = {
       \ },
       \ }
 
-" Plugin vim-lsc
-if executable('pyls')
-    let g:lsc_server_commands = {
-        \  'python': {
-        \    'command': 'pyls',
-        \    'log_level': -1,
-        \    'suppress_stderr': v:true,
-        \  },
-    \}
-endif
+" Plugin LanguageClient-neovim
+set hidden " Required for operations modifying multiple buffers like rename.
 
-if executable('ccls')
-    let g:lsc_server_commands = {
-        \ 'cpp': {
-        \    'command': 'ccls',
-        \    'message_hooks': {
-        \        'initialize': {
-        \            'initializationOptions': {'cache': {'directory': '/tmp/ccls/cache'}},
-        \            'rootUri': {m, p -> lsc#uri#documentUri(fnamemodify(findfile('compile_commands.json', expand('%:p') . ';'), ':p:h'))}
-        \        },
-        \    },
-        \    'suppress_stderr': v:true,
-        \  },
-    \}
-endif
+let g:LanguageClient_serverCommands = {
+    \ 'python': ['pyls'],
+    \ 'c': ['ccls'],
+    \ 'cpp': ['ccls'],
+    \ 'objc': ['ccls']
+    \ }
 
-let g:lsc_auto_map = {
- \  'GoToDefinition': 'gd',
- \  'FindReferences': 'gr',
- \  'Rename': 'gR',
-  \ 'ShowHover': 'K',
- \  'Completion': 'omnifunc',
- \}
-let g:lsc_enable_autocomplete  = v:true
-let g:lsc_enable_diagnostics   = v:false
-let g:lsc_reference_highlights = v:true
-let g:lsc_trace_level          = 'off'
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+
+" Plugin deoplete
+let g:deoplete#enable_at_startup = 1
