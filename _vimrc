@@ -199,10 +199,10 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " ---- Completion options ----
-"set completeopt+=menuone
-"set completeopt+=noinsert
-"set completeopt+=noselect
-"set shortmess+=c    " Shut off completion messages
+set completeopt+=menuone
+set completeopt+=noinsert
+set completeopt+=noselect
+set shortmess+=c    " Shut off completion messages
 set belloff+=ctrlg  " If Vim beeps during completion
 
 " ---- Backups, autoread, autosave ----
