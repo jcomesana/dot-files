@@ -1,0 +1,15 @@
+{
+    "pyls":
+    {
+        "plugins":
+        {
+            "pydocstyle": {"enabled": false},
+            "pylint": {"enabled": false},
+            "pyflakes": {"enabled": true},
+            "mccabe": {"enabled": true},
+            "pycodestyle": {"enabled": true, "maxLineLength": 250},
+            "jedi_hover": {"enabled": true},
+            "jedi_completion": {"enabled": true}
+        }
+    }
+}

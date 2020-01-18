@@ -15,7 +15,7 @@ if !isdirectory(s:editor_root . '/autoload')
     :echom system('curl -fLo '.s:editor_root.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'))
 endif
 " ---- Windows ----
-if has('win32') || has('win64')
+if has('win32') || has('win64') || has('nvim')
     let &rtp = &rtp . ',' . s:editor_root . ',' . s:editor_root.'/after'
     set shell=c:\windows\system32\cmd.exe   " shell
 endif
@@ -280,6 +280,9 @@ endfunction
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
 
+" ---- netrw settings ----
+let g:netrw_liststyle=3
+
 " ---- Plugins ----
 let g:python_binary = 'python3'
 if has('win32') || has('win64')
@@ -405,12 +408,62 @@ let g:LanguageClient_serverCommands = {
     \ 'cpp': ['ccls'],
     \ 'objc': ['ccls']
     \ }
+let g:LanguageClient_diagnosticsEnable = 1
+let g:LanguageClient_diagnosticsDisplay = {
+      \ 1: {
+      \     "name": "Error",
+      \     "texthl": "ALEError",
+      \     "signText": "e",
+      \     "signTexthl": "ALEErrorSign",
+      \     "virtualTexthl": "Error",
+      \ },
+      \ 2: {
+      \     "name": "Warning",
+      \     "texthl": "ALEWarning",
+      \     "signText": "w",
+      \     "signTexthl": "ALEWarningSign",
+      \     "virtualTexthl": "Todo",
+      \ },
+      \ 3: {
+      \     "name": "Information",
+      \     "texthl": "ALEInfo",
+      \     "signText": "i",
+      \     "signTexthl": "ALEInfoSign",
+      \     "virtualTexthl": "Todo",
+      \ },
+      \ 4: {
+      \     "name": "Hint",
+      \     "texthl": "ALEInfo",
+      \     "signText": "?",
+      \     "signTexthl": "ALEInfoSign",
+      \     "virtualTexthl": "Todo",
+      \ },
+\ }
 
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+let g:LanguageClient_diagnosticsList = "Location"
+
+" mappings
+function SetLSPShortcuts()
+  nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+  nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
+  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
+  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+endfunction()
+
+augroup LSP
+  autocmd!
+  autocmd FileType cpp,c,python call SetLSPShortcuts()
+augroup END
+
+" language server settings
+" pyls https://github.com/palantir/python-language-server/blob/develop/vscode-client/package.json
+au! BufNewFile,BufReadPost *.{py} let g:LanguageClient_settingsPath=expand("~/.vim/pyls_settings.json")
 
 
 " Plugin deoplete
