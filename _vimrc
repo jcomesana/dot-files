@@ -14,9 +14,11 @@ if !isdirectory(s:editor_root . '/autoload')
     call mkdir(s:editor_root . '/undodir', 'p')
     :echom system('curl -fLo '.s:editor_root.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'))
 endif
-" ---- Windows ----
 if has('win32') || has('win64') || has('nvim')
     let &rtp = &rtp . ',' . s:editor_root . ',' . s:editor_root.'/after'
+endif
+" ---- Windows ----
+if has('win32') || has('win64')
     set shell=c:\windows\system32\cmd.exe   " shell
 endif
 
