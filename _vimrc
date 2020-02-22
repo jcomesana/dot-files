@@ -52,6 +52,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'sheerun/vim-polyglot'
+Plug 'tmsvg/pear-tree'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
@@ -63,9 +64,11 @@ Plug 'alessandroyorba/sierra'
 Plug 'altercation/vim-colors-solarized'
 Plug 'ayu-theme/ayu-vim'
 Plug 'benburrill/potato-colors'
+Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'fneu/breezy'
+Plug 'flrnd/candid.vim'
 Plug 'hzchirs/vim-material'
 Plug 'jnurmine/Zenburn'
 Plug 'lifepillar/vim-gruvbox8'
@@ -78,6 +81,7 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'roosta/vim-srcery'
+Plug 'sainnhe/sonokai'
 Plug 'sainnhe/vim-color-forest-night'
 Plug 'schickele/vim'
 Plug 'skreek/skeletor.vim'
@@ -160,16 +164,6 @@ filetype indent on  " filetype specific indent rules
 set cinkeys=0{,0},0),:,0#,!^F,o,O,e,;,.,-,*<Return>,;,=
 set cinoptions=>s,e0,n0,f0,{0,}0,^0,:s,=s,l0,gs,hs,ps,ts,+s,c3,C0,(s,us,U0,w0,m0,j0,)20,*30
 set formatoptions=cqt
-
-" ---- Auto close parentheses
-inoremap ( ()<Left>
-inoremap <expr> ) getline('.')[getpos('.')[2] - 1] == ')' ? '<Right>' : ')'
-inoremap { {}<Left>
-inoremap <expr> } getline('.')[getpos('.')[2] - 1] == '}' ? '<Right>' : '}'
-inoremap [ []<Left>
-inoremap <expr> ] getline('.')[getpos('.')[2] - 1] == ']' ? '<Right>' : ']'
-inoremap <expr> " getline('.')[getpos('.')[2] - 1] == '"' ? '<Right>' : '""<Left>'
-inoremap <expr> ' getline('.')[getpos('.')[2] - 1] == "'" ? '<Right>' : "''<Left>"
 
 " ---- Folding ----
 set foldenable
@@ -470,3 +464,8 @@ au! BufNewFile,BufReadPost *.{py} let g:LanguageClient_settingsPath=expand("~/.v
 
 " Plugin deoplete
 let g:deoplete#enable_at_startup = 1
+
+" Plugin pear-tree
+let g:pear_tree_smart_openers = 1
+let g:pear_tree_smart_closers = 1
+let g:pear_tree_smart_backspace = 1
