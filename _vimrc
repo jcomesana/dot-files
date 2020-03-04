@@ -18,7 +18,7 @@ if has('win32') || has('win64') || has('nvim')
     let &rtp = &rtp . ',' . s:editor_root . ',' . s:editor_root.'/after'
 endif
 " ---- Windows ----
-if has('win32') || has('win64')
+if (has('win32') || has('win64')) && !has('nvim')
     set shell=c:\windows\system32\cmd.exe   " shell
 endif
 
@@ -81,6 +81,7 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'roosta/vim-srcery'
+Plug 'sainnhe/edge'
 Plug 'sainnhe/sonokai'
 Plug 'sainnhe/vim-color-forest-night'
 Plug 'schickele/vim'
@@ -230,7 +231,7 @@ endif
 
 " Color scheme
 " with cursorline highlight just the number
-au ColorScheme * highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+" au ColorScheme * highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 if !has('nvim') && !empty($VIMCOLOR)
     let env_vim_color = $VIMCOLOR
 elseif has('nvim') && !empty($NVIMCOLOR)
@@ -391,8 +392,9 @@ let g:lightline = {
       \   'alestatus': 'LinterStatus'
       \ },
       \ 'component': {
-      \ 'lineinfo': '%4l:%-3v',
+      \   'lineinfo': '%4l:%-3v',
       \ },
+      \ 'colorscheme': env_vim_color,
       \ }
 
 " Plugin LanguageClient-neovim
