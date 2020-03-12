@@ -49,6 +49,7 @@ Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'sheerun/vim-polyglot'
@@ -82,6 +83,7 @@ Plug 'reewr/vim-monokai-phoenix'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'roosta/vim-srcery'
 Plug 'sainnhe/edge'
+Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/sonokai'
 Plug 'sainnhe/vim-color-forest-night'
 Plug 'schickele/vim'
@@ -394,17 +396,41 @@ let g:lightline = {
       \ 'component': {
       \   'lineinfo': '%4l:%-3v',
       \ },
-      \ 'colorscheme': env_vim_color,
       \ }
+
+function! s:lightline_colorschemes() abort
+    return map(globpath(&rtp,"autoload/lightline/colorscheme/*.vim",1,1), "fnamemodify(v:val,':t:r')")
+endfunction
+
+function! s:lightline_update()
+    try
+        let l:lightline_colorschemes_list = s:lightline_colorschemes()
+        let l:lightline_cs = substitute(g:colors_name, '-', '_', 'g')
+        if index(l:lightline_colorschemes_list, l:lightline_cs) == -1
+            let l:lightline_cs = "default"
+        endif
+        let g:lightline.colorscheme = l:lightline_cs
+        call lightline#init()
+        call lightline#colorscheme()
+        call lightline#update()
+    catch
+    endtry
+endfunction
+
+augroup LightlineColorscheme
+    autocmd!
+    autocmd ColorScheme * call s:lightline_update()
+augroup END
+call s:lightline_update()
 
 " Plugin LanguageClient-neovim
 set hidden " Required for operations modifying multiple buffers like rename.
 
 let g:LanguageClient_serverCommands = {
     \ 'python': ['pyls'],
-    \ 'c': ['ccls'],
-    \ 'cpp': ['ccls'],
-    \ 'objc': ['ccls']
+    \ 'c': ['clangd'],
+    \ 'cpp': ['clangd'],
+    \ 'objc': ['clangd']
     \ }
 let g:LanguageClient_diagnosticsEnable = 1
 let g:LanguageClient_diagnosticsDisplay = {
@@ -452,7 +478,7 @@ function SetLSPShortcuts()
   nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
   nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
   nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
-endfunction()
+endfunction
 
 augroup LSP
   autocmd!
@@ -468,6 +494,6 @@ au! BufNewFile,BufReadPost *.{py} let g:LanguageClient_settingsPath=expand("~/.v
 let g:deoplete#enable_at_startup = 1
 
 " Plugin pear-tree
-let g:pear_tree_smart_openers = 1
-let g:pear_tree_smart_closers = 1
-let g:pear_tree_smart_backspace = 1
+let g:pear_tree_smart_openers = 0
+let g:pear_tree_smart_closers = 0
+let g:pear_tree_smart_backspace = 0
