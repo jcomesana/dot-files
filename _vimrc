@@ -43,8 +43,9 @@ Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'Calen
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jlanzarotta/bufexplorer'
-Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-vinegar'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 Plug 'junegunn/fzf'
@@ -105,8 +106,6 @@ filetype on
 " ---- Spaces and tabs ----
 set tabstop=4
 set softtabstop=4
-set shiftwidth=4
-set expandtab
 
 " ---- UI Config ----
 set title           " set the window title
