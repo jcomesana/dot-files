@@ -30,14 +30,11 @@ Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
 Plug 'w0rp/ale'
 Plug 'ajh17/VimCompletesMe'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'CalendarVR'] }
 Plug 'majutsushi/tagbar'
@@ -422,77 +419,89 @@ augroup LightlineColorscheme
 augroup END
 call s:lightline_update()
 
-" Plugin LanguageClient-neovim
-set hidden " Required for operations modifying multiple buffers like rename.
+" Plugin asyncomplete
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+imap <c-space> <Plug>(asyncomplete_force_refresh)
 
-let g:LanguageClient_serverCommands = {
-    \ 'python': ['pyls'],
-    \ 'c': ['clangd'],
-    \ 'cpp': ['clangd'],
-    \ 'objc': ['clangd']
-    \ }
-let g:LanguageClient_diagnosticsEnable = 1
-let g:LanguageClient_diagnosticsDisplay = {
-      \ 1: {
-      \     "name": "Error",
-      \     "texthl": "ALEError",
-      \     "signText": "e",
-      \     "signTexthl": "ALEErrorSign",
-      \     "virtualTexthl": "Error",
-      \ },
-      \ 2: {
-      \     "name": "Warning",
-      \     "texthl": "ALEWarning",
-      \     "signText": "w",
-      \     "signTexthl": "ALEWarningSign",
-      \     "virtualTexthl": "Todo",
-      \ },
-      \ 3: {
-      \     "name": "Information",
-      \     "texthl": "ALEInfo",
-      \     "signText": "i",
-      \     "signTexthl": "ALEInfoSign",
-      \     "virtualTexthl": "Todo",
-      \ },
-      \ 4: {
-      \     "name": "Hint",
-      \     "texthl": "ALEInfo",
-      \     "signText": "?",
-      \     "signTexthl": "ALEInfoSign",
-      \     "virtualTexthl": "Todo",
-      \ },
-\ }
+" auto_popup
+let g:asyncomplete_auto_popup = 0
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ asyncomplete#force_refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-let g:LanguageClient_diagnosticsList = "Location"
+" preview window
+" allow modifying the completeopt variable, or it will
+" be overridden all the time
+let g:asyncomplete_auto_completeopt = 0
+set completeopt=menuone,noinsert,noselect,preview
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-" mappings
-function SetLSPShortcuts()
-  nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-  nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
-  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
-  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+" Plugin vim-lsp
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    " refer to doc to add more commands
 endfunction
 
-augroup LSP
-  autocmd!
-  autocmd FileType cpp,c,python call SetLSPShortcuts()
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-" language server settings
-" pyls https://github.com/palantir/python-language-server/blob/develop/vscode-client/package.json
-au! BufNewFile,BufReadPost *.{py} let g:LanguageClient_settingsPath=expand("~/.vim/pyls_settings.json")
+let g:lsp_diagnostics_enabled = 0
+let g:lsp_highlight_references_enabled = 1
 
+" Plugin asyncomplete-lsp.vim
+if executable('pyls')
+    " pip install python-language-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'allowlist': ['python'],
+        \ })
+endif
 
-" Plugin deoplete
-let g:deoplete#enable_at_startup = 1
+if executable('clangd')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clangd',
+        \ 'cmd': {server_info->['clangd', '-background-index']},
+        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+        \ })
+endif
 
-" Plugin pear-tree
-let g:pear_tree_smart_openers = 0
-let g:pear_tree_smart_closers = 0
-let g:pear_tree_smart_backspace = 0
+" Plugin asyncomplete-buffer.vim
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'allowlist': ['*'],
+    \ 'blocklist': ['go'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ 'config': {
+    \    'max_buffer_size': 5000000,
+    \  },
+    \ }))
+
+" Plugin asyncomplete-file.vim
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
