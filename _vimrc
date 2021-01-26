@@ -40,6 +40,7 @@ Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'Calen
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jlanzarotta/bufexplorer'
+" Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" geckodriver' }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-vinegar'
@@ -57,9 +58,7 @@ Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
 Plug 'vim-scripts/moria'
 Plug 'ajmwagar/vim-dues'
-Plug 'alessandroyorba/alduin'
 Plug 'alessandroyorba/sierra'
-Plug 'altercation/vim-colors-solarized'
 Plug 'ayu-theme/ayu-vim'
 Plug 'benburrill/potato-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
@@ -67,14 +66,14 @@ Plug 'danilo-augusto/vim-afterglow'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'fneu/breezy'
 Plug 'flrnd/candid.vim'
-Plug 'hzchirs/vim-material'
-Plug 'jnurmine/Zenburn'
-Plug 'lifepillar/vim-solarized8'
+Plug 'icymind/neosolarized'
+Plug 'itchyny/landscape.vim'
+Plug 'joshdick/onedark.vim'
 Plug 'lmintmate/blue-mood-vim'
 Plug 'lu-ren/SerialExperimentsLain'
+Plug 'mhartington/oceanic-next'
 Plug 'mkarmona/colorsbox'
 Plug 'nightsense/seagrey'
-Plug 'NLKNguyen/papercolor-theme'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'roosta/vim-srcery'
@@ -83,12 +82,8 @@ Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/sonokai'
 Plug 'sainnhe/vim-color-forest-night'
 Plug 'schickele/vim'
-Plug 'skreek/skeletor.vim'
-Plug 'sonobre/briofita_vim'
 Plug 'tjammer/blayu.vim'
-Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/Sift'
-Plug 'yuttie/hydrangea-vim'
 Plug 'zcodes/vim-colors-basic'
 
 call plug#end()
@@ -191,9 +186,6 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " ---- Completion options ----
-set completeopt+=menuone
-set completeopt+=noinsert
-set completeopt+=noselect
 set shortmess+=c    " Shut off completion messages
 set belloff+=ctrlg  " If Vim beeps during completion
 
@@ -438,7 +430,7 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 " allow modifying the completeopt variable, or it will
 " be overridden all the time
 let g:asyncomplete_auto_completeopt = 0
-set completeopt=menuone,noinsert,noselect,preview
+set completeopt=menuone,noinsert,preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Plugin vim-lsp
