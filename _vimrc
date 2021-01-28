@@ -52,7 +52,9 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'sheerun/vim-polyglot'
-Plug 'tmsvg/pear-tree'
+Plug 'jiangmiao/auto-pairs'
+Plug 'xolox/vim-colorscheme-switcher'
+Plug 'xolox/vim-misc'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
@@ -62,13 +64,14 @@ Plug 'alessandroyorba/sierra'
 Plug 'ayu-theme/ayu-vim'
 Plug 'benburrill/potato-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'cocopon/iceberg.vim'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'fneu/breezy'
 Plug 'flrnd/candid.vim'
-Plug 'icymind/neosolarized'
 Plug 'itchyny/landscape.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'lifepillar/vim-solarized8'
 Plug 'lmintmate/blue-mood-vim'
 Plug 'lu-ren/SerialExperimentsLain'
 Plug 'mhartington/oceanic-next'
@@ -219,14 +222,18 @@ endif
 " Color scheme
 " with cursorline highlight just the number
 " au ColorScheme * highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+let env_vim_color = ''
 if !has('nvim') && !empty($VIMCOLOR)
     let env_vim_color = $VIMCOLOR
 elseif has('nvim') && !empty($NVIMCOLOR)
     let env_vim_color = $NVIMCOLOR
-else
-    let env_vim_color = 'darkblue'
 endif
-execute 'colorscheme '.env_vim_color
+
+if !empty(env_vim_color)
+    execute 'colorscheme '.env_vim_color
+else
+    autocmd VimEnter * RandomColorScheme
+endif
 
 " ---- Extra functionallity ----
 " to visualize manpages
@@ -500,3 +507,12 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ 'priority': 10,
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
+
+" Plugin auto-pairs
+let g:AutoPairsShortcutFastWrap = '<C-Right>'
+let g:AutoPairsMapSpace = 0
+" au Filetype cpp let g:AutoPairsMapCR = 0
+
+" Pluging vim-colorscheme-switcher
+let g:colorscheme_switcher_define_mappings = 0
+let g:colorscheme_switcher_exclude_builtins = 1
