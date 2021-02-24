@@ -37,7 +37,7 @@ Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'CalendarVR'] }
-Plug 'majutsushi/tagbar'
+Plug 'liuchengxu/vista.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jlanzarotta/bufexplorer'
 " Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" geckodriver' }
@@ -57,12 +57,12 @@ Plug 'xolox/vim-misc'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
-Plug 'vim-scripts/moria'
 Plug 'ajmwagar/vim-dues'
 Plug 'alessandroyorba/sierra'
 Plug 'ayu-theme/ayu-vim'
 Plug 'benburrill/potato-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'chuling/equinusocio-material.vim'
 Plug 'cocopon/iceberg.vim'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -75,7 +75,7 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'lmintmate/blue-mood-vim'
 Plug 'mhartington/oceanic-next'
 Plug 'mkarmona/colorsbox'
-Plug 'nightsense/seagrey'
+Plug 'pineapplegiant/spaceduck'
 Plug 'raphamorim/lucario'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'rhysd/vim-color-spring-night'
@@ -283,12 +283,6 @@ endif
 let g:calendar_monday = 1
 let g:calendar_mruler = 'Xan,Feb,Mar,Abr,Mai,Xuñ,Xul,Ago,Sep,Out,Nov,Dec'
 let g:calendar_wruler = 'Do Lu Ma Me Xo Ve Sa'
-
-" Plugin tagbar
-nnoremap <silent> <F12> :TagbarToggle<CR>
-let g:tagbar_left = 0
-let g:tagbar_width = 45
-let g:tagbar_expand = 0
 
 " Plugin mru
 highlight link MRUFileName LineNr
@@ -512,6 +506,15 @@ let g:AutoPairsShortcutFastWrap = '<C-Right>'
 let g:AutoPairsMapSpace = 0
 " au Filetype cpp let g:AutoPairsMapCR = 0
 
-" Pluging vim-colorscheme-switcher
+" Plugin vim-colorscheme-switcher
 let g:colorscheme_switcher_define_mappings = 0
 let g:colorscheme_switcher_exclude_builtins = 1
+
+" Plugin vista
+nnoremap <silent> <F12> :Vista<CR>
+let g:vista_executive_for = {
+  \ 'cpp': 'vim_lsp',
+  \ 'python': 'vim_lsp',
+  \ }
+let g:vista#renderer#enable_icon = 0
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
