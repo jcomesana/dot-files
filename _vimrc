@@ -36,7 +36,6 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'mattn/calendar-vim', { 'on': ['Calendar', 'CalendarH', 'CalendarT', 'CalendarVR'] }
 Plug 'liuchengxu/vista.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jlanzarotta/bufexplorer'
@@ -54,6 +53,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'jiangmiao/auto-pairs'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
+Plug 'nathanaelkane/vim-indent-guides'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
@@ -72,13 +72,13 @@ Plug 'flrnd/candid.vim'
 Plug 'itchyny/landscape.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'lifepillar/vim-solarized8'
+Plug 'lighthaus-theme/vim-lighthaus'
 Plug 'lmintmate/blue-mood-vim'
 Plug 'mhartington/oceanic-next'
 Plug 'mkarmona/colorsbox'
 Plug 'pineapplegiant/spaceduck'
 Plug 'raphamorim/lucario'
 Plug 'reewr/vim-monokai-phoenix'
-Plug 'rhysd/vim-color-spring-night'
 Plug 'roosta/vim-srcery'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/gruvbox-material'
@@ -278,11 +278,6 @@ let g:python_binary = 'python3'
 if has('win32') || has('win64')
     py3 import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
 endif
-
-" Plugin calendar
-let g:calendar_monday = 1
-let g:calendar_mruler = 'Xan,Feb,Mar,Abr,Mai,Xuñ,Xul,Ago,Sep,Out,Nov,Dec'
-let g:calendar_wruler = 'Do Lu Ma Me Xo Ve Sa'
 
 " Plugin mru
 highlight link MRUFileName LineNr
@@ -519,3 +514,7 @@ let g:vista_executive_for = {
 let g:vista#renderer#enable_icon = 0
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_ignore_kinds = ["Variable"]
+
+" Plugin vim-indent-guides
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
