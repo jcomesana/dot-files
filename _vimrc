@@ -12,7 +12,7 @@ if !isdirectory(s:editor_root . '/autoload')
     call mkdir(s:editor_root . '/backups', 'p')
     call mkdir(s:editor_root . '/swap', 'p')
     call mkdir(s:editor_root . '/undodir', 'p')
-    :echom system('curl -fLo '.s:editor_root.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'))
+    :echom system('curl -fLo '.s:editor_root.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
 endif
 if has('win32') || has('win64') || has('nvim')
     let &rtp = &rtp . ',' . s:editor_root . ',' . s:editor_root.'/after'
@@ -59,7 +59,6 @@ Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
 Plug 'ajmwagar/vim-dues'
 Plug 'alessandroyorba/sierra'
-Plug 'ayu-theme/ayu-vim'
 Plug 'benburrill/potato-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'chuling/equinusocio-material.vim'
@@ -70,6 +69,7 @@ Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'fneu/breezy'
 Plug 'flrnd/candid.vim'
 Plug 'itchyny/landscape.vim'
+Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'lighthaus-theme/vim-lighthaus'
