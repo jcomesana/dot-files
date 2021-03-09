@@ -75,7 +75,6 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'lighthaus-theme/vim-lighthaus'
 Plug 'lmintmate/blue-mood-vim'
 Plug 'mhartington/oceanic-next'
-Plug 'mkarmona/colorsbox'
 Plug 'pineapplegiant/spaceduck'
 Plug 'raphamorim/lucario'
 Plug 'reewr/vim-monokai-phoenix'
@@ -86,7 +85,6 @@ Plug 'sainnhe/sonokai'
 Plug 'sainnhe/vim-color-forest-night'
 Plug 'schickele/vim'
 Plug 'vim-scripts/Sift'
-Plug 'zcodes/vim-colors-basic'
 
 call plug#end()
 " ---- End vim-plug ---
@@ -506,7 +504,8 @@ let g:colorscheme_switcher_define_mappings = 0
 let g:colorscheme_switcher_exclude_builtins = 1
 
 " Plugin vista
-nnoremap <silent> <F12> :Vista<CR>
+nnoremap <silent> <F12> :Vista!!<CR>
+let g:vista_sidebar_width=45
 let g:vista_executive_for = {
   \ 'cpp': 'vim_lsp',
   \ 'python': 'vim_lsp',
