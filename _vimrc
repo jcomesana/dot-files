@@ -58,7 +58,6 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
 Plug 'ajmwagar/vim-dues'
-Plug 'alessandroyorba/sierra'
 Plug 'benburrill/potato-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'chuling/equinusocio-material.vim'
@@ -68,9 +67,11 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'fneu/breezy'
 Plug 'flrnd/candid.vim'
+Plug 'GlennLeo/cobalt2'
 Plug 'itchyny/landscape.vim'
 Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'kaicataldo/material.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'lighthaus-theme/vim-lighthaus'
 Plug 'lmintmate/blue-mood-vim'
@@ -83,7 +84,6 @@ Plug 'sainnhe/edge'
 Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/sonokai'
 Plug 'sainnhe/vim-color-forest-night'
-Plug 'schickele/vim'
 Plug 'vim-scripts/Sift'
 
 call plug#end()
