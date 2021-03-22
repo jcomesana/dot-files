@@ -67,7 +67,6 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'fneu/breezy'
 Plug 'flrnd/candid.vim'
-Plug 'GlennLeo/cobalt2'
 Plug 'itchyny/landscape.vim'
 Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
@@ -84,6 +83,7 @@ Plug 'sainnhe/edge'
 Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/sonokai'
 Plug 'sainnhe/vim-color-forest-night'
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'vim-scripts/Sift'
 
 call plug#end()
@@ -502,6 +502,7 @@ let g:AutoPairsMapSpace = 0
 " Plugin vim-colorscheme-switcher
 let g:colorscheme_switcher_define_mappings = 0
 let g:colorscheme_switcher_exclude_builtins = 1
+:let g:colorscheme_switcher_exclude = ['solarized8_low', 'OceanicNextLight']
 
 " Plugin vista
 nnoremap <silent> <F12> :Vista!!<CR>
