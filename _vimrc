@@ -80,9 +80,9 @@ Plug 'raphamorim/lucario'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'roosta/vim-srcery'
 Plug 'sainnhe/edge'
+Plug 'sainnhe/everforest'
 Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/sonokai'
-Plug 'sainnhe/vim-color-forest-night'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'vim-scripts/Sift'
 
