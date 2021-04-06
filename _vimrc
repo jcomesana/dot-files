@@ -72,6 +72,7 @@ Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'kaicataldo/material.vim'
 Plug 'lifepillar/vim-solarized8'
+Plug 'lifepillar/vim-gruvbox8'
 Plug 'lighthaus-theme/vim-lighthaus'
 Plug 'lmintmate/blue-mood-vim'
 Plug 'mhartington/oceanic-next'
@@ -81,7 +82,6 @@ Plug 'reewr/vim-monokai-phoenix'
 Plug 'roosta/vim-srcery'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/everforest'
-Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/sonokai'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'vim-scripts/Sift'
@@ -518,3 +518,7 @@ let g:vista_ignore_kinds = ["Variable"]
 " Plugin vim-indent-guides
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
+
+" Color scheme settings
+let g:gruvbox_filetype_hi_groups = 1
+let g:gruvbox_plugin_hi_groups = 1
