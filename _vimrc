@@ -28,7 +28,7 @@ call plug#begin(s:editor_root.'/plugged')
 "
 Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -79,12 +79,12 @@ Plug 'mhartington/oceanic-next'
 Plug 'pineapplegiant/spaceduck'
 Plug 'raphamorim/lucario'
 Plug 'reewr/vim-monokai-phoenix'
+Plug 'romgrk/doom-one.vim'
 Plug 'roosta/vim-srcery'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/everforest'
 Plug 'sainnhe/sonokai'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
-Plug 'vim-scripts/Sift'
 
 call plug#end()
 " ---- End vim-plug ---
@@ -309,7 +309,7 @@ let g:ale_linters = {
 \}
 let g:ale_completion_enabled = 1
 let g:ale_set_balloons = 1
-let g:ale_set_highlights =1
+let g:ale_set_highlights = 1
 let g:ale_set_signs = 1
 let g:python_max_len = 200
 " when to lint
@@ -450,6 +450,7 @@ augroup END
 
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_highlight_references_enabled = 1
+let g:lsp_diagnostics_highlights_enabled = 0
 let g:lsp_signs_enabled = 1           " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
 let g:lsp_signs_error = {'text': 'e'}
