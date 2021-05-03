@@ -61,30 +61,30 @@ Plug 'ajmwagar/vim-dues'
 Plug 'benburrill/potato-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'chuling/equinusocio-material.vim'
-Plug 'cocopon/iceberg.vim'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'fneu/breezy'
 Plug 'flrnd/candid.vim'
+Plug 'ghifarit53/tokyonight-vim'
 Plug 'itchyny/landscape.vim'
 Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'kaicataldo/material.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'lifepillar/vim-gruvbox8'
-Plug 'lighthaus-theme/vim-lighthaus'
 Plug 'lmintmate/blue-mood-vim'
 Plug 'mhartington/oceanic-next'
+Plug 'owozsh/amora'
 Plug 'pineapplegiant/spaceduck'
 Plug 'raphamorim/lucario'
 Plug 'reewr/vim-monokai-phoenix'
 Plug 'romgrk/doom-one.vim'
-Plug 'roosta/vim-srcery'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/everforest'
 Plug 'sainnhe/sonokai'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
+Plug 'srcery-colors/srcery-vim'
 
 call plug#end()
 " ---- End vim-plug ---
