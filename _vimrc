@@ -64,10 +64,10 @@ Plug 'chuling/equinusocio-material.vim'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'embark-theme/vim', { 'as': 'embark' }
-Plug 'fneu/breezy'
 Plug 'flrnd/candid.vim'
 Plug 'ghifarit53/tokyonight-vim'
 Plug 'itchyny/landscape.vim'
+Plug 'jacoborus/tender.vim'
 Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'kaicataldo/material.vim'
