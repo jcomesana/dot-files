@@ -65,7 +65,7 @@ Plug 'danilo-augusto/vim-afterglow'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'flrnd/candid.vim'
-Plug 'ghifarit53/tokyonight-vim'
+Plug 'franbach/miramare'
 Plug 'itchyny/landscape.vim'
 Plug 'jacoborus/tender.vim'
 Plug 'jsit/toast.vim'
@@ -141,6 +141,8 @@ syntax enable
 let python_highlight_all=1
 let python_slow_sync=1
 let python_highlight_indent_errors=0
+" map space to sync the syntax hilighting on normal mode
+noremap <silent> <Space> :silent noh <Bar>echo<cr>:syn sync fromstart<cr>
 
 " ---- Searching ----
 set incsearch       " do incremental searching
