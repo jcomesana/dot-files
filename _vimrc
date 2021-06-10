@@ -26,7 +26,6 @@ endif
 call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
-Plug 'vim-scripts/CharTab'
 Plug 'yegappan/mru'
 Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
@@ -50,10 +49,11 @@ Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'sheerun/vim-polyglot'
-Plug 'jiangmiao/auto-pairs'
+Plug 'cohama/lexima.vim'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'elzr/vim-json'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
@@ -76,9 +76,9 @@ Plug 'lifepillar/vim-gruvbox8'
 Plug 'lmintmate/blue-mood-vim'
 Plug 'mhartington/oceanic-next'
 Plug 'owozsh/amora'
+Plug 'patstockwell/vim-monokai-tasty'
 Plug 'raphamorim/lucario'
 Plug 'ray-x/aurora'
-Plug 'reewr/vim-monokai-phoenix'
 Plug 'romgrk/doom-one.vim'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/everforest'
@@ -496,11 +496,6 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ 'priority': 10,
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
-
-" Plugin auto-pairs
-let g:AutoPairsShortcutFastWrap = '<C-Right>'
-let g:AutoPairsMapSpace = 0
-" au Filetype cpp let g:AutoPairsMapCR = 0
 
 " Plugin vim-colorscheme-switcher
 let g:colorscheme_switcher_define_mappings = 0
