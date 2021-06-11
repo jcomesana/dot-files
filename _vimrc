@@ -425,7 +425,7 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 " allow modifying the completeopt variable, or it will
 " be overridden all the time
 let g:asyncomplete_auto_completeopt = 0
-set completeopt=menuone,noinsert,preview
+set completeopt=menuone,noinsert,noselect,preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Plugin vim-lsp
@@ -500,7 +500,7 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
 " Plugin vim-colorscheme-switcher
 let g:colorscheme_switcher_define_mappings = 0
 let g:colorscheme_switcher_exclude_builtins = 1
-:let g:colorscheme_switcher_exclude = ['solarized8_low', 'OceanicNextLight']
+let g:colorscheme_switcher_exclude = ['solarized8_low', 'OceanicNextLight', 'onehalflight']
 
 " Plugin vista
 nnoremap <silent> <F12> :Vista!!<CR>
