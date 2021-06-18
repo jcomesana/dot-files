@@ -61,12 +61,10 @@ Plug 'ajmwagar/vim-dues'
 Plug 'benburrill/potato-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'chuling/equinusocio-material.vim'
-Plug 'danilo-augusto/vim-afterglow'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'flrnd/candid.vim'
 Plug 'franbach/miramare'
-Plug 'itchyny/landscape.vim'
 Plug 'jacoborus/tender.vim'
 Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
