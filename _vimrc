@@ -67,6 +67,7 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'flrnd/candid.vim'
 Plug 'franbach/miramare'
+Plug 'igorgue/danger'
 Plug 'jacoborus/tender.vim'
 Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
