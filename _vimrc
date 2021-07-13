@@ -111,7 +111,7 @@ set wildmode=list:longest,full
 set shortmess=at    " abbreviate messages (file names too long, etc)
 set lazyredraw      " redraw only when it is needed
 set updatetime=1000 " milliseconds, period of inactivity before writting to swap file
-set cursorline      " highlight current line
+set nocursorline    " don´t highlight current line
 set ruler           " show the cursor position all the time
 set laststatus=2    " show always the status line
 set visualbell      " no beeps, visual bell
