@@ -37,7 +37,7 @@ Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim'
 Plug 'scrooloose/nerdcommenter'
-Plug 'jlanzarotta/bufexplorer'
+Plug 'mihaifm/bufstop'
 " Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" geckodriver' }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
@@ -298,8 +298,10 @@ let g:NERDCommentEmptyLines = 1
 " enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-" Plugin bufexplorer
-nmap <F7> \be
+" Plugin bufstop
+map <F7> :BufstopFast<CR>
+map <leader>b :Bufstop<CR>             " get a visual on the buffers
+map <leader>w :BufstopPreview<CR>      " switch files by moving inside the window
 
 " Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
