@@ -35,7 +35,7 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'liuchengxu/vista.vim'
+Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'mihaifm/bufstop'
 " Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" geckodriver' }
@@ -333,12 +333,12 @@ let g:ale_python_pylint_options = '-m pylint'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 let g:ale_python_pyls_use_global = 1
 " https://github.com/palantir/python-language-server/blob/develop/vscode-client/package.json
-let g:ale_python_pyls_config = {'pyls': {'plugins': {'pydocstyle': {'enabled': v:false},
-         \                                           'pyflakes': {'enabled': v:true},
-         \                                           'mccabe': {'enabled': v:true},
-         \                                           'pycodestyle': {'enabled': v:true, 'maxLineLength': 250},
-         \                                           'jedi_hover': {'enabled': v:true},
-         \                                           'jedi_completion': {'enabled': v:true}}}}
+let g:ale_python_pyls_config = {'pylsp': {'plugins': {'pydocstyle': {'enabled': v:false},
+         \                                            'pyflakes': {'enabled': v:true},
+         \                                            'mccabe': {'enabled': v:true},
+         \                                            'pycodestyle': {'enabled': v:true, 'maxLineLength': 250},
+         \                                            'jedi_hover': {'enabled': v:true},
+         \                                            'jedi_completion': {'enabled': v:true}}}}
 " C++
 let g:ale_cpp_clang_executable = 'clang++-9'
 let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++17'
@@ -463,11 +463,11 @@ let g:lsp_signs_hint = {'text': '*'}
 let g:lsp_signs_information = {'text': 'i'}
 
 " Plugin asyncomplete-lsp.vim
-if executable('pyls')
+if executable('pylsp')
     " pip install python-language-server
     au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
+        \ 'name': 'pylsp',
+        \ 'cmd': {server_info->['pylsp']},
         \ 'allowlist': ['python'],
         \ })
 endif
