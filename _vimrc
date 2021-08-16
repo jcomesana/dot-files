@@ -332,7 +332,7 @@ let g:ale_python_pylint_executable = g:python_binary
 let g:ale_python_pylint_options = '-m pylint'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 let g:ale_python_pyls_use_global = 1
-" https://github.com/palantir/python-language-server/blob/develop/vscode-client/package.json
+" https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json
 let g:ale_python_pyls_config = {'pylsp': {'plugins': {'pydocstyle': {'enabled': v:false},
          \                                            'pyflakes': {'enabled': v:true},
          \                                            'mccabe': {'enabled': v:true},
@@ -340,7 +340,7 @@ let g:ale_python_pyls_config = {'pylsp': {'plugins': {'pydocstyle': {'enabled': 
          \                                            'jedi_hover': {'enabled': v:true},
          \                                            'jedi_completion': {'enabled': v:true}}}}
 " C++
-let g:ale_cpp_clang_executable = 'clang++-9'
+let g:ale_cpp_clang_executable = 'clang++'
 let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++17'
 " movement
 nmap <silent> <M-k> <Plug>(ale_previous_wrap)
