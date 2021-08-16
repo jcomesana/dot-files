@@ -69,7 +69,6 @@ Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'flrnd/candid.vim'
 Plug 'franbach/miramare'
 Plug 'igorgue/danger'
-Plug 'jacoborus/tender.vim'
 Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'kaicataldo/material.vim'
