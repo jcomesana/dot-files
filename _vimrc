@@ -34,6 +34,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'rhysd/vim-lsp-ale'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
@@ -307,8 +308,8 @@ let g:mwDefaultHighlightingPalette = 'extended'
 
 " Plugin ale
 let g:ale_linters = {
-\   'python': ['pylint', 'flake8'],
-\   'cpp': ['clang'],
+\   'python': ['vim-lsp', 'pylint', 'flake8'],
+\   'cpp': ['vim-lsp', 'clang'],
 \}
 let g:ale_completion_enabled = 1
 let g:ale_set_balloons = 1
