@@ -273,6 +273,9 @@ autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
 " ---- netrw settings ----
 let g:netrw_liststyle=3
 
+" ---- groovy settings ---
+autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --files\ '**/*.groovy,**/*.Jenkinsfile'
+
 " ---- Plugins ----
 let g:python_binary = 'python3'
 if has('win32') || has('win64')
@@ -477,6 +480,14 @@ if executable('clangd')
         \ 'name': 'clangd',
         \ 'cmd': {server_info->['clangd', '-background-index']},
         \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+        \ })
+endif
+
+if executable('java') && isdirectory(expand("~/g-l-s"))
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'groovy-language-server',
+        \ 'cmd': {server_info->['java', '-jar', expand("~/g-l-s/groovy-language-server-all.jar")]},
+        \ 'whitelist': ['groovy'],
         \ })
 endif
 
