@@ -26,7 +26,6 @@ endif
 call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
-Plug 'yegappan/mru'
 Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -43,8 +42,6 @@ Plug 'mihaifm/bufstop'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
-Plug 'inkarkat/vim-ingo-library'
-Plug 'inkarkat/vim-mark'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
