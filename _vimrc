@@ -547,6 +547,7 @@ nnoremap - :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+:let g:NERDTreeWinSize=40
 
 " Plugin NERDTree-git-plugin
 let g:NERDTreeGitStatusIndicatorMapCustom = {
