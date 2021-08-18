@@ -273,7 +273,8 @@ autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
 let g:netrw_liststyle=3
 
 " ---- groovy settings ---
-autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --files\ '**/*.groovy,**/*.Jenkinsfile'
+autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ **/%:t
+autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ **/%:t
 
 " ---- Plugins ----
 let g:python_binary = 'python3'
@@ -486,7 +487,7 @@ if executable('java') && isdirectory(expand("~/g-l-s"))
     au User lsp_setup call lsp#register_server({
         \ 'name': 'groovy-language-server',
         \ 'cmd': {server_info->['java', '-jar', expand("~/g-l-s/groovy-language-server-all.jar")]},
-        \ 'whitelist': ['groovy'],
+        \ 'whitelist': ['groovy', 'Jenkinsfile'],
         \ })
 endif
 
@@ -520,6 +521,8 @@ let g:vista_sidebar_width=45
 let g:vista_executive_for = {
   \ 'cpp': 'vim_lsp',
   \ 'python': 'vim_lsp',
+  \ 'groovy': 'vim_lsp',
+  \ 'Jenkinsfile': 'vim_lsp',
   \ }
 let g:vista#renderer#enable_icon = 0
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
