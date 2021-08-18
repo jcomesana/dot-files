@@ -43,7 +43,6 @@ Plug 'mihaifm/bufstop'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-vinegar'
 Plug 'inkarkat/vim-ingo-library'
 Plug 'inkarkat/vim-mark'
 Plug 'junegunn/fzf'
@@ -54,8 +53,11 @@ Plug 'sheerun/vim-polyglot'
 Plug 'cohama/lexima.vim'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
-Plug 'nathanaelkane/vim-indent-guides'
+Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable' }
 Plug 'elzr/vim-json'
+Plug 'preservim/nerdtree', { 'on': 'NERDTreeFocus' }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeFocus' }
+Plug 'Leandros/nerdtree-p4', { 'on': 'NERDTreeFocus' }
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
@@ -264,6 +266,9 @@ function! LargeFile()
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
+
+" Abbreviation for make|copen
+cabbrev mc :make<bar>copen<CR>
 
 " ---- yaml settings ----
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
@@ -531,6 +536,31 @@ let g:vista_ignore_kinds = ["Variable"]
 " Plugin vim-indent-guides
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
+
+" Plugin NERDTree
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+nnoremap - :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+" Plugin NERDTree-git-plugin
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'m',
+                \ 'Staged'    :'+',
+                \ 'Untracked' :'u',
+                \ 'Renamed'   :'>',
+                \ 'Unmerged'  :'═',
+                \ 'Deleted'   :'-',
+                \ 'Dirty'     :'x',
+                \ 'Ignored'   :'i',
+                \ 'Clean'     :'^',
+                \ 'Unknown'   :'?',
+                \ }
 
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
