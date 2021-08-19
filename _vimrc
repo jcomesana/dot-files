@@ -55,6 +55,7 @@ Plug 'elzr/vim-json'
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeFocus' }
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeFocus' }
 Plug 'Leandros/nerdtree-p4', { 'on': 'NERDTreeFocus' }
+Plug 'ilyachur/cmake4vim'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
@@ -67,7 +68,6 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'flrnd/candid.vim'
 Plug 'franbach/miramare'
-Plug 'igorgue/danger'
 Plug 'jsit/toast.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'kaicataldo/material.vim'
@@ -544,7 +544,7 @@ nnoremap - :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
-:let g:NERDTreeWinSize=40
+let g:NERDTreeWinSize=40
 
 " Plugin NERDTree-git-plugin
 let g:NERDTreeGitStatusIndicatorMapCustom = {
@@ -559,6 +559,11 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Clean'     :'^',
                 \ 'Unknown'   :'?',
                 \ }
+
+" Plugin cmake4vim
+let g:cmake_build_type = 'Debug'
+let g:cmake_compile_commands = 1
+let g:cmake_usr_args='-GNinja'
 
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
