@@ -316,6 +316,8 @@ let g:mwDefaultHighlightingPalette = 'extended'
 let g:ale_linters = {
 \   'python': ['vim-lsp', 'pylint', 'flake8'],
 \   'cpp': ['vim-lsp', 'clang'],
+\   'groovy': ['vim-lsp'],
+\   'Jenkinsfile': ['vim-lsp'],
 \}
 let g:ale_completion_enabled = 1
 let g:ale_set_balloons = 1
