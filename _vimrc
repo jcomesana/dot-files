@@ -38,6 +38,10 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'mihaifm/bufstop'
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern-git-status.vim'
+Plug 'lambdalisue/fern-hijack.vim'
+Plug 'lambdalisue/fern-bookmark.vim'
 " Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" geckodriver' }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
@@ -52,9 +56,6 @@ Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable' }
 Plug 'elzr/vim-json'
-Plug 'preservim/nerdtree', { 'on': 'NERDTreeFocus' }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeFocus' }
-Plug 'Leandros/nerdtree-p4', { 'on': 'NERDTreeFocus' }
 Plug 'ilyachur/cmake4vim'
 " For python
 Plug 'Vimjas/vim-python-pep8-indent'
@@ -534,36 +535,49 @@ let g:vista_ignore_kinds = ["Variable"]
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
 
-" Plugin NERDTree
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-" Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-nnoremap - :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
-let g:NERDTreeWinSize=40
-
-" Plugin NERDTree-git-plugin
-let g:NERDTreeGitStatusIndicatorMapCustom = {
-                \ 'Modified'  :'m',
-                \ 'Staged'    :'+',
-                \ 'Untracked' :'u',
-                \ 'Renamed'   :'>',
-                \ 'Unmerged'  :'═',
-                \ 'Deleted'   :'-',
-                \ 'Dirty'     :'x',
-                \ 'Ignored'   :'i',
-                \ 'Clean'     :'^',
-                \ 'Unknown'   :'?',
-                \ }
-
 " Plugin cmake4vim
 let g:cmake_build_type = 'Debug'
 let g:cmake_compile_commands = 1
 let g:cmake_usr_args='-GNinja'
+
+" Plugin fern
+let g:fern#default_hidden = 1
+let g:fern#drawer_width = 40
+
+nnoremap - :Fern . -drawer<CR>
+function! s:init_fern() abort
+  nmap <buffer><expr>
+        \ <Plug>(fern-my-open-expand-collapse)
+        \ fern#smart#leaf(
+        \   "\<Plug>(fern-action-open:select)",
+        \   "\<Plug>(fern-action-expand)",
+        \   "\<Plug>(fern-action-collapse)",
+        \ )
+  nmap <buffer> <CR> <Plug>(fern-my-open-expand-collapse)
+  nmap <buffer> <2-LeftMouse> <Plug>(fern-my-open-expand-collapse)
+  nmap <buffer> n <Plug>(fern-action-new-path)
+  nmap <buffer> d <Plug>(fern-action-remove)
+  nmap <buffer> m <Plug>(fern-action-move)
+  nmap <buffer> M <Plug>(fern-action-rename)
+  nmap <buffer> h <Plug>(fern-action-hidden-toggle)
+  nmap <buffer> r <Plug>(fern-action-reload)
+  nmap <buffer> b <Plug>(fern-action-open:split)
+  nmap <buffer> v <Plug>(fern-action-open:vsplit)
+  nmap <buffer> * <Plug>(fern-action-mark:toggle)
+  nmap <buffer><nowait> < <Plug>(fern-action-leave)
+  nmap <buffer><nowait> > <Plug>(fern-action-enter)endfunction
+endfunction
+
+augroup fern-custom
+  autocmd! *
+  autocmd FileType fern call s:init_fern()
+augroup END
+
+" Disable netrw.
+let g:loaded_netrw  = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+let g:loaded_netrwFileHandlers = 1
 
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
