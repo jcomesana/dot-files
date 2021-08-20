@@ -55,10 +55,7 @@ Plug 'cohama/lexima.vim'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable' }
-Plug 'elzr/vim-json'
 Plug 'ilyachur/cmake4vim'
-" For python
-Plug 'Vimjas/vim-python-pep8-indent'
 " color themes
 Plug 'ajmwagar/vim-dues'
 Plug 'audibleblink/hackthebox.vim'
