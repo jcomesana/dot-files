@@ -488,10 +488,10 @@ if executable('clangd')
         \ })
 endif
 
-if executable('java') && isdirectory(expand("~/g-l-s"))
+if executable('java') && isdirectory(expand("~/.vim/extras"))
     au User lsp_setup call lsp#register_server({
         \ 'name': 'groovy-language-server',
-        \ 'cmd': {server_info->['java', '-jar', expand("~/g-l-s/groovy-language-server-all.jar")]},
+        \ 'cmd': {server_info->['java', '-jar', expand("~/.vim/extras/groovy-language-server-all.jar")]},
         \ 'whitelist': ['groovy', 'Jenkinsfile'],
         \ })
 endif
@@ -545,8 +545,9 @@ let g:cmake_usr_args='-GNinja'
 " Plugin fern
 let g:fern#default_hidden = 1
 let g:fern#drawer_width = 40
+nnoremap <silent> - :Fern . -drawer -reveal=%<CR>
+autocmd FileType fern setlocal nonumber
 
-nnoremap - :Fern . -drawer<CR>
 function! s:init_fern() abort
   nmap <buffer><expr>
         \ <Plug>(fern-my-open-expand-collapse)
