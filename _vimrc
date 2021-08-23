@@ -56,6 +56,7 @@ Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable' }
 Plug 'ilyachur/cmake4vim'
+Plug 'AndrewRadev/linediff.vim'
 " color themes
 Plug 'ajmwagar/vim-dues'
 Plug 'audibleblink/hackthebox.vim'
