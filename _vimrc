@@ -150,7 +150,9 @@ set noinfercase     " ... and in keyword completion
 
 " ---- Indentation and formating ----
 set autoindent
+filetype on
 filetype indent on  " filetype specific indent rules
+filetype plugin on
 set cinkeys=0{,0},0),:,0#,!^F,o,O,e,;,.,-,*<Return>,;,=
 set cinoptions=>s,e0,n0,f0,{0,}0,^0,:s,=s,l0,gs,hs,ps,ts,+s,c3,C0,(s,us,U0,w0,m0,j0,)20,*30
 set formatoptions=cqt
