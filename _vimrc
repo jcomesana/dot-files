@@ -48,6 +48,8 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/gv.vim'
+Plug 'mhinz/vim-signify'
 Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'sheerun/vim-polyglot'
@@ -107,7 +109,7 @@ set wildignore=*.bak,*.o,*~,*.pyc,*.lib,*.swp
 set wildmode=list:longest,full
 set shortmess=at    " abbreviate messages (file names too long, etc)
 set lazyredraw      " redraw only when it is needed
-set updatetime=1000 " milliseconds, period of inactivity before writting to swap file
+set updatetime=100  " milliseconds, period of inactivity before writting to swap file
 set nocursorline    " don´t highlight current line
 set ruler           " show the cursor position all the time
 set laststatus=2    " show always the status line
