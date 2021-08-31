@@ -545,6 +545,7 @@ let g:cmake_compile_commands = 1
 let g:cmake_usr_args='-GNinja'
 
 " Plugin fern
+let g:fern#disable_default_mappings = 1
 let g:fern#default_hidden = 1
 let g:fern#drawer_width = 40
 nnoremap <silent> - :Fern . -drawer -reveal=%<CR>
