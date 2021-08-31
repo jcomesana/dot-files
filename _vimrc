@@ -206,7 +206,11 @@ set backup                          " backup and location
 set backupdir=~/.vim/backups//,.
 :au FocusLost * silent! wa          " autosave when focus is lost
 set undofile                        " infinite undo and location
-set undodir=~/.vim/undodir//
+if has('nvim')
+    set undodir=~/.vim/undodir_nvim//
+else
+    set undodir=~/.vim/undodir//
+endif
 set viminfo+=!                      " the viminfo file stores the history of commands and so on
 set directory=~/.vim/swap//
 " go back to the previous position
