@@ -11,7 +11,11 @@ if !isdirectory(s:editor_root . '/autoload')
     call mkdir(s:editor_root . '/autoload', 'p')
     call mkdir(s:editor_root . '/backups', 'p')
     call mkdir(s:editor_root . '/swap', 'p')
-    call mkdir(s:editor_root . '/undodir', 'p')
+    if has('nvim')
+        call mkdir(s:editor_root . '/undodir_nvim', 'p')
+    else
+        call mkdir(s:editor_root . '/undodir', 'p')
+    endif
     :echom system('curl -fLo '.s:editor_root.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
 endif
 if has('win32') || has('win64') || has('nvim')
