@@ -1,28 +1,19 @@
 " Create initial folders
-if has('nvim')
-    " let s:editor_root=expand("~/.config/nvim")
-    let s:editor_root=expand("~/.vim")
-else
-    let s:editor_root=expand("~/.vim")
-endif
+let s:editor_root=expand("~/.vim")
 
 if !isdirectory(s:editor_root . '/autoload')
     call mkdir(s:editor_root, 'p')
     call mkdir(s:editor_root . '/autoload', 'p')
     call mkdir(s:editor_root . '/backups', 'p')
     call mkdir(s:editor_root . '/swap', 'p')
-    if has('nvim')
-        call mkdir(s:editor_root . '/undodir_nvim', 'p')
-    else
-        call mkdir(s:editor_root . '/undodir', 'p')
-    endif
+    call mkdir(s:editor_root . '/undodir', 'p')
     :echom system('curl -fLo '.s:editor_root.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
 endif
-if has('win32') || has('win64') || has('nvim')
+if has('win32') || has('win64')
     let &rtp = &rtp . ',' . s:editor_root . ',' . s:editor_root.'/after'
 endif
 " ---- Windows ----
-if (has('win32') || has('win64')) && !has('nvim')
+if (has('win32') || has('win64'))
     set shell=c:\windows\system32\cmd.exe   " shell
 endif
 
@@ -199,18 +190,12 @@ set belloff+=ctrlg  " If Vim beeps during completion
 " ---- Backups, autoread, autosave ----
 set autoread                        " read a file automatically when it changes outside
 set autowrite                       " write the contents of a file when moving to another buffer
-if !has('nvim')
 set swapsync=""                     " to keep changes in the swap file more time in memory
-endif
 set backup                          " backup and location
 set backupdir=~/.vim/backups//,.
 :au FocusLost * silent! wa          " autosave when focus is lost
 set undofile                        " infinite undo and location
-if has('nvim')
-    set undodir=~/.vim/undodir_nvim//
-else
-    set undodir=~/.vim/undodir//
-endif
+set undodir=~/.vim/undodir//
 set viminfo+=!                      " the viminfo file stores the history of commands and so on
 set directory=~/.vim/swap//
 " go back to the previous position
@@ -231,10 +216,8 @@ endif
 " with cursorline highlight just the number
 " au ColorScheme * highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 let env_vim_color = ''
-if !has('nvim') && !empty($VIMCOLOR)
+if !empty($VIMCOLOR)
     let env_vim_color = $VIMCOLOR
-elseif has('nvim') && !empty($NVIMCOLOR)
-    let env_vim_color = $NVIMCOLOR
 endif
 
 if !empty(env_vim_color)
