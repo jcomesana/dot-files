@@ -15,7 +15,7 @@ else
     "set guifont=mononoki\ 10
     "set guifont=Fantasque\ Sans\ Mono\ 10
     "set guifont=Source\ Code\ Pro\ 10
-    set guifont=Iosevka\ 10
+    set guifont=Iosevka\ Fixed\ SS04\ 10
 endif
 
 " ---- Window size ----
