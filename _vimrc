@@ -278,11 +278,6 @@ if has('win32') || has('win64')
     py3 import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
 endif
 
-" Plugin mru
-highlight link MRUFileName LineNr
-let MRU_Max_Menu_Entries = 20
-let MRU_Max_Entries = 1000
-
 " Plugin NERDCommenter
 " add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -312,7 +307,7 @@ let g:ale_linters = {
 \   'groovy': ['vim-lsp'],
 \   'Jenkinsfile': ['vim-lsp'],
 \}
-let g:ale_completion_enabled = 1
+let g:ale_completion_enabled = 0
 let g:ale_set_balloons = 1
 let g:ale_set_highlights = 1
 let g:ale_set_signs = 1
