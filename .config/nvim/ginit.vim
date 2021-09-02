@@ -5,7 +5,6 @@ if exists('g:GuiLoaded')
   Guifont! Iosevka SS04 Extended:h8
   GuiPopupmenu 0
   GuiLinespace 1
-  GuiAdaptiveColor 1
 endif
 set mouse=a
 set mousehide
