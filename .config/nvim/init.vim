@@ -16,7 +16,7 @@ call plug#begin(stdpath('config').'/plugged')
 Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'liuchengxu/vista.vim'
+Plug 'simrat39/symbols-outline.nvim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'mihaifm/bufstop'
 Plug 'neovim/nvim-lspconfig'
@@ -403,20 +403,6 @@ call s:lightline_update()
 let g:colorscheme_switcher_define_mappings = 0
 let g:colorscheme_switcher_exclude_builtins = 1
 let g:colorscheme_switcher_exclude = ['solarized8_low', 'OceanicNextLight', 'onehalflight']
-
-" Plugin vista
-let g:vista_default_executive = 'ctags'
-nnoremap <silent> <F12> :Vista!!<CR>
-let g:vista_sidebar_width=45
-let g:vista_executive_for = {
-  \ 'cpp': 'nvim_lsp',
-  \ 'python': 'nvim_lsp',
-  \ 'groovy': 'nvim_lsp',
-  \ 'Jenkinsfile': 'nvim_lsp',
-  \ }
-let g:vista#renderer#enable_icon = 0
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_ignore_kinds = ["Variable"]
 
 " Plugin vim-indent-guides
 let g:indent_guides_guide_size = 1
