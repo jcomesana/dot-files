@@ -64,10 +64,6 @@ lspconfig.pylsp.setup{ on_attach = on_attach, }
 lspconfig.clangd.setup{ on_attach = on_attach, }
 
 local groovy_lsp_jar_path = vim.api.nvim_eval('stdpath("config")') .. "/extras/groovy-language-server-all.jar"
-if vim.api.nvim_eval('has("win32")') == '1' then
-  groovy_lsp_jar_path = groovy_lsp_jar_path:gsub('\\', '/')
-end
-
 lspconfig.groovyls.setup{
   on_attach = on_attach,
   cmd = { "java", "-jar", groovy_lsp_jar_path },
@@ -76,7 +72,6 @@ lspconfig.groovyls.setup{
       return vim.fn.getcwd()
   end
 }
-
 
 -- Plugin nvim-ale-diagnostic
 require("nvim-ale-diagnostic")
