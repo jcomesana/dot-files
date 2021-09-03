@@ -6,7 +6,7 @@ set mousehide
 " Set Editor Font
 if exists(':GuiFont')
     " Use GuiFont! to ignore font errors
-    GuiFont Iosevka SS04 Extended:h8
+    GuiFont! Iosevka SS04 Extended:h8
   endif
 
 " Disable GUI Tabline
