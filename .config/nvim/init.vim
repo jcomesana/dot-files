@@ -40,6 +40,8 @@ Plug 'mhinz/vim-signify'
 Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'sheerun/vim-polyglot'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'SmiteshP/nvim-gps'
 Plug 'windwp/nvim-autopairs'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
@@ -341,8 +343,19 @@ nmap <silent> <M-k> <Plug>(ale_previous_wrap)
 nmap <silent> <M-j> <Plug>(ale_next_wrap)
 " status format
 let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
+" Copied from
+" https://github.com/maximbaz/lightline-ale/blob/master/autoload/lightline/ale.vim
+function! IsLinterAvailable() abort
+  return get(g:, 'ale_enabled', 0) == 1
+    \ && getbufvar(bufnr(''), 'ale_enabled', 1)
+    \ && getbufvar(bufnr(''), 'ale_linted', 0) > 0
+    \ && ale#engine#IsCheckingBuffer(bufnr('')) == 0
+endfunction
 " Function for ALE copied from the docs
 function! LinterStatus() abort
+    if !IsLinterAvailable()
+        return ''
+    endif
     let l:counts = ale#statusline#Count(bufnr(''))
 
     let l:all_errors = l:counts.error + l:counts.style_error
@@ -360,19 +373,26 @@ endfunction
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ],
+      \             ['vimgps' ] ],
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
       \              [ 'alestatus', 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
-      \   'alestatus': 'LinterStatus'
+      \   'alestatus': 'LinterStatus',
+      \   'vimgps': 'NvimGps',
       \ },
       \ 'component': {
       \   'lineinfo': '%4l:%-3v',
       \ },
       \ }
+
+func! NvimGps() abort
+	return luaeval("require'nvim-gps'.is_available()") ?
+		\ luaeval("require'nvim-gps'.get_location()") : ''
+endf
 
 function! s:lightline_colorschemes() abort
     return map(globpath(&rtp,"autoload/lightline/colorscheme/*.vim",1,1), "fnamemodify(v:val,':t:r')")

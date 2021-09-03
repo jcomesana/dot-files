@@ -134,3 +134,39 @@ vim.g.symbols_outline = {
         TypeParameter = {icon = "+type  ", hl = "TSParameter"}
     }
 }
+
+-- Plugin nvim-treesitter
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained",
+  highlight = {
+    enable = true,
+    disable = {},
+  },
+  indent = {
+    enable = true,
+    disable = {},
+  },
+  ensure_installed = {
+    "python",
+    "cpp",
+    "yaml",
+    "json",
+    "cmake",
+  },
+}
+
+-- Plugin nvim-gps, depends on nvim-treesitter
+require("nvim-gps").setup({
+	icons = {
+		["class-name"] = 'C ',      -- Classes and class-like objects
+		["function-name"] = 'f ',   -- Functions
+		["method-name"] = 'm '      -- Methods (functions inside class-like objects)
+	},
+	-- Disable any languages individually over here
+	-- Any language not disabled here is enabled by default
+	languages = {
+		-- ["bash"] = false,
+		-- ["go"] = false,
+	},
+	separator = ' > ',
+})

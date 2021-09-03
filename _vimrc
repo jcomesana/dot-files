@@ -343,8 +343,19 @@ nmap <silent> <M-k> <Plug>(ale_previous_wrap)
 nmap <silent> <M-j> <Plug>(ale_next_wrap)
 " status format
 let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
+" Copied from
+" https://github.com/maximbaz/lightline-ale/blob/master/autoload/lightline/ale.vim
+function! IsLinterAvailable() abort
+  return get(g:, 'ale_enabled', 0) == 1
+    \ && getbufvar(bufnr(''), 'ale_enabled', 1)
+    \ && getbufvar(bufnr(''), 'ale_linted', 0) > 0
+    \ && ale#engine#IsCheckingBuffer(bufnr('')) == 0
+endfunction
 " Function for ALE copied from the docs
 function! LinterStatus() abort
+    if !IsLinterAvailable()
+        return ''
+    endif
     let l:counts = ale#statusline#Count(bufnr(''))
 
     let l:all_errors = l:counts.error + l:counts.style_error
