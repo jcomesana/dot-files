@@ -16,7 +16,7 @@ call plug#begin(stdpath('config').'/plugged')
 Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
+Plug 'liuchengxu/vista.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'mihaifm/bufstop'
 Plug 'neovim/nvim-lspconfig'
