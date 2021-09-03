@@ -62,9 +62,15 @@ end
 local lspconfig = require'lspconfig'
 lspconfig.pylsp.setup{ on_attach = on_attach, }
 lspconfig.clangd.setup{ on_attach = on_attach, }
+
+local groovy_lsp_jar_path = vim.api.nvim_eval('stdpath("config")') .. "/extras/groovy-language-server-all.jar"
+if vim.api.nvim_eval('has("win32")') == '1' then
+  groovy_lsp_jar_path = groovy_lsp_jar_path:gsub('\\', '/')
+end
+
 lspconfig.groovyls.setup{
   on_attach = on_attach,
-  cmd = { "java", "-jar", vim.api.nvim_eval('stdpath("config")') .. "/extras/groovy-language-server-all.jar" },
+  cmd = { "java", "-jar", groovy_lsp_jar_path },
   filetypes = { "groovy", "Jenkinsfile" },
   root_dir = function()
       return vim.fn.getcwd()
