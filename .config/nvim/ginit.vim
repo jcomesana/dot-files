@@ -7,11 +7,11 @@ set mousehide
 if exists(':GuiFont')
     " Use GuiFont! to ignore font errors
     GuiFont! Iosevka SS04 Extended:h8
-  endif
+endif
 
 " Disable GUI Tabline
 if exists(':GuiTabline')
-    GuiTabline 0
+    GuiTabline 1
 endif
 
 " Disable GUI Popupmenu
