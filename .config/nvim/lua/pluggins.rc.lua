@@ -24,6 +24,7 @@ cmp.setup({
 vim.cmd [[autocmd ColorScheme * highlight NormalFloat guibg=#1f2335]]
 vim.cmd [[autocmd ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
 
+-- LSP settings
 local border = {
       {"🭽", "FloatBorder"},
       {"▔", "FloatBorder"},
@@ -35,10 +36,11 @@ local border = {
       {"▏", "FloatBorder"},
 }
 
--- LSP settings
 local on_attach = function(client, bufnr)
   vim.lsp.handlers["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border})
   vim.lsp.handlers["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border})
+
+  require "lsp_signature".on_attach()
 
   local opts = { noremap=true, silent=true }
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -65,6 +67,7 @@ lspconfig.clangd.setup{ on_attach = on_attach, }
 
 local groovy_lsp_jar_path = vim.api.nvim_eval('stdpath("config")') .. "/extras/groovy-language-server-all.jar"
 lspconfig.groovyls.setup{
+  autostart = false,
   on_attach = on_attach,
   cmd = { "java", "-jar", groovy_lsp_jar_path },
   filetypes = { "groovy", "Jenkinsfile" },
@@ -83,6 +86,14 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     update_in_insert = false,
   }
 )
+
+-- Plugin lsp_signature.nvim
+require "lsp_signature".setup({
+  bind = true, -- This is mandatory, otherwise border config won't get registered.
+  handler_opts = {
+    border = "single"
+  }
+})
 
 -- Plugin symbols-outline.nvim
 vim.cmd [[nnoremap <silent> <F12> :SymbolsOutline<CR>]]
