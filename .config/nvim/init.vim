@@ -471,3 +471,6 @@ let g:loaded_netrwFileHandlers = 1
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
 let g:gruvbox_plugin_hi_groups = 1
+
+" GUI font
+set guifont=Iosevka\ SS04\ Extended:h8
