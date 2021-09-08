@@ -70,9 +70,7 @@ lspconfig.groovyls.setup{
   on_attach = on_attach,
   cmd = { "java", "-jar", groovy_lsp_jar_path },
   filetypes = { "groovy", "Jenkinsfile" },
-  root_dir = function()
-      return vim.fn.getcwd()
-  end
+  root_dir = root_pattern('.git', '.ignore'),
 }
 
 -- Plugin nvim-ale-diagnostic
