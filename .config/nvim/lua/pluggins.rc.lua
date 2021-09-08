@@ -67,7 +67,6 @@ lspconfig.clangd.setup{ on_attach = on_attach, }
 
 local groovy_lsp_jar_path = vim.api.nvim_eval('stdpath("config")') .. "/extras/groovy-language-server-all.jar"
 lspconfig.groovyls.setup{
-  autostart = false,
   on_attach = on_attach,
   cmd = { "java", "-jar", groovy_lsp_jar_path },
   filetypes = { "groovy", "Jenkinsfile" },
