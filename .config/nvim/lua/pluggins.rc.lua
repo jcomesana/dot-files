@@ -65,7 +65,7 @@ local lspconfig = require'lspconfig'
 lspconfig.pylsp.setup{ on_attach = on_attach, }
 lspconfig.clangd.setup{ on_attach = on_attach, }
 
-local groovy_lsp_jar_path = vim.api.nvim_eval('stdpath("config")') .. "/extras/groovy-language-server-all.jar"
+local groovy_lsp_jar_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), "extras", "groovy-language-server-all.jar")
 lspconfig.groovyls.setup{
   on_attach = on_attach,
   cmd = { "java", "-jar", groovy_lsp_jar_path },
