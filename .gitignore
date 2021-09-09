@@ -1,0 +1,6 @@
+.config/nvim/autoload/
+.config/nvim/backups/
+.config/nvim/extras/
+.config/nvim/plugged/
+.config/nvim/swap/
+.config/nvim/undodir/
