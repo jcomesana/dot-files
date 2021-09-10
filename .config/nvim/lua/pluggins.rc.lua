@@ -70,7 +70,7 @@ lspconfig.groovyls.setup{
   on_attach = on_attach,
   cmd = { "java", "-jar", groovy_lsp_jar_path },
   filetypes = { "groovy", "Jenkinsfile" },
-  root_dir = lspconfig.util.root_pattern('.git', '.ignore'),
+  root_dir = lspconfig.util.root_pattern('.git', '.ignore') or lspconfig.util.,
 }
 
 -- Plugin nvim-ale-diagnostic
@@ -152,7 +152,7 @@ require'nvim-treesitter.configs'.setup {
     disable = {},
   },
   indent = {
-    enable = true,
+    enable = false,
     disable = {},
   },
   ensure_installed = {

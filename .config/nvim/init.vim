@@ -17,12 +17,14 @@ Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'simrat39/symbols-outline.nvim'
+Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'mihaifm/bufstop'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'nathunsmitty/nvim-ale-diagnostic'
 Plug 'folke/lsp-colors.nvim'
@@ -307,6 +309,11 @@ let g:ale_linters = {
 \   'python': ['pylint', 'flake8'],
 \   'cpp': ['clang'],
 \}
+let g:ale_fixers = {
+    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \ 'python': ['autopep8'],
+    \ 'c': ['clang-format'],
+    \ 'cpp': ['clang-format']}
 let g:ale_completion_enabled = 0
 let g:ale_set_balloons = 1
 let g:ale_set_highlights = 1
@@ -461,6 +468,25 @@ augroup fern-custom
   autocmd! *
   autocmd FileType fern call s:init_fern()
 augroup END
+
+" Plugin signify
+let g:signify_sign_add               = '>+'
+let g:signify_sign_delete            = '>-'
+let g:signify_sign_delete_first_line = '>‾'
+let g:signify_sign_change            = '>*'
+let g:signify_sign_change_delete     = '>d'
+
+" Plugin vista
+let g:vista_sidebar_width=45
+let g:vista_executive_for = {
+  \ 'cpp': 'nvim_lsp',
+  \ 'python': 'nvim_lsp',
+  \ 'groovy': 'nvim_lsp',
+  \ 'Jenkinsfile': 'nvim_lsp',
+  \ }
+let g:vista#renderer#enable_icon = 0
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_ignore_kinds = ["Variable"]
 
 " Disable netrw.
 let g:loaded_netrw  = 1

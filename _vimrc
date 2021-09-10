@@ -300,13 +300,18 @@ map <leader>w :BufstopPreview<CR>      " switch files by moving inside the windo
 " Plugin Mark
 let g:mwDefaultHighlightingPalette = 'extended'
 
-" Plugin ale
+" Plugin ALE
 let g:ale_linters = {
 \   'python': ['vim-lsp', 'pylint', 'flake8'],
 \   'cpp': ['vim-lsp', 'clang'],
 \   'groovy': ['vim-lsp'],
 \   'Jenkinsfile': ['vim-lsp'],
 \}
+let g:ale_fixers = {
+    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \ 'python': ['autopep8'],
+    \ 'c': ['clang-format'],
+    \ 'cpp': ['clang-format']}
 let g:ale_completion_enabled = 0
 let g:ale_set_balloons = 1
 let g:ale_set_highlights = 1
@@ -575,6 +580,13 @@ augroup fern-custom
   autocmd! *
   autocmd FileType fern call s:init_fern()
 augroup END
+
+" Plugin signify
+let g:signify_sign_add               = '>+'
+let g:signify_sign_delete            = '>-'
+let g:signify_sign_delete_first_line = '>‾'
+let g:signify_sign_change            = '>*'
+let g:signify_sign_change_delete     = '>d'
 
 " Disable netrw.
 let g:loaded_netrw  = 1
