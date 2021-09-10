@@ -16,7 +16,6 @@ call plug#begin(stdpath('config').'/plugged')
 Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'simrat39/symbols-outline.nvim'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'mihaifm/bufstop'
@@ -477,6 +476,7 @@ let g:signify_sign_change            = '>*'
 let g:signify_sign_change_delete     = '>d'
 
 " Plugin vista
+nnoremap <silent> <F12> :Vista!!<CR>
 let g:vista_sidebar_width=45
 let g:vista_executive_for = {
   \ 'cpp': 'nvim_lsp',
@@ -486,7 +486,7 @@ let g:vista_executive_for = {
   \ }
 let g:vista#renderer#enable_icon = 0
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_ignore_kinds = ["Variable"]
+let g:vista_ignore_kinds = ["Variable", "Module"]
 
 " Disable netrw.
 let g:loaded_netrw  = 1

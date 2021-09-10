@@ -92,58 +92,6 @@ require "lsp_signature".setup({
   }
 })
 
--- Plugin symbols-outline.nvim
-vim.cmd [[nnoremap <silent> <F12> :SymbolsOutline<CR>]]
-vim.g.symbols_outline = {
-    highlight_hovered_item = true,
-    show_guides = true,
-    auto_preview = false,
-    position = 'right',
-    width = 35,
-    show_numbers = false,
-    show_relative_numbers = false,
-    show_symbol_details = true,
-    keymaps = { -- These keymaps can be a string or a table for multiple keys
-        close = {"<Esc>", "q"},
-        goto_location = "<Cr>",
-        focus_location = "o",
-        hover_symbol = "<C-space>",
-        toggle_preview = "K",
-        rename_symbol = "r",
-        code_actions = "a",
-    },
-    lsp_blacklist = {},
-    symbol_blacklist = { 'Variable', 'Module', 'Field' },
-    symbols = {
-        File = {icon = "+file  ", hl = "TSURI"},
-        Module = {icon = "+module", hl = "TSNamespace"},
-        Namespace = {icon = "+namesp", hl = "TSNamespace"},
-        Package = {icon = "+package", hl = "TSNamespace"},
-        Class = {icon = "+Class ", hl = "TSType"},
-        Method = {icon = "-method", hl = "TSMethod"},
-        Property = {icon = "-propert", hl = "TSMethod"},
-        Field = {icon = "-field ", hl = "TSField"},
-        Constructor = {icon = "-constr", hl = "TSConstructor"},
-        Enum = {icon = "+Enum  ", hl = "TSType"},
-        Interface = {icon = "+inface", hl = "TSType"},
-        Function = {icon = "+functi", hl = "TSFunction"},
-        Variable = {icon = "-variab", hl = "TSConstant"},
-        Constant = {icon = "#const ", hl = "TSConstant"},
-        String = {icon = "#string", hl = "TSString"},
-        Number = {icon = "#number", hl = "TSNumber"},
-        Boolean = {icon = "#bool  ", hl = "TSBoolean"},
-        Array = {icon = "#array ", hl = "TSConstant"},
-        Object = {icon = "#object", hl = "TSType"},
-        Key = {icon = "#key   ", hl = "TSType"},
-        Null = {icon = "#NULL  ", hl = "TSType"},
-        EnumMember = {icon = "-enum  ", hl = "TSField"},
-        Struct = {icon = "+struct", hl = "TSType"},
-        Event = {icon = "-event ", hl = "TSType"},
-        Operator = {icon = "-operat", hl = "TSOperator"},
-        TypeParameter = {icon = "+type  ", hl = "TSParameter"}
-    }
-}
-
 -- Plugin nvim-treesitter
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained",

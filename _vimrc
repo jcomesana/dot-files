@@ -535,7 +535,7 @@ let g:vista_executive_for = {
   \ }
 let g:vista#renderer#enable_icon = 0
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_ignore_kinds = ["Variable"]
+let g:vista_ignore_kinds = ["Variable", "Module"]
 
 " Plugin vim-indent-guides
 let g:indent_guides_guide_size = 1
