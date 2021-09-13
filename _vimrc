@@ -215,16 +215,7 @@ endif
 " Color scheme
 " with cursorline highlight just the number
 " au ColorScheme * highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-let env_vim_color = ''
-if !empty($VIMCOLOR)
-    let env_vim_color = $VIMCOLOR
-endif
-
-if !empty(env_vim_color)
-    execute 'colorscheme '.env_vim_color
-else
-    autocmd VimEnter * RandomColorScheme
-endif
+autocmd VimEnter * RandomColorScheme
 
 " ---- Extra functionallity ----
 " to visualize manpages
