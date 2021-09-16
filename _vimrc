@@ -60,7 +60,6 @@ Plug 'audibleblink/hackthebox.vim'
 Plug 'benburrill/potato-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'chuling/equinusocio-material.vim'
-Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'flrnd/candid.vim'
 Plug 'franbach/miramare'
