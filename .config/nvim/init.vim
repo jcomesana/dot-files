@@ -13,6 +13,7 @@ endif
 call plug#begin(stdpath('config').'/plugged')
 " My plugins here
 "
+Plug 'lewis6991/impatient.nvim'
 Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
 Plug 'ntpeters/vim-better-whitespace'
@@ -76,6 +77,9 @@ Plug 'srcery-colors/srcery-vim'
 
 call plug#end()
 " ---- End vim-plug ---
+
+" Plugin impatient
+lua require('impatient')
 
 set nocompatible
 
