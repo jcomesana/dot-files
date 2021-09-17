@@ -42,7 +42,7 @@ Plug 'junegunn/gv.vim'
 Plug 'mhinz/vim-signify'
 Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
-Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'windwp/nvim-autopairs'
 Plug 'xolox/vim-colorscheme-switcher'
@@ -74,6 +74,7 @@ Plug 'sainnhe/everforest'
 Plug 'sainnhe/sonokai'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'srcery-colors/srcery-vim'
+Plug 'projekt0n/github-nvim-theme'
 
 call plug#end()
 " ---- End vim-plug ---
