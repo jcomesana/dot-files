@@ -479,11 +479,11 @@ let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_ignore_kinds = ["Variable", "Module"]
 
 " Plugin telescope
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
-nnoremap <leader>fl <cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<CR>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<CR>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<CR>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<CR>
+nnoremap <leader>fl <cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>
 
 " Disable netrw.
 let g:loaded_netrw  = 1
