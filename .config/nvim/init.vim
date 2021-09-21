@@ -36,8 +36,8 @@ Plug 'lambdalisue/fern-bookmark.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'junegunn/gv.vim'
 Plug 'mhinz/vim-signify'
 Plug 'itchyny/lightline.vim'
@@ -50,6 +50,7 @@ Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable' }
 Plug 'ilyachur/cmake4vim'
 Plug 'AndrewRadev/linediff.vim'
+Plug 'equalsraf/neovim-gui-shim'
 " color themes
 Plug 'ajmwagar/vim-dues'
 Plug 'audibleblink/hackthebox.vim'
@@ -476,6 +477,12 @@ let g:vista_executive_for = {
 let g:vista#renderer#enable_icon = 0
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_ignore_kinds = ["Variable", "Module"]
+
+" Plugin telescope
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 " Disable netrw.
 let g:loaded_netrw  = 1
