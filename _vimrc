@@ -188,12 +188,15 @@ set autoread                        " read a file automatically when it changes 
 set autowrite                       " write the contents of a file when moving to another buffer
 set swapsync=""                     " to keep changes in the swap file more time in memory
 set backup                          " backup and location
-set backupdir=~/.vim/backups//,.
+let g:backupdir=s:editor_root . '/backups'.',.'
+let &backupdir=g:backupdir
 :au FocusLost * silent! wa          " autosave when focus is lost
 set undofile                        " infinite undo and location
-set undodir=~/.vim/undodir//
+let g:undodir=s:editor_root . '/undodir'
+let &undodir=g:undodir
+let g:swapdir=s:editor_root . '/swap'
+let &directory=g:swapdir
 set viminfo+=!                      " the viminfo file stores the history of commands and so on
-set directory=~/.vim/swap//
 " go back to the previous position
 :au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
@@ -319,14 +322,6 @@ let g:ale_python_flake8_options = '-m flake8 --max-line-length='.g:python_max_le
 let g:ale_python_pylint_executable = g:python_binary
 let g:ale_python_pylint_options = '-m pylint'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
-let g:ale_python_pyls_use_global = 1
-" https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json
-let g:ale_python_pyls_config = {'pylsp': {'plugins': {'pydocstyle': {'enabled': v:false},
-         \                                            'pyflakes': {'enabled': v:true},
-         \                                            'mccabe': {'enabled': v:true},
-         \                                            'pycodestyle': {'enabled': v:true, 'maxLineLength': 250},
-         \                                            'jedi_hover': {'enabled': v:true},
-         \                                            'jedi_completion': {'enabled': v:true}}}}
 " C++
 let g:ale_cpp_clang_executable = 'clang++'
 let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++17'
@@ -405,43 +400,26 @@ augroup END
 call s:lightline_update()
 
 " Plugin asyncomplete
+let g:asyncomplete_auto_popup = 1
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 imap <c-space> <Plug>(asyncomplete_force_refresh)
-
-" auto_popup
-let g:asyncomplete_auto_popup = 0
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" preview window
-" allow modifying the completeopt variable, or it will
-" be overridden all the time
-let g:asyncomplete_auto_completeopt = 0
-set completeopt=menuone,noinsert,noselect,preview
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Plugin vim-lsp
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> gr <plug>(lsp-references)
-    nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
+    nmap <buffer> <Leader>ld <plug>(lsp-definition)
+    nmap <buffer> <Leader>lR <plug>(lsp-references)
+    nmap <buffer> <Leader>lr <plug>(lsp-rename)
+    nmap <buffer> <Leader>li <plug>(lsp-implementation)
+    nmap <buffer> <Leader>lD <plug>(lsp-type-definition)
+    nmap <buffer> <Leader>lr <plug>(lsp-rename)
+    nmap <buffer> <Leader>lk <Plug>(lsp-previous-diagnostic)
+    nmap <buffer> <Leader>lj <Plug>(lsp-next-diagnostic)
+    nmap <buffer> <Leader>lh <plug>(lsp-hover)
     " refer to doc to add more commands
 endfunction
 
@@ -468,6 +446,7 @@ if executable('pylsp')
         \ 'name': 'pylsp',
         \ 'cmd': {server_info->['pylsp']},
         \ 'allowlist': ['python'],
+        \ 'workspace_config': {'pylsp': {'plugins': {'flake8': {'enabled': v:true}}}}
         \ })
 endif
 
