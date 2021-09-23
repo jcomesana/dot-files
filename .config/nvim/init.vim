@@ -1,16 +1,31 @@
+set nocompatible
+
 " Create initial folders
 
-if !isdirectory(stdpath('config') . '/autoload')
-    call mkdir(stdpath('config'), 'p')
-    call mkdir(stdpath('config') . '/autoload', 'p')
-    call mkdir(stdpath('config') . '/backups', 'p')
-    call mkdir(stdpath('config') . '/swap', 'p')
-    call mkdir(stdpath('config') . '/undodir', 'p')
-    :echom system('curl -fLo '.stdpath('config').'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+let s:editor_root=stdpath('config')
+let s:autoloaddir=s:editor_root . '/autoload'
+let s:backupdir=s:editor_root . '/backups'
+let s:undodir=s:editor_root . '/undodir'
+let s:swapdir=s:editor_root . '/swap'
+
+if !isdirectory(s:autoloaddir)
+    call mkdir(s:editor_root, 'p')
+    call mkdir(s:autoloaddir, 'p')
+    call mkdir(s:backupdir, 'p')
+    call mkdir(s:swapdir, 'p')
+    call mkdir(s:undodir, 'p')
+    :echom system('curl -fLo '.g:autoloaddir.'/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
 endif
 
+" Folders
+let &backupdir=s:backupdir
+let &undodir=s:undodir
+let &directory=s:swapdir
+set backup                          " backup and location
+set undofile                        " infinite undo and location
+
 " ---- vim-plug ----
-call plug#begin(stdpath('config').'/plugged')
+call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
 Plug 'lewis6991/impatient.nvim'
@@ -69,7 +84,6 @@ Plug 'mhartington/oceanic-next'
 Plug 'owozsh/amora'
 Plug 'raphamorim/lucario'
 Plug 'ray-x/aurora'
-Plug 'romgrk/doom-one.vim'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/everforest'
 Plug 'sainnhe/sonokai'
@@ -82,8 +96,6 @@ call plug#end()
 
 " Plugin impatient
 lua require('impatient')
-
-set nocompatible
 
 " ---- Spaces and tabs ----
 set tabstop=4
@@ -189,16 +201,8 @@ set belloff+=ctrlg  " If Vim beeps during completion
 " ---- Backups, autoread, autosave ----
 set autoread                        " read a file automatically when it changes outside
 set autowrite                       " write the contents of a file when moving to another buffer
-set backup                          " backup and location
-let g:backupdir=expand(stdpath('config') . '/backups').',.'
-let &backupdir=g:backupdir
 :au FocusLost * silent! wa          " autosave when focus is lost
-set undofile                        " infinite undo and location
-let g:undodir=expand(stdpath('config') . '/undodir')
-let &undodir=g:undodir
 set viminfo+=!                      " the viminfo file stores the history of commands and so on
-let g:swapdir=expand(stdpath('config') . '/swap')
-let &directory=g:swapdir
 " go back to the previous position
 :au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
@@ -268,7 +272,7 @@ autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --n
 let g:python3_host_prog = 'python3'
 
 " Additional configuration files
- for f in split(glob(stdpath('config').'/lua/*.*'), '\n')
+ for f in split(glob(s:editor_root.'/lua/*.*'), '\n')
      exe 'source' f
  endfor
 

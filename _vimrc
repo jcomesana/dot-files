@@ -1,19 +1,30 @@
+set nocompatible
+
 " Create initial folders
 let s:editor_root=expand("~/.vim")
+let s:autoloaddir=s:editor_root . '/autoload'
+let s:backupdir=s:editor_root . '/backups'
+let s:undodir=s:editor_root . '/undodir'
+let s:swapdir=s:editor_root . '/swap'
+let s:extrasdir=s:editor_root . '/extras'
 
-if !isdirectory(s:editor_root . '/autoload')
+if !isdirectory(s:autoloaddir)
     call mkdir(s:editor_root, 'p')
-    call mkdir(s:editor_root . '/autoload', 'p')
-    call mkdir(s:editor_root . '/backups', 'p')
-    call mkdir(s:editor_root . '/swap', 'p')
-    call mkdir(s:editor_root . '/undodir', 'p')
-    :echom system('curl -fLo '.s:editor_root.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+    call mkdir(s:autoloaddir, 'p')
+    call mkdir(s:backupdir, 'p')
+    call mkdir(s:swapdir, 'p')
+    call mkdir(s:undodir, 'p')
+    :echom system('curl -fLo '.g:autoloaddir.'/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
 endif
-if has('win32') || has('win64')
+
+" Folders
+let &backupdir=s:backupdir
+let &undodir=s:undodir
+let &directory=s:swapdir
+set backup                          " backup and location
+set undofile                        " infinite undo and location
+if has('win32')
     let &rtp = &rtp . ',' . s:editor_root . ',' . s:editor_root.'/after'
-endif
-" ---- Windows ----
-if (has('win32') || has('win64'))
     set shell=c:\windows\system32\cmd.exe   " shell
 endif
 
@@ -72,7 +83,6 @@ Plug 'mhartington/oceanic-next'
 Plug 'owozsh/amora'
 Plug 'raphamorim/lucario'
 Plug 'ray-x/aurora'
-Plug 'romgrk/doom-one.vim'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/everforest'
 Plug 'sainnhe/sonokai'
@@ -81,8 +91,6 @@ Plug 'srcery-colors/srcery-vim'
 
 call plug#end()
 " ---- End vim-plug ---
-
-set nocompatible
 
 " ---- Spaces and tabs ----
 set tabstop=4
@@ -111,21 +119,12 @@ set noerrorbells    " no flash/beep on errors
 set encoding=utf8
 set splitbelow      " horizontal splits below
 set splitright      " vertical splits to the right
-set clipboard=unnamed " use system clipboard
+if has('unnamedplus')
+set clipboard=unnamedplus,autoselectplus " use system clipboard
+else
+set clipboard=unnamed,autoselect
+endif
 set timeoutlen=2000 " longer time to react to a control key
-" status line
-"set statusline=%t       " tail of the filename
-"set statusline+=[%{strlen(&fenc)?&fenc:'none'}, " file encoding
-"set statusline+=%{&ff}] " file format
-"set statusline+=%h      " help file flag
-"set statusline+=%m      " modified flag
-"set statusline+=%r      " read only flag
-"set statusline+=%y      " filetype
-"set statusline+=%=      " left/right separator
-"set statusline+=%{LinterStatus()}
-"set statusline+=C:%03c,\  " cursor column
-"set statusline+=L:%03l    " line
-"set statusline+=\ %P       " percent through file
 
 " ---- Syntax highlighting ----
 syntax enable
@@ -188,15 +187,7 @@ set belloff+=ctrlg  " If Vim beeps during completion
 set autoread                        " read a file automatically when it changes outside
 set autowrite                       " write the contents of a file when moving to another buffer
 set swapsync=""                     " to keep changes in the swap file more time in memory
-set backup                          " backup and location
-let g:backupdir=s:editor_root . '/backups'.',.'
-let &backupdir=g:backupdir
 :au FocusLost * silent! wa          " autosave when focus is lost
-set undofile                        " infinite undo and location
-let g:undodir=s:editor_root . '/undodir'
-let &undodir=g:undodir
-let g:swapdir=s:editor_root . '/swap'
-let &directory=g:swapdir
 set viminfo+=!                      " the viminfo file stores the history of commands and so on
 " go back to the previous position
 :au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
@@ -410,7 +401,6 @@ imap <c-space> <Plug>(asyncomplete_force_refresh)
 " Plugin vim-lsp
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
     nmap <buffer> <Leader>ld <plug>(lsp-definition)
     nmap <buffer> <Leader>lR <plug>(lsp-references)
@@ -459,10 +449,10 @@ if executable('clangd')
         \ })
 endif
 
-if executable('java') && isdirectory(expand("~/.vim/extras"))
+if executable('java') && isdirectory(s:extrasdir)
     au User lsp_setup call lsp#register_server({
         \ 'name': 'groovy-language-server',
-        \ 'cmd': {server_info->['java', '-jar', expand("~/.vim/extras/groovy-language-server-all.jar")]},
+        \ 'cmd': {server_info->['java', '-jar', s:extrasdir.'/groovy-language-server-all.jar']},
         \ 'whitelist': ['groovy', 'Jenkinsfile'],
         \ })
 endif
