@@ -255,7 +255,7 @@ autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserv
 autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ **/%:t
 
 " ---- Plugins ----
-let g:python_binary = 'python3'
+let s:python_binary = 'python3'
 if has('win32') || has('win64')
     py3 import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
 endif
@@ -298,7 +298,7 @@ let g:ale_completion_enabled = 0
 let g:ale_set_balloons = 1
 let g:ale_set_highlights = 1
 let g:ale_set_signs = 1
-let g:python_max_len = 200
+let s:python_max_len = 200
 " when to lint
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 'normal'
@@ -309,9 +309,9 @@ let g:ale_sign_column_always = 0
 " list
 let g:ale_open_list = 0
 " python
-let g:ale_python_flake8_executable = g:python_binary
-let g:ale_python_flake8_options = '-m flake8 --max-line-length='.g:python_max_len
-let g:ale_python_pylint_executable = g:python_binary
+let g:ale_python_flake8_executable = s:python_binary
+let g:ale_python_flake8_options = '-m flake8 --max-line-length='.s:python_max_len
+let g:ale_python_pylint_executable = s:python_binary
 let g:ale_python_pylint_options = '-m pylint'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 " C++
@@ -450,10 +450,16 @@ if executable('clangd')
 endif
 
 if executable('java') && isdirectory(s:extrasdir)
+    if !empty($GROOVY_HOME)
+        let s:groovy_lib = $GROOVY_HOME.'/lib'
+    else
+        let s:groovy_lib = ''
+    endif
     au User lsp_setup call lsp#register_server({
         \ 'name': 'groovy-language-server',
         \ 'cmd': {server_info->['java', '-jar', s:extrasdir.'/groovy-language-server-all.jar']},
         \ 'whitelist': ['groovy', 'Jenkinsfile'],
+        \ 'workspace_config': {'groovy': {'classpath': [s:groovy_lib]} },
         \ })
 endif
 
