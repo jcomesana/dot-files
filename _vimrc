@@ -129,9 +129,7 @@ set timeoutlen=2000 " longer time to react to a control key
 " ---- Syntax highlighting ----
 syntax enable
 " python specific
-let python_highlight_all=1
-let python_slow_sync=1
-let python_highlight_indent_errors=0
+let g:python_highlight_all=1
 " map space to sync the syntax hilighting on normal mode
 noremap <silent> <Space> :silent noh <Bar>echo<cr>:syn sync fromstart<cr>
 
@@ -210,8 +208,10 @@ autocmd VimEnter * RandomColorScheme
 
 " ---- Extra functionallity ----
 " to visualize manpages
-:source $VIMRUNTIME/ftplugin/man.vim
-:nmap K \K
+if has('unix')
+    :source $VIMRUNTIME/ftplugin/man.vim
+    :nmap K \K
+endif
 
 " Protect large files from sourcing and other overhead. Files become read only
 " http://vim.wikia.com/wiki/Faster_loading_of_large_files
@@ -256,7 +256,7 @@ autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --n
 
 " ---- Plugins ----
 let s:python_binary = 'python3'
-if has('win32') || has('win64')
+if has('win32')
     py3 import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
 endif
 
