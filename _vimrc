@@ -100,6 +100,7 @@ set nolangremap
 " ---- Spaces and tabs ----
 set tabstop=4
 set softtabstop=4
+set smarttab
 
 " ---- UI Config ----
 set title           " set the window title
