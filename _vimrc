@@ -92,6 +92,11 @@ Plug 'srcery-colors/srcery-vim'
 call plug#end()
 " ---- End vim-plug ---
 
+" ---- Editing text ----
+set nojoinspaces
+set langnoremap
+set nolangremap
+
 " ---- Spaces and tabs ----
 set tabstop=4
 set softtabstop=4
@@ -108,6 +113,7 @@ set history=50      " keep 50 lines of command line history
 set wildmenu        " visual autocomplete for command menu
 set wildignore=*.bak,*.o,*~,*.pyc,*.lib,*.swp
 set wildmode=list:longest,full
+set wildoptions="pum,tagfile"
 set shortmess=at    " abbreviate messages (file names too long, etc)
 set lazyredraw      " redraw only when it is needed
 set updatetime=100  " milliseconds, period of inactivity before writting to swap file
@@ -115,6 +121,7 @@ set nocursorline    " don´t highlight current line
 set ruler           " show the cursor position all the time
 set laststatus=2    " show always the status line
 set visualbell      " no beeps, visual bell
+set belloff="all"   " do not ring the bell at all
 set noerrorbells    " no flash/beep on errors
 set encoding=utf8
 set splitbelow      " horizontal splits below
@@ -125,6 +132,9 @@ else
 set clipboard=unnamed,autoselect
 endif
 set timeoutlen=2000 " longer time to react to a control key
+set display="lastline,msgsep"
+set sidescroll=1
+set ttyfast
 
 " ---- Syntax highlighting ----
 syntax enable
@@ -146,7 +156,7 @@ set smartindent
 filetype plugin indent on
 set cinkeys=0{,0},0),:,0#,!^F,o,O,e,;,.,-,*<Return>,;,=
 set cinoptions=>s,e0,n0,f0,{0,}0,^0,:s,=s,l0,gs,hs,ps,ts,+s,c3,C0,(s,us,U0,w0,m0,j0,)20,*30
-set formatoptions=cqt
+set formatoptions=cqtj
 
 " ---- Folding ----
 set foldenable
@@ -170,6 +180,8 @@ augroup qf
     autocmd!
     autocmd FileType qf set nobuflisted
 augroup END
+set hidden
+set nostartofline
 
 " split navigations
 nnoremap <C-J> <C-W><C-J>
@@ -179,16 +191,20 @@ nnoremap <C-H> <C-W><C-H>
 
 " ---- Completion options ----
 set shortmess+=c    " Shut off completion messages
-set belloff+=ctrlg  " If Vim beeps during completion
+set complete=".,w,b,u,t"
 
 " ---- Backups, autoread, autosave ----
 set autoread                        " read a file automatically when it changes outside
 set autowrite                       " write the contents of a file when moving to another buffer
+set nofsync                         " do not call fsync when writing a file
 set swapsync=""                     " to keep changes in the swap file more time in memory
 :au FocusLost * silent! wa          " autosave when focus is lost
 set viminfo+=!                      " the viminfo file stores the history of commands and so on
 " go back to the previous position
 :au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+" Session options
+set sessionoptions="unix,slash"
 
 " ---- Colors ----
 set background=dark
