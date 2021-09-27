@@ -127,7 +127,7 @@ set noerrorbells    " no flash/beep on errors
 set encoding=utf8
 set splitbelow      " horizontal splits below
 set splitright      " vertical splits to the right
-if has('unnamedplus')
+if has('unnamedplus') && has("gui_running")
 set clipboard=unnamedplus,autoselectplus " use system clipboard
 else
 set clipboard=unnamed,autoselect
