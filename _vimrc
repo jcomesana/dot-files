@@ -315,6 +315,8 @@ let g:ale_completion_enabled = 0
 let g:ale_set_balloons = 1
 let g:ale_set_highlights = 1
 let g:ale_set_signs = 1
+let g:ale_disable_lsp = 1
+let g:ale_warn_about_trailing_whitespace = 1
 let s:python_max_len = 200
 " when to lint
 let g:ale_lint_on_save = 1
