@@ -135,6 +135,7 @@ endif
 set timeoutlen=2000 " longer time to react to a control key
 set display="lastline,msgsep"
 set sidescroll=1
+set scrolloff=4
 set ttyfast
 
 " ---- Syntax highlighting ----
@@ -153,6 +154,9 @@ set noinfercase     " ... and in keyword completion
 
 " ---- Indentation and formating ----
 set autoindent
+set preserveindent
+set copyindent
+set preserveindent
 set smartindent
 filetype plugin indent on
 set cinkeys=0{,0},0),:,0#,!^F,o,O,e,;,.,-,*<Return>,;,=
