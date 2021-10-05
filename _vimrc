@@ -559,7 +559,7 @@ function! s:init_fern() abort
   nmap <buffer> v <Plug>(fern-action-open:vsplit)
   nmap <buffer> * <Plug>(fern-action-mark:toggle)
   nmap <buffer><nowait> < <Plug>(fern-action-leave)
-  nmap <buffer><nowait> > <Plug>(fern-action-enter)endfunction
+  nmap <buffer><nowait> > <Plug>(fern-action-enter)
 endfunction
 
 augroup fern-custom
