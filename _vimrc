@@ -537,7 +537,7 @@ let g:fern#disable_default_mappings = 1
 let g:fern#default_hidden = 1
 let g:fern#drawer_width = 40
 nnoremap <silent> - :Fern . -drawer -reveal=%<CR>
-autocmd FileType fern setlocal nonumber
+autocmd FileType fern setlocal nonumber signcolumn=no
 
 function! s:init_fern() abort
   nmap <buffer><expr>
