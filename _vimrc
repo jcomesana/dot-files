@@ -102,6 +102,7 @@ set softtabstop=4
 set smarttab
 
 " ---- UI Config ----
+set guioptions=grdM
 set title           " set the window title
 set modeline
 set number
