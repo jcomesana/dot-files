@@ -1,14 +1,12 @@
 " ---- Font ----
 set antialias
-if has('win32') || has('win64')
-    "set guifont=ProggyCleanTTSZ:h12:cANSI
-    "set guifont=CodingFontTobi1_euro:h12:cANSI
-    "set guifont=ProggyCleanSZ:h12:cANSI
+if has('win32')
     "set guifont=mononoki:h9:cANSI
     "set guifont=Fira_Mono:h8:cANSI
-    set guifont=DejaVu_Sans_Mono:h8:cANSI
+    " set guifont=DejaVu_Sans_Mono:h8:cANSI
     " set guifont=Liberation_Mono:h9:cANSI:qDRAFT
     " set guifont=Fira_Code:h8:cANSI:qDRAFT
+    set guifont=Iosevka_SS04_Extended:h8:cANSI:qDRAFT
 else
     "set guifont=DejaVu\ Sans\ Mono\ Book\ 10
     "set guifont=Fira\ Mono\ Medium\ 11
@@ -23,11 +21,7 @@ set lines=42
 set columns=124
 
 " ---- Interface ----
-if has('win32') || has('win64')
-    set guioptions=gmTr  " scrollbars
-else
-    set guioptions=gmtTr " scrollbars
-endif
+set guioptions=!grd
 set mouse=a          " enable mouse
 set mousehide        " hide the mouse when typing text
 
