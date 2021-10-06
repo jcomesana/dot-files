@@ -14,7 +14,7 @@ if !isdirectory(s:autoloaddir)
     call mkdir(s:backupdir, 'p')
     call mkdir(s:swapdir, 'p')
     call mkdir(s:undodir, 'p')
-    :echom system('curl -fLo '.g:autoloaddir.'/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+    :echom system('curl -fLo '.s:autoloaddir.'/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
 endif
 
 " Folders
@@ -70,7 +70,6 @@ Plug 'ajmwagar/vim-dues'
 Plug 'audibleblink/hackthebox.vim'
 Plug 'benburrill/potato-colors'
 Plug 'bluz71/vim-nightfly-guicolors'
-Plug 'chuling/equinusocio-material.vim'
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'flrnd/candid.vim'
 Plug 'franbach/miramare'
