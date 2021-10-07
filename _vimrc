@@ -235,8 +235,7 @@ endif
 
 " Protect large files from sourcing and other overhead. Files become read only
 " http://vim.wikia.com/wiki/Faster_loading_of_large_files
-" file is large from 10mb
-let g:LargeFile = 1024 * 1024 * 10
+let g:LargeFile = 1024 * 1024 * 20
 augroup LargeFile
     au!
     autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
@@ -269,6 +268,11 @@ autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
 
 " ---- netrw settings ----
 let g:netrw_liststyle=3
+" disable netrw.
+let g:loaded_netrw  = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+let g:loaded_netrwFileHandlers = 1
 
 " ---- groovy settings ---
 autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ **/%:t
@@ -288,7 +292,7 @@ let g:NERDCompactSexyComs = 1
 " align line-wise comment delimiters flush left instead of following code indentation
 let g:NERDDefaultAlign = 'left'
 " add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**', 'right': '*/' } }
 " allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
 " enable trimming of trailing whitespace when uncommenting
@@ -298,9 +302,6 @@ let g:NERDTrimTrailingWhitespace = 1
 map <F7> :BufstopFast<CR>
 map <leader>b :Bufstop<CR>             " get a visual on the buffers
 map <leader>w :BufstopPreview<CR>      " switch files by moving inside the window
-
-" Plugin Mark
-let g:mwDefaultHighlightingPalette = 'extended'
 
 " Plugin ALE
 let g:ale_linters = {
@@ -572,12 +573,6 @@ let g:signify_sign_delete            = '>-'
 let g:signify_sign_delete_first_line = '>‾'
 let g:signify_sign_change            = '>*'
 let g:signify_sign_change_delete     = '>d'
-
-" Disable netrw.
-let g:loaded_netrw  = 1
-let g:loaded_netrwPlugin = 1
-let g:loaded_netrwSettings = 1
-let g:loaded_netrwFileHandlers = 1
 
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
