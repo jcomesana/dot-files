@@ -43,18 +43,17 @@ Plug 'rhysd/vim-lsp-ale'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
-Plug 'mihaifm/bufstop'
+Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
 Plug 'lambdalisue/fern.vim'
 Plug 'lambdalisue/fern-git-status.vim'
 Plug 'lambdalisue/fern-hijack.vim'
 Plug 'lambdalisue/fern-bookmark.vim'
-" Plug 'jmckiern/vim-shoot', { 'do': '\"./install.py\" geckodriver' }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/gv.vim'
+Plug 'junegunn/gv.vim', { 'on': ['GV'] }
 Plug 'mhinz/vim-signify'
 Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
@@ -62,9 +61,9 @@ Plug 'sheerun/vim-polyglot'
 Plug 'cohama/lexima.vim'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
-Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable' }
-Plug 'ilyachur/cmake4vim'
-Plug 'AndrewRadev/linediff.vim'
+Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGuidesToggle'] }
+Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeInfo'] }
+Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
 " color themes
 Plug 'ajmwagar/vim-dues'
 Plug 'audibleblink/hackthebox.vim'
