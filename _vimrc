@@ -24,7 +24,7 @@ let &directory=s:swapdir
 set backup                          " backup and location
 set undofile                        " infinite undo and location
 if has('win32')
-    let &rtp = &rtp . ',' . s:editor_root . ',' . s:editor_root.'/after'
+    let &rtp = s:editor_root . ',' . &rtp
     set shell=c:\windows\system32\cmd.exe   " shell
 endif
 
