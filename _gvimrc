@@ -1,18 +1,10 @@
 " ---- Font ----
 set antialias
 if has('win32')
-    "set guifont=mononoki:h9:cANSI
-    "set guifont=Fira_Mono:h8:cANSI
     " set guifont=DejaVu_Sans_Mono:h8:cANSI
-    " set guifont=Liberation_Mono:h9:cANSI:qDRAFT
-    " set guifont=Fira_Code:h8:cANSI:qDRAFT
     set guifont=Iosevka_SS04_Extended:h8:cANSI:qDRAFT
 else
     "set guifont=DejaVu\ Sans\ Mono\ Book\ 10
-    "set guifont=Fira\ Mono\ Medium\ 11
-    "set guifont=mononoki\ 10
-    "set guifont=Fantasque\ Sans\ Mono\ 10
-    "set guifont=Source\ Code\ Pro\ 10
     set guifont=Iosevka\ Fixed\ SS04\ 10
 endif
 
@@ -28,9 +20,3 @@ set mousehide        " hide the mouse when typing text
 " make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
-
-" only do this for Vim version 5.0 and later.
-if version >= 500
-  " highlight strings inside C comments
-  let c_comment_strings=1
-endif
