@@ -8,13 +8,14 @@ let s:undodir=s:editor_root . '/undodir'
 let s:swapdir=s:editor_root . '/swap'
 let s:extrasdir=s:editor_root . '/extras'
 
-if !isdirectory(s:autoloaddir)
+if empty(glob(s:autoloaddir . '/plug.vim'))
     call mkdir(s:editor_root, 'p')
     call mkdir(s:autoloaddir, 'p')
     call mkdir(s:backupdir, 'p')
     call mkdir(s:swapdir, 'p')
     call mkdir(s:undodir, 'p')
     :echom system('curl -fLo '.s:autoloaddir.'/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " Folders
