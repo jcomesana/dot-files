@@ -59,8 +59,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'sheerun/vim-polyglot'
 Plug 'cohama/lexima.vim'
-Plug 'xolox/vim-colorscheme-switcher'
-Plug 'xolox/vim-misc'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGuidesToggle'] }
 Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeInfo'] }
 Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
@@ -222,9 +220,21 @@ if has("termguicolors")
 endif
 
 " Color scheme
-" with cursorline highlight just the number
-" au ColorScheme * highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-autocmd VimEnter * RandomColorScheme
+function! ChooseColorScheme()
+    let l:colorschemes_list = [
+                \ 'OceanicNext', 'amora', 'aurora', 'candid',
+                \ 'everforest', 'deus', 'edge', 'embark',
+                \ 'gruvbox8', 'gruvbox8_hard', 'gruvbox8_soft', 'hackthebox',
+                \ 'hivacruz', 'onedark', 'lucario', 'material',
+                \ 'miramare', 'nightfly', 'onehalfdark', 'sonokai',
+                \ 'potato', 'srcery', 'toast',]
+    let l:seed = srand()
+    call rand(l:seed)
+    let l:color_index =  rand(l:seed) % len(l:colorschemes_list)
+    execute 'colorscheme ' . l:colorschemes_list[l:color_index]
+endfunction
+
+autocmd VimEnter * call ChooseColorScheme()
 
 " ---- Extra functionallity ----
 " to visualize manpages
@@ -504,11 +514,6 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ 'priority': 10,
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
-
-" Plugin vim-colorscheme-switcher
-let g:colorscheme_switcher_define_mappings = 0
-let g:colorscheme_switcher_exclude_builtins = 1
-let g:colorscheme_switcher_exclude = ['solarized8_low', 'OceanicNextLight', 'onehalflight']
 
 " Plugin vista
 nnoremap <silent> <F12> :Vista!!<CR>
