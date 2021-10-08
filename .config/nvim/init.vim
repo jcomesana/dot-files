@@ -7,14 +7,18 @@ let s:autoloaddir=s:editor_root . '/autoload'
 let s:backupdir=s:editor_root . '/backups'
 let s:undodir=s:editor_root . '/undodir'
 let s:swapdir=s:editor_root . '/swap'
+let s:deinbasedir=s:editor_root . '/dein'
+let s:deindir=s:deinbasedir . '/repos/github.com/Shougo/dein.vim'
+let s:first_time = !isdirectory(s:autoloaddir)
 
-if !isdirectory(s:autoloaddir)
+if s:first_time
     call mkdir(s:editor_root, 'p')
     call mkdir(s:autoloaddir, 'p')
     call mkdir(s:backupdir, 'p')
     call mkdir(s:swapdir, 'p')
     call mkdir(s:undodir, 'p')
-    :echom system('curl -fLo '.g:autoloaddir.'/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+    call mkdir(s:deinbasedir, 'p')
+    :echom system('git clone --depth=1 https://github.com/Shougo/dein.vim '.s:deindir)
 endif
 
 " Folders
@@ -24,75 +28,88 @@ let &directory=s:swapdir
 set backup                          " backup and location
 set undofile                        " infinite undo and location
 
-" ---- vim-plug ----
-call plug#begin(s:editor_root.'/plugged')
-" My plugins here
-"
-Plug 'lewis6991/impatient.nvim'
-Plug 'dense-analysis/ale'
-Plug 'ajh17/VimCompletesMe'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
-Plug 'scrooloose/nerdcommenter'
-Plug 'mihaifm/bufstop'
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'nathunsmitty/nvim-ale-diagnostic'
-Plug 'folke/lsp-colors.nvim'
-Plug 'ray-x/lsp_signature.nvim'
-Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/fern-git-status.vim'
-Plug 'lambdalisue/fern-hijack.vim'
-Plug 'lambdalisue/fern-bookmark.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-surround'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'junegunn/gv.vim'
-Plug 'mhinz/vim-signify'
-Plug 'itchyny/lightline.vim'
-Plug 'ciaranm/securemodelines'
-Plug 'sheerun/vim-polyglot'
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'windwp/nvim-autopairs'
-Plug 'xolox/vim-colorscheme-switcher'
-Plug 'xolox/vim-misc'
-Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable' }
-Plug 'ilyachur/cmake4vim'
-Plug 'AndrewRadev/linediff.vim'
-Plug 'equalsraf/neovim-gui-shim'
-" color themes
-Plug 'ajmwagar/vim-dues'
-Plug 'audibleblink/hackthebox.vim'
-Plug 'benburrill/potato-colors'
-Plug 'bluz71/vim-nightfly-guicolors'
-Plug 'chuling/equinusocio-material.vim'
-Plug 'embark-theme/vim', { 'as': 'embark' }
-Plug 'flrnd/candid.vim'
-Plug 'franbach/miramare'
-Plug 'jsit/toast.vim'
-Plug 'joshdick/onedark.vim'
-Plug 'kaicataldo/material.vim'
-Plug 'kinoute/vim-hivacruz-theme'
-Plug 'lifepillar/vim-gruvbox8'
-Plug 'mhartington/oceanic-next'
-Plug 'owozsh/amora'
-Plug 'raphamorim/lucario'
-Plug 'ray-x/aurora'
-Plug 'sainnhe/edge'
-Plug 'sainnhe/everforest'
-Plug 'sainnhe/sonokai'
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
-Plug 'srcery-colors/srcery-vim'
-Plug 'projekt0n/github-nvim-theme'
+" ---- dein.vim ----
+let &runtimepath.=','.escape(s:deindir, '\,')
 
-call plug#end()
-" ---- End vim-plug ---
+call dein#begin(s:deinbasedir)
+
+call dein#add(s:deindir)  " let dein manage dein
+if !has('nvim')
+    call dein#add('roxma/nvim-yarp')
+    call dein#add('roxma/vim-hug-neovim-rpc')
+endif
+call dein#add('wsdjeg/dein-ui.vim')
+" My plugins
+
+call dein#add('lewis6991/impatient.nvim')
+call dein#add('dense-analysis/ale')
+call dein#add('ajh17/VimCompletesMe')
+call dein#add('ntpeters/vim-better-whitespace')
+call dein#add('liuchengxu/vista.vim')
+call dein#add('scrooloose/nerdcommenter')
+call dein#add('mihaifm/bufstop')
+call dein#add('neovim/nvim-lspconfig')
+call dein#add('hrsh7th/nvim-cmp')
+call dein#add('hrsh7th/cmp-nvim-lsp')
+call dein#add('hrsh7th/cmp-buffer')
+call dein#add('hrsh7th/cmp-path')
+call dein#add('hrsh7th/vim-vsnip')
+call dein#add('nathunsmitty/nvim-ale-diagnostic')
+call dein#add('folke/lsp-colors.nvim')
+call dein#add('ray-x/lsp_signature.nvim')
+call dein#add('lambdalisue/fern.vim', { 'on_cmd' : ['Fern', 'FernDo'], 'lazy': 1 })
+call dein#add('lambdalisue/fern-git-status.vim', { 'depends': 'fern.vim' })
+call dein#add('lambdalisue/fern-hijack.vim', { 'depends': 'fern.vim' })
+call dein#add('lambdalisue/fern-bookmark.vim', { 'depends': 'fern.vim' })
+call dein#add('tpope/vim-fugitive', { 'on_cmd': [ 'Git', 'Gstatus', 'Gwrite', 'Glog', 'Gcommit', 'Gblame', 'Ggrep', 'Gdiff', ] })
+call dein#add('tpope/vim-sleuth')
+call dein#add('tpope/vim-surround')
+call dein#add('nvim-lua/plenary.nvim')
+call dein#add('nvim-telescope/telescope.nvim')
+call dein#add('junegunn/gv.vim')
+call dein#add('mhinz/vim-signify')
+call dein#add('itchyny/lightline.vim')
+call dein#add('ciaranm/securemodelines')
+call dein#add('sheerun/vim-polyglot')
+call dein#add('nvim-treesitter/nvim-treesitter')
+call dein#add('windwp/nvim-autopairs')
+call dein#add('xolox/vim-colorscheme-switcher')
+call dein#add('xolox/vim-misc')
+call dein#add('nathanaelkane/vim-indent-guides', { 'on_cmd': ['IndentGuidesEnable', 'IndentGuidesToggle'] })
+call dein#add('ilyachur/cmake4vim')
+call dein#add('AndrewRadev/linediff.vim')
+call dein#add('equalsraf/neovim-gui-shim')
+" color themes
+call dein#add('ajmwagar/vim-dues')
+call dein#add('audibleblink/hackthebox.vim')
+call dein#add('benburrill/potato-colors')
+call dein#add('bluz71/vim-nightfly-guicolors')
+call dein#add('chuling/equinusocio-material.vim')
+call dein#add('embark-theme/vim', { 'normalized_name': 'embark' })
+call dein#add('flrnd/candid.vim')
+call dein#add('franbach/miramare')
+call dein#add('jsit/toast.vim')
+call dein#add('joshdick/onedark.vim')
+call dein#add('kaicataldo/material.vim')
+call dein#add('kinoute/vim-hivacruz-theme')
+call dein#add('lifepillar/vim-gruvbox8')
+call dein#add('mhartington/oceanic-next')
+call dein#add('owozsh/amora')
+call dein#add('projekt0n/github-nvim-theme')
+call dein#add('raphamorim/lucario')
+call dein#add('ray-x/aurora')
+call dein#add('sainnhe/edge')
+call dein#add('sainnhe/everforest')
+call dein#add('sainnhe/sonokai')
+call dein#add('sonph/onehalf', { 'rtp': 'vim' })
+call dein#add('srcery-colors/srcery-vim')
+call dein#end()
+
+if s:first_time
+    call dein#install()
+endif
+
+" ---- End dein.vim ---
 
 " Plugin impatient
 lua require('impatient')
@@ -284,7 +301,7 @@ let g:NERDCompactSexyComs = 1
 " align line-wise comment delimiters flush left instead of following code indentation
 let g:NERDDefaultAlign = 'left'
 " add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**', 'right': '*/' } }
 " allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
 " enable trimming of trailing whitespace when uncommenting
