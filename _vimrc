@@ -220,7 +220,7 @@ if has("termguicolors")
 endif
 
 " Color scheme
-function! ChooseColorScheme()
+function s:ChooseColorScheme()
     let l:colorschemes_list = [
                 \ 'OceanicNext', 'amora', 'aurora', 'candid',
                 \ 'everforest', 'deus', 'edge', 'embark',
@@ -234,7 +234,7 @@ function! ChooseColorScheme()
     execute 'colorscheme ' . l:colorschemes_list[l:color_index]
 endfunction
 
-autocmd VimEnter * call ChooseColorScheme()
+autocmd VimEnter * call s:ChooseColorScheme()
 
 " ---- Extra functionallity ----
 " to visualize manpages
@@ -248,10 +248,10 @@ endif
 let g:LargeFile = 1024 * 1024 * 20
 augroup LargeFile
     au!
-    autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
+    autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call s:LargeFile() | endif
 augroup END
 
-function! LargeFile()
+function s:LargeFile()
     " no syntax highlighting etc
     set eventignore+=FileType
     " save memory when other file is viewed
@@ -357,15 +357,15 @@ nmap <silent> <M-j> <Plug>(ale_next_wrap)
 let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
 " Copied from
 " https://github.com/maximbaz/lightline-ale/blob/master/autoload/lightline/ale.vim
-function! IsLinterAvailable() abort
+function s:IsLinterAvailable() abort
   return get(g:, 'ale_enabled', 0) == 1
     \ && getbufvar(bufnr(''), 'ale_enabled', 1)
     \ && getbufvar(bufnr(''), 'ale_linted', 0) > 0
     \ && ale#engine#IsCheckingBuffer(bufnr('')) == 0
 endfunction
 " Function for ALE copied from the docs
-function! LinterStatus() abort
-    if !IsLinterAvailable()
+function LinterStatus() abort
+    if !s:IsLinterAvailable()
         return ''
     endif
     let l:counts = ale#statusline#Count(bufnr(''))
@@ -399,11 +399,11 @@ let g:lightline = {
       \ },
       \ }
 
-function! s:lightline_colorschemes() abort
+function s:lightline_colorschemes() abort
     return map(globpath(&rtp,"autoload/lightline/colorscheme/*.vim",1,1), "fnamemodify(v:val,':t:r')")
 endfunction
 
-function! s:lightline_update()
+function s:lightline_update()
     try
         let l:lightline_colorschemes_list = s:lightline_colorschemes()
         let l:lightline_cs = substitute(g:colors_name, '-', '_', 'g')
