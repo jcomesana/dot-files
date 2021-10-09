@@ -154,7 +154,6 @@ set noinfercase     " ... and in keyword completion
 set autoindent
 set preserveindent
 set copyindent
-set preserveindent
 set smartindent
 filetype plugin indent on
 set cinkeys=0{,0},0),:,0#,!^F,o,O,e,;,.,-,*<Return>,;,=
@@ -240,8 +239,8 @@ autocmd VimEnter * call ChooseColorScheme()
 " ---- Extra functionallity ----
 " to visualize manpages
 if has('unix')
-    :source $VIMRUNTIME/ftplugin/man.vim
-    :nmap K \K
+    source $VIMRUNTIME/ftplugin/man.vim
+    nmap K \K
 endif
 
 " Protect large files from sourcing and other overhead. Files become read only
