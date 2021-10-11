@@ -13,7 +13,7 @@ set lines=42
 set columns=124
 
 " ---- Interface ----
-set guioptions=grdM
+set guioptions=grdMe
 set mouse=a          " enable mouse
 set mousehide        " hide the mouse when typing text
 
