@@ -430,6 +430,8 @@ let g:deoplete#enable_at_startup = 1
 call deoplete#custom#option({
     \ 'smart_case': v:true,
     \ 'num_processes': 0,
+    \ 'max_list': 125,
+    \ 'min_pattern_length': 3,
     \ })
 
 " Plugin vim-lsp
