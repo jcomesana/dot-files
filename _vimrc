@@ -35,11 +35,14 @@ call plug#begin(s:editor_root.'/plugged')
 "
 Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
-Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete-buffer.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
+" deoplete >
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'Shougo/neco-syntax'
+Plug 'lighttiger2505/deoplete-vim-lsp'
+" deoplete <
 Plug 'rhysd/vim-lsp-ale'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
@@ -263,8 +266,6 @@ function! s:LargeFile()
     setlocal noundofile
     " disable swap file
     setlocal noswapfile
-    " disable asyncomplete
-    let b:asyncomplete_enable = 2
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
@@ -424,12 +425,12 @@ augroup LightlineColorscheme
 augroup END
 call s:lightline_update()
 
-" Plugin asyncomplete
-let g:asyncomplete_auto_popup = 1
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-imap <c-space> <Plug>(asyncomplete_force_refresh)
+" Pluging deoplete
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option({
+    \ 'smart_case': v:true,
+    \ 'num_processes': 0,
+    \ })
 
 " Plugin vim-lsp
 function! s:on_lsp_buffer_enabled() abort
@@ -499,25 +500,6 @@ if executable('java') && isdirectory(s:extrasdir)
         \ 'workspace_config': {'groovy': {'classpath': [s:groovy_lib]} },
         \ })
 endif
-
-" Plugin asyncomplete-buffer.vim
-call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-    \ 'name': 'buffer',
-    \ 'allowlist': ['*'],
-    \ 'blocklist': ['go'],
-    \ 'completor': function('asyncomplete#sources#buffer#completor'),
-    \ 'config': {
-    \    'max_buffer_size': 5000000,
-    \  },
-    \ }))
-
-" Plugin asyncomplete-file.vim
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
 
 " Plugin vista
 nnoremap <silent> <F12> :Vista!!<CR>
