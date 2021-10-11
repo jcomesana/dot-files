@@ -188,12 +188,6 @@ augroup END
 set hidden
 set nostartofline
 
-" split navigations
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
 " ---- Completion options ----
 set shortmess+=c    " Shut off completion messages
 set complete=".,w,b,u,t"
@@ -268,6 +262,8 @@ function! s:LargeFile()
     setlocal noswapfile
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
+    " disable deoplete
+    call deoplete#disable()
 endfunction
 
 " Abbreviation for make|copen
