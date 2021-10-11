@@ -453,11 +453,15 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
+let g:lsp_use_event_queue = 1
+let g:lsp_ignorecase = 0
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_highlight_references_enabled = 1
 let g:lsp_diagnostics_highlights_enabled = 0
 let g:lsp_signs_enabled = 1           " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+let g:lsp_diagnostics_virtual_text_enabled = 1
+let g:lsp_show_workspace_edits = 1
 let g:lsp_signs_error = {'text': 'e'}
 let g:lsp_signs_warning = {'text': 'w'}
 let g:lsp_signs_hint = {'text': '*'}
