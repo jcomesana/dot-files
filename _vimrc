@@ -476,7 +476,7 @@ if executable('clangd')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'clangd',
         \ 'cmd': {server_info->['clangd', '-background-index']},
-        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+        \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
         \ })
 endif
 
@@ -489,7 +489,7 @@ if executable('java') && isdirectory(s:extrasdir)
     au User lsp_setup call lsp#register_server({
         \ 'name': 'groovy-language-server',
         \ 'cmd': {server_info->['java', '-jar', s:extrasdir.'/groovy-language-server-all.jar']},
-        \ 'whitelist': ['groovy', 'Jenkinsfile'],
+        \ 'allowlist': ['groovy', 'Jenkinsfile'],
         \ 'workspace_config': {'groovy': {'classpath': [s:groovy_lib]} },
         \ })
 endif
@@ -500,6 +500,7 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
     \ 'allowlist': ['*'],
     \ 'blocklist': ['go'],
     \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ 'priority': 120,
     \ 'config': {
     \    'max_buffer_size': 5000000,
     \  },
@@ -508,7 +509,7 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
 " Plugin asyncomplete-file.vim
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
     \ 'name': 'file',
-    \ 'whitelist': ['*'],
+    \ 'allowlist': ['*'],
     \ 'priority': 10,
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
