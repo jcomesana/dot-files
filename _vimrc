@@ -36,13 +36,15 @@ call plug#begin(s:editor_root.'/plugged')
 Plug 'dense-analysis/ale'
 Plug 'ajh17/VimCompletesMe'
 Plug 'prabirshrestha/vim-lsp'
-" deoplete >
-Plug 'Shougo/deoplete.nvim'
+" ncm2 >
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-vim-lsp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'fgrsnau/ncm2-otherbuf'
+Plug 'ncm2/ncm2-path'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'Shougo/neco-syntax'
-Plug 'lighttiger2505/deoplete-vim-lsp'
-" deoplete <
+" ncm2 <
 Plug 'rhysd/vim-lsp-ale'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
@@ -262,8 +264,6 @@ function! s:LargeFile()
     setlocal noswapfile
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
-    " disable deoplete
-    call deoplete#disable()
 endfunction
 
 " Abbreviation for make|copen
@@ -421,14 +421,16 @@ augroup LightlineColorscheme
 augroup END
 call s:lightline_update()
 
-" Pluging deoplete
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option({
-    \ 'smart_case': v:true,
-    \ 'num_processes': 0,
-    \ 'max_list': 125,
-    \ 'min_pattern_length': 2,
-    \ })
+" Plugin ncm2
+autocmd BufEnter * call ncm2#enable_for_buffer()
+" IMPORTANT: :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+" When the <Enter> key is pressed while the popup menu is visible, it only
+" hides the menu. Use this mapping to close the menu and also start a new line.
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+" Use <TAB> to select the popup menu:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Plugin vim-lsp
 function! s:on_lsp_buffer_enabled() abort
