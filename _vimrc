@@ -428,6 +428,7 @@ call deoplete#custom#option({
     \ 'num_processes': 0,
     \ 'max_list': 125,
     \ 'min_pattern_length': 2,
+    \ 'yarp': v:true,
     \ })
 
 " Plugin vim-lsp
