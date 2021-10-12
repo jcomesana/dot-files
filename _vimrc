@@ -500,7 +500,6 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
     \ 'allowlist': ['*'],
     \ 'blocklist': ['go'],
     \ 'completor': function('asyncomplete#sources#buffer#completor'),
-    \ 'priority': 120,
     \ 'config': {
     \    'max_buffer_size': 5000000,
     \  },
