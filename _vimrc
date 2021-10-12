@@ -427,7 +427,7 @@ call deoplete#custom#option({
     \ 'smart_case': v:true,
     \ 'num_processes': 0,
     \ 'max_list': 125,
-    \ 'min_pattern_length': 3,
+    \ 'min_pattern_length': 2,
     \ })
 
 " Plugin vim-lsp
