@@ -30,7 +30,6 @@ call plug#begin(s:editor_root.'/plugged')
 "
 Plug 'lewis6991/impatient.nvim'
 Plug 'dense-analysis/ale'
-Plug 'ajh17/VimCompletesMe'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
@@ -74,7 +73,6 @@ Plug 'kaicataldo/material.vim'
 Plug 'kinoute/vim-hivacruz-theme'
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'mhartington/oceanic-next'
-Plug 'owozsh/amora'
 Plug 'raphamorim/lucario'
 Plug 'ray-x/aurora'
 Plug 'sainnhe/edge'
@@ -181,12 +179,6 @@ augroup END
 set hidden
 set nostartofline
 
-" split navigations
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
 " ---- Completion options ----
 set shortmess+=c    " Shut off completion messages
 set complete=".,w,b,u,t"
@@ -215,7 +207,24 @@ if has("termguicolors")
 endif
 
 " Color scheme
-colo aurora
+function s:UniformRand(x, y) " random uniform between x and y
+    call v:lua.math.randomseed(localtime())
+    return v:lua.math.random(a:x, a:y)
+endfunction
+
+function! s:ChooseColorScheme()
+    let l:colorschemes_list = [
+                \ 'OceanicNext', 'aurora', 'candid',
+                \ 'everforest', 'deus', 'edge', 'embark',
+                \ 'gruvbox8', 'gruvbox8_hard', 'gruvbox8_soft', 'hackthebox',
+                \ 'hivacruz', 'onedark', 'lucario', 'material',
+                \ 'miramare', 'nightfly', 'onehalfdark', 'sonokai',
+                \ 'potato', 'srcery', 'toast',]
+    let l:color_index =  s:UniformRand(0, len(l:colorschemes_list) - 1)
+    execute 'colorscheme ' . l:colorschemes_list[l:color_index]
+endfunction
+
+autocmd VimEnter * call s:ChooseColorScheme()
 
 " ---- Extra functionallity ----
 " to visualize manpages
