@@ -47,9 +47,9 @@ Plug 'ray-x/lsp_signature.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'junegunn/gv.vim', { 'on': ['GV'] }
 Plug 'mhinz/vim-signify'
 Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
@@ -82,7 +82,6 @@ Plug 'sainnhe/everforest'
 Plug 'sainnhe/sonokai'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'srcery-colors/srcery-vim'
-Plug 'projekt0n/github-nvim-theme'
 
 call plug#end()
 " ---- End vim-plug ---
@@ -216,7 +215,7 @@ if has("termguicolors")
 endif
 
 " Color scheme
-colo github_dark
+colo aurora
 
 " ---- Extra functionallity ----
 " to visualize manpages
