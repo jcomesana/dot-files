@@ -30,7 +30,6 @@ call plug#begin(s:editor_root.'/plugged')
 "
 Plug 'lewis6991/impatient.nvim'
 Plug 'dense-analysis/ale'
-Plug 'ajh17/VimCompletesMe'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
