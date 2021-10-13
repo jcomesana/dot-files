@@ -180,12 +180,6 @@ augroup END
 set hidden
 set nostartofline
 
-" split navigations
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
 " ---- Completion options ----
 set shortmess+=c    " Shut off completion messages
 set complete=".,w,b,u,t"
@@ -227,7 +221,7 @@ function! s:ChooseColorScheme()
                 \ 'hivacruz', 'onedark', 'lucario', 'material',
                 \ 'miramare', 'nightfly', 'onehalfdark', 'sonokai',
                 \ 'potato', 'srcery', 'toast',]
-    let l:color_index =  s:UniformRand(0, len(l:colorschemes_list))
+    let l:color_index =  s:UniformRand(0, len(l:colorschemes_list) - 1)
     execute 'colorscheme ' . l:colorschemes_list[l:color_index]
 endfunction
 
