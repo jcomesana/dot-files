@@ -214,7 +214,24 @@ if has("termguicolors")
 endif
 
 " Color scheme
-colo aurora
+function s:UniformRand(x, y) " random uniform between x and y
+    call v:lua.math.randomseed(localtime())
+    return v:lua.math.random(a:x, a:y)
+endfunction
+
+function! s:ChooseColorScheme()
+    let l:colorschemes_list = [
+                \ 'OceanicNext', 'aurora', 'candid',
+                \ 'everforest', 'deus', 'edge', 'embark',
+                \ 'gruvbox8', 'gruvbox8_hard', 'gruvbox8_soft', 'hackthebox',
+                \ 'hivacruz', 'onedark', 'lucario', 'material',
+                \ 'miramare', 'nightfly', 'onehalfdark', 'sonokai',
+                \ 'potato', 'srcery', 'toast',]
+    let l:color_index =  s:UniformRand(0, len(l:colorschemes_list))
+    execute 'colorscheme ' . l:colorschemes_list[l:color_index]
+endfunction
+
+autocmd VimEnter * call s:ChooseColorScheme()
 
 " ---- Extra functionallity ----
 " to visualize manpages
