@@ -76,7 +76,6 @@ Plug 'kaicataldo/material.vim'
 Plug 'kinoute/vim-hivacruz-theme'
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'mhartington/oceanic-next'
-Plug 'owozsh/amora'
 Plug 'raphamorim/lucario'
 Plug 'ray-x/aurora'
 Plug 'sainnhe/edge'
@@ -215,7 +214,7 @@ endif
 " Color scheme
 function! s:ChooseColorScheme()
     let l:colorschemes_list = [
-                \ 'OceanicNext', 'amora', 'aurora', 'candid',
+                \ 'OceanicNext', 'aurora', 'candid',
                 \ 'everforest', 'deus', 'edge', 'embark',
                 \ 'gruvbox8', 'gruvbox8_hard', 'gruvbox8_soft', 'hackthebox',
                 \ 'hivacruz', 'onedark', 'lucario', 'material',
