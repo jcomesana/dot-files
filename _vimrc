@@ -278,6 +278,14 @@ if has('win32')
     py3 import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
 endif
 
+" Plugin fzf
+nnoremap <leader>ff :FZF<CR>
+nnoremap <leader>fg :Rg<CR>
+nnoremap <leader>fa :Ag<CR>
+nnoremap <leader>fb :W<CR>
+nnoremap <leader>fl :Lines<CR>
+nnoremap <leader>fc :Commits<CR>
+
 " Plugin NERDCommenter
 " add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
