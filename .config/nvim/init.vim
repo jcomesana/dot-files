@@ -43,7 +43,7 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'nathunsmitty/nvim-ale-diagnostic'
 Plug 'folke/lsp-colors.nvim'
 Plug 'ray-x/lsp_signature.nvim'
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gclog', 'Gllog', 'Gcd', 'Gedit', 'Gsplit', 'Gvsplit', 'Gread', 'Gwrite', 'Gdiffsplit', 'Gvdiffsplit', 'GBrowse', 'GDelete'] }
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
@@ -426,11 +426,11 @@ let g:cmake_compile_commands = 1
 let g:cmake_usr_args='-GNinja'
 
 " Plugin signify
-let g:signify_sign_add               = '>+'
-let g:signify_sign_delete            = '>-'
-let g:signify_sign_delete_first_line = '>‾'
-let g:signify_sign_change            = '>*'
-let g:signify_sign_change_delete     = '>d'
+let g:signify_sign_add               = '+ '
+let g:signify_sign_delete            = '- '
+let g:signify_sign_delete_first_line = '‾ '
+let g:signify_sign_change            = '* '
+let g:signify_sign_change_delete     = 'd '
 
 " Plugin telescope
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<CR>

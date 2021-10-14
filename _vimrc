@@ -45,7 +45,7 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gclog', 'Gllog', 'Gcd', 'Gedit', 'Gsplit', 'Gvsplit', 'Gread', 'Gwrite', 'Gdiffsplit', 'Gvdiffsplit', 'GBrowse', 'GDelete'] }
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
@@ -527,11 +527,11 @@ let g:cmake_compile_commands = 1
 let g:cmake_usr_args='-GNinja'
 
 " Plugin signify
-let g:signify_sign_add               = '>+'
-let g:signify_sign_delete            = '>-'
-let g:signify_sign_delete_first_line = '>‾'
-let g:signify_sign_change            = '>*'
-let g:signify_sign_change_delete     = '>d'
+let g:signify_sign_add               = '+ '
+let g:signify_sign_delete            = '- '
+let g:signify_sign_delete_first_line = '‾ '
+let g:signify_sign_change            = '* '
+let g:signify_sign_change_delete     = 'd '
 
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
