@@ -261,10 +261,6 @@ endfunction
 " Abbreviation for make|copen
 cabbrev mc :make<bar>copen<CR>
 
-" ---- yaml settings ----
-au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
-
 " ---- netrw settings ----
 let g:netrw_liststyle=3
 
@@ -274,9 +270,6 @@ autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --n
 
 " ---- Plugins ----
 let s:python_binary = 'python3'
-if has('win32')
-    py3 import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
-endif
 
 " Plugin fzf
 nnoremap <leader>ff :FZF<CR>

@@ -260,10 +260,6 @@ endfunction
 " Abbreviation for make|copen
 cabbrev mc :make<bar>copen<CR>
 
-" ---- yaml settings ----
-au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-autocmd FileType yaml setlocal ts=4 sts=4 sw=4 expandtab
-
 " ---- netrw settings ----
 let g:netrw_liststyle=3
 
