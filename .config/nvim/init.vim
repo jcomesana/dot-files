@@ -24,6 +24,9 @@ let &directory=s:swapdir
 set backup                          " backup and location
 set undofile                        " infinite undo and location
 
+" For random colorscheme selection
+let s:colorschemes_list = []
+
 " ---- vim-plug ----
 call plug#begin(s:editor_root.'/plugged')
 " My plugins here
@@ -60,26 +63,26 @@ Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeI
 Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
 Plug 'equalsraf/neovim-gui-shim'
 " color themes
-Plug 'ajmwagar/vim-dues'
-Plug 'audibleblink/hackthebox.vim'
-Plug 'benburrill/potato-colors'
-Plug 'bluz71/vim-nightfly-guicolors'
-Plug 'embark-theme/vim', { 'as': 'embark' }
-Plug 'flrnd/candid.vim'
-Plug 'franbach/miramare'
-Plug 'jsit/toast.vim'
-Plug 'joshdick/onedark.vim'
-Plug 'kaicataldo/material.vim'
-Plug 'kinoute/vim-hivacruz-theme'
-Plug 'lifepillar/vim-gruvbox8'
-Plug 'mhartington/oceanic-next'
-Plug 'raphamorim/lucario'
-Plug 'ray-x/aurora'
-Plug 'sainnhe/edge'
-Plug 'sainnhe/everforest'
-Plug 'sainnhe/sonokai'
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
-Plug 'srcery-colors/srcery-vim'
+Plug 'ajmwagar/vim-dues' | call add(s:colorschemes_list, 'deus')
+Plug 'audibleblink/hackthebox.vim' | call add(s:colorschemes_list, 'hackthebox')
+Plug 'benburrill/potato-colors' | call add(s:colorschemes_list, 'potato')
+Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
+Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
+Plug 'flrnd/candid.vim' | call add(s:colorschemes_list, 'candid')
+Plug 'franbach/miramare' | call add(s:colorschemes_list, 'miramare')
+Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
+Plug 'joshdick/onedark.vim' | call add(s:colorschemes_list, 'onedark')
+Plug 'kaicataldo/material.vim' | call add(s:colorschemes_list, 'material')
+Plug 'kinoute/vim-hivacruz-theme' | call add(s:colorschemes_list, 'hivacruz')
+Plug 'lifepillar/vim-gruvbox8' | call add(s:colorschemes_list, 'gruvbox8_hard')
+Plug 'mhartington/oceanic-next' | call add(s:colorschemes_list, 'OceanicNext')
+Plug 'raphamorim/lucario' | call add(s:colorschemes_list, 'aurora')
+Plug 'ray-x/aurora' | call add(s:colorschemes_list, 'aurora')
+Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
+Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
+Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
+Plug 'sonph/onehalf', { 'rtp': 'vim' } | call add(s:colorschemes_list, 'onehalfdark')
+Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
 
 call plug#end()
 " ---- End vim-plug ---
@@ -213,15 +216,8 @@ function s:UniformRand(x, y) " random uniform between x and y
 endfunction
 
 function! s:ChooseColorScheme()
-    let l:colorschemes_list = [
-                \ 'OceanicNext', 'aurora', 'candid',
-                \ 'everforest', 'deus', 'edge', 'embark',
-                \ 'gruvbox8', 'gruvbox8_hard', 'gruvbox8_soft', 'hackthebox',
-                \ 'hivacruz', 'onedark', 'lucario', 'material',
-                \ 'miramare', 'nightfly', 'onehalfdark', 'sonokai',
-                \ 'potato', 'srcery', 'toast',]
-    let l:color_index =  s:UniformRand(0, len(l:colorschemes_list) - 1)
-    execute 'colorscheme ' . l:colorschemes_list[l:color_index]
+    let l:color_index =  s:UniformRand(0, len(s:colorschemes_list) - 1)
+    execute 'colorscheme ' . s:colorschemes_list[l:color_index]
 endfunction
 
 autocmd VimEnter * call s:ChooseColorScheme()
@@ -426,11 +422,11 @@ let g:cmake_compile_commands = 1
 let g:cmake_usr_args='-GNinja'
 
 " Plugin signify
-let g:signify_sign_add               = '+ '
-let g:signify_sign_delete            = '- '
-let g:signify_sign_delete_first_line = '‾ '
-let g:signify_sign_change            = '* '
-let g:signify_sign_change_delete     = 'd '
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '-'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '*'
+let g:signify_sign_change_delete     = 'd'
 
 " Plugin telescope
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<CR>
