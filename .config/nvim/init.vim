@@ -440,7 +440,9 @@ function! StatuslineGitBranch()
       let l:dir=expand('%:p:h')
       let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
       if !v:shell_error
-        let b:gitbranch="(".substitute(l:gitrevparse, '\n', '', 'g').")"
+        let b:gitbranch=" (".substitute(l:gitrevparse, '\n', '', 'g').") "
+      else
+        let b:gitbranch=""
       endif
     catch
     endtry

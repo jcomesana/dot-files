@@ -102,7 +102,7 @@ set title           " set the window title
 set modeline
 set number
 set signcolumn=yes
-set noshowmode      " mode handled by lightline
+set noshowmode      " mode handled by the status line
 set showcmd         " show partial command in the last line of the screen
 set cmdheight=2     " number of lines for the command-line
 set history=50      " keep 50 lines of command line history
@@ -492,7 +492,7 @@ let g:gruvbox_plugin_hi_groups = 1
 " Custom statusline
 set statusline=%{StatuslineMode()}
 set statusline+=\ \|
-set statusline+=%#Pmenu#\ %{b:gitbranch}\ %*
+set statusline+=%#Pmenu#\%{b:gitbranch}\%*
 set statusline+=\|\ 
 set statusline+=%#Title#%f%*\ %r%m
 set statusline+=%=
@@ -533,7 +533,9 @@ function! StatuslineGitBranch()
       let l:dir=expand('%:p:h')
       let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
       if !v:shell_error
-        let b:gitbranch="(".substitute(l:gitrevparse, '\n', '', 'g').")"
+        let b:gitbranch=" (".substitute(l:gitrevparse, '\n', '', 'g').") "
+      else
+        let b:gitbranch=""
       endif
     catch
     endtry
