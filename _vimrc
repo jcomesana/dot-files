@@ -55,7 +55,6 @@ Plug 'tpope/vim-vinegar'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-signify'
-Plug 'itchyny/lightline.vim'
 Plug 'ciaranm/securemodelines'
 Plug 'sheerun/vim-polyglot'
 Plug 'cohama/lexima.vim'
@@ -354,56 +353,13 @@ function! LinterStatus() abort
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_warnings = l:counts.warning + l:counts.style_warning
 
-    return l:counts.total == 0 ? '[Ok]' : printf(
-    \   '[E:%d, W:%d, I:%d]',
+    return l:counts.total == 0 ? '[Ok] | ' : printf(
+    \   '[E:%d, W:%d, I:%d] | ',
     \   all_errors,
     \   all_warnings,
     \   l:counts.info
     \)
 endfunction
-
-" Plugin lightline
-let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-      \   'right': [ [ 'lineinfo' ],
-      \              [ 'percent' ],
-      \              [ 'alestatus', 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \   'alestatus': 'LinterStatus'
-      \ },
-      \ 'component': {
-      \   'lineinfo': '%4l:%-3v',
-      \ },
-      \ }
-
-function! s:lightline_colorschemes() abort
-    return map(globpath(&rtp,"autoload/lightline/colorscheme/*.vim",1,1), "fnamemodify(v:val,':t:r')")
-endfunction
-
-function! s:lightline_update()
-    try
-        let l:lightline_colorschemes_list = s:lightline_colorschemes()
-        let l:lightline_cs = substitute(g:colors_name, '-', '_', 'g')
-        if index(l:lightline_colorschemes_list, l:lightline_cs) == -1
-            let l:lightline_cs = "default"
-        endif
-        let g:lightline.colorscheme = l:lightline_cs
-        call lightline#init()
-        call lightline#colorscheme()
-        call lightline#update()
-    catch
-    endtry
-endfunction
-
-augroup LightlineColorscheme
-    autocmd!
-    autocmd ColorScheme * call s:lightline_update()
-augroup END
-call s:lightline_update()
 
 " Plugin asyncomplete
 let g:asyncomplete_auto_popup = 1
@@ -532,3 +488,59 @@ let g:signify_sign_change_delete     = 'd'
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
 let g:gruvbox_plugin_hi_groups = 1
+
+" Custom statusline
+set statusline=%{StatuslineMode()}
+set statusline+=\ \|
+set statusline+=%#Pmenu#\ %{b:gitbranch}\ %*
+set statusline+=\|\ 
+set statusline+=%#Title#%f%*\ %r%m
+set statusline+=%=
+set statusline+=%{LinterStatus()}
+set statusline+=%{&ff}
+set statusline+=\ \|\ 
+set statusline+=%{strlen(&fenc)?&fenc:'none'}
+set statusline+=\ \|\ 
+set statusline+=%y
+set statusline+=\ \|
+set statusline+=%#Pmenu#\ %3p%%\ %5l:%3c%*
+
+function! StatuslineMode()
+  let l:mode=mode()
+  if l:mode==#"n"
+    return "NORMAL"
+  elseif l:mode==?"v"
+    return "VISUAL"
+  elseif l:mode==#"i"
+    return "INSERT"
+  elseif l:mode==#"R"
+    return "REPLACE"
+  elseif l:mode==?"s"
+    return "SELECT"
+  elseif l:mode==#"t"
+    return "TERMINAL"
+  elseif l:mode==#"c"
+    return "COMMAND"
+  elseif l:mode==#"!"
+    return "SHELL"
+  endif
+endfunction
+
+function! StatuslineGitBranch()
+  let b:gitbranch=""
+  if &modifiable
+    try
+      let l:dir=expand('%:p:h')
+      let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
+      if !v:shell_error
+        let b:gitbranch="(".substitute(l:gitrevparse, '\n', '', 'g').")"
+      endif
+    catch
+    endtry
+  endif
+endfunction
+
+augroup GetGitBranch
+  autocmd!
+  autocmd VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
+augroup END
