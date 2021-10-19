@@ -398,46 +398,27 @@ let g:gruvbox_plugin_hi_groups = 1
 
 " Custom statusline
 " left side
-set statusline=%#Visual#%{StatuslineMode()}%*\|%{b:gitbranch}\|%#Title#\ %f\ %*%r%m
+set statusline=%#Visual#%{StatuslineMode()}%*\ \|\ %#Title#%f%*%r%m
 " right side
-set statusline+=%=%{LinterStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %y\ \|%#Pmenu#\ %3p%%\ %5l:%3c%*
+set statusline+=%=%{LinterStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %Y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
 
 function! StatuslineMode()
-  let l:mode=mode()
-  if l:mode==#"n"
-    return "NORMAL "
-  elseif l:mode==?"v"
-    return "VISUAL "
-  elseif l:mode==#"i"
-    return "INSERT "
-  elseif l:mode==#"R"
-    return "REPLACE "
-  elseif l:mode==?"s"
-    return "SELECT "
-  elseif l:mode==#"t"
-    return "TERMINAL "
-  elseif l:mode==#"c"
-    return "COMMAND "
-  elseif l:mode==#"!"
-    return "SHELL "
-  endif
+    let l:mode=mode()
+    if l:mode==#"n"
+        return "NORMAL"
+    elseif l:mode==?"v"
+        return "VISUAL"
+    elseif l:mode==#"i"
+        return "INSERT"
+    elseif l:mode==#"R"
+        return "REPLACE"
+    elseif l:mode==?"s"
+        return "SELECT"
+    elseif l:mode==#"t"
+        return "TERMINAL"
+    elseif l:mode==#"c"
+        return "COMMAND"
+    elseif l:mode==#"!"
+        return "SHELL"
+    endif
 endfunction
-
-function! StatuslineGitBranch()
-  let b:gitbranch=""
-  if &modifiable
-    try
-      let l:dir=expand('%:p:h')
-      let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
-      if !v:shell_error
-        let b:gitbranch=" (git: ".substitute(l:gitrevparse, '\n', '', 'g').") "
-      endif
-    catch
-    endtry
-  endif
-endfunction
-
-augroup GetGitBranch
-  autocmd!
-  autocmd GuiEnter,VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
-augroup END
