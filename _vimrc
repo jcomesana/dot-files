@@ -491,7 +491,7 @@ let g:gruvbox_plugin_hi_groups = 1
 
 " Custom statusline
 " left side
-set statusline=%#Visual#%{StatuslineMode()}%*\ \|\ %#Title#%f%*%r%m
+set statusline=%#Visual#%{StatuslineMode()}%*\ \|\ %#Title#%f%*\ %r%m
 " right side
 set statusline+=%=%{LinterStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %Y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
 
