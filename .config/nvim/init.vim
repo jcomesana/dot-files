@@ -51,7 +51,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'mhinz/vim-signify'
+Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
 Plug 'sheerun/vim-polyglot'
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -378,6 +378,8 @@ let g:cmake_compile_commands = 1
 let g:cmake_usr_args='-GNinja'
 
 " Plugin signify
+nnoremap <leader>si :SignifyEnable<CR>
+let g:signify_disable_by_default = 1
 let g:signify_sign_add               = '+'
 let g:signify_sign_delete            = '-'
 let g:signify_sign_delete_first_line = '‾'
