@@ -1,7 +1,7 @@
 set nocompatible
 
 " Create initial folders
-let s:editor_root=expand("~/.vim")
+let s:editor_root = has('win32') ? expand("~/vimfiles") : expand("~/.vim")
 let s:autoloaddir=s:editor_root . '/autoload'
 let s:backupdir=s:editor_root . '/backups'
 let s:undodir=s:editor_root . '/undodir'
@@ -25,7 +25,6 @@ let &directory=s:swapdir
 set backup                          " backup and location
 set undofile                        " infinite undo and location
 if has('win32')
-    let &rtp = s:editor_root . ',' . &rtp
     set shell=c:\windows\system32\cmd.exe   " shell
 endif
 
