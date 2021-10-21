@@ -254,6 +254,10 @@ endfunction
 " Abbreviation for make|copen
 cabbrev mc :make<bar>copen<CR>
 
+" Custom commands
+" CDC = Change to Directory of Current file
+command CDC cd %:p:h
+
 " ---- netrw settings ----
 let g:netrw_liststyle=3
 
