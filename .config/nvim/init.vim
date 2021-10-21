@@ -149,7 +149,7 @@ set noinfercase     " ... and in keyword completion
 set autoindent
 set preserveindent
 set copyindent
-set smartindent
+set nosmartindent
 filetype plugin indent on
 set cinkeys=0{,0},0),:,0#,!^F,o,O,e,;,.,-,*<Return>,;,=
 set cinoptions=>s,e0,n0,f0,{0,}0,^0,:s,=s,l0,gs,hs,ps,ts,+s,c3,C0,(s,us,U0,w0,m0,j0,)20,*30
