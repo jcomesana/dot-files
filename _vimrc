@@ -36,7 +36,6 @@ call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
 Plug 'dense-analysis/ale'
-Plug 'ajh17/VimCompletesMe'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
