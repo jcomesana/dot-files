@@ -4,7 +4,8 @@ if has('win32')
     set guifont=Iosevka_SS04_Extended:h8:cANSI:qDRAFT
 else
     "set guifont=DejaVu\ Sans\ Mono\ Book\ 10
-    set guifont=Iosevka\ Fixed\ SS04\ 10
+    set guifont=Iosevka\ Medium\ 10
+    set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~
 endif
 
 " ---- Window size ----
