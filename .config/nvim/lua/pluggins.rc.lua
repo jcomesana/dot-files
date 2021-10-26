@@ -76,15 +76,36 @@ end
 -- clients
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 local lspconfig = require'lspconfig'
-lspconfig.pylsp.setup{ on_attach = on_attach, }
+lspconfig.pylsp.setup{
+  on_attach = on_attach,
+  settings = {
+    pylsp = {
+      plugins = {
+        flake8 = {
+          enabled = true,
+        }
+      }
+    }
+  }
+}
+
 lspconfig.clangd.setup{ on_attach = on_attach, }
 
 local groovy_lsp_jar_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), "extras", "groovy-language-server-all.jar")
+local groovy_lib = ''
+if vim.env.GROOVY_HOME then
+  groovy_lib = vim.env.GROOVY_HOME .. '/lib'
+end
 lspconfig.groovyls.setup{
   on_attach = on_attach,
   cmd = { "java", "-jar", groovy_lsp_jar_path },
   filetypes = { "groovy", "Jenkinsfile" },
-  root_dir = lspconfig.util.root_pattern('.git', '.ignore')
+  root_dir = lspconfig.util.root_pattern('.git', '.ignore'),
+  settings = {
+    groovy = {
+      classpath = { groovy_lib },
+    }
+  }
 }
 
 -- Plugin nvim-ale-diagnostic
