@@ -61,7 +61,6 @@ Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
 " color themes
 Plug 'ajmwagar/vim-dues' | call add(s:colorschemes_list, 'deus')
 Plug 'audibleblink/hackthebox.vim' | call add(s:colorschemes_list, 'hackthebox')
-Plug 'benburrill/potato-colors' | call add(s:colorschemes_list, 'potato')
 Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
 Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
 Plug 'flrnd/candid.vim' | call add(s:colorschemes_list, 'candid')
