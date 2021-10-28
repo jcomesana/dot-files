@@ -133,8 +133,8 @@ set ttyfast
 syntax enable
 " python specific
 let g:python_highlight_all=1
-" map space to sync the syntax hilighting on normal mode
-noremap <silent> <Space> :silent noh <Bar>echo<cr>:syn sync fromstart<cr>
+" map space to sync the syntax hilighting on normal mode and redraw the status bar
+noremap <silent> <Space> :silent noh <Bar>echo<cr>:syn sync fromstart<cr>:redrawstatus<cr>
 
 " ---- Searching ----
 set incsearch       " do incremental searching
