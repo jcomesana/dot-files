@@ -3,15 +3,18 @@ set nocompatible
 " Create initial folders
 let s:editor_root=stdpath('config')
 let s:autoloaddir=s:editor_root . '/autoload'
+let s:backupdir=s:editor_root . '/backups'
 
 if empty(glob(s:autoloaddir . '/plug.vim'))
     call mkdir(s:editor_root, 'p')
     call mkdir(s:autoloaddir, 'p')
+    call mkdir(s:backupdir, 'p')
     :echom system('curl -fLo '.s:autoloaddir.'/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " Folders
+let &backupdir=s:backupdir
 set backup                          " backup and location
 set undofile                        " infinite undo and location
 
