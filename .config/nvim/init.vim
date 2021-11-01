@@ -390,6 +390,7 @@ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<CR>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<CR>
 nnoremap <leader>fl <cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>
+nnoremap <leader>fc <cmd>lua require('telescope.builtin').git_commits()<CR>
 
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
