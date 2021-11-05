@@ -53,11 +53,22 @@ Plug 'junegunn/fzf', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
 Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
-Plug 'sheerun/vim-polyglot'
 Plug 'cohama/lexima.vim'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGuidesToggle'] }
 Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeInfo'] }
 Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
+" File type specific plugins
+Plug 'vim-jp/vim-cpp', { 'for': ['c', 'cpp'] }
+Plug 'bfrg/vim-cpp-modern', { 'for': ['c', 'cpp'] }
+Plug 'pboettch/vim-cmake-syntax', { 'for': 'CMake' }
+Plug 'blankname/vim-fish', { 'for': 'fish' }
+Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
+Plug 'PProvost/vim-ps1', { 'for': 'ps1' }
+Plug 'elzr/vim-json', { 'for': ['json'] }
+Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
+Plug 'vim-python/python-syntax', { 'for': 'python' }
+Plug 'arzg/vim-sh'
+Plug 'MTDL9/vim-log-highlighting'
 " color themes
 Plug 'ajmwagar/vim-dues' | call add(s:colorschemes_list, 'deus')
 Plug 'audibleblink/hackthebox.vim' | call add(s:colorschemes_list, 'hackthebox')
