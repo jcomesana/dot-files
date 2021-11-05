@@ -412,7 +412,7 @@ let g:gruvbox_plugin_hi_groups = 1
 " left side
 set statusline=%#Visual#%{StatuslineMode()}%*\ \|\ %t\ %r%m
 " right side
-set statusline+=%=%{LinterStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %Y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
+set statusline+=%=%{LinterStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
 
 function! StatuslineMode()
     let l:mode=mode()
