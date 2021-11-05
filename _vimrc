@@ -47,6 +47,7 @@ Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
 Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gclog', 'Gllog', 'Gcd', 'Gedit', 'Gsplit', 'Gvsplit', 'Gread', 'Gwrite', 'Gdiffsplit', 'Gvdiffsplit', 'GBrowse', 'GDelete'] }
+Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'junegunn/fzf', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
@@ -137,6 +138,7 @@ set display="lastline,msgsep"
 set sidescroll=1
 set scrolloff=4
 set ttyfast
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
 " ---- Syntax highlighting ----
 syntax enable

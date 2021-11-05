@@ -41,6 +41,7 @@ Plug 'nathunsmitty/nvim-ale-diagnostic'
 Plug 'folke/lsp-colors.nvim'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gclog', 'Gllog', 'Gcd', 'Gedit', 'Gsplit', 'Gvsplit', 'Gread', 'Gwrite', 'Gdiffsplit', 'Gvdiffsplit', 'GBrowse', 'GDelete'] }
+Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'nvim-lua/plenary.nvim'
@@ -131,6 +132,7 @@ set display="lastline,msgsep"
 set sidescroll=1
 set scrolloff=4
 set ttyfast
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
 " ---- Syntax highlighting ----
 syntax enable
