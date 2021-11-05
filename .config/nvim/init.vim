@@ -267,17 +267,22 @@ let g:netrw_liststyle=3
 autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ **/%:t
 autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ **/%:t
 
-" ---- Plugins ----
-let g:python3_host_prog = 'python3'
+" Disable some providers
 let g:loaded_python_provider = 0
 let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_ruby_provider = 0
 
 " Additional configuration files
- for f in split(glob(s:editor_root.'/lua/*.*'), '\n')
-     exe 'source' f
- endfor
+for f in split(glob(s:editor_root.'/lua/*.*'), '\n')
+		exe 'source' f
+endfor
+
+" ---- Plugins ----
+let g:python3_host_prog = 'python3'
+
+" Plugin vim-json
+let g:vim_json_syntax_conceal = 0
 
 " Plugin NERDCommenter
 " add spaces after comment delimiters by default

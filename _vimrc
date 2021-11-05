@@ -275,6 +275,9 @@ autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --n
 " ---- Plugins ----
 let s:python_binary = 'python3'
 
+" Plugin vim-json
+let g:vim_json_syntax_conceal = 0
+
 " Plugin fzf
 nnoremap <leader>ff :FZF<CR>
 nnoremap <leader>fg :Rg<CR>
