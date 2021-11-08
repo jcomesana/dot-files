@@ -140,3 +140,12 @@ require "lsp_signature".setup({
 --     "cmake",
 --   },
 -- }
+
+-- Plugin telescope
+require "telescope".setup {
+  defaults = {
+    preview = {
+      check_mime_type = false
+    },
+  }
+}
