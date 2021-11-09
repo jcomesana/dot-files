@@ -44,8 +44,8 @@ Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gclog', 'Gllog', 'Gcd', 'Gedit'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+Plug 'junegunn/fzf', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
+Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
 " Plug 'nvim-treesitter/nvim-treesitter'
@@ -403,13 +403,13 @@ let g:signify_sign_delete_first_line = '‾'
 let g:signify_sign_change            = '*'
 let g:signify_sign_change_delete     = 'd'
 
-" Plugin telescope
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<CR>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<CR>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<CR>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<CR>
-nnoremap <leader>fl <cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>
-nnoremap <leader>fc <cmd>lua require('telescope.builtin').git_commits()<CR>
+" Plugin fzf
+nnoremap <leader>ff :FZF<CR>
+nnoremap <leader>fg :Rg<CR>
+nnoremap <leader>fa :Ag<CR>
+nnoremap <leader>fb :W<CR>
+nnoremap <leader>fl :Lines<CR>
+nnoremap <leader>fc :Commits<CR>
 
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
