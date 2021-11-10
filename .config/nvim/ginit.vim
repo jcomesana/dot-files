@@ -22,3 +22,13 @@ endif
 if exists(':GuiScrollBar')
     GuiScrollBar 1
 endif
+
+" Try to use nvim theme in the GUI
+if exists(':GuiAdaptativeColor')
+    GuiAdaptativeColor 1
+endif
+
+" Try to render font ligatures
+if exists(':GuiRenderLigatures')
+    GuiRenderLigatures 1
+endif
