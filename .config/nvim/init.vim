@@ -307,7 +307,6 @@ map <leader>w :BufstopPreview<CR>      " switch files by moving inside the windo
 
 " Plugin ALE
 let g:ale_linters = {
-\   'python': ['pylint', 'flake8'],
 \   'cpp': ['clang'],
 \}
 let g:ale_fixers = {

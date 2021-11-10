@@ -2,19 +2,19 @@
 local cmp = require'cmp'
 cmp.setup({
   snippet = {
-	expand = function(args)
-	  vim.fn["vsnip#anonymous"](args.body)
-	end,
+      expand = function(args)
+      	vim.fn["vsnip#anonymous"](args.body)
+      end,
   },
   mapping = {
-	['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
   },
   sources = {
     { name = "nvim_lsp" },
-	{ name = "buffer" },
+    { name = "buffer" },
   }
 })
 
@@ -71,11 +71,15 @@ local lspconfig = require'lspconfig'
 lspconfig.pylsp.setup{
   on_attach = on_attach,
   settings = {
+    -- https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json
     pylsp = {
       plugins = {
         flake8 = {
           enabled = true,
-        }
+        },
+        pylint = {
+          enabled = true,
+        },
       }
     }
   }
