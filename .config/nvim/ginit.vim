@@ -2,14 +2,13 @@
 set mouse=a
 set mousehide
 
-" GuiLinespace 1
 " Set Editor Font
 if exists(':GuiFont')
     " Use GuiFont! to ignore font errors
-    GuiFont! Iosevka SS04 Extended:h8
+    GuiFont! Iosevka Medium:h10
 endif
 
-" Disable GUI Tabline
+" Enable GUI Tabline
 if exists(':GuiTabline')
     GuiTabline 1
 endif
@@ -23,9 +22,3 @@ endif
 if exists(':GuiScrollBar')
     GuiScrollBar 1
 endif
-
-" Right Click Context Menu (Copy-Cut-Paste)
-nnoremap <silent><RightMouse> :call GuiShowContextMenu()<CR>
-inoremap <silent><RightMouse> <Esc>:call GuiShowContextMenu()<CR>
-xnoremap <silent><RightMouse> :call GuiShowContextMenu()<CR>gv
-snoremap <silent><RightMouse> <C-G>:call GuiShowContextMenu()<CR>gv
