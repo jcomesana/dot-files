@@ -26,7 +26,6 @@ call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
 Plug 'lewis6991/impatient.nvim'
-Plug 'dense-analysis/ale'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
@@ -36,7 +35,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/vim-vsnip'
-Plug 'nathunsmitty/nvim-ale-diagnostic'
+Plug 'folke/trouble.nvim'
 Plug 'folke/lsp-colors.nvim'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gclog', 'Gllog', 'Gcd', 'Gedit', 'Gsplit', 'Gvsplit', 'Gread', 'Gwrite', 'Gdiffsplit', 'Gvdiffsplit', 'GBrowse', 'GDelete'] }
@@ -305,72 +304,6 @@ map <F7> :BufstopFast<CR>
 map <leader>b :Bufstop<CR>             " get a visual on the buffers
 map <leader>w :BufstopPreview<CR>      " switch files by moving inside the window
 
-" Plugin ALE
-let g:ale_linters = {
-\   'cpp': ['clang'],
-\}
-let g:ale_fixers = {
-    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \ 'python': ['autopep8'],
-    \ 'c': ['clang-format'],
-    \ 'cpp': ['clang-format']}
-let g:ale_completion_enabled = 0
-let g:ale_set_balloons = 1
-let g:ale_set_highlights = 1
-let g:ale_set_signs = 1
-let g:ale_disable_lsp = 1
-let g:ale_warn_about_trailing_whitespace = 1
-let s:python_max_len = 200
-" when to lint
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_delay = 500
-let g:ale_lint_on_enter = 1
-let g:ale_sign_column_always = 0
-" list
-let g:ale_open_list = 0
-" python
-let g:ale_python_flake8_executable = g:python3_host_prog
-let g:ale_python_flake8_options = '-m flake8 --max-line-length='.s:python_max_len
-let g:ale_python_pylint_executable = g:python3_host_prog
-let g:ale_python_pylint_options = '-m pylint'
-let g:ale_python_mypy_options = '--ignore-missing-imports'
-" C++
-let g:ale_cpp_clang_executable = 'clang++'
-let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++17'
-" movement
-nmap <silent> <M-k> <Plug>(ale_previous_wrap)
-nmap <silent> <M-j> <Plug>(ale_next_wrap)
-" status format
-let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
-" Copied from
-" https://github.com/maximbaz/lightline-ale/blob/master/autoload/lightline/ale.vim
-function! s:IsLinterAvailable() abort
-  return get(g:, 'ale_enabled', 0) == 1
-    \ && getbufvar(bufnr(''), 'ale_enabled', 1)
-    \ && getbufvar(bufnr(''), 'ale_linted', 0) > 0
-    \ && ale#engine#IsCheckingBuffer(bufnr('')) == 0
-endfunction
-" Function for ALE copied from the docs
-function! LinterStatus() abort
-    if !s:IsLinterAvailable()
-        return ''
-    endif
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_warnings = l:counts.warning + l:counts.style_warning
-
-    return l:counts.total == 0 ? '[Ok] | ' : printf(
-    \   '[E:%d, W:%d, I:%d] | ',
-    \   all_errors,
-    \   all_warnings,
-    \   l:counts.info
-    \)
-endfunction
-
-
 " Plugin vista
 nnoremap <silent> <F12> :Vista!!<CR>
 let g:vista_sidebar_width=45
@@ -410,6 +343,14 @@ nnoremap <leader>fb :W<CR>
 nnoremap <leader>fl :Lines<CR>
 nnoremap <leader>fc :Commits<CR>
 
+" Plugin trouble.nvim
+nnoremap <leader>xt <cmd>TroubleToggle<cr>
+nnoremap <leader>xw <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
+nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
+nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
+nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
+nnoremap <leader>xR <cmd>TroubleToggle lsp_references<cr>
+
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
 let g:gruvbox_plugin_hi_groups = 1
@@ -418,7 +359,7 @@ let g:gruvbox_plugin_hi_groups = 1
 " left side
 set statusline=%#Visual#%{StatuslineMode()}%*\ \|\ %t\ %r%m
 " right side
-set statusline+=%=%{LinterStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
+set statusline+=%=%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
 
 function! StatuslineMode()
     let l:mode=mode()

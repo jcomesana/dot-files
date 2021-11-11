@@ -104,17 +104,6 @@ lspconfig.groovyls.setup{
   }
 }
 
--- Plugin nvim-ale-diagnostic
-require("nvim-ale-diagnostic")
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = false,
-    virtual_text = { spacing = 4 },
-    signs = true,
-    update_in_insert = false,
-  }
-)
-
 -- Plugin lsp_signature.nvim
 require "lsp_signature".setup({
   bind = true, -- This is mandatory, otherwise border config won't get registered.
@@ -124,6 +113,22 @@ require "lsp_signature".setup({
   hint_enable = false,
   hint_prefix = "» ",
 })
+
+-- Plugin trouble.nvim
+require("trouble").setup {
+  icons = false,
+  fold_open = "-", -- icon used for open folds
+  fold_closed = "+", -- icon used for closed folds
+  indent_lines = false, -- add an indent guide below the fold icons
+  signs = {
+    -- icons / text used for a diagnostic
+    error = "error",
+    warning = "warn",
+    hint = "hint",
+    information = "info"
+  },
+  use_lsp_diagnostic_signs = true -- enabling this will use the signs defined in your lsp client
+}
 
 -- Plugin nvim-treesitter
 -- require'nvim-treesitter.configs'.setup {
