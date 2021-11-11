@@ -125,7 +125,11 @@ set noerrorbells    " no flash/beep on errors
 set encoding=utf8
 set splitbelow      " horizontal splits below
 set splitright      " vertical splits to the right
-set clipboard=unnamed " use system clipboard
+if has('unnamedplus')
+set clipboard=unnamedplus
+else
+set clipboard=unnamed
+endif
 set timeoutlen=2000 " longer time to react to a control key
 set display="lastline,msgsep"
 set sidescroll=1
