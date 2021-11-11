@@ -29,7 +29,6 @@ Plug 'lewis6991/impatient.nvim'
 Plug 'dense-analysis/ale'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
-Plug 'scrooloose/nerdcommenter'
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
@@ -41,6 +40,7 @@ Plug 'nathunsmitty/nvim-ale-diagnostic'
 Plug 'folke/lsp-colors.nvim'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gclog', 'Gllog', 'Gcd', 'Gedit', 'Gsplit', 'Gvsplit', 'Gread', 'Gwrite', 'Gdiffsplit', 'Gvdiffsplit', 'GBrowse', 'GDelete'] }
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
