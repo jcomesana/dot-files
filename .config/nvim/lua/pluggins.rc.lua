@@ -97,6 +97,7 @@ lspconfig.groovyls.setup{
   cmd = { "java", "-jar", groovy_lsp_jar_path },
   filetypes = { "groovy", "Jenkinsfile" },
   root_dir = lspconfig.util.root_pattern('.git', '.ignore'),
+  single_file_mode = true,
   settings = {
     groovy = {
       classpath = { groovy_lib },
