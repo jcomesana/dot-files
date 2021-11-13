@@ -269,8 +269,8 @@ command CDC cd %:p:h
 let g:netrw_liststyle=3
 
 " ---- groovy settings ---
-autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ **/%:t
-autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ **/%:t
+autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ \"**/%:t\"
+autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ \"**/%:t\"
 
 " Disable some providers
 let g:loaded_python_provider = 0
