@@ -271,8 +271,8 @@ command CDC cd %:p:h
 let g:netrw_liststyle=3
 
 " ---- groovy settings ---
-autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ \"**/%:t\"
-autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --noserver\ --files\ \"**/%:t\"
+autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --files\ \"**/%:t\"
+autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --files\ \"**/%:t\"
 
 " ---- Plugins ----
 let s:python_binary = 'python3'

@@ -7,7 +7,7 @@ cmp.setup({
       end,
   },
   mapping = {
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping({ i = cmp.mapping.confirm({ select = true }), c = cmp.mapping.confirm({ select = false }), })
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
@@ -24,7 +24,7 @@ require('nvim-autopairs').setup{
 }
 
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done())
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
 -- Plugin nvim-lspconfig
 vim.cmd [[autocmd ColorScheme * highlight NormalFloat guibg=#1f2335]]
