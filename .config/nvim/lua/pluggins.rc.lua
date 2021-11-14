@@ -7,7 +7,7 @@ cmp.setup({
       end,
   },
   mapping = {
-    ['<CR>'] = cmp.mapping({ i = cmp.mapping.confirm({ select = true }), c = cmp.mapping.confirm({ select = false }), })
+    ['<CR>'] = cmp.mapping({ i = cmp.mapping.confirm({ select = true }), c = cmp.mapping.confirm({ select = false }), }),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
