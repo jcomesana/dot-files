@@ -258,12 +258,11 @@ function! s:LargeFile()
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
 
-" Abbreviation for make|copen
-cabbrev mc :make<bar>copen<CR>
-
 " Custom commands
 " CDC = Change to Directory of Current file
 command CDC cd %:p:h
+" Abbreviation for make|copen
+command MC :silent make<bar>copen
 
 " ---- netrw settings ----
 let g:netrw_liststyle=3
