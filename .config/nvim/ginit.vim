@@ -5,7 +5,11 @@ set mousehide
 " Set Editor Font
 if exists(':GuiFont')
     " Use GuiFont! to ignore font errors
-    GuiFont! Iosevka Medium:h10
+    if !empty($NVIM_GUI_FONT)
+        execute 'GuiFont! ' . $NVIM_GUI_FONT
+    else
+        GuiFont! Iosevka Medium:h10
+    endif
 endif
 
 " Enable GUI Tabline
