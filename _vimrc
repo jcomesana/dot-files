@@ -362,6 +362,7 @@ endfunction
 
 " Plugin asyncomplete
 let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_min_chars = 3
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
