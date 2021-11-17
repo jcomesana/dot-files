@@ -76,6 +76,9 @@ end
 local lspconfig = require'lspconfig'
 lspconfig.pylsp.setup{
   on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
   settings = {
     -- https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json
     pylsp = {
@@ -91,7 +94,12 @@ lspconfig.pylsp.setup{
   }
 }
 
-lspconfig.clangd.setup{ on_attach = on_attach, }
+lspconfig.clangd.setup{
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+}
 
 local groovy_lsp_jar_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), "extras", "groovy-language-server-all.jar")
 local groovy_lib = ''
@@ -100,6 +108,9 @@ if vim.env.GROOVY_HOME then
 end
 lspconfig.groovyls.setup{
   on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
   cmd = { "java", "-jar", groovy_lsp_jar_path },
   filetypes = { "groovy", "Jenkinsfile" },
   root_dir = lspconfig.util.root_pattern('.git', '.ignore'),
