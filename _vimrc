@@ -36,12 +36,14 @@ call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
 Plug 'dense-analysis/ale'
-Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'omgitsmoe/asyncomplete-buffer.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'rhysd/vim-lsp-ale'
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'ncm2/ncm2-vim-lsp'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-bufword'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
@@ -254,8 +256,6 @@ function! s:LargeFile()
     setlocal noundofile
     " disable swap file
     setlocal noswapfile
-    " disable asyncomplete
-    let b:asyncomplete_enable = 2
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
@@ -291,6 +291,22 @@ nnoremap <leader>fc :Commits<CR>
 map <F7> :BufstopFast<CR>
 map <leader>b :Bufstop<CR>             " get a visual on the buffers
 map <leader>w :BufstopPreview<CR>      " switch files by moving inside the window
+
+" Plugin ncm2
+autocmd BufEnter * call ncm2#enable_for_buffer()
+" IMPORTANT: :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+" suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
+set shortmess+=c
+" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+inoremap <c-c> <ESC>
+" When the <Enter> key is pressed while the popup menu is visible, it only
+" hides the menu. Use this mapping to close the menu and also start a new
+" line.
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+" Use <TAB> to select the popup menu:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Plugin ALE
 let g:ale_linters = {
@@ -360,21 +376,6 @@ function! LinterStatus() abort
     \)
 endfunction
 
-" Plugin asyncomplete
-let g:asyncomplete_auto_popup = 0
-let g:asyncomplete_min_chars = 0
-
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 " Plugin vim-lsp
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
@@ -411,7 +412,7 @@ let g:lsp_signs_warning = {'text': 'w'}
 let g:lsp_signs_hint = {'text': '*'}
 let g:lsp_signs_information = {'text': 'i'}
 
-" Plugin asyncomplete-lsp.vim
+" Plugin vim-lsp
 if executable('pylsp')
     " pip install python-language-server
     au User lsp_setup call lsp#register_server({
@@ -443,25 +444,6 @@ if executable('java') && isdirectory(s:extrasdir)
         \ 'workspace_config': {'groovy': {'classpath': [s:groovy_lib]} },
         \ })
 endif
-
-" Plugin asyncomplete-buffer.vim
-call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-    \ 'name': 'buffer',
-    \ 'allowlist': ['*'],
-    \ 'blocklist': ['go'],
-    \ 'completor': function('asyncomplete#sources#buffer#completor'),
-    \ 'config': {
-    \    'max_buffer_size': 5000000,
-    \  },
-    \ }))
-
-" Plugin asyncomplete-file.vim
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'allowlist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
 
 " Plugin vista
 nnoremap <silent> <F12> :Vista!!<CR>
