@@ -38,12 +38,11 @@ call plug#begin(s:editor_root.'/plugged')
 Plug 'dense-analysis/ale'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'rhysd/vim-lsp-ale'
-Plug 'ncm2/ncm2'
+Plug 'Shougo/deoplete.nvim'
+Plug 'ackyshake/VimCompletesMe'
+Plug 'lighttiger2505/deoplete-vim-lsp'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'ncm2/ncm2-vim-lsp'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-bufword'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
@@ -258,6 +257,8 @@ function! s:LargeFile()
     setlocal noswapfile
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
+    " disable deoplete
+    let g:deoplete#enable_at_startup = 0
 endfunction
 
 " Custom commands
@@ -292,21 +293,14 @@ map <F7> :BufstopFast<CR>
 map <leader>b :Bufstop<CR>             " get a visual on the buffers
 map <leader>w :BufstopPreview<CR>      " switch files by moving inside the window
 
-" Plugin ncm2
-autocmd BufEnter * call ncm2#enable_for_buffer()
-" IMPORTANT: :help Ncm2PopupOpen for more information
-set completeopt=noinsert,menuone,noselect
-" suppress the annoying 'match x of y', 'The only match' and 'Pattern not found' messages
-set shortmess+=c
-" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-inoremap <c-c> <ESC>
-" When the <Enter> key is pressed while the popup menu is visible, it only
-" hides the menu. Use this mapping to close the menu and also start a new
-" line.
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Plugin deoplete
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option({
+    \ 'smart_case': v:true,
+    \ 'num_processes': 0,
+    \ 'max_list': 125,
+    \ 'min_pattern_length': 3,
+    \ })
 
 " Plugin ALE
 let g:ale_linters = {
