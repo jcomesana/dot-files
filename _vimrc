@@ -369,6 +369,7 @@ function! LinterStatus() abort
     \   l:counts.info
     \)
 endfunction
+nnoremap <leader>xt <cmd>lopen<cr>
 
 " Plugin vim-lsp
 function! s:on_lsp_buffer_enabled() abort
