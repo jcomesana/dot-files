@@ -359,6 +359,7 @@ function! LinterStatus() abort
     \   l:counts.info
     \)
 endfunction
+nnoremap <leader>xt <cmd>lopen<cr>
 
 " Plugin asyncomplete
 let g:asyncomplete_auto_popup = 0
