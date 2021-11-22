@@ -89,6 +89,7 @@ lspconfig.pylsp.setup{
       plugins = {
         flake8 = {
           enabled = true,
+          maxLineLength = 200,
         },
         pylint = {
           enabled = true,
