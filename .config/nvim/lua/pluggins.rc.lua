@@ -14,7 +14,10 @@ cmp.setup({
   },
   sources = {
     { name = "nvim_lsp" },
-    { name = "buffer" },
+    { name = "buffer",
+              get_bufnrs = function()
+                return vim.api.nvim_list_bufs()
+              end },
     { name = "omni" },
   }
 })
