@@ -53,7 +53,7 @@ local on_attach = function(client, bufnr)
     virtual_text = true,
     signs = true,
     underline = false,
-    update_in_insert = true,
+    update_in_insert = false,
   })
 
   require "lsp_signature".on_attach()
