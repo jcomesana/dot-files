@@ -72,6 +72,7 @@ Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'arzg/vim-sh'
 Plug 'MTDL9/vim-log-highlighting'
 " color themes
+Plug 'AhmedAbdulrahman/aylin.vim' | call add(s:colorschemes_list, 'aylin')
 Plug 'ajmwagar/vim-dues' | call add(s:colorschemes_list, 'deus')
 Plug 'audibleblink/hackthebox.vim' | call add(s:colorschemes_list, 'hackthebox')
 Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
@@ -81,7 +82,7 @@ Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
 Plug 'joshdick/onedark.vim' | call add(s:colorschemes_list, 'onedark')
 Plug 'lifepillar/vim-gruvbox8' | call add(s:colorschemes_list, 'gruvbox8_hard')
 Plug 'mhartington/oceanic-next' | call add(s:colorschemes_list, 'OceanicNext')
-Plug 'raphamorim/lucario' | call add(s:colorschemes_list, 'aurora')
+Plug 'raphamorim/lucario' | call add(s:colorschemes_list, 'lucario')
 Plug 'ray-x/aurora' | call add(s:colorschemes_list, 'aurora')
 Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
 Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
