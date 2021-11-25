@@ -28,6 +28,7 @@ cmp.setup({
 -- Plugin nvim-autopairs
 require('nvim-autopairs').setup{
   enable_afterquote = true,
+  fast_wrap = {},
 }
 
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
