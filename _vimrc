@@ -72,7 +72,6 @@ Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'arzg/vim-sh'
 Plug 'MTDL9/vim-log-highlighting'
 " color themes
-Plug 'AhmedAbdulrahman/aylin.vim' | call add(s:colorschemes_list, 'aylin')
 Plug 'ajmwagar/vim-dues' | call add(s:colorschemes_list, 'deus')
 Plug 'audibleblink/hackthebox.vim' | call add(s:colorschemes_list, 'hackthebox')
 Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
