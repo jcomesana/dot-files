@@ -141,15 +141,6 @@ require "lsp_signature".setup({
   hint_prefix = "» ",
 })
 
--- Plugin telescope
-require "telescope".setup {
-  defaults = {
-    preview = {
-      check_mime_type = false
-    },
-  }
-}
-
 -- Plugin trouble.nvim
 -- require("trouble").setup {
 --   icons = false,
