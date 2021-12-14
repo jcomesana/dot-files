@@ -290,12 +290,12 @@ let g:python3_host_prog = 'python3'
 let g:vim_json_syntax_conceal = 0
 
 " Plugin telescope
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<CR>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<CR>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<CR>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<CR>
-nnoremap <leader>fl <cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>
-nnoremap <leader>fc <cmd>lua require('telescope.builtin').git_commits()<CR>
+" nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files({ hidden=true, })<CR>
+" nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<CR>
+" nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<CR>
+" nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<CR>
+" nnoremap <leader>fl <cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>
+" nnoremap <leader>fc <cmd>lua require('telescope.builtin').git_commits()<CR>
 
 " Plugin bufstop
 map <F7> :BufstopFast<CR>
