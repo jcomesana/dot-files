@@ -1,9 +1,9 @@
 -- Plugin nvim-cmp
-local cmp = require'cmp'
+local cmp = require('cmp')
 cmp.setup({
   snippet = {
       expand = function(args)
-      	vim.fn["vsnip#anonymous"](args.body)
+      	vim.fn['vsnip#anonymous'](args.body)
       end,
   },
   mapping = {
@@ -13,15 +13,15 @@ cmp.setup({
     ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
   },
   sources = {
-    { name = "nvim_lsp" },
-    { name = "buffer",
+    { name = 'nvim_lsp' },
+    { name = 'buffer',
       option = {
         get_bufnrs = function()
           return vim.api.nvim_list_bufs()
         end 
       }
     },
-    { name = "omni" },
+    { name = 'omni' },
   }
 })
 
@@ -51,8 +51,8 @@ local border = {
 }
 
 local on_attach = function(client, bufnr)
-  vim.lsp.handlers["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border})
-  vim.lsp.handlers["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border})
+  vim.lsp.handlers['textDocument/hover'] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border})
+  vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border})
   vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = true,
     signs = true,
@@ -60,7 +60,7 @@ local on_attach = function(client, bufnr)
     update_in_insert = false,
   })
 
-  require "lsp_signature".on_attach()
+  require 'lsp_signature'.on_attach()
 
   local opts = { noremap=true, silent=true }
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -81,7 +81,7 @@ end
 
 -- clients
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
-local lspconfig = require'lspconfig'
+local lspconfig = require 'lspconfig'
 lspconfig.pylsp.setup{
   on_attach = on_attach,
   flags = {
@@ -120,8 +120,8 @@ lspconfig.groovyls.setup{
   flags = {
     debounce_text_changes = 150,
   },
-  cmd = { "java", "-jar", groovy_lsp_jar_path },
-  filetypes = { "groovy", "Jenkinsfile" },
+  cmd = { 'java', '-jar', groovy_lsp_jar_path },
+  filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.git', '.ignore'),
   single_file_mode = true,
   settings = {
@@ -132,14 +132,35 @@ lspconfig.groovyls.setup{
 }
 
 -- Plugin lsp_signature.nvim
-require "lsp_signature".setup({
+require 'lsp_signature'.setup({
   bind = true, -- This is mandatory, otherwise border config won't get registered.
   handler_opts = {
-    border = "single"
+    border = 'single'
   },
   hint_enable = false,
-  hint_prefix = "» ",
+  hint_prefix = '» ',
 })
+
+-- Plugin telescope
+require 'telescope'.setup {
+  defaults = {
+    preview = {
+      check_mime_type = false
+    },
+  }
+}
+
+local map = vim.api.nvim_set_keymap
+local default_map_opts = {noremap = true}
+map('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files({ hidden=true, })<CR>", default_map_opts)
+map('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<CR>", default_map_opts)
+map('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<CR>", default_map_opts)
+map('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<CR>", default_map_opts)
+map('n', '<leader>fl', "<cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>", default_map_opts)
+map('n', '<leader>fc', "<cmd>lua require('telescope.builtin').git_commits()<CR>", default_map_opts)
+map('n', '<leader>fR', "<cmd>lua require('telescope.builtin').lsp_references()<CR>", default_map_opts)
+map('n', '<leader>ft', "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", default_map_opts)
+map('n', '<leader>fd', "<cmd>lua require('telescope.builtin').diagnostics()<CR>", default_map_opts)
 
 -- Plugin trouble.nvim
 -- require("trouble").setup {
