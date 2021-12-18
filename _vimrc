@@ -97,9 +97,11 @@ set langnoremap
 set nolangremap
 
 " ---- Spaces and tabs ----
-set tabstop=4
+set tabstop=8
+set shiftwidth=4
 set softtabstop=4
 set smarttab
+set expandtab
 
 " ---- UI Config ----
 set guioptions=grdMe
