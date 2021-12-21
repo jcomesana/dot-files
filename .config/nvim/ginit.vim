@@ -8,7 +8,7 @@ if exists(':GuiFont')
     if !empty($NVIM_GUI_FONT)
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
-        GuiFont! Iosevka Medium:h10
+        GuiFont! Fira Code Retina:h9
     endif
 endif
 

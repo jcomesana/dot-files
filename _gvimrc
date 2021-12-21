@@ -1,10 +1,12 @@
 " ---- Font ----
 if has('win32')
     " set guifont=DejaVu_Sans_Mono:h8:cANSI
-    set guifont=Iosevka_SS04_Extended:h8:cANSI:qDRAFT
+    " set guifont=Iosevka_SS04_Extended:h8:cANSI:qDRAFT
+    set guifont=Fira_Code_Retina:h9:W450:cANSI:qDRAFT
 else
-    "set guifont=DejaVu\ Sans\ Mono\ Book\ 10
-    set guifont=Iosevka\ Medium\ 10
+    " set guifont=DejaVu\ Sans\ Mono\ Book\ 10
+    " set guifont=Iosevka\ Medium\ 10
+    set guifont=Fira\ Code\ weight=453\ 9
     set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~
 endif
 
