@@ -3,12 +3,14 @@ if has('win32')
     " set guifont=DejaVu_Sans_Mono:h8:cANSI
     " set guifont=Iosevka_SS04_Extended:h8:cANSI:qDRAFT
     " set guifont=Fira_Code_Retina:h9:W450:cANSI:qDRAFT
-    set guifont=Fantasque_Sans_Mono:h10:cANSI:qDRAFT
+    " set guifont=Fantasque_Sans_Mono:h10:cANSI:qDRAFT
+    set guifont=Victor_Mono:h9:cANSI:qDRAFT
 else
     " set guifont=DejaVu\ Sans\ Mono\ Book\ 10
     " set guifont=Iosevka\ Medium\ 10
     " set guifont=Fira\ Code\ weight=453\ 9
-    set guifont=Fantasque\ Sans\ Mono\ 9
+    " set guifont=Fantasque\ Sans\ Mono\ 9
+    set guifont=Victor\ Mono\ 9
     set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~
 endif
 
