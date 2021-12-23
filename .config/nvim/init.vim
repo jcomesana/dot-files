@@ -25,7 +25,7 @@ let s:colorschemes_list = []
 call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
-Plug 'lewis6991/impatient.nvim'
+" Plug 'lewis6991/impatient.nvim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
@@ -45,8 +45,8 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
-Plug 'junegunn/fzf', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
-Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
 " Plug 'nvim-treesitter/nvim-treesitter'
@@ -84,12 +84,13 @@ Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
 Plug 'sonph/onehalf', { 'rtp': 'vim' } | call add(s:colorschemes_list, 'onehalfdark')
 Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
+Plug 'rebelot/kanagawa.nvim' | call add(s:colorschemes_list, 'kanagawa')
 
 call plug#end()
 " ---- End vim-plug ---
 
 " Plugin impatient
-lua require('impatient')
+" lua require('impatient')
 
 " ---- Editing text ----
 set nojoinspaces
