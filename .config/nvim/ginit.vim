@@ -8,7 +8,7 @@ if exists(':GuiFont')
     if !empty($NVIM_GUI_FONT)
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
-        GuiFont! Fantasque Sans Mono:h10
+        GuiFont! Victor Mono:h9
     endif
 endif
 
