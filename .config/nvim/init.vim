@@ -45,8 +45,10 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
+Plug 'junegunn/fzf', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
+Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
 " Plug 'nvim-treesitter/nvim-treesitter'
@@ -291,6 +293,14 @@ let g:python3_host_prog = 'python3'
 
 " Plugin vim-json
 let g:vim_json_syntax_conceal = 0
+
+" Plugin fzf
+nnoremap <leader>ff :FZF<CR>
+nnoremap <leader>fg :Rg<CR>
+nnoremap <leader>fa :Ag<CR>
+nnoremap <leader>fb :W<CR>
+nnoremap <leader>fl :Lines<CR>
+nnoremap <leader>fc :Commits<CR>
 
 " Plugin bufstop
 map <F7> :BufstopFast<CR>
