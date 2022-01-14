@@ -165,7 +165,8 @@ def verbose_mkdir(path):
     if path.exists():
         logging.debug('  folder %s already exists', path)
     else:
-        logging.info('  creating folder %s')
+        logging.info('  creating folder %s', path)
+        path.mkdir(parents=True, exist_ok=True)
 
 
 if __name__ == '__main__':
