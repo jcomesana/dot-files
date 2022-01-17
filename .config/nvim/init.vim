@@ -77,6 +77,7 @@ Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'emb
 Plug 'franbach/miramare' | call add(s:colorschemes_list, 'miramare')
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
 Plug 'joshdick/onedark.vim' | call add(s:colorschemes_list, 'onedark')
+Plug 'KeitaNakamura/neodark.vim' | call add(s:colorschemes_list, 'neodark')
 Plug 'lifepillar/vim-gruvbox8' | call add(s:colorschemes_list, 'gruvbox8_hard')
 Plug 'mhartington/oceanic-next' | call add(s:colorschemes_list, 'OceanicNext')
 Plug 'raphamorim/lucario' | call add(s:colorschemes_list, 'lucario')
