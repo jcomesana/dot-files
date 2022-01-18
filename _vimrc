@@ -72,7 +72,6 @@ Plug 'arzg/vim-sh'
 Plug 'MTDL9/vim-log-highlighting'
 " color themes
 Plug 'ajmwagar/vim-dues' | call add(s:colorschemes_list, 'deus')
-Plug 'audibleblink/hackthebox.vim' | call add(s:colorschemes_list, 'hackthebox')
 Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
 Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
 Plug 'franbach/miramare' | call add(s:colorschemes_list, 'miramare')
