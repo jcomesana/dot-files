@@ -231,7 +231,7 @@ function! s:ChooseColorScheme()
     execute 'colorscheme ' . s:colorschemes_list[l:color_index]
 endfunction
 
-autocmd VimEnter * call s:ChooseColorScheme()
+call s:ChooseColorScheme()
 
 " ---- Extra functionallity ----
 " to visualize manpages
