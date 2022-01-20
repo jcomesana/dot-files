@@ -225,8 +225,7 @@ function! s:ChooseColorScheme()
     let l:color_index =  rand(l:seed) % len(s:colorschemes_list)
     execute 'colorscheme ' . s:colorschemes_list[l:color_index]
 endfunction
-
-autocmd VimEnter * call s:ChooseColorScheme()
+call s:ChooseColorScheme()
 
 " ---- Extra functionallity ----
 " to visualize manpages
