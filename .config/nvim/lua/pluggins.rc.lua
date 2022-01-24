@@ -142,25 +142,25 @@ require 'lsp_signature'.setup({
 })
 
 -- Plugin telescope
--- require 'telescope'.setup {
---   defaults = {
---     preview = {
---       check_mime_type = false
---     },
---   }
--- }
+require 'telescope'.setup {
+  defaults = {
+    preview = {
+      check_mime_type = false
+    },
+  }
+}
 
--- local map = vim.api.nvim_set_keymap
--- local default_map_opts = {noremap = true}
--- map('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files({ hidden=true, })<CR>", default_map_opts)
--- map('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<CR>", default_map_opts)
--- map('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<CR>", default_map_opts)
--- map('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<CR>", default_map_opts)
--- map('n', '<leader>fl', "<cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>", default_map_opts)
--- map('n', '<leader>fc', "<cmd>lua require('telescope.builtin').git_commits()<CR>", default_map_opts)
--- map('n', '<leader>fR', "<cmd>lua require('telescope.builtin').lsp_references()<CR>", default_map_opts)
--- map('n', '<leader>ft', "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", default_map_opts)
--- map('n', '<leader>fd', "<cmd>lua require('telescope.builtin').diagnostics()<CR>", default_map_opts)
+local map = vim.api.nvim_set_keymap
+local default_map_opts = {noremap = true}
+map('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files({ hidden=true, })<CR>", default_map_opts)
+map('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<CR>", default_map_opts)
+map('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<CR>", default_map_opts)
+map('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<CR>", default_map_opts)
+map('n', '<leader>fl', "<cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>", default_map_opts)
+map('n', '<leader>fc', "<cmd>lua require('telescope.builtin').git_commits()<CR>", default_map_opts)
+map('n', '<leader>fR', "<cmd>lua require('telescope.builtin').lsp_references()<CR>", default_map_opts)
+map('n', '<leader>ft', "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", default_map_opts)
+map('n', '<leader>fd', "<cmd>lua require('telescope.builtin').diagnostics()<CR>", default_map_opts)
 
 -- Plugin trouble.nvim
 -- require("trouble").setup {
