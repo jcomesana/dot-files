@@ -45,10 +45,9 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
+Plug 'liuchengxu/vim-clap', { 'do': { -> clap#installer#force_download() } }
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
-Plug 'junegunn/fzf', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
-Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
 " Plug 'nvim-treesitter/nvim-treesitter'
@@ -294,17 +293,30 @@ let g:python3_host_prog = 'python3'
 " Plugin vim-json
 let g:vim_json_syntax_conceal = 0
 
-" Plugin fzf
-nnoremap <leader>ff :FZF<CR>
+" Plugin vim-clap
+command! Files :Clap files
+command! Buffers :Clap buffers
+command! Tags :Clap proj_tags
+command! Buffers :Clap buffers
+command! Gdiff :Clap git_diff_files
+command! Jumps :Clap jumps
+command! Yanks :Clap yanks
+command! Windows :Clap windows
+command! Rg :Clap grep ++query<cword>
+command! Ag :Clap grep2 ++query<cword>
+command! Lines :Clap lines
+command! Commits :Clap bcommits
+
+nnoremap <leader>ff :Files<CR>
 nnoremap <leader>fg :Rg<CR>
 nnoremap <leader>fa :Ag<CR>
-nnoremap <leader>fb :W<CR>
+nnoremap <leader>fb :Windows<CR>
 nnoremap <leader>fl :Lines<CR>
 nnoremap <leader>fc :Commits<CR>
+nnoremap <leader>fe :Clap filer<CR>
 
-let g:fzf_layout = {'up':'~94%', 'window': { 'width': 0.9, 'height': 0.9,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
-let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline -i'
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob "!node_modules" --glob "!.git"'
+let g:clap_provider_grep_executable='rg'
+let g:clap_provider_grep_opts='-H --no-heading --vimgrep --smart-case --hidden -g "!.git/"'
 
 " Plugin bufstop
 map <F7> :BufstopFast<CR>
