@@ -449,6 +449,14 @@ if executable('java') && isdirectory(s:extrasdir)
         \ })
 endif
 
+if executable('npm-groovy-lint')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'npm-groovy-lint',
+        \ 'cmd': {server_info->[s:extrasdir.'/efm-langserver/efm-langserver', '-c', s:extrasdir.'/efm-langserver/config.yaml']},
+        \ 'allowlist': ['groovy', 'Jenkinsfile']
+        \ })
+endif
+
 " Plugin asyncomplete-buffer.vim
 call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
     \ 'name': 'buffer',
