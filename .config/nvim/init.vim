@@ -36,7 +36,7 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-omni'
-" Plug 'folke/trouble.nvim'
+Plug 'folke/trouble.nvim'
 Plug 'dense-analysis/ale'
 Plug 'folke/lsp-colors.nvim'
 Plug 'ray-x/lsp_signature.nvim'
@@ -312,73 +312,73 @@ map <leader>b :Bufstop<CR>             " get a visual on the buffers
 map <leader>w :BufstopPreview<CR>      " switch files by moving inside the window
 
 " Plugin ALE
-let g:ale_linters = {
-\   'python': ['vim-lsp', 'pylint', 'flake8'],
-\   'cpp': ['vim-lsp', 'clang'],
-\   'groovy': ['vim-lsp'],
-\   'Jenkinsfile': ['vim-lsp'],
-\}
-let g:ale_fixers = {
-    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \ 'python': ['autopep8'],
-    \ 'c': ['clang-format'],
-    \ 'cpp': ['clang-format']}
-let g:ale_completion_enabled = 0
-let g:ale_set_balloons = 1
-let g:ale_set_highlights = 1
-let g:ale_set_signs = 1
-let g:ale_disable_lsp = 1
-let g:ale_warn_about_trailing_whitespace = 1
-let s:python_max_len = 200
-" when to lint
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_delay = 500
-let g:ale_lint_on_enter = 1
-let g:ale_sign_column_always = 0
-" list
-let g:ale_open_list = 0
-" python
-let g:ale_python_flake8_executable = g:python3_host_prog
-let g:ale_python_flake8_options = '-m flake8 --max-line-length='.s:python_max_len
-let g:ale_python_pylint_executable = g:python3_host_prog
-let g:ale_python_pylint_options = '-m pylint'
-let g:ale_python_mypy_options = '--ignore-missing-imports'
-" C++
-let g:ale_cpp_clang_executable = 'clang++'
-let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++17'
-" movement
-nmap <silent> <M-k> <Plug>(ale_previous_wrap)
-nmap <silent> <M-j> <Plug>(ale_next_wrap)
-" status format
-let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
-" Copied from
-" https://github.com/maximbaz/lightline-ale/blob/master/autoload/lightline/ale.vim
-function! s:IsLinterAvailable() abort
-  return get(g:, 'ale_enabled', 0) == 1
-    \ && getbufvar(bufnr(''), 'ale_enabled', 1)
-    \ && getbufvar(bufnr(''), 'ale_linted', 0) > 0
-    \ && ale#engine#IsCheckingBuffer(bufnr('')) == 0
-endfunction
-" Function for ALE copied from the docs
-function! LinterStatus() abort
-    if !s:IsLinterAvailable()
-        return ''
-    endif
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_warnings = l:counts.warning + l:counts.style_warning
-
-    return l:counts.total == 0 ? '[Ok] | ' : printf(
-    \   '[E:%d, W:%d, I:%d] | ',
-    \   all_errors,
-    \   all_warnings,
-    \   l:counts.info
-    \)
-endfunction
-nnoremap <leader>xt <cmd>lopen<cr>
+"let g:ale_linters = {
+"\   'python': ['vim-lsp', 'pylint', 'flake8'],
+"\   'cpp': ['vim-lsp', 'clang'],
+"\   'groovy': ['vim-lsp'],
+"\   'Jenkinsfile': ['vim-lsp'],
+"\}
+"let g:ale_fixers = {
+"    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+"    \ 'python': ['autopep8'],
+"    \ 'c': ['clang-format'],
+"    \ 'cpp': ['clang-format']}
+"let g:ale_completion_enabled = 0
+"let g:ale_set_balloons = 1
+"let g:ale_set_highlights = 1
+"let g:ale_set_signs = 1
+"let g:ale_disable_lsp = 1
+"let g:ale_warn_about_trailing_whitespace = 1
+"let s:python_max_len = 200
+"" when to lint
+"let g:ale_lint_on_save = 1
+"let g:ale_lint_on_text_changed = 'normal'
+"let g:ale_lint_on_insert_leave = 1
+"let g:ale_lint_delay = 500
+"let g:ale_lint_on_enter = 1
+"let g:ale_sign_column_always = 0
+"" list
+"let g:ale_open_list = 0
+"" python
+"let g:ale_python_flake8_executable = g:python3_host_prog
+"let g:ale_python_flake8_options = '-m flake8 --max-line-length='.s:python_max_len
+"let g:ale_python_pylint_executable = g:python3_host_prog
+"let g:ale_python_pylint_options = '-m pylint'
+"let g:ale_python_mypy_options = '--ignore-missing-imports'
+"" C++
+"let g:ale_cpp_clang_executable = 'clang++'
+"let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++17'
+"" movement
+"nmap <silent> <M-k> <Plug>(ale_previous_wrap)
+"nmap <silent> <M-j> <Plug>(ale_next_wrap)
+"" status format
+"let g:ale_statusline_format = ['E:%d', 'W:%d', 'Ok']
+"" Copied from
+"" https://github.com/maximbaz/lightline-ale/blob/master/autoload/lightline/ale.vim
+"function! s:IsLinterAvailable() abort
+"  return get(g:, 'ale_enabled', 0) == 1
+"    \ && getbufvar(bufnr(''), 'ale_enabled', 1)
+"    \ && getbufvar(bufnr(''), 'ale_linted', 0) > 0
+"    \ && ale#engine#IsCheckingBuffer(bufnr('')) == 0
+"endfunction
+"" Function for ALE copied from the docs
+"function! LinterStatus() abort
+"    if !s:IsLinterAvailable()
+"        return ''
+"    endif
+"    let l:counts = ale#statusline#Count(bufnr(''))
+"
+"    let l:all_errors = l:counts.error + l:counts.style_error
+"    let l:all_warnings = l:counts.warning + l:counts.style_warning
+"
+"    return l:counts.total == 0 ? '[Ok] | ' : printf(
+"    \   '[E:%d, W:%d, I:%d] | ',
+"    \   all_errors,
+"    \   all_warnings,
+"    \   l:counts.info
+"    \)
+"endfunction
+"nnoremap <leader>xt <cmd>lopen<cr>
 
 " Plugin vista
 nnoremap <silent> <F12> :Vista!!<CR>
@@ -412,12 +412,12 @@ let g:signify_sign_change            = '*'
 let g:signify_sign_change_delete     = 'd'
 
 " Plugin trouble.nvim
-" nnoremap <leader>xt <cmd>TroubleToggle<cr>
-" nnoremap <leader>xw <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
-" nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
-" nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
-" nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
-" nnoremap <leader>xR <cmd>TroubleToggle lsp_references<cr>
+nnoremap <leader>xt <cmd>TroubleToggle<cr>
+nnoremap <leader>xw <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
+nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
+nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
+nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
+nnoremap <leader>xR <cmd>TroubleToggle lsp_references<cr>
 
 " Color scheme settings
 let g:gruvbox_filetype_hi_groups = 1
@@ -427,7 +427,7 @@ let g:gruvbox_plugin_hi_groups = 1
 " left side
 set statusline=%#Visual#%{StatuslineMode()}%*\ \|\ %t\ %r%m
 " right side
-set statusline+=%=%{LinterStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
+set statusline+=%=%{LspStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
 
 function! StatuslineMode()
     let l:mode=mode()
@@ -448,4 +448,20 @@ function! StatuslineMode()
     elseif l:mode==#"!"
         return "SHELL"
     endif
+endfunction
+
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+      let l:error_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })')
+      let l:warning_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })')
+      let l:info_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })')
+      let l:info_count = l:info_count + luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })')
+      if (l:error_count || l:warning_count || l:info_count)
+        return '[E:' . l:error_count . ', W:' .l:warning_count . ', I:' . l:info_count . '] | '
+      else
+        return '[Ok] | '
+      endif
+  endif
+
+  return ''
 endfunction
