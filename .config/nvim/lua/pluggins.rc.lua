@@ -110,7 +110,9 @@ lspconfig.clangd.setup{
   },
 }
 
-local groovy_lsp_jar_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), "extras", "groovy-language-server-all.jar")
+extras_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), 'extras')
+
+local groovy_lsp_jar_path = lspconfig.util.path.join(extras_path, 'groovy-language-server-all.jar')
 local groovy_lib = ''
 if vim.env.GROOVY_HOME then
   groovy_lib = vim.env.GROOVY_HOME .. '/lib'
@@ -128,6 +130,18 @@ lspconfig.groovyls.setup{
     groovy = {
       classpath = { groovy_lib },
     }
+  }
+}
+
+local efm_command = lspconfig.util.path.join(extras_path, 'efm-langserver', 'efm-langserver')
+local efm_config = lspconfig.util.path.join(extras_path, 'efm-langserver', 'config.yaml')
+lspconfig.efm.setup {
+  init_options = {documentFormatting = true},
+  cmd = {efm_command, '-c', efm_config},
+  rootMarkers = {'.git', '.ignore'},
+  filetypes = {'groovy', 'Jenkinsfile'},
+  single_file_support = true,
+  settings = {
   }
 }
 
