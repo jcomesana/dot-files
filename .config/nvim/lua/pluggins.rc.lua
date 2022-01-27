@@ -110,7 +110,9 @@ lspconfig.clangd.setup{
   },
 }
 
-local groovy_lsp_jar_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), "extras", "groovy-language-server-all.jar")
+extras_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), 'extras')
+
+local groovy_lsp_jar_path = lspconfig.util.path.join(extras_path, 'groovy-language-server-all.jar')
 local groovy_lib = ''
 if vim.env.GROOVY_HOME then
   groovy_lib = vim.env.GROOVY_HOME .. '/lib'
@@ -128,6 +130,18 @@ lspconfig.groovyls.setup{
     groovy = {
       classpath = { groovy_lib },
     }
+  }
+}
+
+local efm_command = lspconfig.util.path.join(extras_path, 'efm-langserver', 'efm-langserver')
+local efm_config = lspconfig.util.path.join(extras_path, 'efm-langserver', 'config.yaml')
+lspconfig.efm.setup {
+  init_options = {documentFormatting = true},
+  cmd = {efm_command, '-c', efm_config},
+  rootMarkers = {'.git', '.ignore'},
+  filetypes = {'groovy', 'Jenkinsfile'},
+  single_file_support = true,
+  settings = {
   }
 }
 
@@ -163,20 +177,20 @@ require 'lsp_signature'.setup({
 -- map('n', '<leader>fd', "<cmd>lua require('telescope.builtin').diagnostics()<CR>", default_map_opts)
 
 -- Plugin trouble.nvim
--- require("trouble").setup {
---   icons = false,
---   fold_open = "-", -- icon used for open folds
---   fold_closed = "+", -- icon used for closed folds
---   indent_lines = false, -- add an indent guide below the fold icons
---   signs = {
---     -- icons / text used for a diagnostic
---     error = "error",
---     warning = "warn",
---     hint = "hint",
---     information = "info"
---   },
---   use_lsp_diagnostic_signs = true -- enabling this will use the signs defined in your lsp client
--- }
+require("trouble").setup {
+  icons = false,
+  fold_open = "-", -- icon used for open folds
+  fold_closed = "+", -- icon used for closed folds
+  indent_lines = false, -- add an indent guide below the fold icons
+  signs = {
+    -- icons / text used for a diagnostic
+    error = "error",
+    warning = "warn",
+    hint = "hint",
+    information = "info"
+  },
+  use_lsp_diagnostic_signs = true -- enabling this will use the signs defined in your lsp client
+}
 
 -- Plugin nvim-treesitter
 -- require'nvim-treesitter.configs'.setup {

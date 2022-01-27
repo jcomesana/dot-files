@@ -1,0 +1,99 @@
+version: 2
+log-level: 1
+root-markers:
+  - .git/
+  - RCS/
+  - SCCS/
+  - CVS/
+  - .git/
+  - .svn/
+  - .hg/
+  - .bzr/
+  - _darcs/
+  - .git
+  - .ignore
+lint-debounce: 5s
+
+# Commands copied from https://github.com/tsuyoshicho/vim-efm-langserver-settings/blob/master/config/efm-langserver/config.yaml
+commands:
+  - title: Reload
+    command: :reload-config
+
+  - title: Editor (notepad)
+    os: windows
+    command: notepad
+    arguments:
+      - '${FILENAME}'
+  - title: Editor (gedit)
+    os: linux
+    command: gedit
+    # Linux no method generic GUI editor open
+    arguments:
+      - '${FILENAME}'
+  - title: Editor (default)
+    os: darwin
+    command: open
+    arguments:
+      - '-e'
+      - '${FILENAME}'
+
+  - title: Filer (explorer)
+    os: windows
+    command: cmd
+    arguments:
+      - '/c'
+      - 'explorer /select,${FILENAME}'
+  - title: Filer (Finder)
+    os: darwin
+    # Linux no method generic filer open
+    command: open
+    arguments:
+      - '-R'
+      - '${FILENAME}'
+
+  - title: Browser (default)
+    os: darwin
+    # Windows no method generic browser open
+    # Linux   no method generic browser open
+    command: open
+    arguments:
+      - '-a'
+      - 'Safari'
+      - '${FILENAME}'
+
+  - title: Open (system default)
+    os: windows
+    command: rundll32
+    arguments:
+      - 'url.dll,FileProtocolHandler'
+      - '${FILENAME}'
+  - title: Open (system default)
+    os: linux
+    command: xdg-open
+    arguments:
+      - '${FILENAME}'
+  - title: Open (system default)
+    os: darwin
+    command: open
+    arguments:
+      - '${FILENAME}'
+tools:
+  groovylint: &npm-groovy-lint
+    lint-command: 'npm-groovy-lint --no-insight --files ${INPUT} --output txt'
+    lint-ignore-exit-code: true
+    lint-stdin: true
+    lint-formats:
+      - '  %l%*[^m]m%tnfo%*[^m]m  %m'
+      - '  %l%*[^m]m%tarning%*[^m]m  %m'
+      - '  %l%*[^m]m%trror%*[^m]m  %m'
+    lint-category-map:
+      i: I
+      w: W
+      e: E
+
+languages:
+  groovy:
+    - <<: *npm-groovy-lint
+
+  Jenkinsfile:
+    - <<: *npm-groovy-lint

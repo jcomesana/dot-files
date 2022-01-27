@@ -48,6 +48,56 @@ def list_install_operations():
         yield operation_func
 
 
+class VimPaths:
+    """
+    Class to handle vim paths.
+    """
+
+    def __init__(self, platform):
+        self.platform = platform
+        vim_directory = '~/.vim' if self.platform != 'win32' else '~/vimfiles'
+        self._path = pathlib.Path(vim_directory).expanduser().resolve()
+
+    @property
+    def path(self):
+        """
+        Get the editor path in the platform.
+        """
+        return self._path
+
+    @property
+    def extras_path(self):
+        """
+        Path to the extras directory.
+        """
+        return self.path / 'extras'
+
+
+class NVimPaths:
+    """
+    Class to handle neovim paths.
+    """
+
+    def __init__(self, platform):
+        self.platform = platform
+        nvim_directory = '~/.config/nvim' if self.platform != 'win32' else '~/AppData/Local/nvim'
+        self._path = pathlib.Path(nvim_directory).expanduser().resolve()
+
+    @property
+    def path(self):
+        """
+        Get the editor path in the platform.
+        """
+        return self._path
+
+    @property
+    def extras_path(self):
+        """
+        Path to the extras directory.
+        """
+        return self.path / 'extras'
+
+
 class InstallOperation:
     """
     Decorator for install operations.
@@ -103,12 +153,10 @@ def operation_install_vim():
         src_vimrc = dotfiles_folder / filename
         dest_vimrc = pathlib.Path(f'~/{filename}').expanduser()
         verbose_link(src_vimrc, dest_vimrc)
-    vim_directory = '~/.vim' if sys.platform != 'win32' else '~/vimfiles'
-    vim_directory_path = pathlib.Path(vim_directory).expanduser().resolve()
-    vim_extras_path = vim_directory_path / 'extras'
+    vim_paths = VimPaths(sys.platform)
     for item in (dotfiles_folder / 'vimextras').glob('*'):
         if item.is_file():
-            extra_dest_path = vim_extras_path / item.name
+            extra_dest_path = vim_paths.extras_path / item.name
             verbose_link(item, extra_dest_path)
 
 
@@ -118,19 +166,17 @@ def operation_install_nvim():
     Create the basic folder structure and link the files.
     """
     dotfiles_folder = find_dotfiles_folder_path()
-    nvim_directory = '~/.config/nvim' if sys.platform != 'win32' else '~/AppData/Local/nvim'
-    nvim_directory_path = pathlib.Path(nvim_directory).expanduser().resolve()
-    nvim_extras_path = nvim_directory_path / 'extras'
+    nvim_paths = NVimPaths(sys.platform)
     nvim_dotfiles_folder = dotfiles_folder / '.config' / 'nvim'
     for item in nvim_dotfiles_folder.glob('**/*'):
         if item.is_file():
             src_config_file = item
             relative_file_path = item.relative_to(nvim_dotfiles_folder)
-            dst_config_file = nvim_directory_path / relative_file_path
+            dst_config_file = nvim_paths.path / relative_file_path
             verbose_link(src_config_file, dst_config_file)
     for item in (dotfiles_folder / 'vimextras').glob('*'):
         if item.is_file():
-            extra_dest_path = nvim_extras_path / item.name
+            extra_dest_path = nvim_paths.extras_path / item.name
             verbose_link(item, extra_dest_path)
 
 
@@ -143,6 +189,29 @@ def operation_install_tmux():
     src_config_file = dotfiles_folder / '.tmux.conf'
     dst_config_file = pathlib.Path('~/.tmux.conf').expanduser()
     verbose_link(src_config_file, dst_config_file)
+
+
+@InstallOperation('Install efm-langserver', ['linux', 'win32'])
+def operation_install_efm():
+    """
+    Install efm-langserver and the configuration file.
+    """
+    dotfiles_folder = find_dotfiles_folder_path()
+    nvim_paths = NVimPaths(sys.platform)
+    vim_paths = VimPaths(sys.platform)
+    src_efm_folder = dotfiles_folder / 'efm-langserver'
+    vim_efm_folder = vim_paths.extras_path / 'efm-langserver'
+    nvim_efm_folder = nvim_paths.extras_path / 'efm-langserver'
+    src_efm_config_file = src_efm_folder / 'config.yaml'
+    for dst_folder in (vim_efm_folder, nvim_efm_folder):
+        verbose_link(src_efm_config_file, dst_folder / src_efm_config_file.name)
+    src_efm_exe_folder = src_efm_folder / sys.platform
+    for item in src_efm_exe_folder.glob('*'):
+        if item.is_file():
+            vim_dest_path = vim_efm_folder / item.name
+            nvim_dest_path = nvim_efm_folder / item.name
+            verbose_link(item, vim_dest_path)
+            verbose_link(item, nvim_dest_path)
 
 
 def verbose_link(source, destination):

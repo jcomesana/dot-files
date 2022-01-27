@@ -444,6 +444,33 @@ if executable('java') && isdirectory(s:extrasdir)
         \ })
 endif
 
+if executable('npm-groovy-lint')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'npm-groovy-lint',
+        \ 'cmd': {server_info->[s:extrasdir.'/efm-langserver/efm-langserver', '-c', s:extrasdir.'/efm-langserver/config.yaml']},
+        \ 'allowlist': ['groovy', 'Jenkinsfile']
+        \ })
+endif
+
+" Plugin asyncomplete-buffer.vim
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'allowlist': ['*'],
+    \ 'blocklist': ['go'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ 'config': {
+    \    'max_buffer_size': 5000000,
+    \  },
+    \ }))
+
+" Plugin asyncomplete-file.vim
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'allowlist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
 " Plugin vista
 nnoremap <silent> <F12> :Vista!!<CR>
 let g:vista_sidebar_width=45
