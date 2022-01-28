@@ -53,12 +53,20 @@ local border = {
 local on_attach = function(client, bufnr)
   vim.lsp.handlers['textDocument/hover'] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border})
   vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border})
-  vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  -- diagnostic
+  vim.diagnostic.config({
     virtual_text = true,
     signs = true,
     underline = false,
     update_in_insert = false,
+    severity_sort = true,
   })
+
+  local signs = { Error = 'E ', Warn = 'W ', Hint = 'H ', Info = 'I ' }
+  for type, icon in pairs(signs) do
+    local hl = 'DiagnosticSign' .. type
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+  end
 
   require 'lsp_signature'.on_attach()
 
@@ -73,10 +81,10 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<Leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<Leader>lr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<Leader>lR', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<Leader>ll', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lk', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lj', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lc', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<Leader>ll', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  buf_set_keymap('n', '<Leader>lk', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<Leader>lj', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<Leader>lc', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 end
 
 -- clients
@@ -110,7 +118,7 @@ lspconfig.clangd.setup{
   },
 }
 
-extras_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), 'extras')
+local extras_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), 'extras')
 
 local groovy_lsp_jar_path = lspconfig.util.path.join(extras_path, 'groovy-language-server-all.jar')
 local groovy_lib = ''
@@ -155,6 +163,7 @@ require 'lsp_signature'.setup({
   hint_prefix = '» ',
 })
 
+
 -- Plugin telescope
 -- require 'telescope'.setup {
 --   defaults = {
@@ -177,19 +186,19 @@ require 'lsp_signature'.setup({
 -- map('n', '<leader>fd', "<cmd>lua require('telescope.builtin').diagnostics()<CR>", default_map_opts)
 
 -- Plugin trouble.nvim
-require("trouble").setup {
+require('trouble').setup {
   icons = false,
-  fold_open = "-", -- icon used for open folds
-  fold_closed = "+", -- icon used for closed folds
+  fold_open = '-', -- icon used for open folds
+  fold_closed = '+', -- icon used for closed folds
   indent_lines = false, -- add an indent guide below the fold icons
   signs = {
     -- icons / text used for a diagnostic
-    error = "error",
-    warning = "warn",
-    hint = "hint",
-    information = "info"
+    error = 'error',
+    warning = 'warn',
+    hint = 'hint',
+    information = 'info'
   },
-  use_lsp_diagnostic_signs = true -- enabling this will use the signs defined in your lsp client
+  use_diagnostic_signs = true -- enabling this will use the signs defined in your lsp client
 }
 
 -- Plugin nvim-treesitter
