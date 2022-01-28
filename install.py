@@ -230,6 +230,7 @@ def verbose_link(source, destination):
         verbose_mkdir(parent_folder)
         if sys.platform == 'win32':
             logging.info('  copying %s to %s (Windows)', source, destination)
+            shutil.copy2(source, destination)
         else:
             logging.info('  linking %s to %s', source, destination)
             os.symlink(source, destination)
