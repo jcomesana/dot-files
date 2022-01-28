@@ -9,6 +9,7 @@ import inspect
 import logging
 import os
 import pathlib
+import shutil
 import sys
 
 
@@ -218,13 +219,20 @@ def verbose_link(source, destination):
     """
     Create a link from the source path to the destination path.
     """
-    if destination.exists():
+    if destination.exists() and destination.is_symlink():
         logging.debug('  link %s already exists', destination)
-    else:
+        return
+    if destination.exists() and destination.is_file():
+        logging.info('  copying %s to %s', source, destination)
+        shutil.copy2(source, destination)
+    elif not destination.exists():
         parent_folder = destination.parent
         verbose_mkdir(parent_folder)
-        logging.info('  linking %s to %s', source, destination)
-        os.link(source, destination)
+        if sys.platform == 'win32':
+            logging.info('  copying %s to %s (Windows)', source, destination)
+        else:
+            logging.info('  linking %s to %s', source, destination)
+            os.symlink(source, destination)
 
 
 def verbose_mkdir(path):
