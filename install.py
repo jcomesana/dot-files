@@ -4,6 +4,7 @@ Installation script.
 """
 
 import argparse
+import ctypes
 import functools
 import inspect
 import logging
@@ -229,8 +230,12 @@ def verbose_link(source, destination):
         parent_folder = destination.parent
         verbose_mkdir(parent_folder)
         if sys.platform == 'win32':
-            logging.info('  copying %s to %s (Windows)', source, destination)
-            shutil.copy2(source, destination)
+            if running_as_admin():
+                logging.info('  linking %s to %s', source, destination)
+                os.symlink(source, destination)
+            else:
+                logging.info('  copying %s to %s (Windows)', source, destination)
+                shutil.copy2(source, destination)
         else:
             logging.info('  linking %s to %s', source, destination)
             os.symlink(source, destination)
@@ -245,6 +250,17 @@ def verbose_mkdir(path):
     else:
         logging.info('  creating folder %s', path)
         path.mkdir(parents=True, exist_ok=True)
+
+
+def running_as_admin():
+    """
+    Check if the process is running as administrator.
+    """
+    try:
+        is_admin = (os.getuid() == 0)
+    except AttributeError:
+        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
+    return is_admin
 
 
 if __name__ == '__main__':
