@@ -102,6 +102,7 @@ set nolangremap
 set tabstop=8
 set shiftwidth=4
 set softtabstop=4
+set shiftround
 set smarttab
 set expandtab
 
@@ -141,6 +142,7 @@ set sidescroll=1
 set scrolloff=4
 set ttyfast
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+set report=0         " always report changed lines
 
 " ---- Syntax highlighting ----
 syntax enable
@@ -237,6 +239,12 @@ call s:ChooseColorScheme()
 if has('unix')
     source $VIMRUNTIME/ftplugin/man.vim
     nmap K \K
+endif
+
+" The fish shell is not very compatible to other shells and unexpectedly
+" breaks things that use 'shell'.
+if &shell =~# 'fish$'
+  set shell=/bin/bash
 endif
 
 " Protect large files from sourcing and other overhead. Files become read only
