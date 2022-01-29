@@ -25,7 +25,7 @@ let s:colorschemes_list = []
 call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
-" Plug 'lewis6991/impatient.nvim'
+Plug 'lewis6991/impatient.nvim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
@@ -91,7 +91,7 @@ call plug#end()
 " ---- End vim-plug ---
 
 " Plugin impatient
-" lua require('impatient')
+lua require('impatient')
 
 " ---- Editing text ----
 set nojoinspaces
