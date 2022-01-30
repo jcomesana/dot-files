@@ -229,16 +229,13 @@ def verbose_link(source, destination):
     elif not destination.exists():
         parent_folder = destination.parent
         verbose_mkdir(parent_folder)
-        if sys.platform == 'win32':
-            if running_as_admin():
-                logging.info('  linking %s to %s', source, destination)
-                os.symlink(source, destination)
-            else:
-                logging.info('  copying %s to %s (Windows)', source, destination)
-                shutil.copy2(source, destination)
-        else:
+        symlink_available = sys.platform != 'win32' or running_as_admin()
+        if symlink_available:
             logging.info('  linking %s to %s', source, destination)
             os.symlink(source, destination)
+        else:
+            logging.info('  copying %s to %s (Windows)', source, destination)
+            shutil.copy2(source, destination)
 
 
 def verbose_mkdir(path):
