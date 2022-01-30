@@ -24,8 +24,14 @@ let &undodir=s:undodir
 let &directory=s:swapdir
 set backup                          " backup and location
 set undofile                        " infinite undo and location
+
+" Shell
 if has('win32')
     set shell=c:\windows\system32\cmd.exe   " shell
+elseif &shell =~# 'fish$'
+    " The fish shell is not very compatible to other shells and unexpectedly
+    " breaks things that use 'shell'.
+    set shell=/bin/bash
 endif
 
 " For random colorscheme selection
@@ -235,12 +241,6 @@ call s:ChooseColorScheme()
 if has('unix')
     source $VIMRUNTIME/ftplugin/man.vim
     nmap K \K
-endif
-
-" The fish shell is not very compatible to other shells and unexpectedly
-" breaks things that use 'shell'.
-if &shell =~# 'fish$'
-  set shell=/bin/bash
 endif
 
 " Protect large files from sourcing and other overhead. Files become read only
