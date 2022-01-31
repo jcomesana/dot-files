@@ -390,17 +390,16 @@ function! StatuslineMode()
 endfunction
 
 function! LspStatus() abort
-  if luaeval('#vim.lsp.buf_get_clients() > 0')
-      let l:error_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })')
-      let l:warning_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })')
-      let l:info_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })')
-      let l:info_count = l:info_count + luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })')
-      if (l:error_count || l:warning_count || l:info_count)
-        return '[E:' . l:error_count . ', W:' .l:warning_count . ', I:' . l:info_count . '] | '
-      else
-        return '[Ok] | '
-      endif
-  endif
-
-  return ''
+    if luaeval('#vim.lsp.buf_get_clients() > 0')
+        let l:error_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })')
+        let l:warning_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })')
+        let l:info_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })')
+        let l:hint_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })')
+        if (l:error_count || l:warning_count || l:info_count || l:hint_count)
+            return '[E:' . l:error_count . ' W:' .l:warning_count . ' I:' . l:info_count . ' H:' . l:hint_count . '] | '
+        else
+            return '[Ok] | '
+        endif
+    endif
+    return ''
 endfunction
