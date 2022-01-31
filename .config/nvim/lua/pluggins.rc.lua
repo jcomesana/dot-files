@@ -39,20 +39,9 @@ vim.cmd [[autocmd ColorScheme * highlight NormalFloat guibg=#1f2335]]
 vim.cmd [[autocmd ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
 
 -- LSP settings
-local border = {
-      {"🭽", "FloatBorder"},
-      {"▔", "FloatBorder"},
-      {"🭾", "FloatBorder"},
-      {"▕", "FloatBorder"},
-      {"🭿", "FloatBorder"},
-      {"▁", "FloatBorder"},
-      {"🭼", "FloatBorder"},
-      {"▏", "FloatBorder"},
-}
-
 local on_attach = function(client, bufnr)
-  vim.lsp.handlers['textDocument/hover'] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border})
-  vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border})
+  vim.lsp.handlers['textDocument/hover'] =  vim.lsp.with(vim.lsp.handlers.hover, {border = 'rounded'})
+  vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = 'rounded'})
   -- diagnostic
   vim.diagnostic.config({
     virtual_text = true,
@@ -157,7 +146,7 @@ lspconfig.efm.setup {
 require 'lsp_signature'.setup({
   bind = true, -- This is mandatory, otherwise border config won't get registered.
   handler_opts = {
-    border = 'single'
+    border = 'rounded'
   },
   hint_enable = false,
   hint_prefix = '» ',
