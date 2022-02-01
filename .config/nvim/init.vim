@@ -53,8 +53,9 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
-Plug 'junegunn/fzf', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
-Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'gfanto/fzf-lsp.nvim'
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
 " Plug 'nvim-treesitter/nvim-treesitter'
