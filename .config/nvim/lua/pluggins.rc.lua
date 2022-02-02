@@ -39,7 +39,22 @@ vim.cmd [[autocmd ColorScheme * highlight NormalFloat guibg=#1f2335]]
 vim.cmd [[autocmd ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
 
 -- LSP settings
+
+-- Plugin lsp_signature.nvim
+local lsp_signature = require('lsp_signature')
+lsp_signature.setup({
+  bind = true, -- This is mandatory, otherwise border config won't get registered.
+  handler_opts = {
+    border = 'rounded'
+  },
+  hint_enable = true,
+  hint_prefix = '» ',
+  always_trigger = true,
+})
+
 local on_attach = function(client, bufnr)
+  lsp_signature.on_attach()
+
   vim.lsp.handlers['textDocument/hover'] =  vim.lsp.with(vim.lsp.handlers.hover, {border = 'rounded'})
   vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = 'rounded'})
   -- diagnostic
@@ -56,8 +71,6 @@ local on_attach = function(client, bufnr)
     local hl = 'DiagnosticSign' .. type
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
   end
-
-  require 'lsp_signature'.on_attach()
 
   local opts = { noremap=true, silent=true }
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -141,17 +154,6 @@ lspconfig.efm.setup {
   settings = {
   }
 }
-
--- Plugin lsp_signature.nvim
-require 'lsp_signature'.setup({
-  bind = true, -- This is mandatory, otherwise border config won't get registered.
-  handler_opts = {
-    border = 'rounded'
-  },
-  hint_enable = false,
-  hint_prefix = '» ',
-})
-
 
 -- Plugin telescope
 -- require 'telescope'.setup {
