@@ -84,12 +84,12 @@ Plug 'franbach/miramare' | call add(s:colorschemes_list, 'miramare')
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
 Plug 'joshdick/onedark.vim' | call add(s:colorschemes_list, 'onedark')
 Plug 'KeitaNakamura/neodark.vim' | call add(s:colorschemes_list, 'neodark')
-Plug 'lifepillar/vim-gruvbox8' | call add(s:colorschemes_list, 'gruvbox8_hard')
 Plug 'mhartington/oceanic-next' | call add(s:colorschemes_list, 'OceanicNext')
 Plug 'raphamorim/lucario' | call add(s:colorschemes_list, 'lucario')
 Plug 'ray-x/aurora' | call add(s:colorschemes_list, 'aurora')
 Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
 Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
+Plug 'sainnhe/gruvbox-material' | call add(s:colorschemes_list, 'gruvbox-material')
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
 Plug 'sonph/onehalf', { 'rtp': 'vim' } | call add(s:colorschemes_list, 'onehalfdark')
 Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
@@ -225,6 +225,10 @@ if has("termguicolors")
     let &t_8f = "[38;2;%lu;%lu;%lum"
     let &t_8b = "[48;2;%lu;%lu;%lum"
 endif
+
+" Color scheme settings
+let g:gruvbox_material_palette = 'original'
+let g:gruvbox_material_background = 'hard'
 
 " Color scheme
 function! s:ChooseColorScheme()
@@ -514,10 +518,6 @@ let g:signify_sign_delete            = '-'
 let g:signify_sign_delete_first_line = '‾'
 let g:signify_sign_change            = '*'
 let g:signify_sign_change_delete     = 'd'
-
-" Color scheme settings
-let g:gruvbox_filetype_hi_groups = 1
-let g:gruvbox_plugin_hi_groups = 1
 
 " Custom statusline
 " left side
