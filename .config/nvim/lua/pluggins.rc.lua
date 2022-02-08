@@ -25,6 +25,24 @@ cmp.setup({
   }
 })
 
+cmp.setup.cmdline(':', {
+  sources = {
+    { name = 'cmdline' }
+  }
+})
+
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+cmp.setup.cmdline('?', {
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
 -- Plugin nvim-autopairs
 require('nvim-autopairs').setup{
   enable_afterquote = true,
