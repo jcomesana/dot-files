@@ -206,6 +206,7 @@ set nostartofline
 " ---- Completion options ----
 set shortmess+=c    " Shut off completion messages
 set complete=".,w,b,u,t"
+set completeopt=menu,menuone,noselect
 
 " ---- Backups, autoread, autosave ----
 set autoread                        " read a file automatically when it changes outside

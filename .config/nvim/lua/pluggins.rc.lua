@@ -61,6 +61,7 @@ vim.cmd [[autocmd ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]
 
 -- Plugin lsp_signature.nvim
 local lsp_signature = require('lsp_signature')
+
 lsp_signature.setup({
   bind = true, -- This is mandatory, otherwise border config won't get registered.
   handler_opts = {
@@ -111,8 +112,11 @@ end
 -- clients
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 local lspconfig = require 'lspconfig'
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 lspconfig.pylsp.setup{
   on_attach = on_attach,
+  capabilities = capabilities,
   flags = {
     debounce_text_changes = 150,
   },
@@ -134,6 +138,7 @@ lspconfig.pylsp.setup{
 
 lspconfig.clangd.setup{
   on_attach = on_attach,
+  capabilities = capabilities,
   flags = {
     debounce_text_changes = 150,
   },
@@ -148,6 +153,7 @@ if vim.env.GROOVY_HOME then
 end
 lspconfig.groovyls.setup{
   on_attach = on_attach,
+  capabilities = capabilities,
   flags = {
     debounce_text_changes = 150,
   },
