@@ -25,12 +25,6 @@ cmp.setup({
   }
 })
 
-cmp.setup.cmdline(':', {
-  sources = {
-    { name = 'cmdline' }
-  }
-})
-
 cmp.setup.cmdline('/', {
   sources = {
     { name = 'buffer' }
@@ -53,11 +47,7 @@ require('nvim-autopairs').setup{
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
--- Plugin nvim-lspconfig
-vim.cmd [[autocmd ColorScheme * highlight NormalFloat guibg=#1f2335]]
-vim.cmd [[autocmd ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
-
--- LSP settings
+-- Plugin nvim-lspconfig and LSP settings
 
 -- Plugin lsp_signature.nvim
 local lsp_signature = require('lsp_signature')
@@ -67,7 +57,7 @@ lsp_signature.setup({
   handler_opts = {
     border = 'rounded'
   },
-  hint_enable = true,
+  hint_enable = false,
   hint_prefix = '» ',
   always_trigger = true,
 })
