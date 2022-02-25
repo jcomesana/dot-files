@@ -62,6 +62,7 @@ Plug 'ciaranm/securemodelines'
 " Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'windwp/nvim-autopairs'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGuidesToggle'] }
+Plug 'danilamihailov/beacon.nvim'
 Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeInfo'] }
 Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
 Plug 'equalsraf/neovim-gui-shim'
@@ -364,6 +365,11 @@ nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
 nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
 nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
 nnoremap <leader>xR <cmd>TroubleToggle lsp_references<cr>
+
+" Plugin beacon.nvim
+let g:beacon_size = 24
+let g:beacon_minimal_jump = 15
+let g:beacon_ignore_filetypes = ['fzf']
 
 " Custom statusline
 " left side

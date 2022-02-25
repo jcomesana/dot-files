@@ -56,12 +56,13 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
-Plug 'junegunn/fzf', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
-Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Lines', 'Rg', 'Ag', 'W', 'Commits'] }
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
 Plug 'cohama/lexima.vim'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGuidesToggle'] }
+Plug 'danilamihailov/beacon.nvim'
 Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeInfo'] }
 Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
 " File type specific plugins
@@ -518,6 +519,11 @@ let g:signify_sign_delete            = '-'
 let g:signify_sign_delete_first_line = '‾'
 let g:signify_sign_change            = '*'
 let g:signify_sign_change_delete     = 'd'
+
+" Plugin beacon.nvim
+let g:beacon_size = 24
+let g:beacon_minimal_jump = 15
+let g:beacon_ignore_filetypes = ['fzf']
 
 " Custom statusline
 " left side
