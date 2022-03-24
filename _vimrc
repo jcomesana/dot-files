@@ -512,7 +512,7 @@ let g:cmake_compile_commands = 1
 let g:cmake_usr_args='-GNinja'
 
 " Plugin signify
-nnoremap <leader>si :SignifyEnable<CR>
+nnoremap <leader>si :SignifyEnableAll<CR>
 let g:signify_disable_by_default = 1
 let g:signify_sign_add               = '+'
 let g:signify_sign_delete            = '-'
