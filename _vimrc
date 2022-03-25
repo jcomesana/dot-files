@@ -84,9 +84,7 @@ Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
 Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
 Plug 'franbach/miramare' | call add(s:colorschemes_list, 'miramare')
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
-Plug 'joshdick/onedark.vim' | call add(s:colorschemes_list, 'onedark')
 Plug 'KeitaNakamura/neodark.vim' | call add(s:colorschemes_list, 'neodark')
-Plug 'lmburns/kimbox' | call add(s:colorschemes_list, 'kimbox')
 Plug 'mhartington/oceanic-next' | call add(s:colorschemes_list, 'OceanicNext')
 Plug 'ray-x/aurora' | call add(s:colorschemes_list, 'aurora')
 Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
@@ -95,6 +93,7 @@ Plug 'sainnhe/gruvbox-material' | call add(s:colorschemes_list, 'gruvbox-materia
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
 Plug 'sonph/onehalf', { 'rtp': 'vim' } | call add(s:colorschemes_list, 'onehalfdark')
 Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
+Plug 'ukyouz/onedark.vim' | call add(s:colorschemes_list, 'onedark')
 
 call plug#end()
 " ---- End vim-plug ---
