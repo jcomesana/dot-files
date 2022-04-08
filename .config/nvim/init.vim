@@ -216,6 +216,10 @@ set nofsync                         " do not call fsync when writing a file
 set viminfo+=!                      " the viminfo file stores the history of commands and so on
 " go back to the previous position
 :au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+" make autoread work
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+" notification after file change
+autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
 " Session options
 set sessionoptions="unix,slash"
