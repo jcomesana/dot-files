@@ -133,7 +133,7 @@ set lazyredraw      " redraw only when it is needed
 set updatetime=100  " milliseconds, period of inactivity before writting to swap file
 set nocursorline    " don´t highlight current line
 set ruler           " show the cursor position all the time
-set laststatus=2    " show always the status line
+set laststatus=3    " global status line at the bottom
 set visualbell      " no beeps, visual bell
 set belloff="all"   " do not ring the bell at all
 set noerrorbells    " no flash/beep on errors
