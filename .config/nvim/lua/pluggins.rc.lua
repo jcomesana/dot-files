@@ -1,6 +1,10 @@
 -- Plugin nvim-cmp
 local cmp = require('cmp')
 cmp.setup({
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
   snippet = {
       expand = function(args)
       	vim.fn['vsnip#anonymous'](args.body)
