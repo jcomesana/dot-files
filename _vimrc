@@ -90,7 +90,6 @@ Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
 Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
 Plug 'sainnhe/gruvbox-material' | call add(s:colorschemes_list, 'gruvbox-material')
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
-Plug 'sonph/onehalf', { 'rtp': 'vim' } | call add(s:colorschemes_list, 'onehalfdark')
 Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
 Plug 'ukyouz/onedark.vim' | call add(s:colorschemes_list, 'onedark')
 
