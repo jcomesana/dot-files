@@ -54,8 +54,8 @@ Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
 Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gclog', 'Gllog', 'Gcd', 'Gedit', 'Gsplit', 'Gvsplit', 'Gread', 'Gwrite', 'Gdiffsplit', 'Gvdiffsplit', 'GBrowse', 'GDelete', 'Commits'] }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
+Plug 'machakann/vim-sandwich'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
@@ -291,6 +291,9 @@ let s:python_binary = 'python3'
 
 " Plugin vim-json
 let g:vim_json_syntax_conceal = 0
+
+" Plugin vim-sandwich
+let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 
 " Plugin fzf
 nnoremap <leader>ff :FZF<CR>
