@@ -50,8 +50,8 @@ Plug 'ray-x/lsp_signature.nvim'
 Plug 'tpope/vim-fugitive', { 'on': ['G', 'Git', 'Gclog', 'Gllog', 'Gcd', 'Gedit', 'Gsplit', 'Gvsplit', 'Gread', 'Gwrite', 'Gdiffsplit', 'Gvdiffsplit', 'GBrowse', 'GDelete', 'Commits'] }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
+Plug 'machakann/vim-sandwich'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
 Plug 'junegunn/fzf'
@@ -313,6 +313,9 @@ let g:python3_host_prog = 'python3'
 
 " Plugin vim-json
 let g:vim_json_syntax_conceal = 0
+
+" Plugin vim-sandwich
+let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 
 " Plugin fzf
 nnoremap <leader>ff :FZF<CR>
