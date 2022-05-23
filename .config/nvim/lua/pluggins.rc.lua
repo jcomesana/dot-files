@@ -29,20 +29,6 @@ cmp.setup({
   }
 })
 
-cmp.setup.cmdline('/', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
-
-cmp.setup.cmdline('?', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
-
 -- Plugin nvim-autopairs
 require('nvim-autopairs').setup{
   enable_afterquote = true,
