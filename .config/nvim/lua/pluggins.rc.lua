@@ -200,21 +200,21 @@ require('trouble').setup {
 }
 
 -- Plugin nvim-treesitter
--- require'nvim-treesitter.configs'.setup {
---   ensure_installed = "maintained",
---   highlight = {
---     enable = true,
---     disable = {},
---   },
---   indent = {
---     enable = false,
---     disable = {},
---   },
---   ensure_installed = {
---     "python",
---     "cpp",
---     "yaml",
---     "json",
---     "cmake",
---   },
--- }
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained",
+  highlight = {
+    enable = true,
+    disable = {},
+  },
+  indent = {
+    enable = false,
+    disable = {},
+  },
+  ensure_installed = {
+    "python",
+    "cpp",
+    "yaml",
+    "json",
+    "cmake",
+  },
+}
