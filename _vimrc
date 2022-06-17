@@ -372,8 +372,8 @@ function! LinterStatus() abort
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_warnings = l:counts.warning + l:counts.style_warning
 
-    return l:counts.total == 0 ? '[Ok] | ' : printf(
-    \   '[E:%d, W:%d, I:%d] | ',
+    return l:counts.total == 0 ? '[Ok]|' : printf(
+    \   '[E:%d, W:%d, I:%d]|',
     \   all_errors,
     \   all_warnings,
     \   l:counts.info
@@ -530,27 +530,27 @@ let g:beacon_ignore_filetypes = ['fzf']
 
 " Custom statusline
 " left side
-set statusline=%#Visual#%{StatuslineMode()}%*\ \|\ %f\ %r%m
+set statusline=%#Visual#%{StatuslineMode()}%*\|%f\ %r%m
 " right side
-set statusline+=%=%{LinterStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
+set statusline+=%=%{LinterStatus()}%{&ff}\|%{strlen(&fenc)?&fenc:'none'}\|%y\|%#Visual#%3p%%%5l:%3c%*
 
 function! StatuslineMode()
     let l:mode=mode()
     if l:mode==#"n"
-        return "NORMAL"
+        return "NORM"
     elseif l:mode==?"v"
-        return "VISUAL"
+        return "VIS"
     elseif l:mode==#"i"
-        return "INSERT"
+        return "INS"
     elseif l:mode==#"R"
-        return "REPLACE"
+        return "REPL"
     elseif l:mode==?"s"
-        return "SELECT"
+        return "SEL"
     elseif l:mode==#"t"
-        return "TERMINAL"
+        return "TERM"
     elseif l:mode==#"c"
-        return "COMMAND"
+        return "COM"
     elseif l:mode==#"!"
-        return "SHELL"
+        return "SH"
     endif
 endfunction
