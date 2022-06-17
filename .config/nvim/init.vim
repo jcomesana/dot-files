@@ -380,28 +380,28 @@ let g:beacon_ignore_filetypes = ['fzf']
 
 " Custom statusline
 " left side
-set statusline=%#Visual#%{StatuslineMode()}%*\ \|\ %t\ %r%m
+set statusline=%#Visual#%{StatuslineMode()}%*\|%t\ %r%m
 " right side
-set statusline+=%=%{LspStatus()}%{&ff}\ \|\ %{strlen(&fenc)?&fenc:'none'}\ \|\ %y\ \|\ %#Visual#%3p%%\ %5l:%3c%*
+set statusline+=%=%{LspStatus()}%{&ff}\|%{strlen(&fenc)?&fenc:'none'}\|%y\|%#Visual#%3p%%%5l:%3c%*
 
 function! StatuslineMode()
     let l:mode=mode()
     if l:mode==#"n"
-        return "NORMAL"
+        return "NORM"
     elseif l:mode==?"v"
-        return "VISUAL"
+        return "VIS"
     elseif l:mode==#"i"
-        return "INSERT"
+        return "INS"
     elseif l:mode==#"R"
-        return "REPLACE"
+        return "REPL"
     elseif l:mode==?"s"
-        return "SELECT"
+        return "SEL"
     elseif l:mode==#"t"
-        return "TERMINAL"
+        return "TERM"
     elseif l:mode==#"c"
-        return "COMMAND"
+        return "COM"
     elseif l:mode==#"!"
-        return "SHELL"
+        return "SH"
     endif
 endfunction
 
@@ -412,9 +412,9 @@ function! LspStatus() abort
         let l:info_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })')
         let l:hint_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })')
         if (l:error_count || l:warning_count || l:info_count || l:hint_count)
-            return '[E:' . l:error_count . ' W:' .l:warning_count . ' I:' . l:info_count . ' H:' . l:hint_count . '] | '
+            return '[E:' . l:error_count . ' W:' .l:warning_count . ' I:' . l:info_count . ' H:' . l:hint_count . ']|'
         else
-            return '[Ok] | '
+            return '[Ok]|'
         endif
     endif
     return ''
