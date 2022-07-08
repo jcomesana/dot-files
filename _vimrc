@@ -380,7 +380,7 @@ endfunction
 nnoremap <leader>xt <cmd>lopen<cr>
 
 " Plugin asyncomplete
-let g:asyncomplete_auto_popup = 0
+let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_min_chars = 0
 
 function! s:check_back_space() abort
