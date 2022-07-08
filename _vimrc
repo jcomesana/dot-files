@@ -87,7 +87,6 @@ Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'emb
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
 Plug 'KeitaNakamura/neodark.vim' | call add(s:colorschemes_list, 'neodark')
 Plug 'mhartington/oceanic-next' | call add(s:colorschemes_list, 'OceanicNext')
-Plug 'ray-x/aurora' | call add(s:colorschemes_list, 'aurora')
 Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
 Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
 Plug 'sainnhe/gruvbox-material' | call add(s:colorschemes_list, 'gruvbox-material')
