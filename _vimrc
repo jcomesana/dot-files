@@ -392,7 +392,10 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_delay = 500
 let g:ale_lint_on_enter = 1
-let g:ale_sign_column_always = 0
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = 'E'
+let g:ale_sign_info = 'I'
+let g:ale_sign_warning = 'W'
 " list
 let g:ale_open_list = 0
 " python
@@ -403,7 +406,7 @@ let g:ale_python_pylint_options = '-m pylint'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 " C++
 let g:ale_cpp_clang_executable = 'clang++'
-let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++17'
+let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++20'
 " movement
 nmap <silent> <M-k> <Plug>(ale_previous_wrap)
 nmap <silent> <M-j> <Plug>(ale_next_wrap)
@@ -482,10 +485,11 @@ let g:lsp_signs_enabled = 1           " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
 let g:lsp_diagnostics_virtual_text_enabled = 1
 let g:lsp_show_workspace_edits = 1
-let g:lsp_signs_error = {'text': 'e'}
-let g:lsp_signs_warning = {'text': 'w'}
+let g:lsp_signs_error = {'text': 'E'}
+let g:lsp_signs_warning = {'text': 'W'}
 let g:lsp_signs_hint = {'text': '*'}
-let g:lsp_signs_information = {'text': 'i'}
+let g:lsp_signs_information = {'text': 'I'}
+let g:lsp_semantic_enabled = 1
 
 " Plugin asyncomplete-lsp.vim
 if executable('pylsp')
