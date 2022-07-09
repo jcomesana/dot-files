@@ -41,6 +41,7 @@ let s:colorschemes_list = []
 call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
+Plug 'itchyny/lightline.vim'
 Plug 'dense-analysis/ale'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -287,6 +288,62 @@ autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --f
 " ---- Plugins ----
 let s:python_binary = 'python3'
 
+" Plugin lightline
+let g:lightline = {
+      \ 'active': {
+      \   'left': [['mode', 'paste'],
+      \            ['gitbranch', 'readonly', 'filename', 'modified']],
+      \   'right': [['lineinfo'],
+      \             ['percent'],
+      \             ['alestatus', 'fileformat', 'fileencoding', 'filetype']]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \   'alestatus': 'LinterStatus'
+      \ },
+      \ 'component': {
+      \   'lineinfo': '%4l:%-3v',
+      \ },
+      \ 'mode_map': {
+        \ 'n' : 'NORM',
+        \ 'i' : 'INS',
+        \ 'R' : 'REPL',
+        \ 'v' : 'VIS',
+        \ 'V' : 'VISL',
+        \ "\<C-v>": 'VISB',
+        \ 'c' : 'COM',
+        \ 's' : 'SEL',
+        \ 'S' : 'SL',
+        \ "\<C-s>": 'SB',
+        \ 't': 'TERM',
+        \ },
+      \ }
+
+function! s:lightline_colorschemes() abort
+    return map(globpath(&rtp,"autoload/lightline/colorscheme/*.vim",1,1), "fnamemodify(v:val,':t:r')")
+endfunction
+
+function! s:lightline_update()
+    try
+        let l:lightline_colorschemes_list = s:lightline_colorschemes()
+        let l:lightline_cs = substitute(g:colors_name, '-', '_', 'g')
+        if index(l:lightline_colorschemes_list, l:lightline_cs) == -1
+            let l:lightline_cs = "default"
+        endif
+        let g:lightline.colorscheme = l:lightline_cs
+        call lightline#init()
+        call lightline#colorscheme()
+        call lightline#update()
+    catch
+    endtry
+endfunction
+
+augroup LightlineColorscheme
+    autocmd!
+    autocmd ColorScheme * call s:lightline_update()
+augroup END
+call s:lightline_update()
+
 " Plugin vim-json
 let g:vim_json_syntax_conceal = 0
 
@@ -370,8 +427,8 @@ function! LinterStatus() abort
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_warnings = l:counts.warning + l:counts.style_warning
 
-    return l:counts.total == 0 ? '[Ok]|' : printf(
-    \   '[E:%d, W:%d, I:%d]|',
+    return l:counts.total == 0 ? '[Ok]' : printf(
+    \   '[E:%d, W:%d, I:%d]',
     \   all_errors,
     \   all_warnings,
     \   l:counts.info
@@ -525,30 +582,3 @@ let g:signify_sign_change_delete     = 'd'
 let g:beacon_size = 24
 let g:beacon_minimal_jump = 15
 let g:beacon_ignore_filetypes = ['fzf']
-
-" Custom statusline
-" left side
-set statusline=%#Visual#%{StatuslineMode()}%*\|%f\ %r%m
-" right side
-set statusline+=%=%{LinterStatus()}%{&ff}\|%{strlen(&fenc)?&fenc:'none'}\|%y\|%#Visual#%3p%%%5l:%3c%*
-
-function! StatuslineMode()
-    let l:mode=mode()
-    if l:mode==#"n"
-        return "NORM"
-    elseif l:mode==?"v"
-        return "VIS"
-    elseif l:mode==#"i"
-        return "INS"
-    elseif l:mode==#"R"
-        return "REPL"
-    elseif l:mode==?"s"
-        return "SEL"
-    elseif l:mode==#"t"
-        return "TERM"
-    elseif l:mode==#"c"
-        return "COM"
-    elseif l:mode==#"!"
-        return "SH"
-    endif
-endfunction
