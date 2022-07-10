@@ -22,7 +22,7 @@ set columns=124
 
 " ---- Interface ----
 set guioptions=grdMe
-set mouse=a          " enable mouse
+set mouse=nv         " enable mouse
 set mousehide        " hide the mouse when typing text
 
 " make shift-insert work like in Xterm
