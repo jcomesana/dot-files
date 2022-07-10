@@ -148,7 +148,7 @@ set scrolloff=4
 set ttyfast
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set report=0         " always report changed lines
-set mouse=nv
+set mouse=nvc
 
 " ---- Syntax highlighting ----
 syntax enable
