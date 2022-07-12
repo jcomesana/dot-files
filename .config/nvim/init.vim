@@ -83,6 +83,7 @@ Plug 'ajmwagar/vim-dues' | call add(s:colorschemes_list, 'deus')
 Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
 Plug 'catppuccin/vim', { 'as': 'catppuccin' } | call add(s:colorschemes_list, 'catppuccin_mocha')
 Plug 'challenger-deep-theme/vim' | call add(s:colorschemes_list, 'challenger_deep')
+Plug 'dracula/vim',  { 'as': 'dracula' } | call add(s:colorschemes_list, 'dracula')
 Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
 Plug 'KeitaNakamura/neodark.vim' | call add(s:colorschemes_list, 'neodark')
@@ -93,7 +94,6 @@ Plug 'sainnhe/gruvbox-material' | call add(s:colorschemes_list, 'gruvbox-materia
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
 Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
 Plug 'rebelot/kanagawa.nvim' | call add(s:colorschemes_list, 'kanagawa')
-Plug 'ukyouz/onedark.vim' | call add(s:colorschemes_list, 'onedark')
 
 call plug#end()
 " ---- End vim-plug ---
@@ -237,19 +237,6 @@ endif
 " Color scheme settings
 let g:gruvbox_material_palette = 'original'
 let g:gruvbox_material_background = 'hard'
-
-" Color scheme
-function s:UniformRand(x, y) " random uniform between x and y
-    call v:lua.math.randomseed(localtime())
-    return v:lua.math.random(a:x, a:y)
-endfunction
-
-function! s:ChooseColorScheme()
-    let l:color_index =  s:UniformRand(0, len(s:colorschemes_list) - 1)
-    execute 'colorscheme ' . s:colorschemes_list[l:color_index]
-endfunction
-
-call s:ChooseColorScheme()
 
 " ---- Extra functionallity ----
 " to visualize manpages
@@ -417,3 +404,15 @@ function! LspStatus() abort
     endif
     return ''
 endfunction
+
+" Color scheme
+function s:UniformRand(x, y) " random uniform between x and y
+    call v:lua.math.randomseed(localtime())
+    return v:lua.math.random(a:x, a:y)
+endfunction
+
+function! s:ChooseColorScheme()
+    let l:color_index =  s:UniformRand(0, len(s:colorschemes_list) - 1)
+    execute 'colorscheme ' . s:colorschemes_list[l:color_index]
+endfunction
+call s:ChooseColorScheme()

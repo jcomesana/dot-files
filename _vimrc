@@ -83,6 +83,7 @@ Plug 'ajmwagar/vim-dues' | call add(s:colorschemes_list, 'deus')
 Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
 Plug 'catppuccin/vim', { 'as': 'catppuccin' } | call add(s:colorschemes_list, 'catppuccin_mocha')
 Plug 'challenger-deep-theme/vim' | call add(s:colorschemes_list, 'challenger_deep')
+Plug 'dracula/vim',  { 'as': 'dracula' } | call add(s:colorschemes_list, 'dracula')
 Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
 Plug 'KeitaNakamura/neodark.vim' | call add(s:colorschemes_list, 'neodark')
@@ -92,7 +93,6 @@ Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
 Plug 'sainnhe/gruvbox-material' | call add(s:colorschemes_list, 'gruvbox-material')
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
 Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
-Plug 'ukyouz/onedark.vim' | call add(s:colorschemes_list, 'onedark')
 
 call plug#end()
 " ---- End vim-plug ---
@@ -231,15 +231,6 @@ endif
 let g:gruvbox_material_palette = 'original'
 let g:gruvbox_material_background = 'hard'
 
-" Color scheme
-function! s:ChooseColorScheme()
-    let l:seed = srand()
-    call rand(l:seed)
-    let l:color_index =  rand(l:seed) % len(s:colorschemes_list)
-    execute 'colorscheme ' . s:colorschemes_list[l:color_index]
-endfunction
-call s:ChooseColorScheme()
-
 " ---- Extra functionallity ----
 " to visualize manpages
 if has('unix')
@@ -288,62 +279,6 @@ autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --f
 
 " ---- Plugins ----
 let s:python_binary = 'python3'
-
-" Plugin lightline
-let g:lightline = {
-      \ 'active': {
-      \   'left': [['mode', 'paste'],
-      \            ['gitbranch', 'readonly', 'filename', 'modified']],
-      \   'right': [['lineinfo'],
-      \             ['percent'],
-      \             ['alestatus', 'fileformat', 'fileencoding', 'filetype']]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \   'alestatus': 'LinterStatus'
-      \ },
-      \ 'component': {
-      \   'lineinfo': '%4l:%-3v',
-      \ },
-      \ 'mode_map': {
-        \ 'n' : 'NORM',
-        \ 'i' : 'INS',
-        \ 'R' : 'REPL',
-        \ 'v' : 'VIS',
-        \ 'V' : 'VISL',
-        \ "\<C-v>": 'VISB',
-        \ 'c' : 'COM',
-        \ 's' : 'SEL',
-        \ 'S' : 'SL',
-        \ "\<C-s>": 'SB',
-        \ 't': 'TERM',
-        \ },
-      \ }
-
-function! s:lightline_colorschemes() abort
-    return map(globpath(&rtp,"autoload/lightline/colorscheme/*.vim",1,1), "fnamemodify(v:val,':t:r')")
-endfunction
-
-function! s:lightline_update()
-    try
-        let l:lightline_colorschemes_list = s:lightline_colorschemes()
-        let l:lightline_cs = substitute(g:colors_name, '-', '_', 'g')
-        if index(l:lightline_colorschemes_list, l:lightline_cs) == -1
-            let l:lightline_cs = "default"
-        endif
-        let g:lightline.colorscheme = l:lightline_cs
-        call lightline#init()
-        call lightline#colorscheme()
-        call lightline#update()
-    catch
-    endtry
-endfunction
-
-augroup LightlineColorscheme
-    autocmd!
-    autocmd ColorScheme * call s:lightline_update()
-augroup END
-call s:lightline_update()
 
 " Plugin vim-json
 let g:vim_json_syntax_conceal = 0
@@ -587,3 +522,68 @@ let g:signify_sign_change_delete     = 'd'
 let g:beacon_size = 24
 let g:beacon_minimal_jump = 15
 let g:beacon_ignore_filetypes = ['fzf']
+
+" Plugin lightline
+let g:lightline = {
+      \ 'active': {
+      \   'left': [['mode', 'paste'],
+      \            ['gitbranch', 'readonly', 'filename', 'modified']],
+      \   'right': [['lineinfo'],
+      \             ['percent'],
+      \             ['alestatus', 'fileformat', 'fileencoding', 'filetype']]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \   'alestatus': 'LinterStatus'
+      \ },
+      \ 'component': {
+      \   'lineinfo': '%4l:%-3v',
+      \ },
+      \ 'mode_map': {
+        \ 'n' : 'NORM',
+        \ 'i' : 'INS',
+        \ 'R' : 'REPL',
+        \ 'v' : 'VIS',
+        \ 'V' : 'VISL',
+        \ "\<C-v>": 'VISB',
+        \ 'c' : 'COM',
+        \ 's' : 'SEL',
+        \ 'S' : 'SL',
+        \ "\<C-s>": 'SB',
+        \ 't': 'TERM',
+        \ },
+      \ }
+
+function! s:lightline_colorschemes() abort
+    return map(globpath(&rtp,"autoload/lightline/colorscheme/*.vim",1,1), "fnamemodify(v:val,':t:r')")
+endfunction
+
+function! s:lightline_update()
+    try
+        let l:lightline_colorschemes_list = s:lightline_colorschemes()
+        let l:lightline_cs = substitute(g:colors_name, '-', '_', 'g')
+        if index(l:lightline_colorschemes_list, l:lightline_cs) == -1
+            let l:lightline_cs = "default"
+        endif
+        let g:lightline.colorscheme = l:lightline_cs
+        call lightline#init()
+        call lightline#colorscheme()
+        call lightline#update()
+    catch
+    endtry
+endfunction
+
+augroup LightlineColorscheme
+    autocmd!
+    autocmd ColorScheme * call s:lightline_update()
+augroup END
+" call s:lightline_update()
+
+" Color scheme
+function! s:ChooseColorScheme()
+    let l:seed = srand()
+    call rand(l:seed)
+    let l:color_index =  rand(l:seed) % len(s:colorschemes_list)
+    execute 'colorscheme ' . s:colorschemes_list[l:color_index]
+endfunction
+call s:ChooseColorScheme()
