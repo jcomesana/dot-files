@@ -144,7 +144,7 @@ set clipboard=unnamedplus
 else
 set clipboard=unnamed
 endif
-set timeoutlen=2000 " longer time to react to a control key
+set timeout timeoutlen=2000 ttimeoutlen=100
 set display="lastline,msgsep"
 set sidescroll=1
 set scrolloff=4
