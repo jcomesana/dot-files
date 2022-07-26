@@ -295,8 +295,9 @@ nnoremap <leader>fl :Lines<CR>
 nnoremap <leader>fc :Commits<CR>
 
 let g:fzf_layout = {'up':'~94%', 'window': { 'width': 0.9, 'height': 0.9,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
-let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline -i'
+let $FZF_DEFAULT_OPTS = '--layout=reverse -i --color=dark --ansi'
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob "!node_modules" --glob "!.git"'
+let $BAT_THEME = 'Dracula'
 
 " Plugin bufstop
 map <F7> :BufstopFast<CR>
