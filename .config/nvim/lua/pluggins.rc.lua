@@ -29,16 +29,6 @@ cmp.setup({
   }
 })
 
--- Plugin nvim-autopairs
-require('nvim-autopairs').setup{
-  enable_afterquote = true,
-  fast_wrap = {},
-  ignored_next_char = '',
-}
-
-local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
-
 -- Plugin nvim-lspconfig and LSP settings
 
 -- Plugin lsp_signature.nvim
