@@ -33,6 +33,7 @@ call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
 Plug 'lewis6991/impatient.nvim'
+Plug 'itchyny/lightline.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
@@ -364,32 +365,60 @@ let g:beacon_size = 24
 let g:beacon_minimal_jump = 15
 let g:beacon_ignore_filetypes = ['fzf']
 
-" Custom statusline
-" left side
-set statusline=%#Visual#%{StatuslineMode()}%*\|%t\ %r%m
-" right side
-set statusline+=%=%{LspStatus()}%{&ff}\|%{strlen(&fenc)?&fenc:'none'}\|%y\|%#Visual#%3p%%%5l:%3c%*
+" Plugin lightline
+let g:lightline = {
+      \ 'active': {
+      \   'left': [['mode', 'paste'],
+      \            ['gitbranch', 'readonly', 'filename', 'modified']],
+      \   'right': [['lineinfo'],
+      \             ['percent'],
+      \             ['lspstatus', 'fileformat', 'fileencoding', 'filetype']]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \   'lspstatus': 'LspStatus'
+      \ },
+      \ 'component': {
+      \   'lineinfo': '%4l:%-3v',
+      \ },
+      \ 'mode_map': {
+        \ 'n' : 'NORM',
+        \ 'i' : 'INS',
+        \ 'R' : 'REPL',
+        \ 'v' : 'VIS',
+        \ 'V' : 'VISL',
+        \ "\<C-v>": 'VISB',
+        \ 'c' : 'COM',
+        \ 's' : 'SEL',
+        \ 'S' : 'SL',
+        \ "\<C-s>": 'SB',
+        \ 't': 'TERM',
+        \ },
+      \ }
 
-function! StatuslineMode()
-    let l:mode=mode()
-    if l:mode==#"n"
-        return "NORM"
-    elseif l:mode==?"v"
-        return "VIS"
-    elseif l:mode==#"i"
-        return "INS"
-    elseif l:mode==#"R"
-        return "REPL"
-    elseif l:mode==?"s"
-        return "SEL"
-    elseif l:mode==#"t"
-        return "TERM"
-    elseif l:mode==#"c"
-        return "COM"
-    elseif l:mode==#"!"
-        return "SH"
-    endif
+function! s:lightline_colorschemes() abort
+    return map(globpath(&rtp,"autoload/lightline/colorscheme/*.vim",1,1), "fnamemodify(v:val,':t:r')")
 endfunction
+
+function! s:lightline_update()
+    try
+        let l:lightline_colorschemes_list = s:lightline_colorschemes()
+        let l:lightline_cs = substitute(g:colors_name, '-', '_', 'g')
+        if index(l:lightline_colorschemes_list, l:lightline_cs) == -1
+            let l:lightline_cs = "default"
+        endif
+        let g:lightline.colorscheme = l:lightline_cs
+        call lightline#init()
+        call lightline#colorscheme()
+        call lightline#update()
+    catch
+    endtry
+endfunction
+
+augroup LightlineColorscheme
+    autocmd!
+    autocmd ColorScheme * call s:lightline_update()
+augroup END
 
 function! LspStatus() abort
     if luaeval('#vim.lsp.buf_get_clients() > 0')
@@ -398,9 +427,9 @@ function! LspStatus() abort
         let l:info_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })')
         let l:hint_count = luaeval('#vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })')
         if (l:error_count || l:warning_count || l:info_count || l:hint_count)
-            return '[E:' . l:error_count . ' W:' .l:warning_count . ' I:' . l:info_count . ' H:' . l:hint_count . ']|'
+            return '[E:' . l:error_count . ' W:' .l:warning_count . ' I:' . l:info_count . ' H:' . l:hint_count . ']'
         else
-            return '[Ok]|'
+            return '[Ok]'
         endif
     endif
     return ''

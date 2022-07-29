@@ -578,7 +578,6 @@ augroup LightlineColorscheme
     autocmd!
     autocmd ColorScheme * call s:lightline_update()
 augroup END
-" call s:lightline_update()
 
 " Color scheme
 function! s:ChooseColorScheme()
