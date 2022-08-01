@@ -12,7 +12,7 @@ root-markers:
   - _darcs/
   - .git
   - .ignore
-lint-debounce: 5s
+lint-debounce: 3s
 
 # Commands copied from https://github.com/tsuyoshicho/vim-efm-langserver-settings/blob/master/config/efm-langserver/config.yaml
 commands:
