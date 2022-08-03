@@ -26,13 +26,31 @@ cmp.setup({
       }
     },
     { name = 'omni' },
-    { name = 'nvim_lsp_signature_help' },
   }
 })
 
 -- Plugin nvim-lspconfig and LSP settings
 
+-- Plugin lsp_signature.nvim
+local lsp_signature = require('lsp_signature')
+
+lsp_signature.setup({
+  bind = true, -- This is mandatory, otherwise border config won't get registered.
+  handler_opts = {
+    border = 'rounded'
+  },
+  wrap = true,
+  fix_pos = true,
+  hint_enable = false,
+  hint_prefix = '» ',
+  hi_parameter = 'LspSignatureActiveParameter',
+  always_trigger = true,
+  timer_interval = 180,
+  toggle_key = '<M-s>',
+})
+
 local on_attach = function(client, bufnr)
+  lsp_signature.on_attach()
 
   vim.lsp.handlers['textDocument/hover'] =  vim.lsp.with(vim.lsp.handlers.hover, {border = 'rounded'})
   vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = 'rounded'})
