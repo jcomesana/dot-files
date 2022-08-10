@@ -39,10 +39,10 @@ endif
 
 " Settings for fvim
 if exists('g:fvim_loaded')
-    if !empty($NVIM_GUI_FONT)
-      set guifont=$NVIM_GUI_FONT
+    if g:fvim_os == 'windows' || g:fvim_render_scale > 1.0
+        set guifont=Cascadia\ Code:h11
     else
-      set guifont=Cascadia\ Code:h12
+        set guifont=Cascadia\ Code:h12
     endif
 
     " Cursor tweaks
