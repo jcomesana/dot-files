@@ -45,10 +45,6 @@ if exists('g:fvim_loaded')
         set guifont=Cascadia\ Code:h12
     endif
 
-    " Cursor tweaks
-    FVimCursorSmoothMove v:true
-    FVimCursorSmoothBlink v:true
-
     " Title bar tweaks
     FVimCustomTitleBar v:true
 
@@ -58,6 +54,7 @@ if exists('g:fvim_loaded')
     FVimFontHintLevel 'full'
     FVimFontLigature v:true
     FVimFontSubpixel v:true
+    FVimFontLineHeight '+1.0'
 
     " Try to snap the fonts to the pixels, reduces blur
     " in some situations (e.g. 100% DPI).
