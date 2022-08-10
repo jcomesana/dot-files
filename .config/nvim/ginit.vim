@@ -36,3 +36,35 @@ endif
 if exists(':GuiRenderLigatures')
     GuiRenderLigatures 1
 endif
+
+" Settings for fvim
+if exists('g:fvim_loaded')
+    if !empty($NVIM_GUI_FONT)
+      set guifont=$NVIM_GUI_FONT
+    else
+      set guifont=Cascadia\ Code:h12
+    endif
+
+    " Cursor tweaks
+    FVimCursorSmoothMove v:true
+    FVimCursorSmoothBlink v:true
+
+    " Title bar tweaks
+    FVimCustomTitleBar v:true
+
+    " Font tweaks
+    FVimFontAntialias v:true
+    FVimFontAutohint v:true
+    FVimFontHintLevel 'full'
+    FVimFontLigature v:true
+    FVimFontSubpixel v:true
+
+    " Try to snap the fonts to the pixels, reduces blur
+    " in some situations (e.g. 100% DPI).
+    FVimFontAutoSnap v:true
+
+    " Ctrl-ScrollWheel for zooming in/out
+    nnoremap <silent> <C-ScrollWheelUp> :set guifont=+<CR>
+    nnoremap <silent> <C-ScrollWheelDown> :set guifont=-<CR>
+    nnoremap <A-CR> :FVimToggleFullScreen<CR>
+endif
