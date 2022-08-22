@@ -85,6 +85,7 @@ Plug 'catppuccin/vim', { 'as': 'catppuccin' } | call add(s:colorschemes_list, 'c
 Plug 'challenger-deep-theme/vim' | call add(s:colorschemes_list, 'challenger_deep')
 Plug 'dracula/vim',  { 'as': 'dracula' } | call add(s:colorschemes_list, 'dracula')
 Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
+Plug 'glepnir/oceanic-material', | call add(s:colorschemes_list, 'oceanic_material')
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
 Plug 'mhartington/oceanic-next' | call add(s:colorschemes_list, 'OceanicNext')
 Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
@@ -92,7 +93,6 @@ Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
 Plug 'sainnhe/gruvbox-material' | call add(s:colorschemes_list, 'gruvbox-material')
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
 Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
-Plug 'rhysd/vim-color-spring-night' | call add(s:colorschemes_list, 'spring-night')
 
 call plug#end()
 " ---- End vim-plug ---
