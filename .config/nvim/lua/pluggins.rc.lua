@@ -155,7 +155,10 @@ lspconfig.efm.setup {
   filetypes = {'groovy', 'Jenkinsfile'},
   single_file_support = true,
   settings = {
-  }
+  },
+  flags = {
+    debounce_text_changes = 500,
+  },
 }
 
 -- Plugin telescope
