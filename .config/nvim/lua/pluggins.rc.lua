@@ -61,6 +61,7 @@ local on_attach = function(client, bufnr)
     underline = false,
     update_in_insert = false,
     severity_sort = true,
+    float = { border = 'rounded' },
   })
 
   local signs = { Error = 'E ', Warn = 'W ', Hint = 'H ', Info = 'I ' }
