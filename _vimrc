@@ -238,6 +238,10 @@ if has('unix')
     nmap K \K
 endif
 
+" To copy file name and file path to the clipboard
+nmap ,cs :let @*=expand("%")<CR>
+nmap ,cl :let @*=expand("%:p")<CR>
+
 " Protect large files from sourcing and other overhead. Files become read only
 " http://vim.wikia.com/wiki/Faster_loading_of_large_files
 let g:LargeFile = 1024 * 1024 * 20
@@ -320,6 +324,7 @@ let g:ale_completion_enabled = 0
 let g:ale_set_balloons = 1
 let g:ale_set_highlights = 1
 let g:ale_set_signs = 1
+let g:ale_virtualtext_cursor = 1
 let g:ale_disable_lsp = 1
 let g:ale_warn_about_trailing_whitespace = 1
 let s:python_max_len = 200
