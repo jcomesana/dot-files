@@ -432,6 +432,10 @@ let g:lsp_signs_warning = {'text': 'W'}
 let g:lsp_signs_hint = {'text': '*'}
 let g:lsp_signs_information = {'text': 'I'}
 let g:lsp_semantic_enabled = 1
+let g:lsp_inlay_hints_enabled = 1
+let g:lsp_inlay_hints_mode = {
+\  'normal': ['always'],
+\}
 
 " Plugin asyncomplete-lsp.vim
 if executable('pylsp')
