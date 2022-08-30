@@ -54,7 +54,7 @@ if exists('g:fvim_loaded')
     FVimFontHintLevel 'full'
     FVimFontLigature v:true
     FVimFontSubpixel v:true
-    FVimFontLineHeight '+1.0'
+    FVimFontLineHeight '+2.0'
 
     " Try to snap the fonts to the pixels, reduces blur
     " in some situations (e.g. 100% DPI).
