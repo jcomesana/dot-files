@@ -70,6 +70,24 @@ local on_attach = function(client, bufnr)
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
   end
 
+  if client.server_capabilities.documentHighlightProvider then
+      -- Highlight text at cursor position
+      local lsp_doc_highlight_aug = vim.api.nvim_create_augroup('lsp_document_highlight', { clear = true })
+      -- vim.api.nvim_clear_autocmds { buffer = bufnr, group = 'lsp_document_highlight' }
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        callback = vim.lsp.buf.document_highlight,
+        desc = 'Highlight references to current symbol under cursor',
+        group = lsp_doc_highlight_aug,
+        buffer = bufnr,
+      })
+      vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
+        callback = vim.lsp.buf.clear_references,
+        desc = 'Clear highlights when cursor is moved',
+        group = lsp_doc_highlight_aug,
+        buffer = bufnr,
+      })
+  end
+
   local opts = { noremap=true, silent=true }
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 
