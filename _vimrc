@@ -81,7 +81,6 @@ Plug 'MTDL9/vim-log-highlighting'
 " color themes
 Plug 'ajmwagar/vim-dues' | call add(s:colorschemes_list, 'deus')
 Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
-Plug 'catppuccin/vim', { 'as': 'catppuccin' } | call add(s:colorschemes_list, 'catppuccin_mocha')
 Plug 'challenger-deep-theme/vim' | call add(s:colorschemes_list, 'challenger_deep')
 Plug 'dracula/vim',  { 'as': 'dracula' } | call add(s:colorschemes_list, 'dracula')
 Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
