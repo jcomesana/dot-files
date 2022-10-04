@@ -43,12 +43,6 @@ call plug#begin(s:editor_root.'/plugged')
 "
 Plug 'itchyny/lightline.vim'
 Plug 'dense-analysis/ale'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'omgitsmoe/asyncomplete-buffer.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
-Plug 'rhysd/vim-lsp-ale'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
@@ -260,8 +254,6 @@ function! s:LargeFile()
     setlocal noundofile
     " disable swap file
     setlocal noswapfile
-    " disable asyncomplete
-    let b:asyncomplete_enable = 2
     " display message
     autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
 endfunction
@@ -308,10 +300,8 @@ map <leader>w :BufstopPreview<CR>      " switch files by moving inside the windo
 
 " Plugin ALE
 let g:ale_linters = {
-\   'python': ['vim-lsp', 'pylint', 'flake8'],
-\   'cpp': ['vim-lsp', 'clang'],
-\   'groovy': ['vim-lsp'],
-\   'Jenkinsfile': ['vim-lsp'],
+\   'python': ['pylint', 'flake8'],
+\   'cpp': ['clang'],
 \}
 let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -379,131 +369,9 @@ function! LinterStatus() abort
 endfunction
 nnoremap <leader>xt <cmd>lopen<cr>
 
-" Plugin asyncomplete
-let g:asyncomplete_auto_popup = 1
-let g:asyncomplete_min_chars = 0
-
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" Plugin vim-lsp
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> <Leader>ld <plug>(lsp-definition)
-    nmap <buffer> <Leader>lR <plug>(lsp-references)
-    nmap <buffer> <Leader>lr <plug>(lsp-rename)
-    nmap <buffer> <Leader>li <plug>(lsp-implementation)
-    nmap <buffer> <Leader>lD <plug>(lsp-type-definition)
-    nmap <buffer> <Leader>lr <plug>(lsp-rename)
-    nmap <buffer> <Leader>lk <Plug>(lsp-previous-diagnostic)
-    nmap <buffer> <Leader>lj <Plug>(lsp-next-diagnostic)
-    nmap <buffer> <Leader>lh <plug>(lsp-hover)
-    " refer to doc to add more commands
-endfunction
-
-augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
-
-let g:lsp_use_event_queue = 1
-let g:lsp_ignorecase = 0
-let g:lsp_diagnostics_enabled = 1
-let g:lsp_highlight_references_enabled = 1
-let g:lsp_diagnostics_highlights_enabled = 0
-let g:lsp_signs_enabled = 1           " enable signs
-let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
-let g:lsp_diagnostics_virtual_text_enabled = 1
-let g:lsp_show_workspace_edits = 1
-let g:lsp_signs_error = {'text': 'E'}
-let g:lsp_signs_warning = {'text': 'W'}
-let g:lsp_signs_hint = {'text': '*'}
-let g:lsp_signs_information = {'text': 'I'}
-let g:lsp_semantic_enabled = 1
-let g:lsp_inlay_hints_enabled = 1
-let g:lsp_inlay_hints_mode = {
-\  'normal': ['always'],
-\}
-
-" Plugin asyncomplete-lsp.vim
-if executable('pylsp')
-    " pip install python-language-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pylsp',
-        \ 'cmd': {server_info->['pylsp']},
-        \ 'allowlist': ['python'],
-        \ 'workspace_config': {'pylsp': {'plugins': {'flake8': {'enabled': v:true, 'maxLineLength': s:python_max_len}}}}
-        \ })
-endif
-
-if executable('clangd')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'clangd',
-        \ 'cmd': {server_info->['clangd', '-background-index']},
-        \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
-        \ })
-endif
-
-if executable('java') && isdirectory(s:extrasdir)
-    if !empty($GROOVY_HOME)
-        let s:groovy_lib = $GROOVY_HOME.'/lib'
-    else
-        let s:groovy_lib = ''
-    endif
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'groovy-language-server',
-        \ 'cmd': {server_info->['java', '-jar', s:extrasdir.'/groovy-language-server-all.jar']},
-        \ 'allowlist': ['groovy', 'Jenkinsfile'],
-        \ 'workspace_config': {'groovy': {'classpath': [s:groovy_lib]} },
-        \ })
-endif
-
-if executable('npm-groovy-lint')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'npm-groovy-lint',
-        \ 'cmd': {server_info->[s:extrasdir.'/efm-langserver/efm-langserver', '-c', s:extrasdir.'/efm-langserver/config.yaml']},
-        \ 'allowlist': ['groovy', 'Jenkinsfile']
-        \ })
-endif
-
-" Plugin asyncomplete-buffer.vim
-call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-    \ 'name': 'buffer',
-    \ 'allowlist': ['*'],
-    \ 'blocklist': ['go'],
-    \ 'completor': function('asyncomplete#sources#buffer#completor'),
-    \ 'config': {
-    \    'max_buffer_size': 5000000,
-    \  },
-    \ }))
-
-" Plugin asyncomplete-file.vim
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'allowlist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
-
 " Plugin vista
 nnoremap <silent> <F12> :Vista!!<CR>
 let g:vista_sidebar_width=45
-let g:vista_executive_for = {
-  \ 'cpp': 'vim_lsp',
-  \ 'python': 'vim_lsp',
-  \ 'groovy': 'vim_lsp',
-  \ 'Jenkinsfile': 'vim_lsp',
-  \ }
 let g:vista#renderer#enable_icon = 0
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_ignore_kinds = ["Variable", "Module"]
