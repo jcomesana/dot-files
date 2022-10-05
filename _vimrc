@@ -7,6 +7,7 @@ let s:backupdir=s:editor_root . '/backups'
 let s:undodir=s:editor_root . '/undodir'
 let s:swapdir=s:editor_root . '/swap'
 let s:extrasdir=s:editor_root . '/extras'
+let s:pluggeddir=s:editor_root . '/plugged'
 
 if empty(glob(s:autoloaddir . '/plug.vim'))
     call mkdir(s:editor_root, 'p')
@@ -38,9 +39,10 @@ endif
 let s:colorschemes_list = []
 
 " ---- vim-plug ----
-call plug#begin(s:editor_root.'/plugged')
+call plug#begin(s:pluggeddir)
 " My plugins here
 "
+Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 ./install.py --clangd-completer' }
 Plug 'itchyny/lightline.vim'
 Plug 'dense-analysis/ale'
 Plug 'ntpeters/vim-better-whitespace'
@@ -273,6 +275,13 @@ autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --f
 
 " ---- Plugins ----
 let s:python_binary = 'python3'
+
+" Plugin YouCompleteMe
+set completeopt=menuone,noinsert,noselect,popup
+let g:ycm_auto_trigger = 1
+let g:ycm_enable_inlay_hints = 1
+let g:ycm_enable_semantic_highlighting = 1
+let g:ycm_disable_for_files_larger_than_kb = 20000
 
 " Plugin vim-json
 let g:vim_json_syntax_conceal = 0
