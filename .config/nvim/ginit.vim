@@ -8,13 +8,13 @@ if exists(':GuiFont')
     if !empty($NVIM_GUI_FONT)
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
-        GuiFont! Cascadia Code:h9
+        GuiFont! Fira Code Retina:h8
     endif
 endif
 
 " Enable GUI Tabline
 if exists(':GuiTabline')
-    GuiTabline 1
+    GuiTabline 0
 endif
 
 " Disable GUI Popupmenu
@@ -40,9 +40,9 @@ endif
 " Settings for fvim
 if exists('g:fvim_loaded')
     if g:fvim_os == 'windows' || g:fvim_render_scale > 1.0
-        set guifont=Cascadia\ Code:h11
+        set guifont=Fira\ Code:h9
     else
-        set guifont=Cascadia\ Code:h12
+        set guifont=Fira\ Code:h10
     endif
 
     " Title bar tweaks
