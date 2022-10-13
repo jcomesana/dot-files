@@ -282,7 +282,6 @@ let g:ycm_auto_trigger = 1
 let g:ycm_enable_inlay_hints = 1
 let g:ycm_enable_semantic_highlighting = 1
 let g:ycm_disable_for_files_larger_than_kb = 20000
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_confirm_extra_conf = 0
 
@@ -292,6 +291,10 @@ let g:ycm_error_symbol = 'E>'
 let g:ycm_warning_symbol = 'W>'
 let g:ycm_always_populate_location_list = 1
 
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+
 let g:ycm_language_server = []
 
 " ycm LSP config for groovy and Jenkinsfiles
@@ -300,16 +303,7 @@ if executable('java') && isdirectory(s:extrasdir)
     \   {
     \     'name': 'groovy-lsp',
     \     'cmdline': [ 'java', '-jar', s:extrasdir . '/groovy-language-server-all.jar' ],
-    \     'filetypes': [ 'groovy', 'Jenkinsfile' ]
-    \   },
-    \ ]
-endif
-if executable('npm-groovy-lint')
-    let g:ycm_language_server += [
-    \   {
-    \     'name': 'npm-groovy-lint',
-    \     'cmdline': [ s:extrasdir.'/efm-langserver/efm-langserver', '-c', s:extrasdir.'/efm-langserver/config.yaml' ],
-    \     'filetypes': [ 'groovy', 'Jenkinsfile' ]
+    \     'filetypes': [ 'groovy', 'Jenkinsfile' ],
     \   },
     \ ]
 endif
