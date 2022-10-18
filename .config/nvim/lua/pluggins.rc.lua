@@ -11,8 +11,11 @@ cmp.setup({
       end,
   },
   mapping = cmp.mapping.preset.insert({
-    ['<CR>'] = cmp.mapping({ i = cmp.mapping.confirm({ select = true }), c = cmp.mapping.confirm({ select = false }), }),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
   }),
@@ -25,7 +28,6 @@ cmp.setup({
         end
       }
     },
-    { name = 'omni' },
   }
 })
 
@@ -48,6 +50,12 @@ lsp_signature.setup({
   timer_interval = 180,
   toggle_key = '<M-s>',
 })
+
+local keymap_opts = { noremap=true, silent=true }
+vim.keymap.set('n', '<Leader>ll', vim.diagnostic.open_float, keymap_opts)
+vim.keymap.set('n', '<Leader>lk', vim.diagnostic.goto_prev, keymap_opts)
+vim.keymap.set('n', '<Leader>lj', vim.diagnostic.goto_next, keymap_opts)
+vim.keymap.set('n', '<Leader>lc', vim.diagnostic.setloclist, keymap_opts)
 
 local on_attach = function(client, bufnr)
   lsp_signature.on_attach()
@@ -87,34 +95,29 @@ local on_attach = function(client, bufnr)
   --     })
   -- end
 
-  local opts = { noremap=true, silent=true }
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', '<Leader>lD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', '<Leader>ld', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lh', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', '<Leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lR', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<Leader>ll', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lk', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lj', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<Leader>lc', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+  local keymap_bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', '<Leader>lD', vim.lsp.buf.declaration, keymap_bufopts)
+  vim.keymap.set('n', '<Leader>ld', vim.lsp.buf.definition, keymap_bufopts)
+  vim.keymap.set('n', '<Leader>lh', vim.lsp.buf.hover, keymap_bufopts)
+  vim.keymap.set('n', '<Leader>li', vim.lsp.buf.implementation, keymap_bufopts)
+  vim.keymap.set('n', '<Leader>lt', vim.lsp.buf.type_definition, keymap_bufopts)
+  vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, keymap_bufopts)
+  vim.keymap.set('n', '<Leader>lR', vim.lsp.buf.references, keymap_bufopts)
 end
 
 -- clients
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 local lspconfig = require 'lspconfig'
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local lsp_flags = {
+  debounce_text_changes = 130,
+}
 
-lspconfig.pylsp.setup{
+lspconfig['pylsp'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
-  flags = {
-    debounce_text_changes = 150,
-  },
+  flags = lsp_flags,
   settings = {
     -- https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json
     pylsp = {
@@ -131,12 +134,10 @@ lspconfig.pylsp.setup{
   }
 }
 
-lspconfig.clangd.setup{
+lspconfig['clangd'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
-  flags = {
-    debounce_text_changes = 150,
-  },
+  flags = lsp_flags,
 }
 
 local extras_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), 'extras')
@@ -146,12 +147,10 @@ local groovy_lib = ''
 if vim.env.GROOVY_HOME then
   groovy_lib = vim.env.GROOVY_HOME .. '/lib'
 end
-lspconfig.groovyls.setup{
+lspconfig['groovyls'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
-  flags = {
-    debounce_text_changes = 150,
-  },
+  flags = lsp_flags,
   cmd = { 'java', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.git', '.ignore', '.gitignore'),
@@ -165,7 +164,7 @@ lspconfig.groovyls.setup{
 
 local efm_command = lspconfig.util.path.join(extras_path, 'efm-langserver', 'efm-langserver')
 local efm_config = lspconfig.util.path.join(extras_path, 'efm-langserver', 'config.yaml')
-lspconfig.efm.setup {
+lspconfig['efm'].setup {
   init_options = {documentFormatting = true},
   cmd = {efm_command, '-c', efm_config},
   rootMarkers = {'.git', '.ignore'},
@@ -174,7 +173,7 @@ lspconfig.efm.setup {
   settings = {
   },
   flags = {
-    debounce_text_changes = 500,
+    debounce_text_changes = 400,
   },
 }
 
@@ -217,7 +216,7 @@ require('trouble').setup {
 
 -- Plugin nvim-treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained",
+  ensure_installed = 'maintained',
   highlight = {
     enable = true,
     disable = {},
@@ -227,10 +226,10 @@ require'nvim-treesitter.configs'.setup {
     disable = {},
   },
   ensure_installed = {
-    "python",
-    "cpp",
-    "yaml",
-    "json",
-    "cmake",
+    'python',
+    'cpp',
+    'yaml',
+    'json',
+    'cmake',
   },
 }
