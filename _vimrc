@@ -428,24 +428,11 @@ let g:lsp_signs_warning = {'text': 'W'}
 let g:lsp_signs_hint = {'text': '*'}
 let g:lsp_signs_information = {'text': 'I'}
 let g:lsp_semantic_enabled = 1
-let g:lsp_inlay_hints_enabled = 1
+let g:lsp_inlay_hints_enabled = 0
 let g:lsp_inlay_hints_mode = {
 \  'normal': ['always'],
 \}
-
-if executable('java') && isdirectory(s:extrasdir)
-    if !empty($GROOVY_HOME)
-        let s:groovy_lib = $GROOVY_HOME.'/lib'
-    else
-        let s:groovy_lib = ''
-    endif
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'groovy-language-server',
-        \ 'cmd': {server_info->['java', '-jar', s:extrasdir.'/groovy-language-server-all.jar']},
-        \ 'allowlist': ['groovy', 'Jenkinsfile'],
-        \ 'workspace_config': {'groovy': {'classpath': [s:groovy_lib]} },
-        \ })
-endif
+let g:lsp_signature_help_enabled = 0
 
 if executable('npm-groovy-lint')
     au User lsp_setup call lsp#register_server({
