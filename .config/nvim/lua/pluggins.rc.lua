@@ -57,26 +57,26 @@ vim.keymap.set('n', '<Leader>lk', vim.diagnostic.goto_prev, keymap_opts)
 vim.keymap.set('n', '<Leader>lj', vim.diagnostic.goto_next, keymap_opts)
 vim.keymap.set('n', '<Leader>lc', vim.diagnostic.setloclist, keymap_opts)
 
+-- diagnostic
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = false,
+  update_in_insert = true,
+  severity_sort = true,
+  float = { border = 'rounded' },
+})
+local signs = { Error = 'E ', Warn = 'W ', Hint = 'H ', Info = 'I ' }
+for type, icon in pairs(signs) do
+  local hl = 'DiagnosticSign' .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
 local on_attach = function(client, bufnr)
   lsp_signature.on_attach()
 
   vim.lsp.handlers['textDocument/hover'] =  vim.lsp.with(vim.lsp.handlers.hover, {border = 'rounded'})
   vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = 'rounded'})
-  -- diagnostic
-  vim.diagnostic.config({
-    virtual_text = true,
-    signs = true,
-    underline = false,
-    update_in_insert = false,
-    severity_sort = true,
-    float = { border = 'rounded' },
-  })
-
-  local signs = { Error = 'E ', Warn = 'W ', Hint = 'H ', Info = 'I ' }
-  for type, icon in pairs(signs) do
-    local hl = 'DiagnosticSign' .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-  end
 
   -- if client.server_capabilities.documentHighlightProvider then
   --     -- Highlight text at cursor position
