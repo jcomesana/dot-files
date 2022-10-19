@@ -120,6 +120,7 @@ lspconfig['pylsp'].setup{
   flags = lsp_flags,
   cmd = { 'pylsp' },
   filetypes = { 'python' },
+  single_file_support = false,
   settings = {
     -- https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json
     pylsp = {
