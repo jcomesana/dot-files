@@ -35,7 +35,6 @@ call plug#begin(s:editor_root.'/plugged')
 Plug 'lewis6991/impatient.nvim'
 Plug 'itchyny/lightline.vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
@@ -322,19 +321,6 @@ let $BAT_THEME = 'Dracula'
 map <F7> :BufstopFast<CR>
 map <leader>b :Bufstop<CR>             " get a visual on the buffers
 map <leader>w :BufstopPreview<CR>      " switch files by moving inside the window
-
-" Plugin vista
-nnoremap <silent> <F12> :Vista!!<CR>
-let g:vista_sidebar_width=45
-let g:vista_executive_for = {
-  \ 'cpp': 'nvim_lsp',
-  \ 'python': 'nvim_lsp',
-  \ 'groovy': 'nvim_lsp',
-  \ 'Jenkinsfile': 'nvim_lsp',
-  \ }
-let g:vista#renderer#enable_icon = 0
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_ignore_kinds = ["Variable", "Module"]
 
 " Plugin vim-indent-guides
 let g:indent_guides_guide_size = 1

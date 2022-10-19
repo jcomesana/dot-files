@@ -50,7 +50,6 @@ Plug 'omgitsmoe/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'rhysd/vim-lsp-ale'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
@@ -494,19 +493,6 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ 'priority': 10,
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
-
-" Plugin vista
-nnoremap <silent> <F12> :Vista!!<CR>
-let g:vista_sidebar_width=45
-let g:vista_executive_for = {
-  \ 'cpp': 'vim_lsp',
-  \ 'python': 'vim_lsp',
-  \ 'groovy': 'vim_lsp',
-  \ 'Jenkinsfile': 'vim_lsp',
-  \ }
-let g:vista#renderer#enable_icon = 0
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_ignore_kinds = ["Variable", "Module"]
 
 " Plugin vim-indent-guides
 let g:indent_guides_guide_size = 1
