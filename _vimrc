@@ -48,7 +48,6 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'dense-analysis/ale'
 Plug 'rhysd/vim-lsp-ale'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
@@ -441,13 +440,6 @@ if executable('npm-groovy-lint')
         \ 'allowlist': ['groovy', 'Jenkinsfile']
         \ })
 endif
-
-" Plugin vista
-nnoremap <silent> <F12> :Vista!!<CR>
-let g:vista_sidebar_width=45
-let g:vista#renderer#enable_icon = 0
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_ignore_kinds = ["Variable", "Module"]
 
 " Plugin vim-indent-guides
 let g:indent_guides_guide_size = 1
