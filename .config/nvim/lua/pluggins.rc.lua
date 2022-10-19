@@ -118,7 +118,7 @@ lspconfig['pylsp'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
   flags = lsp_flags,
-  cmd = { 'pylsp' }
+  cmd = { 'pylsp' },
   filetypes = { 'python' },
   settings = {
     -- https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json
