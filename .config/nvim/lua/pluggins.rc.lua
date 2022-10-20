@@ -121,6 +121,7 @@ lspconfig['pylsp'].setup{
   cmd = { 'pylsp' },
   filetypes = { 'python' },
   single_file_support = false,
+  root_dir = lspconfig.util.root_pattern('.git', '.ignore', '.gitignore', 'requirements.txt'),
   settings = {
     -- https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json
     pylsp = {
