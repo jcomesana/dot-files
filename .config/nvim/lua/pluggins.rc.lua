@@ -55,7 +55,7 @@ local keymap_opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<Leader>ll', vim.diagnostic.open_float, keymap_opts)
 vim.keymap.set('n', '<Leader>lk', vim.diagnostic.goto_prev, keymap_opts)
 vim.keymap.set('n', '<Leader>lj', vim.diagnostic.goto_next, keymap_opts)
-vim.keymap.set('n', '<Leader>lc', vim.diagnostic.setloclist, keymap_opts)
+vim.keymap.set('n', '<Leader>xt', vim.diagnostic.setloclist, keymap_opts)
 
 -- diagnostic
 vim.diagnostic.config({
@@ -71,6 +71,14 @@ for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
+
+vim.api.nvim_create_augroup('diagnostics', { clear = true })
+vim.api.nvim_create_autocmd('DiagnosticChanged', {
+  group = 'diagnostics',
+  callback = function()
+    vim.diagnostic.setloclist({ open = false })
+  end,
+})
 
 local on_attach = function(client, bufnr)
   lsp_signature.on_attach()
@@ -201,22 +209,6 @@ lspconfig['efm'].setup {
 -- map('n', '<leader>fR', "<cmd>lua require('telescope.builtin').lsp_references()<CR>", default_map_opts)
 -- map('n', '<leader>ft', "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", default_map_opts)
 -- map('n', '<leader>fd', "<cmd>lua require('telescope.builtin').diagnostics()<CR>", default_map_opts)
-
--- Plugin trouble.nvim
-require('trouble').setup {
-  icons = false,
-  fold_open = '-', -- icon used for open folds
-  fold_closed = '+', -- icon used for closed folds
-  indent_lines = false, -- add an indent guide below the fold icons
-  signs = {
-    -- icons / text used for a diagnostic
-    error = 'error',
-    warning = 'warn',
-    hint = 'hint',
-    information = 'info'
-  },
-  use_diagnostic_signs = true -- enabling this will use the signs defined in your lsp client
-}
 
 -- Plugin nvim-treesitter
 require'nvim-treesitter.configs'.setup {
