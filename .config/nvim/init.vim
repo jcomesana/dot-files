@@ -43,7 +43,6 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-omni'
-Plug 'folke/trouble.nvim'
 Plug 'folke/lsp-colors.nvim'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'tpope/vim-fugitive'
@@ -338,14 +337,6 @@ let g:signify_sign_delete            = '-'
 let g:signify_sign_delete_first_line = '‾'
 let g:signify_sign_change            = '*'
 let g:signify_sign_change_delete     = 'd'
-
-" Plugin trouble.nvim
-nnoremap <leader>xt <cmd>TroubleToggle<cr>
-nnoremap <leader>xw <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
-nnoremap <leader>xd <cmd>TroubleToggle lsp_document_diagnostics<cr>
-nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
-nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
-nnoremap <leader>xR <cmd>TroubleToggle lsp_references<cr>
 
 " Plugin beacon.nvim
 let g:beacon_size = 24
