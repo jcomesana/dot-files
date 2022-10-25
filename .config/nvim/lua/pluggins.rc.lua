@@ -55,7 +55,7 @@ local keymap_opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<Leader>ll', vim.diagnostic.open_float, keymap_opts)
 vim.keymap.set('n', '<Leader>lk', vim.diagnostic.goto_prev, keymap_opts)
 vim.keymap.set('n', '<Leader>lj', vim.diagnostic.goto_next, keymap_opts)
-vim.keymap.set('n', '<Leader>lc', vim.diagnostic.setloclist, keymap_opts)
+vim.keymap.set('n', '<Leader>xt', vim.diagnostic.setloclist, keymap_opts)
 
 -- diagnostic
 vim.diagnostic.config({
@@ -71,6 +71,14 @@ for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
+
+vim.api.nvim_create_augroup('diagnostics', { clear = true })
+vim.api.nvim_create_autocmd('DiagnosticChanged', {
+  group = 'diagnostics',
+  callback = function()
+    vim.diagnostic.setloclist({ open = false })
+  end,
+})
 
 local on_attach = function(client, bufnr)
   lsp_signature.on_attach()
