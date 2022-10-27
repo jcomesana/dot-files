@@ -340,7 +340,7 @@ let g:ale_open_list = 0
 let g:ale_python_flake8_executable = s:python_binary
 let g:ale_python_flake8_options = '-m flake8 --max-line-length='.s:python_max_len
 let g:ale_python_pylint_executable = s:python_binary
-let g:ale_python_pylint_options = '-m pylint'
+let g:ale_python_pylint_options = '-m pylint --max-line-length='.s:python_max_len
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 " C++
 let g:ale_cpp_clang_executable = 'clang++'
@@ -440,7 +440,8 @@ if executable('pylsp')
         \ 'name': 'pylsp',
         \ 'cmd': {server_info->['pylsp']},
         \ 'allowlist': ['python'],
-        \ 'workspace_config': {'pylsp': {'plugins': {'flake8': {'enabled': v:true, 'maxLineLength': s:python_max_len}}}}
+        \ 'workspace_config': {'pylsp': {'plugins': {'flake8': {'enabled': v:true, 'maxLineLength': s:python_max_len},
+        \                                            'pylint': {'enabled': v:true, 'args': ['--max-line-length', s:python_max_len]}}}}
         \ })
 endif
 
