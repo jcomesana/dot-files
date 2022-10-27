@@ -140,7 +140,7 @@ lspconfig['pylsp'].setup{
         },
         pylint = {
           enabled = true,
-          args = {'--max-line-length', '100'}
+          args = {'--max-line-length', '200'}
         },
       }
     }
