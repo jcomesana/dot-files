@@ -40,9 +40,9 @@ endif
 " Settings for fvim
 if exists('g:fvim_loaded')
     if g:fvim_os == 'windows' || g:fvim_render_scale > 1.0
-        set guifont=Iosevka\ SS04:h11
-    else
         set guifont=Iosevka\ SS04:h12
+    else
+        set guifont=Iosevka\ SS04:h13
     endif
 
     " Title bar tweaks
