@@ -8,7 +8,7 @@ if exists(':GuiFont')
     if !empty($NVIM_GUI_FONT)
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
-        GuiFont! Iosevka SS04:h09
+        GuiFont! Cascadia Code:h8:b
     endif
 endif
 
