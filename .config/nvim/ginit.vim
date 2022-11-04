@@ -44,7 +44,7 @@ endif
 
 " Try to render font ligatures
 if exists(':GuiRenderLigatures')
-    GuiRenderLigatures 1
+    GuiRenderLigatures 0
 endif
 
 " Settings for fvim
