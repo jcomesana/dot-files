@@ -32,6 +32,16 @@ if exists(':GuiAdaptativeColor')
     GuiAdaptativeColor 1
 endif
 
+" Use the current `GuiFont` to decorate the GUI
+if exists(':GuiAdaptativeFont')
+    GuiAdaptativeFont 1
+endif
+
+" Override the default Qt Style/Theme
+if exists(':GuiAdaptiveStyle')
+    GuiAdaptiveStyle Fusion
+endif
+
 " Try to render font ligatures
 if exists(':GuiRenderLigatures')
     GuiRenderLigatures 1
