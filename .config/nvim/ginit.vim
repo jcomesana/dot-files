@@ -8,7 +8,11 @@ if exists(':GuiFont')
     if !empty($NVIM_GUI_FONT)
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
-        GuiFont! Cascadia Code:h8:b
+        if has('win32')
+            GuiFont! Iosevka SS04:h8
+        else
+            GuiFont! Iosevka SS04:h9
+        endif
     endif
 endif
 
@@ -44,7 +48,7 @@ endif
 
 " Try to render font ligatures
 if exists(':GuiRenderLigatures')
-    GuiRenderLigatures 0
+    GuiRenderLigatures 1
 endif
 
 " Settings for fvim
