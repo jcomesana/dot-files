@@ -9,9 +9,9 @@ if exists(':GuiFont')
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
         if has('win32')
-            GuiFont! Iosevka SS04:h8
+            GuiFont! Cascadia Mono:h8
         else
-            GuiFont! Iosevka SS04:h9
+            GuiFont! Cascadia Mono:h9
         endif
     endif
 endif
