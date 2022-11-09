@@ -79,3 +79,8 @@ if exists('g:fvim_loaded')
     nnoremap <silent> <C-ScrollWheelDown> :set guifont=-<CR>
     nnoremap <A-CR> :FVimToggleFullScreen<CR>
 endif
+
+" Settings for neovide
+if exists("g:neovide")
+    set guifont=Cascadia\ Mono:h9
+endif
