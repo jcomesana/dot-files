@@ -235,7 +235,7 @@ require'nvim-treesitter.configs'.setup {
 local FTerm = require 'FTerm'
 FTerm.setup({
   border = 'rounded',
-  cmd = os.getenv('SHELL') or 'cmd'
+  cmd = os.getenv('SHELL') or 'cmd',
   dimensions  = {
       height = 0.9,
       width = 0.95,
