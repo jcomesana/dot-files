@@ -65,6 +65,8 @@ Plug 'danilamihailov/beacon.nvim'
 Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeInfo'] }
 Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
 Plug 'equalsraf/neovim-gui-shim'
+" Terminal
+Plug 'numToStr/FTerm.nvim'
 " File type specific plugins
 Plug 'vim-jp/vim-cpp', { 'for': ['c', 'cpp'] }
 Plug 'bfrg/vim-cpp-modern', { 'for': ['c', 'cpp'] }
