@@ -82,7 +82,11 @@ endif
 
 " Settings for neovide
 if exists("g:neovide")
-    set guifont=Cascadia\ Mono:h9
+    if has('win32')
+        set guifont=Cascadia\ Code:h8.3
+    else
+        set guifont=Cascadia\ Code:h9
+    endif
     let g:neovide_hide_mouse_when_typing = v:true
     let g:neovide_cursor_animation_length = 0.10
     let g:neovide_cursor_trail_size = 0.5
