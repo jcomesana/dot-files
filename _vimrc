@@ -85,7 +85,6 @@ Plug 'joshdick/onedark.vim' | call add(s:colorschemes_list, 'onedark')
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
 Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
 Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
-Plug 'sainnhe/gruvbox-material' | call add(s:colorschemes_list, 'gruvbox-material')
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
 Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
 
@@ -223,8 +222,6 @@ if has("termguicolors")
 endif
 
 " Color scheme settings
-let g:gruvbox_material_palette = 'original'
-let g:gruvbox_material_background = 'hard'
 
 " ---- Extra functionallity ----
 " to visualize manpages
