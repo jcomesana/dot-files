@@ -129,7 +129,7 @@ lspconfig['pylsp'].setup{
   cmd = { 'pylsp' },
   filetypes = { 'python' },
   single_file_support = false,
-  root_dir = lspconfig.util.root_pattern('.git', '.ignore', '.gitignore', 'requirements.txt'),
+  root_dir = lspconfig.util.root_pattern('.git', '.hg', '.ignore', 'requirements.txt'),
   settings = {
     -- https://github.com/python-lsp/python-lsp-server/blob/develop/pylsp/config/schema.json
     pylsp = {
@@ -166,7 +166,7 @@ lspconfig['groovyls'].setup{
   flags = lsp_flags,
   cmd = { 'java', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
-  root_dir = lspconfig.util.root_pattern('.git', '.ignore', '.gitignore'),
+  root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
   single_file_support = true,
   settings = {
     groovy = {
@@ -180,7 +180,7 @@ local efm_config = lspconfig.util.path.join(extras_path, 'efm-langserver', 'conf
 lspconfig['efm'].setup {
   init_options = {documentFormatting = true},
   cmd = {efm_command, '-c', efm_config},
-  rootMarkers = {'.git', '.ignore'},
+  rootMarkers = {'.groovylintrc.json', '.git', '.ignore', '.hg'},
   filetypes = {'groovy', 'Jenkinsfile'},
   single_file_support = true,
   settings = {
