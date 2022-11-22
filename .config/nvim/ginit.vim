@@ -9,10 +9,11 @@ if exists(':GuiFont')
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
         if has('win32')
-            GuiFont! Cascadia Mono:h8
+            GuiFont! Cascadia Code:h8
         else
-            GuiFont! Cascadia Mono:h9
+            GuiFont! Cascadia Code:h9
         endif
+        GuiLinespace 1
     endif
 endif
 
