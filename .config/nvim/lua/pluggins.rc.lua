@@ -191,25 +191,33 @@ lspconfig['efm'].setup {
 }
 
 -- Plugin telescope
--- require 'telescope'.setup {
---   defaults = {
---     preview = {
---       check_mime_type = false
---     },
---   }
--- }
+require 'telescope'.setup {
+  defaults = {
+    preview = {
+      check_mime_type = false
+    },
+    layout_strategy = 'horizontal',
+    layout_config = {
+      height = 0.95,
+      width = 0.90,
+      prompt_position = 'top',
+    },
+  }
+}
 
--- local map = vim.api.nvim_set_keymap
--- local default_map_opts = {noremap = true}
--- map('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files({ hidden=true, })<CR>", default_map_opts)
--- map('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<CR>", default_map_opts)
--- map('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<CR>", default_map_opts)
--- map('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<CR>", default_map_opts)
--- map('n', '<leader>fl', "<cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>", default_map_opts)
--- map('n', '<leader>fc', "<cmd>lua require('telescope.builtin').git_commits()<CR>", default_map_opts)
--- map('n', '<leader>fR', "<cmd>lua require('telescope.builtin').lsp_references()<CR>", default_map_opts)
--- map('n', '<leader>ft', "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", default_map_opts)
--- map('n', '<leader>fd', "<cmd>lua require('telescope.builtin').diagnostics()<CR>", default_map_opts)
+local telescope_builtin = require('telescope.builtin')
+local default_map_opts = {noremap = true}
+vim.keymap.set('n', '<leader>tf', telescope_builtin.find_files, default_map_opts)
+vim.keymap.set('n', '<leader>tg', telescope_builtin.live_grep, default_map_opts)
+vim.keymap.set('n', '<leader>tb', telescope_builtin.buffers, default_map_opts)
+vim.keymap.set('n', '<leader>th', telescope_builtin.help_tags, default_map_opts)
+vim.keymap.set('n', '<leader>tl', telescope_builtin.live_grep, default_map_opts)
+vim.keymap.set('n', '<leader>tc', telescope_builtin.git_commits, default_map_opts)
+vim.keymap.set('n', '<leader>tR', telescope_builtin.lsp_references, default_map_opts)
+vim.keymap.set('n', '<leader>ts', telescope_builtin.lsp_document_symbols, default_map_opts)
+vim.keymap.set('n', '<leader>tW', telescope_builtin.lsp_workspace_symbols, default_map_opts)
+vim.keymap.set('n', '<leader>td', telescope_builtin.diagnostics, default_map_opts)
+vim.keymap.set('n', '<leader>tt', telescope_builtin.treesitter, default_map_opts)
 
 -- Plugin nvim-treesitter
 require'nvim-treesitter.configs'.setup {

@@ -51,10 +51,9 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-vinegar'
 Plug 'machakann/vim-sandwich'
 Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'gfanto/fzf-lsp.nvim'
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
 Plug 'cohama/lexima.vim'
