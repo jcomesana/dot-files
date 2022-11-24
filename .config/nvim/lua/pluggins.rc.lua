@@ -191,7 +191,9 @@ lspconfig['efm'].setup {
 }
 
 -- Plugin telescope
-require 'telescope'.setup {
+local telescope = require('telescope')
+telescope.load_extension('ag')
+telescope.setup {
   defaults = {
     preview = {
       check_mime_type = false
