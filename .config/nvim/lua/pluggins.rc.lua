@@ -119,7 +119,8 @@ end
 local lspconfig = require 'lspconfig'
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lsp_flags = {
-  debounce_text_changes = 130,
+  debounce_text_changes = 500,
+  allow_incremental_sync = true,
 }
 
 lspconfig['pylsp'].setup{
@@ -149,6 +150,11 @@ lspconfig['pylsp'].setup{
 
 lspconfig['clangd'].setup{
   on_attach = on_attach,
+  cmd = {
+    'clangd', '--background-index', '--suggest-missing-includes', '--clang-tidy',
+    '--header-insertion=iwyu'
+  },
+  filetypes = {'c', 'cpp', 'objc', 'objcpp'},
   capabilities = capabilities,
   flags = lsp_flags,
 }
