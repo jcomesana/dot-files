@@ -83,7 +83,6 @@ Plug 'bluz71/vim-nightfly-guicolors' | call add(s:colorschemes_list, 'nightfly')
 Plug 'challenger-deep-theme/vim' | call add(s:colorschemes_list, 'challenger_deep')
 Plug 'dracula/vim',  { 'as': 'dracula' } | call add(s:colorschemes_list, 'dracula')
 Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
-Plug 'joshdick/onedark.vim' | call add(s:colorschemes_list, 'onedark')
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
 Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
 Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
@@ -553,11 +552,16 @@ endfunction
 function! s:lightline_update()
     try
         let l:lightline_colorschemes_list = s:lightline_colorschemes()
-        let l:lightline_cs = substitute(g:colors_name, '-', '_', 'g')
-        if index(l:lightline_colorschemes_list, l:lightline_cs) == -1
-            let l:lightline_cs = "default"
+        if index(l:lightline_colorschemes_list, g:colors_name) != -1
+            let g:lightline.colorscheme = g:colors_name
+        else
+            let l:alternative_colors_name = substitute(g:colors_name, '-', '_', 'g')
+            if l:alternative_colors_name != g:colors_name && index(l:lightline_colorschemes_list, l:alternative_colors_name) != -1
+                let g:lightline.colorscheme = l:alternative_colors_name
+            else
+                let g:lightline.colorscheme = 'default'
+            endif
         endif
-        let g:lightline.colorscheme = l:lightline_cs
         call lightline#init()
         call lightline#colorscheme()
         call lightline#update()
