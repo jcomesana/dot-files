@@ -46,7 +46,7 @@ Plug 'dense-analysis/ale'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'omgitsmoe/asyncomplete-buffer.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'rhysd/vim-lsp-ale'
 Plug 'ntpeters/vim-better-whitespace'
@@ -389,6 +389,25 @@ inoremap <silent><expr> <TAB>
   \ asyncomplete#force_refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+function! s:remove_duplicates(options, matches) abort
+    let l:visited = {}
+    let l:items = []
+    for [l:source_name, l:matches] in items(a:matches)
+        for l:item in l:matches['items']
+        if stridx(l:item['word'], a:options['base']) == 0
+            if !has_key(l:visited, l:item['word'])
+            call add(l:items, l:item)
+            let l:visited[l:item['word']] = 1
+            endif
+        endif
+        endfor
+    endfor
+
+    call asyncomplete#preprocess_complete(a:options, l:items)
+endfunction
+
+let g:asyncomplete_preprocessor = [function('s:remove_duplicates')]
+
 " Plugin vim-lsp
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
@@ -482,6 +501,8 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
     \    'max_buffer_size': 5000000,
     \  },
     \ }))
+" workaround for missing BufWinEnter event when starting vim with a file
+autocmd VimEnter * :doautocmd BufWinEnter
 
 " Plugin asyncomplete-file.vim
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
