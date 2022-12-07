@@ -12,7 +12,7 @@ else
     " set guifont=Fira\ Code\ weight=450\ 8
     " set guifont=Fantasque\ Sans\ Mono\ 9
     " set guifont=Victor\ Mono\ 9
-    set guifont=Cascadia\ Code\ Semi-Light\ 9
+    set guifont=Cascadia\ Code\ 9
     set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~
 endif
 
