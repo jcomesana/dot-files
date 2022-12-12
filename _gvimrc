@@ -1,5 +1,6 @@
 " ---- Font ----
 if has('win32')
+    set renderoptions=type:directx " enable font ligatures
     " set guifont=DejaVu_Sans_Mono:h8:cANSI
     " set guifont=Iosevka_SS04_Extended:h8:cANSI:qDRAFT
     " set guifont=Fira_Code_Retina:h8:W450:cANSI:qDRAFT
