@@ -501,8 +501,12 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
     \    'max_buffer_size': 5000000,
     \  },
     \ }))
-" workaround for missing BufWinEnter event when starting vim with a file
-autocmd VimEnter * :doautocmd BufWinEnter
+" fix for https://github.com/prabirshrestha/asyncomplete-buffer.vim/issues/17
+function! s:fix_buffer_complete() abort
+    let l:info = asyncomplete#get_source_info('buffer')
+    call l:info.on_event(l:info, {}, 'BufWinEnter')
+endfunction
+autocmd User asyncomplete_setup call s:fix_buffer_complete()
 
 " Plugin asyncomplete-file.vim
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
