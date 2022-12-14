@@ -457,7 +457,7 @@ if executable('pylsp')
         \ 'cmd': {server_info->['pylsp']},
         \ 'allowlist': ['python'],
         \ 'workspace_config': {'pylsp': {'plugins': {'flake8': {'enabled': v:true, 'maxLineLength': s:python_max_len},
-        \                                            'pylint': {'enabled': v:true, 'args': ['--max-line-length', s:python_max_len]}}}}
+        \                                            'pylint': {'enabled': v:true, 'args': ['--max-line-length' . s:python_max_len]}}}}
         \ })
 endif
 
