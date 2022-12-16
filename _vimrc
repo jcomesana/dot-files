@@ -88,6 +88,7 @@ Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
 Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
 Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
+Plug 'tomasiser/vim-code-dark' | call add(s:colorschemes_list, 'codedark')
 
 call plug#end()
 " ---- End vim-plug ---
