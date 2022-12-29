@@ -259,17 +259,3 @@ require'nvim-treesitter.configs'.setup {
     'cmake',
   },
 }
-
--- Plugin FTern
-local FTerm = require 'FTerm'
-FTerm.setup({
-  border = 'rounded',
-  cmd = os.getenv('SHELL') or 'cmd',
-  dimensions  = {
-      height = 0.9,
-      width = 0.95,
-  },
-})
-
-vim.keymap.set('n', '<A-t>', FTerm.toggle)
-vim.keymap.set('t', '<A-t>', FTerm.toggle)
