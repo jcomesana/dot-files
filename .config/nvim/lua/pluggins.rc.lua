@@ -183,7 +183,7 @@ lspconfig['efm'].setup {
   settings = {
   },
   flags = {
-    debounce_text_changes = 400,
+    debounce_text_changes = 500,
   },
 }
 

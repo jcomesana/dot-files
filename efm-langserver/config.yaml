@@ -17,7 +17,7 @@ lint-debounce: 0.5s
 tools:
   groovylint: &npm-groovy-lint
     # Commands copied from https://github.com/tsuyoshicho/vim-efm-langserver-settings/blob/master/config/efm-langserver/config.yaml
-    lint-command: 'npm-groovy-lint --no-insight --files ${INPUT} --output txt'
+    lint-command: 'npm-groovy-lint ${INPUT} --output txt'
     lint-ignore-exit-code: true
     lint-stdin: true
     lint-formats:
