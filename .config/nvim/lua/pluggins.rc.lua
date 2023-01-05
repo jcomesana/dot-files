@@ -55,7 +55,6 @@ local keymap_opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<Leader>ll', vim.diagnostic.open_float, keymap_opts)
 vim.keymap.set('n', '<Leader>lk', vim.diagnostic.goto_prev, keymap_opts)
 vim.keymap.set('n', '<Leader>lj', vim.diagnostic.goto_next, keymap_opts)
-vim.keymap.set('n', '<Leader>xt', vim.diagnostic.setloclist, keymap_opts)
 
 -- diagnostic
 vim.diagnostic.config({
@@ -71,14 +70,6 @@ for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
-
-vim.api.nvim_create_augroup('diagnostics', { clear = true })
-vim.api.nvim_create_autocmd('DiagnosticChanged', {
-  group = 'diagnostics',
-  callback = function()
-    vim.diagnostic.setloclist({ open = false })
-  end,
-})
 
 local on_attach = function(client, bufnr)
   lsp_signature.on_attach()
@@ -214,7 +205,7 @@ telescope.setup {
 }
 
 local telescope_builtin = require('telescope.builtin')
-local default_map_opts = {noremap = true}
+local default_map_opts = {noremap=true, silent=true}
 vim.keymap.set('n', '<leader>tf', telescope_builtin.find_files, default_map_opts)
 vim.keymap.set('n', '<leader>tg', telescope_builtin.live_grep, default_map_opts)
 vim.keymap.set('n', '<leader>tb', telescope_builtin.buffers, default_map_opts)
@@ -259,3 +250,19 @@ require'nvim-treesitter.configs'.setup {
     'cmake',
   },
 }
+
+-- Plugin trouble.nvim
+require('trouble').setup {
+  icons = false,
+  fold_open = '-', -- icon used for open folds
+  fold_closed = '+', -- icon used for closed folds
+  indent_lines = false, -- add an indent guide below the fold icons
+  use_diagnostic_signs = true, -- enabling this will use the signs defined in your lsp client
+  auto_preview = false, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
+}
+vim.keymap.set('n', '<Leader>xt', '<cmd>TroubleToggle<cr>', default_map_opts)
+vim.keymap.set('n', '<Leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>', default_map_opts)
+vim.keymap.set('n', '<Leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>', default_map_opts)
+vim.keymap.set('n', '<Leader>xl', '<cmd>TroubleToggle loclist<cr>', default_map_opts)
+vim.keymap.set('n', '<Leader>xq', '<cmd>TroubleToggle quickfix<cr>', default_map_opts)
+vim.keymap.set('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>', default_map_opts)
