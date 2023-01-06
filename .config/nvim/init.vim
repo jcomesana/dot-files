@@ -280,8 +280,8 @@ command MC :silent make<bar>copen
 let g:netrw_liststyle=3
 
 " ---- groovy settings ---
-autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --files\ \"**/%:t\"
-autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --files\ \"**/%:t\"
+autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
+autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
 
 " Disable some providers
 let g:loaded_python_provider = 0
@@ -291,7 +291,7 @@ let g:loaded_ruby_provider = 0
 
 " Additional configuration files
 for f in split(glob(s:editor_root.'/lua/*.*'), '\n')
-		exe 'source' f
+    exe 'source' f
 endfor
 
 " ---- Plugins ----

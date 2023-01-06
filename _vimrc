@@ -272,8 +272,8 @@ command MC :silent make<bar>copen
 let g:netrw_liststyle=3
 
 " ---- groovy settings ---
-autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --no-insight\ --files\ \"**/%:t\"
-autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --no-insight\ --files\ \"**/%:t\"
+autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
+autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
 
 " ---- Plugins ----
 let s:python_binary = 'python3'
@@ -471,16 +471,20 @@ if executable('clangd')
 endif
 
 if executable('java') && isdirectory(s:extrasdir)
+    let s:groovy_lsp_classpath = []
     if !empty($GROOVY_HOME)
         let s:groovy_lib = $GROOVY_HOME.'/lib'
-    else
-        let s:groovy_lib = ''
+        call add(s:groovy_lsp_classpath, s:groovy_lib)
+    endif
+    if !empty($JENKINS_HOME)
+        let s:p4_plugin_lib = $JENKINS_HOME.'/plugins/p4/WEB-INF/lib'
+        call add(s:groovy_lsp_classpath, s:p4_plugin_lib)
     endif
     au User lsp_setup call lsp#register_server({
         \ 'name': 'groovy-language-server',
         \ 'cmd': {server_info->['java', '-jar', s:extrasdir.'/groovy-language-server-all.jar']},
         \ 'allowlist': ['groovy', 'Jenkinsfile'],
-        \ 'workspace_config': {'groovy': {'classpath': [s:groovy_lib]} },
+        \ 'workspace_config': {'groovy': {'classpath': s:groovy_lsp_classpath} },
         \ })
 endif
 
@@ -502,12 +506,8 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
     \    'max_buffer_size': 5000000,
     \  },
     \ }))
-" fix for https://github.com/prabirshrestha/asyncomplete-buffer.vim/issues/17
-function! s:fix_buffer_complete() abort
-    let l:info = asyncomplete#get_source_info('buffer')
-    call l:info.on_event(l:info, {}, 'BufWinEnter')
-endfunction
-autocmd User asyncomplete_setup call s:fix_buffer_complete()
+" Workaround for not loading the current buffer when starting vim with the file
+autocmd VimEnter * :doautocmd BufWinEnter
 
 " Plugin asyncomplete-file.vim
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({

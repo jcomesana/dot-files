@@ -109,7 +109,7 @@ end
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 local lspconfig = require 'lspconfig'
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lsp_flags = {
+local default_lsp_flags = {
   debounce_text_changes = 500,
   allow_incremental_sync = true,
 }
@@ -117,7 +117,7 @@ local lsp_flags = {
 lspconfig['pylsp'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
-  flags = lsp_flags,
+  flags = default_lsp_flags,
   cmd = { 'pylsp' },
   filetypes = { 'python' },
   single_file_support = false,
@@ -147,27 +147,34 @@ lspconfig['clangd'].setup{
   },
   filetypes = {'c', 'cpp', 'objc', 'objcpp'},
   capabilities = capabilities,
-  flags = lsp_flags,
+  flags = default_lsp_flags,
 }
 
 local extras_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), 'extras')
 
 local groovy_lsp_jar_path = lspconfig.util.path.join(extras_path, 'groovy-language-server-all.jar')
-local groovy_lib = ''
+local groovy_lsp_classpath = {}
 if vim.env.GROOVY_HOME then
-  groovy_lib = vim.env.GROOVY_HOME .. '/lib'
+  local groovy_lib = vim.env.GROOVY_HOME .. '/lib'
+  table.insert(groovy_lsp_classpath, groovy_lib)
+end
+if vim.env.JENKINS_HOME then
+  local p4_plugin_lib = vim.env.JENKINS_HOME .. '/plugins/p4/WEB-INF/lib'
+  table.insert(groovy_lsp_classpath, p4_plugin_lib)
 end
 lspconfig['groovyls'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
-  flags = lsp_flags,
+  flags = {
+    debounce_text_changes = 500,
+  },
   cmd = { 'java', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
   single_file_support = true,
   settings = {
     groovy = {
-      classpath = { groovy_lib },
+      classpath = groovy_lsp_classpath,
     }
   }
 }
@@ -183,7 +190,7 @@ lspconfig['efm'].setup {
   settings = {
   },
   flags = {
-    debounce_text_changes = 500,
+    debounce_text_changes = 700,
   },
 }
 
