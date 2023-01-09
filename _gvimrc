@@ -22,7 +22,7 @@ set lines=42
 set columns=124
 
 " ---- Interface ----
-set guioptions=grdMe
+set guioptions=grdMe!
 set mouse=nvc
 set mousehide        " hide the mouse when typing text
 
