@@ -43,6 +43,7 @@ call plug#begin(s:editor_root.'/plugged')
 "
 Plug 'itchyny/lightline.vim'
 Plug 'dense-analysis/ale'
+Plug 'ackyshake/VimCompletesMe'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
