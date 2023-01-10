@@ -236,7 +236,7 @@ endif
 nmap ,cs :let @*=expand("%")<CR>
 nmap ,cl :let @*=expand("%:p")<CR>
 
-" Protect large files from sourcing and other overhead. Files become read only
+" Protect large files from sourcing and other oveehead. Files become read only
 " http://vim.wikia.com/wiki/Faster_loading_of_large_files
 let g:LargeFile = 1024 * 1024 * 20
 augroup LargeFile
@@ -276,8 +276,8 @@ autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
 autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
 
 " ---- P4 commands ----
-nnoremap <leader>pe :silent !p4 edit %<CR>
-nnoremap <leader>pr :silent !p4 revert %<CR>
+nnoremap <leader>pe :silent !p4 edit % <CR>
+nnoremap <leader>pr :silent !p4 revert % <CR>
 
 " ---- Plugins ----
 let s:python_binary = 'python3'
