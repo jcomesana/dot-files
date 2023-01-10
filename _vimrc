@@ -107,7 +107,7 @@ set smarttab
 set expandtab
 
 " ---- UI Config ----
-set guioptions=grdMe
+set guioptions=!grdMe
 set title           " set the window title
 set modeline
 set number
@@ -271,9 +271,13 @@ command MC :silent make<bar>copen
 " ---- netrw settings ----
 let g:netrw_liststyle=3
 
-" ---- groovy settings ---
+" ---- groovy settings ----
 autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
 autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
+
+" ---- P4 commands ----
+nnoremap <leader>pe :silent !p4 edit %<CR>
+nnoremap <leader>pr :silent !p4 revert %<CR>
 
 " ---- Plugins ----
 let s:python_binary = 'python3'
