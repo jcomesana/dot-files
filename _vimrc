@@ -48,7 +48,6 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'rhysd/vim-lsp-ale'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
@@ -509,14 +508,6 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
     \ }))
 " Workaround for not loading the current buffer when starting vim with the file
 autocmd VimEnter * :doautocmd BufWinEnter
-
-" Plugin asyncomplete-file.vim
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'allowlist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
 
 " Plugin vim-indent-guides
 let g:indent_guides_guide_size = 1
