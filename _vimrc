@@ -276,8 +276,8 @@ autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
 autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
 
 " ---- P4 commands ----
-nmap <leader>pe :!p4 edit "%"<CR>
-nmap <leader>pr :!p4 revert "%"<CR>
+nmap <leader>pe :!p4 edit "%"<CR>
+nmap <leader>pr :!p4 revert "%"<CR>
 
 " ---- Plugins ----
 let s:python_binary = 'python3'
@@ -291,7 +291,9 @@ let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 " Plugin fzf
 nnoremap <leader>ff :FZF<CR>
 nnoremap <leader>fg :Rg<CR>
+nnoremap <leader>fG :Rg <C-R><C-W><CR>
 nnoremap <leader>fa :Ag<CR>
+nnoremap <Leader>fA :Ag <C-R><C-W><CR>
 nnoremap <leader>fb :W<CR>
 nnoremap <leader>fl :Lines<CR>
 nnoremap <leader>fc :Commits<CR>
