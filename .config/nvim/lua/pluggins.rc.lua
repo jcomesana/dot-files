@@ -179,6 +179,7 @@ lspconfig['groovyls'].setup{
   capabilities = capabilities,
   flags = {
     debounce_text_changes = 500,
+    allow_incremental_sync = false,
   },
   cmd = { 'java', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
@@ -203,6 +204,7 @@ lspconfig['efm'].setup {
   },
   flags = {
     debounce_text_changes = 700,
+    allow_incremental_sync = false,
   },
 }
 
