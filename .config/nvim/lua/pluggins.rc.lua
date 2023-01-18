@@ -181,7 +181,7 @@ lspconfig['groovyls'].setup{
     debounce_text_changes = 500,
     allow_incremental_sync = false,
   },
-  cmd = { 'java', '-jar', groovy_lsp_jar_path },
+  cmd = { 'java', '-Xms256m', '-Xmx2048m', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
   single_file_support = true,

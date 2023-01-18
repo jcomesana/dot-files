@@ -488,7 +488,7 @@ if executable('java') && isdirectory(s:extrasdir)
     endif
     au User lsp_setup call lsp#register_server({
         \ 'name': 'groovy-language-server',
-        \ 'cmd': {server_info->['java', '-jar', s:extrasdir.'/groovy-language-server-all.jar']},
+        \ 'cmd': {server_info->['java', '-Xms256m', '-Xmx2048m', '-jar', s:extrasdir.'/groovy-language-server-all.jar']},
         \ 'allowlist': ['groovy', 'Jenkinsfile'],
         \ 'workspace_config': {'groovy': {'classpath': s:groovy_lsp_classpath} },
         \ })
