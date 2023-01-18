@@ -12,12 +12,11 @@ root-markers:
   - _darcs/
   - .git
   - .ignore
-lint-debounce: 0.7s
+lint-debounce: 0.6s
 
 tools:
   groovylint: &npm-groovy-lint
-    # Commands copied from https://github.com/tsuyoshicho/vim-efm-langserver-settings/blob/master/config/efm-langserver/config.yaml
-    lint-command: 'npm-groovy-lint --output txt --noserver ${INPUT} '
+    lint-command: 'npm-groovy-lint --output txt --noserver ${INPUT}'
     lint-ignore-exit-code: true
     lint-stdin: true
     lint-formats:
