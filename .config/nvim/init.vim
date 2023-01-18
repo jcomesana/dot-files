@@ -73,6 +73,7 @@ Plug 'bfrg/vim-cpp-modern', { 'for': ['c', 'cpp'] }
 Plug 'pboettch/vim-cmake-syntax', { 'for': 'CMake' }
 Plug 'blankname/vim-fish', { 'for': 'fish' }
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
+Plug 'ckipp01/nvim-jenkinsfile-linter', { 'for': 'Jenkinsfile' }
 Plug 'PProvost/vim-ps1', { 'for': 'ps1' }
 Plug 'elzr/vim-json', { 'for': ['json'] }
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
@@ -311,7 +312,7 @@ let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 nnoremap <leader>ff :FZF<CR>
 nnoremap <leader>fg :Rg<CR>
 nnoremap <leader>fG :Rg <C-R><C-W><CR>
-nnoremap <leader>fa :Ag<CR>
+nnoremap <Leader>fa :Ag <C-R><C-W><CR>
 nnoremap <Leader>fA :Ag <C-R><C-W><CR>
 nnoremap <leader>fb :W<CR>
 nnoremap <leader>fl :Lines<CR>
