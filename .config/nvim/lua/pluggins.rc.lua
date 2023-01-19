@@ -55,7 +55,7 @@ lsp_signature.setup({
   },
   wrap = true,
   fix_pos = true,
-  hint_enable = false,
+  hint_enable = true,
   hint_prefix = '» ',
   hi_parameter = 'LspSignatureActiveParameter',
   always_trigger = true,
@@ -73,7 +73,7 @@ vim.diagnostic.config({
   virtual_text = true,
   signs = true,
   underline = false,
-  update_in_insert = true,
+  update_in_insert = false,
   severity_sort = true,
   float = { border = 'rounded' },
 })
@@ -203,7 +203,7 @@ lspconfig['efm'].setup {
   settings = {
   },
   flags = {
-    debounce_text_changes = 700,
+    debounce_text_changes = 1200,
     allow_incremental_sync = false,
   },
 }
