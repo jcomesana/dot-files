@@ -164,9 +164,8 @@ noremap <silent> <Space> :silent noh <Bar>echo<cr>:syn sync fromstart<cr>:redraw
 set incsearch       " do incremental searching
 set inccommand=split
 set hlsearch        " highlight search matches
-set noignorecase      " case sensitive searching ...
-set smartcase       " ... except when using capital letters
-set noinfercase     " ... and in keyword completion
+set ignorecase      " case insensitive searching ...
+set smartcase       " ... except when using capital letters or /C
 
 " ---- Indentation and formating ----
 set autoindent
@@ -349,7 +348,7 @@ let g:signify_sign_change            = '*'
 let g:signify_sign_change_delete     = 'd'
 
 " Plugin beacon.nvim
-let g:beacon_size = 24
+let g:beacon_size = 32
 let g:beacon_minimal_jump = 15
 let g:beacon_ignore_filetypes = ['fzf']
 
