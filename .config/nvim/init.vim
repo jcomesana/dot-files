@@ -129,7 +129,7 @@ set wildmode=list:longest,full
 set wildoptions="pum,tagfile"
 set shortmess=at    " abbreviate messages (file names too long, etc)
 set lazyredraw      " redraw only when it is needed
-set updatetime=100  " milliseconds, period of inactivity before writting to swap file
+set updatetime=200  " milliseconds, period of inactivity before writting to swap file
 set nocursorline    " don´t highlight current line
 set ruler           " show the cursor position all the time
 set laststatus=2    " status line always visible
