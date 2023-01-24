@@ -290,3 +290,6 @@ vim.keymap.set('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>', default_map_o
 
 -- Plugin nvim-jenkinsfile-linter
 vim.keymap.set('n', '<Leader>jv', require('jenkinsfile_linter').validate, default_map_opts)
+
+-- Plugin fidget.nvim
+require'fidget'.setup{}
