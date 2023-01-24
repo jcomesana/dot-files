@@ -120,7 +120,8 @@ end
 -- clients
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 local lspconfig = require 'lspconfig'
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 local default_lsp_flags = {
   debounce_text_changes = 500,
   allow_incremental_sync = true,
