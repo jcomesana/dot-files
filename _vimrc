@@ -534,7 +534,7 @@ let g:signify_sign_change            = '*'
 let g:signify_sign_change_delete     = 'd'
 
 " Plugin beacon.nvim
-let g:beacon_size = 36
+let g:beacon_size = 32
 let g:beacon_minimal_jump = 15
 let g:beacon_ignore_filetypes = ['fzf']
 
