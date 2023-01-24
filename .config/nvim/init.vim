@@ -169,6 +169,7 @@ set noinfercase     " ... and in keyword completion
 
 " ---- Indentation and formating ----
 set autoindent
+set breakindent
 set preserveindent
 set copyindent
 set smartindent
