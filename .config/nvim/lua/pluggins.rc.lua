@@ -270,6 +270,7 @@ require'nvim-treesitter.configs'.setup {
     'yaml',
     'json',
     'cmake',
+    'vim',
   },
 }
 
