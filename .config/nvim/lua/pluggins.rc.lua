@@ -55,7 +55,7 @@ lsp_signature.setup({
   },
   wrap = true,
   fix_pos = true,
-  hint_enable = true,
+  hint_enable = false,
   hint_prefix = '» ',
   hi_parameter = 'LspSignatureActiveParameter',
   always_trigger = true,
@@ -123,7 +123,7 @@ local lspconfig = require 'lspconfig'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 local default_lsp_flags = {
-  debounce_text_changes = 500,
+  debounce_text_changes = 300,
   allow_incremental_sync = true,
 }
 
@@ -179,13 +179,13 @@ lspconfig['groovyls'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
   flags = {
-    debounce_text_changes = 600,
-    allow_incremental_sync = true,
+    debounce_text_changes = 500,
+    allow_incremental_sync = false,
   },
   cmd = { 'java', '-Xms256m', '-Xmx2048m', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
-  single_file_support = true,
+  single_file_support = false,
   settings = {
     groovy = {
       classpath = groovy_lsp_classpath,
@@ -200,12 +200,12 @@ lspconfig['efm'].setup {
   cmd = {efm_command, '-c', efm_config},
   rootMarkers = {'.groovylintrc.json', '.git', '.ignore', '.hg'},
   filetypes = {'groovy', 'Jenkinsfile'},
-  single_file_support = true,
+  single_file_support = false,
   settings = {
   },
   flags = {
-    debounce_text_changes = 1000,
-    allow_incremental_sync = true,
+    debounce_text_changes = 800,
+    allow_incremental_sync = false,
   },
 }
 
