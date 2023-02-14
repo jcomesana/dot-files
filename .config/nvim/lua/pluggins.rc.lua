@@ -75,7 +75,12 @@ vim.diagnostic.config({
   underline = false,
   update_in_insert = false,
   severity_sort = true,
-  float = { border = 'rounded' },
+  -- source = true,
+  float = {
+    border = 'rounded',
+    source = true,
+    severity_sort = true,
+  },
 })
 local signs = { Error = 'E ', Warn = 'W ', Hint = 'H ', Info = 'I ' }
 for type, icon in pairs(signs) do
