@@ -87,6 +87,7 @@ Plug 'challenger-deep-theme/vim' | call add(s:colorschemes_list, 'challenger_dee
 Plug 'dracula/vim',  { 'as': 'dracula' } | call add(s:colorschemes_list, 'dracula')
 Plug 'embark-theme/vim', { 'as': 'embark' } | call add(s:colorschemes_list, 'embark')
 Plug 'jsit/toast.vim' | call add(s:colorschemes_list, 'toast')
+Plug 'ray-x/aurora' | call add(s:colorschemes_list, 'aurora')
 Plug 'sainnhe/edge' | call add(s:colorschemes_list, 'edge')
 Plug 'sainnhe/everforest' | call add(s:colorschemes_list, 'everforest')
 Plug 'sainnhe/sonokai' | call add(s:colorschemes_list, 'sonokai')
