@@ -1,48 +1,32 @@
--- Plugin nvim-cmp
-local cmp = require('cmp')
-cmp.setup({
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
-  snippet = {
-      expand = function(args)
-      	vim.fn['vsnip#anonymous'](args.body)
-      end,
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  }),
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'buffer',
-      option = {
-        get_bufnrs = function()
-          return vim.api.nvim_list_bufs()
-        end
-      }
-    },
-    { name = 'nvim_lsp_signature_help' },
-  }
-})
+-- Mini modules
+require('mini.completion').setup()
+require('mini.comment').setup()
+require('mini.pairs').setup()
+require('mini.surround').setup()
+require('mini.animate').setup()
+require('mini.trailspace').setup()
+
+-- For mini.completion
+vim.api.nvim_set_keymap('i', '<Tab>',   [[pumvisible() ? "\<C-n>" : "\<Tab>"]],   { noremap = true, expr = true })
+vim.api.nvim_set_keymap('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { noremap = true, expr = true })
+local keys = {
+  ['cr']        = vim.api.nvim_replace_termcodes('<CR>', true, true, true),
+  ['ctrl-y']    = vim.api.nvim_replace_termcodes('<C-y>', true, true, true),
+  ['ctrl-y_cr'] = vim.api.nvim_replace_termcodes('<C-y><CR>', true, true, true),
+}
+_G.cr_action = function()
+  if vim.fn.pumvisible() ~= 0 then
+    -- If popup is visible, confirm selected item or add new line otherwise
+    local item_selected = vim.fn.complete_info()['selected'] ~= -1
+    return item_selected and keys['ctrl-y'] or keys['ctrl-y_cr']
+  else
+    -- If popup is not visible, use plain `<CR>`. You might want to customize
+    -- according to other plugins. For example, to use 'mini.pairs', replace
+    -- next line with `return require('mini.pairs').cr()`
+    return keys['cr']
+  end
+end
+vim.api.nvim_set_keymap('i', '<CR>', 'v:lua._G.cr_action()', { noremap = true, expr = true })
 
 -- Plugin nvim-lspconfig and LSP settings
 
@@ -108,7 +92,6 @@ end
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md
 local lspconfig = require 'lspconfig'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 local default_lsp_flags = {
   debounce_text_changes = 300,
   allow_incremental_sync = true,

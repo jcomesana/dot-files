@@ -34,22 +34,14 @@ call plug#begin(s:editor_root.'/plugged')
 "
 Plug 'lewis6991/impatient.nvim'
 Plug 'itchyny/lightline.vim'
-Plug 'ntpeters/vim-better-whitespace'
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/cmp-omni'
-Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'folke/trouble.nvim'
 Plug 'j-hui/fidget.nvim'
+Plug 'echasnovski/mini.nvim'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-vinegar'
-Plug 'machakann/vim-sandwich'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
 Plug 'kelly-lin/telescope-ag'
@@ -57,7 +49,6 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
 Plug 'ciaranm/securemodelines'
-Plug 'cohama/lexima.vim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'yioneko/nvim-yati', { 'tag': '0.0.4' }
@@ -127,7 +118,6 @@ set wildignore=*.bak,*.o,*~,*.pyc,*.lib,*.swp
 set wildmode=list:longest,full
 set wildoptions="pum,tagfile"
 set shortmess=at    " abbreviate messages (file names too long, etc)
-set lazyredraw      " redraw only when it is needed
 set updatetime=200  " milliseconds, period of inactivity before writting to swap file
 set nocursorline    " don´t highlight current line
 set ruler           " show the cursor position all the time
@@ -304,9 +294,6 @@ let g:python3_host_prog = 'python3'
 
 " Plugin vim-json
 let g:vim_json_syntax_conceal = 0
-
-" Plugin vim-sandwich
-let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 
 " Plugin fzf
 nnoremap <leader>ff :FZF<CR>
