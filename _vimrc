@@ -58,7 +58,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'machakann/vim-sandwich'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll'] }
+Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll', 'SignifyDiff'] }
 Plug 'ciaranm/securemodelines'
 Plug 'cohama/lexima.vim'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGuidesToggle'] }
