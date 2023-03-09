@@ -2,6 +2,26 @@
 set mouse=a
 set mousehide
 
+" Try to render font ligatures
+if exists(':GuiRenderLigatures')
+    GuiRenderLigatures 1
+endif
+
+" Override the default Qt Style/Theme
+if exists(':GuiAdaptiveStyle')
+    GuiAdaptiveStyle Fusion
+endif
+
+" Try to use nvim theme in the GUI
+if exists(':GuiAdaptiveColor')
+    GuiAdaptiveColor 1
+endif
+
+" Use the current `GuiFont` to decorate the GUI
+if exists(':GuiAdaptiveFont')
+    GuiAdaptiveFont 1
+endif
+
 " Set Editor Font
 if exists(':GuiFont')
     " Use GuiFont! to ignore font errors
@@ -9,9 +29,9 @@ if exists(':GuiFont')
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
         if has('win32')
-            GuiFont! Cascadia Code:h8:b
+            GuiFont! Delugia:h8:b
         else
-            GuiFont! Cascadia Code:h9:b
+            GuiFont! Delugia:h9:b
         endif
         GuiLinespace 0
     endif
@@ -30,26 +50,6 @@ endif
 " Enable GUI ScrollBar
 if exists(':GuiScrollBar')
     GuiScrollBar 1
-endif
-
-" Try to use nvim theme in the GUI
-if exists(':GuiAdaptativeColor')
-    GuiAdaptativeColor 1
-endif
-
-" Use the current `GuiFont` to decorate the GUI
-if exists(':GuiAdaptativeFont')
-    GuiAdaptativeFont 1
-endif
-
-" Override the default Qt Style/Theme
-if exists(':GuiAdaptiveStyle')
-    GuiAdaptiveStyle Fusion
-endif
-
-" Try to render font ligatures
-if exists(':GuiRenderLigatures')
-    GuiRenderLigatures 0
 endif
 
 " Settings for fvim
