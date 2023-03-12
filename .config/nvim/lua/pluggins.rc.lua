@@ -110,7 +110,7 @@ local lspconfig = require 'lspconfig'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 local default_lsp_flags = {
-  debounce_text_changes = 300,
+  debounce_text_changes = 200,
   allow_incremental_sync = true,
 }
 
@@ -166,10 +166,10 @@ lspconfig['groovyls'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
   flags = {
-    debounce_text_changes = 500,
+    debounce_text_changes = 200,
     allow_incremental_sync = false,
   },
-  cmd = { 'java', '-Xms256m', '-Xmx2048m', '-jar', groovy_lsp_jar_path },
+  cmd = { 'java', '-Xms256m', '-Xmx1024m', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
   single_file_support = false,
