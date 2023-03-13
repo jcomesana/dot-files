@@ -110,7 +110,7 @@ local lspconfig = require 'lspconfig'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 local default_lsp_flags = {
-  debounce_text_changes = 200,
+  debounce_text_changes = 180,
   allow_incremental_sync = true,
 }
 
@@ -165,10 +165,7 @@ end
 lspconfig['groovyls'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
-  flags = {
-    debounce_text_changes = 200,
-    allow_incremental_sync = false,
-  },
+  flags = default_lsp_flags,
   cmd = { 'java', '-Xms256m', '-Xmx1024m', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
@@ -190,10 +187,7 @@ lspconfig['efm'].setup {
   single_file_support = false,
   settings = {
   },
-  flags = {
-    debounce_text_changes = 800,
-    allow_incremental_sync = false,
-  },
+  flags = default_lsp_flags,
 }
 
 -- Plugin telescope
