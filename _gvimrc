@@ -6,7 +6,7 @@ if has('win32')
     " set guifont=Fira_Code_Retina:h8:W450:cANSI:qDRAFT
     " set guifont=Fantasque_Sans_Mono:h10:cANSI:qDRAFT
     " set guifont=Victor_Mono:h9:cANSI:qDRAFT
-    set guifont=Cascadia_Code_Semilight:h8:W600:cANSI:qDRAFT
+    set guifont=Cascadia_Code:h8:cANSI:qDRAFT
 else
     " set guifont=DejaVu\ Sans\ Mono\ Book\ 10
     " set guifont=Iosevka\ Medium\ 10
