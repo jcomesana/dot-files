@@ -166,7 +166,7 @@ lspconfig['groovyls'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
   flags = default_lsp_flags,
-  cmd = { 'java', '-Xms256m', '-Xmx1024m', '-jar', groovy_lsp_jar_path },
+  cmd = { 'java', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
   single_file_support = false,
