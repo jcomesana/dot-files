@@ -57,7 +57,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'machakann/vim-sandwich'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll', 'SignifyDiff'] }
+Plug 'mhinz/vim-signify'
 Plug 'ciaranm/securemodelines'
 Plug 'cohama/lexima.vim'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGuidesToggle'] }
@@ -525,7 +525,6 @@ let g:cmake_usr_args='-GNinja'
 
 " Plugin signify
 nnoremap <leader>si :SignifyEnableAll<CR>
-let g:signify_disable_by_default = 1
 let g:signify_sign_add               = '+'
 let g:signify_sign_delete            = '-'
 let g:signify_sign_delete_first_line = '‾'

@@ -55,7 +55,7 @@ Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
 Plug 'kelly-lin/telescope-ag'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'mhinz/vim-signify', { 'on': ['SignifyToggle', 'SignifyEnable', 'SignifyEnableAll', 'SignifyDiff'] }
+Plug 'mhinz/vim-signify'
 Plug 'ciaranm/securemodelines'
 Plug 'cohama/lexima.vim'
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -339,7 +339,6 @@ let g:cmake_usr_args='-GNinja'
 
 " Plugin signify
 nnoremap <leader>si :SignifyEnableAll<CR>
-let g:signify_disable_by_default = 1
 let g:signify_sign_add               = '+'
 let g:signify_sign_delete            = '-'
 let g:signify_sign_delete_first_line = '‾'
