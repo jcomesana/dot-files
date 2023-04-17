@@ -43,6 +43,7 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-omni'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'bydlw98/cmp-env'
 Plug 'folke/trouble.nvim'
 Plug 'j-hui/fidget.nvim'
 Plug 'tpope/vim-fugitive'
@@ -60,7 +61,7 @@ Plug 'ciaranm/securemodelines'
 Plug 'cohama/lexima.vim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-context'
-Plug 'yioneko/nvim-yati', { 'tag': '0.0.4' }
+Plug 'yioneko/nvim-yati'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGuidesToggle'] }
 Plug 'danilamihailov/beacon.nvim'
 Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeInfo'] }
