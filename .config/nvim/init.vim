@@ -60,7 +60,7 @@ Plug 'ciaranm/securemodelines'
 Plug 'cohama/lexima.vim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-context'
-Plug 'yioneko/nvim-yati', { 'tag': '0.0.4' }
+Plug 'yioneko/nvim-yati'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGuidesToggle'] }
 Plug 'danilamihailov/beacon.nvim'
 Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeInfo'] }
