@@ -33,6 +33,7 @@ cmp.setup({
   }),
   sources = {
     { name = 'nvim_lsp' },
+    { name = 'omni' },
     { name = 'buffer',
       option = {
         get_bufnrs = function()
