@@ -184,7 +184,7 @@ local efm_config = lspconfig.util.path.join(extras_path, 'efm-langserver', 'conf
 lspconfig['efm'].setup {
   init_options = {documentFormatting = true},
   cmd = {efm_command, '-c', efm_config},
-  rootMarkers = {'.groovylintrc.json', '.git', '.ignore', '.hg'},
+  root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
   filetypes = {'groovy', 'Jenkinsfile'},
   single_file_support = false,
   settings = {
