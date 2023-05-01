@@ -12,7 +12,7 @@ root-markers:
   - _darcs/
   - .git
   - .ignore
-lint-debounce: 0.6s
+lint-debounce: 0.4s
 
 tools:
   groovylint: &npm-groovy-lint
