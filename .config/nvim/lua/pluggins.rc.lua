@@ -153,7 +153,7 @@ lspconfig['clangd'].setup{
 }
 
 local groovy_lsp_flags = {
-  debounce_text_changes = 300,
+  debounce_text_changes = 400,
   allow_incremental_sync = true,
 }
 local extras_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), 'extras')
