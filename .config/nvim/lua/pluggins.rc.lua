@@ -152,6 +152,10 @@ lspconfig['clangd'].setup{
   flags = default_lsp_flags,
 }
 
+local groovy_lsp_flags = {
+  debounce_text_changes = 300,
+  allow_incremental_sync = true,
+}
 local extras_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), 'extras')
 
 local groovy_lsp_jar_path = lspconfig.util.path.join(extras_path, 'groovy-language-server-all.jar')
@@ -167,7 +171,7 @@ end
 lspconfig['groovyls'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
-  flags = default_lsp_flags,
+  flags = groovy_lsp_flags,
   cmd = { 'java', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
@@ -189,7 +193,7 @@ lspconfig['efm'].setup {
   single_file_support = false,
   settings = {
   },
-  flags = default_lsp_flags,
+  flags = groovy_lsp_flags,
 }
 
 -- Plugin telescope
