@@ -193,6 +193,7 @@ lspconfig['efm'].setup {
   single_file_support = false,
   settings = {
   },
+  capabilities = capabilities,
   flags = groovy_lsp_flags,
 }
 
