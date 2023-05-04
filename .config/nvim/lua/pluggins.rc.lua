@@ -194,7 +194,10 @@ lspconfig['efm'].setup {
   settings = {
   },
   capabilities = capabilities,
-  flags = groovy_lsp_flags,
+  flags = {
+    debounce_text_changes = 1000,
+    allow_incremental_sync = false,
+  },
 }
 
 -- Plugin telescope
