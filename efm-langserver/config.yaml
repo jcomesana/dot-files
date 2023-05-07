@@ -20,9 +20,7 @@ tools:
     lint-ignore-exit-code: true
     lint-stdin: true
     lint-formats:
-      - '  %l%*[^m]m%tnfo%*[^m]m  %m'
-      - '  %l%*[^m]m%tarning%*[^m]m  %m'
-      - '  %l%*[^m]m%trror%*[^m]m  %m'
+      - '  %l%*[^m]m%t%*[^m]m  %m'
     lint-category-map:
       i: I
       w: W
