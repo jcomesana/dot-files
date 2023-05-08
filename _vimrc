@@ -312,8 +312,8 @@ map <leader>w :BufstopPreview<CR>      " switch files by moving inside the windo
 let g:ale_linters = {
 \   'python': ['vim-lsp', 'pylint', 'flake8'],
 \   'cpp': ['vim-lsp', 'clang'],
-\   'groovy': ['vim-lsp'],
-\   'Jenkinsfile': ['vim-lsp'],
+\   'groovy': ['vim-lsp', 'npm-groovy-lint'],
+\   'Jenkinsfile': ['vim-lsp', 'npm-groovy-lint'],
 \}
 let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -349,6 +349,8 @@ let g:ale_python_mypy_options = '--ignore-missing-imports'
 " C++
 let g:ale_cpp_clang_executable = 'clang++'
 let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++20'
+" groovy
+let g:ale_groovy_npmgroovylint_options = '--noserver --loglevel info'
 " movement
 nmap <silent> <M-k> <Plug>(ale_previous_wrap)
 nmap <silent> <M-j> <Plug>(ale_next_wrap)
