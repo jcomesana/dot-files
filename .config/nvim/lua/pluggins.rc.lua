@@ -183,7 +183,9 @@ lspconfig['groovyls'].setup{
   }
 }
 
-local efm_command = lspconfig.util.path.join(extras_path, 'efm-langserver', 'efm-langserver')
+local efm_folder = lspconfig.util.path.join(extras_path, 'efm-langserver')
+local efm_command = lspconfig.util.path.join(efm_folder, 'efm-langserver')
+vim.env.EFMLANGSERVER = efm_folder
 local efm_config = lspconfig.util.path.join(extras_path, 'efm-langserver', 'config.yaml')
 lspconfig['efm'].setup {
   init_options = {documentFormatting = true},

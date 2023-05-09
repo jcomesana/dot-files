@@ -205,6 +205,7 @@ def operation_install_efm():
     vim_efm_folder = vim_paths.extras_path / 'efm-langserver'
     nvim_efm_folder = nvim_paths.extras_path / 'efm-langserver'
     src_efm_config_file = src_efm_folder / 'config.yaml'
+    src_efm_config_file = src_efm_folder / 'jq_filter.txt'
     for dst_folder in (vim_efm_folder, nvim_efm_folder):
         verbose_link(src_efm_config_file, dst_folder / src_efm_config_file.name)
     src_efm_exe_folder = src_efm_folder / sys.platform

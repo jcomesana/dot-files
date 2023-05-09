@@ -1,26 +1,23 @@
 version: 2
-log-level: 1
+# log-level: 3
+# log-file: /home/jcom/efmlanserver.log
 root-markers:
-  - .git/
-  - RCS/
-  - SCCS/
-  - CVS/
-  - .git/
-  - .svn/
-  - .hg/
-  - .bzr/
-  - _darcs/
-  - .git
   - .ignore
-lint-debounce: 2.5s
+  - .groovylintrc.json
+  - .git/
+  - .gitignore
+lint-debounce: 3s
 
 tools:
   groovylint: &npm-groovy-lint
-    lint-command: 'npm-groovy-lint --output txt --noserver ${INPUT}'
+    lint-command: 'npm-groovy-lint --output json --noserver ${INPUT} | jq -r -f $EFMLANGSERVER/jq_filter.txt'
     lint-ignore-exit-code: true
     lint-stdin: true
+    lint-offset-columns: 1
     lint-formats:
-      - '  %l%*[^m]m%t%*[^m]m  %m'
+      - '%f  %l  %c  %tnfo  %m'
+      - '%f  %l  %c  %tarning  %m'
+      - '%f  %l  %c  %trror  %m'
     lint-category-map:
       i: I
       w: W
