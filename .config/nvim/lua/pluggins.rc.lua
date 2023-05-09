@@ -49,12 +49,24 @@ cmp.setup({
         end
       }
     },
-    { name = 'nvim_lsp_signature_help' },
-    { name = 'env' },
   }
 })
 
 -- Plugin nvim-lspconfig and LSP settings
+
+-- Plugin lsp_signature.nvim
+local lsp_signature = require('lsp_signature')
+lsp_signature.setup({
+  bind = true, -- This is mandatory, otherwise border config won't get registered.
+  doc_lines = 4,
+  handler_opts = {
+    border = 'rounded'
+  },
+  hint_enable = false,
+  hint_prefix = '» ',
+  always_trigger = true,
+  fix_pos = true,
+})
 
 local keymap_opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<Leader>ll', vim.diagnostic.open_float, keymap_opts)
@@ -103,6 +115,7 @@ local on_attach = function(client, bufnr)
   --     })
   -- end
 
+  lsp_signature.on_attach()
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local keymap_bufopts = { noremap=true, silent=true, buffer=bufnr }
   vim.keymap.set('n', '<Leader>lD', vim.lsp.buf.declaration, keymap_bufopts)
