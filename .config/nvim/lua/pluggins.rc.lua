@@ -200,22 +200,24 @@ lspconfig['groovyls'].setup{
   }
 }
 
--- Plugin nvim-lint
-local nvim_lint = require('lint')
-nvim_lint.linters_by_ft = {
-  groovy = {'npm-groovy-lint', },
-  Jenkinsfile = {'npm-groovy-lint', },
+local efm_folder = lspconfig.util.path.join(extras_path, 'efm-langserver')
+local efm_command = lspconfig.util.path.join(efm_folder, 'efm-langserver')
+vim.env.EFMLANGSERVER = efm_folder
+local efm_config = lspconfig.util.path.join(extras_path, 'efm-langserver', 'config.yaml')
+lspconfig['efm'].setup {
+  init_options = {documentFormatting = true},
+  cmd = {efm_command, '-c', efm_config},
+  root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
+  filetypes = {'groovy', 'Jenkinsfile'},
+  single_file_support = false,
+  settings = {
+  },
+  capabilities = capabilities,
+  flags = {
+    debounce_text_changes = 1000,
+    allow_incremental_sync = false,
+  },
 }
-
-local npm_groovy_lint = nvim_lint.linters['npm-groovy-lint']
-npm_groovy_lint.args = {
-  '--noserver',
-}
-vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufWinEnter' }, {
-  callback = function()
-    nvim_lint.try_lint()
-  end,
-})
 
 -- Plugin telescope
 local telescope = require('telescope')
