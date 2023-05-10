@@ -169,10 +169,6 @@ lspconfig['clangd'].setup{
   flags = default_lsp_flags,
 }
 
-local groovy_lsp_flags = {
-  debounce_text_changes = 400,
-  allow_incremental_sync = true,
-}
 local extras_path = lspconfig.util.path.join(vim.api.nvim_eval('stdpath("config")'), 'extras')
 
 local groovy_lsp_jar_path = lspconfig.util.path.join(extras_path, 'groovy-language-server-all.jar')
@@ -181,14 +177,10 @@ if vim.env.GROOVY_HOME then
   local groovy_lib = vim.env.GROOVY_HOME .. '/lib'
   table.insert(groovy_lsp_classpath, groovy_lib)
 end
-if vim.env.JENKINS_HOME then
-  local p4_plugin_lib = vim.env.JENKINS_HOME .. '/plugins/p4/WEB-INF/lib'
-  table.insert(groovy_lsp_classpath, p4_plugin_lib)
-end
 lspconfig['groovyls'].setup{
   on_attach = on_attach,
   capabilities = capabilities,
-  flags = groovy_lsp_flags,
+  flags = default_lsp_flags,
   cmd = { 'java', '-jar', groovy_lsp_jar_path },
   filetypes = { 'groovy', 'Jenkinsfile' },
   root_dir = lspconfig.util.root_pattern('.groovylintrc.json', '.git', '.ignore', '.hg'),
@@ -214,7 +206,7 @@ lspconfig['efm'].setup {
   },
   capabilities = capabilities,
   flags = {
-    debounce_text_changes = 1000,
+    debounce_text_changes = 1500,
     allow_incremental_sync = false,
   },
 }
