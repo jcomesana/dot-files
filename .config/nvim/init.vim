@@ -426,6 +426,9 @@ function! LspStatus() abort
     return ''
 endfunction
 
+" Plugin vim-better-whitespace
+let g:better_whitespace_filetypes_blacklist = ['diff', 'git', 'gitcommit', 'unite', 'qf', 'help', 'markdown', 'fugitive', 'toggleterm']
+
 " Color scheme
 function s:UniformRand(x, y) " random uniform between x and y
     call v:lua.math.randomseed(localtime())
