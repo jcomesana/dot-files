@@ -298,3 +298,10 @@ vim.keymap.set('n', '<Leader>jv', require('jenkinsfile_linter').validate, defaul
 
 -- Plugin fidget.nvim
 require'fidget'.setup{}
+
+-- Plugin toggleterm.nvim
+require('toggleterm').setup({
+  open_mapping = '<C-t>',
+  direction = 'vertical',
+  shade_terminals = true
+})
