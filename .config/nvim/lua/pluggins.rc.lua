@@ -312,3 +312,6 @@ require('toggleterm').setup({
       end
     end,
 })
+
+-- Plugin which-key
+require("which-key").setup()

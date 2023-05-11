@@ -67,6 +67,7 @@ Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeI
 Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+Plug 'folke/which-key.nvim'
 " File type specific plugins
 Plug 'vim-jp/vim-cpp', { 'for': ['c', 'cpp'] }
 Plug 'bfrg/vim-cpp-modern', { 'for': ['c', 'cpp'] }
