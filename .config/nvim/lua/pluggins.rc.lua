@@ -241,6 +241,7 @@ vim.keymap.set('n', '<leader>ts', telescope_builtin.lsp_document_symbols, defaul
 vim.keymap.set('n', '<leader>tW', telescope_builtin.lsp_workspace_symbols, default_map_opts)
 vim.keymap.set('n', '<leader>td', telescope_builtin.diagnostics, default_map_opts)
 vim.keymap.set('n', '<leader>tt', telescope_builtin.treesitter, default_map_opts)
+vim.keymap.set('n', '<leader>tz', telescope_builtin.current_buffer_fuzzy_find, default_map_opts)
 
 -- Plugin nvim-treesitter
 require'nvim-treesitter.configs'.setup {
