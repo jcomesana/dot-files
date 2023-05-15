@@ -306,7 +306,7 @@ require'fidget'.setup{}
 
 -- Plugin toggleterm.nvim
 require('toggleterm').setup({
-  open_mapping = '<C-t>',
+  open_mapping = '<C-s>',
   direction = 'vertical',
   shade_terminals = true,
   size = function(term)
