@@ -118,7 +118,11 @@ set expandtab
 set title           " set the window title
 set modeline
 set number
-set signcolumn=yes
+if has('nvim-0.9')
+    set signcolumn=yes:4
+else
+    set signcolumn=yes
+endif
 set noshowmode      " mode handled by the status line
 set showcmd         " show partial command in the last line of the screen
 set cmdheight=2     " number of lines for the command-line
