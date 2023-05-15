@@ -32,7 +32,6 @@ let s:colorschemes_list = []
 call plug#begin(s:editor_root.'/plugged')
 " My plugins here
 "
-Plug 'lewis6991/impatient.nvim'
 Plug 'itchyny/lightline.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mihaifm/bufstop', { 'on': ['BufstopFast', 'BufstopPreview', 'Bufstop'] }
@@ -97,9 +96,6 @@ Plug 'srcery-colors/srcery-vim' | call add(s:colorschemes_list, 'srcery')
 
 call plug#end()
 " ---- End vim-plug ---
-
-" Plugin impatient
-lua require('impatient')
 
 " ---- Editing text ----
 set nojoinspaces

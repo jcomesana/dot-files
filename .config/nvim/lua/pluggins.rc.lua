@@ -1,3 +1,8 @@
+-- impatient.nvim replacement
+if vim.fn.has('nvim-0.9') then
+  vim.loader.enable()
+end
+
 -- Plugin nvim-cmp
 local cmp = require('cmp')
 cmp.setup({
