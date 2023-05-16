@@ -50,7 +50,15 @@ cmp.setup({
         end
       }
     },
-  }
+  },
+  cmp.setup.filetype('Jenkinsfile', {
+    sources = {
+      {
+        name = 'jenkinsfile',
+        option = { jenkins_url = vim.env.JENKINS_URL, },
+      },
+    },
+  }),
 })
 
 -- Plugin nvim-lspconfig and LSP settings
@@ -300,8 +308,8 @@ vim.keymap.set('n', '<Leader>xl', '<cmd>TroubleToggle loclist<cr>', default_map_
 vim.keymap.set('n', '<Leader>xq', '<cmd>TroubleToggle quickfix<cr>', default_map_opts)
 vim.keymap.set('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>', default_map_opts)
 
--- Plugin nvim-jenkinsfile-linter
 if vim.env.JENKINS_URL then
+  -- Plugin nvim-jenkinsfile-linter
   local jenkinsfile_linter = require('jenkinsfile_linter')
   vim.keymap.set('n', '<Leader>jv', jenkinsfile_linter.validate, default_map_opts)
 
