@@ -51,14 +51,6 @@ cmp.setup({
       }
     },
   },
-  cmp.setup.filetype('Jenkinsfile', {
-    sources = {
-      {
-        name = 'jenkinsfile',
-        option = { jenkins_url = vim.env.JENKINS_URL, },
-      },
-    },
-  }),
 })
 
 -- Plugin nvim-lspconfig and LSP settings

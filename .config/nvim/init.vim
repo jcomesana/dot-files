@@ -75,7 +75,6 @@ Plug 'pboettch/vim-cmake-syntax', { 'for': 'CMake' }
 Plug 'blankname/vim-fish', { 'for': 'fish' }
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'ckipp01/nvim-jenkinsfile-linter', { 'for': 'Jenkinsfile' }
-Plug 'joshzcold/cmp-jenkinsfile', { 'for': 'Jenkinsfile' }
 Plug 'PProvost/vim-ps1', { 'for': 'ps1' }
 Plug 'elzr/vim-json', { 'for': ['json'] }
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
