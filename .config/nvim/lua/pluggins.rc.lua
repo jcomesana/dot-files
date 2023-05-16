@@ -299,7 +299,16 @@ vim.keymap.set('n', '<Leader>xq', '<cmd>TroubleToggle quickfix<cr>', default_map
 vim.keymap.set('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>', default_map_opts)
 
 -- Plugin nvim-jenkinsfile-linter
-vim.keymap.set('n', '<Leader>jv', require('jenkinsfile_linter').validate, default_map_opts)
+if vim.env.JENKINS_URL then
+  local jenkinsfile_linter = require('jenkinsfile_linter')
+  vim.keymap.set('n', '<Leader>jv', jenkinsfile_linter.validate, default_map_opts)
+
+  -- Run with autocommand too
+  vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter', 'BufWritePost'}, {
+    pattern = {'*.Jenkinsfile'},
+    callback = jenkinsfile_linter.validate,
+  })
+end
 
 -- Plugin fidget.nvim
 require'fidget'.setup{}
