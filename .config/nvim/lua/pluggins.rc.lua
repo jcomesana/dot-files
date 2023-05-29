@@ -330,4 +330,11 @@ require('toggleterm').setup({
 })
 
 -- Plugin which-key
-require("which-key").setup()
+require('which-key').setup()
+
+-- Plugin oil.nvim
+local oil = require('oil')
+vim.keymap.set('n', '-', oil.open, { desc = 'Open parent directory' })
+oil.setup({
+  columns = { 'size', 'mtime' },
+})

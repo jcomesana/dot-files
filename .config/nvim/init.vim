@@ -47,7 +47,7 @@ Plug 'j-hui/fidget.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-vinegar'
+Plug 'stevearc/oil.nvim'
 Plug 'machakann/vim-sandwich'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
