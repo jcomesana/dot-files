@@ -287,6 +287,7 @@ autocmd FileType groovy setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
 autocmd FileType Jenkinsfile setlocal makeprg=npm-groovy-lint\ --noserver\ \"%\"
 
 " ---- P4 commands ----
+nmap <leader>pa :!p4 add "%"<CR>
 nmap <leader>pe :!p4 edit "%"<CR>
 nmap <leader>pr :!p4 revert "%"<CR>
 
