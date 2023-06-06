@@ -193,6 +193,17 @@ def operation_install_tmux():
     verbose_link(src_config_file, dst_config_file)
 
 
+@InstallOperation('Install ruff configuration', ['linux', 'win32'])
+def operation_install_ruff():
+    """
+    Install tmux configuration.
+    """
+    dotfiles_folder = find_dotfiles_folder_path()
+    src_config_file = dotfiles_folder / '.ruff.toml'
+    dst_config_file = pathlib.Path('~/.ruff.toml').expanduser()
+    verbose_link(src_config_file, dst_config_file)
+
+
 @InstallOperation('Install efm-langserver', ['linux', 'win32'])
 def operation_install_efm():
     """
@@ -221,8 +232,11 @@ def verbose_link(source, destination):
     Create a link from the source path to the destination path.
     """
     if destination.exists() and destination.is_symlink():
-        logging.debug('  link %s already exists', destination)
-        return
+        if destination.readlink() == source:
+            logging.debug('  link %s already exists', destination)
+            return
+        logging.info('Removing outdated symbolic link %s', destination)
+        destination.unlink()
     if destination.exists() and destination.is_file():
         logging.info('  copying %s to %s', source, destination)
         shutil.copy2(source, destination)
@@ -254,7 +268,7 @@ def running_as_admin():
     Check if the process is running as administrator.
     """
     try:
-        is_admin = (os.getuid() == 0)
+        is_admin = os.getuid() == 0
     except AttributeError:
         is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
     return is_admin
