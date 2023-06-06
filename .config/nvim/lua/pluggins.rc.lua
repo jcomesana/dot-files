@@ -98,7 +98,15 @@ vim.lsp.handlers['textDocument/hover'] =  vim.lsp.with(vim.lsp.handlers.hover, {
 vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = 'rounded'})
 
 local on_attach = function(client, bufnr)
-
+  if client.name == 'ruff_lsp' or clien.name == 'efm' then
+    client.server_capabilities.declarationProvider = false
+    client.server_capabilities.definitionProvider = false
+    client.server_capabilities.hoverProvider = false
+    client.server_capabilities.typeDefinitionProvider = false
+    client.server_capabilities.implementationProvider = false
+    client.server_capabilities.signatureHelpProvider = false
+    client.server_capabilities.referencesProvider = false
+  end
   -- if client.server_capabilities.documentHighlightProvider then
   --     -- Highlight text at cursor position
   --     local lsp_doc_highlight_aug = vim.api.nvim_create_augroup('lsp_document_highlight', { clear = true })
@@ -126,6 +134,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<Leader>lt', vim.lsp.buf.type_definition, keymap_bufopts)
   vim.keymap.set('n', '<Leader>lr', vim.lsp.buf.rename, keymap_bufopts)
   vim.keymap.set('n', '<Leader>lR', vim.lsp.buf.references, keymap_bufopts)
+  vim.keymap.set('n', '<Leader>la', vim.lsp.buf.code_action, keymap_bufopts)
 end
 
 -- clients
@@ -151,7 +160,10 @@ lspconfig['pylsp'].setup{
     pylsp = {
       plugins = {
         flake8 = {
-          enabled = true,
+          enabled = false,
+          maxLineLength = 200,
+        },
+        pycodestyle = {
           maxLineLength = 200,
         },
         pylint = {
@@ -159,6 +171,17 @@ lspconfig['pylsp'].setup{
           args = {'--max-line-length 200'}
         },
       }
+    }
+  }
+}
+
+lspconfig['ruff_lsp'].setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { 'python' },
+  init_options = {
+    settings = {
+      -- args = {''},
     }
   }
 }
