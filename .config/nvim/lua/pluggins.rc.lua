@@ -88,7 +88,7 @@ vim.diagnostic.config({
     severity_sort = true,
   },
 })
-local signs = { Error = 'E ', Warn = 'W ', Hint = 'H ', Info = 'I ' }
+local signs = { Error = '', Warn = ' ', Hint = '󰁖', Info = '󰋼 ' }
 for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
@@ -309,10 +309,10 @@ require'nvim-treesitter.configs'.setup {
 
 -- Plugin trouble.nvim
 require('trouble').setup {
-  icons = false,
+  icons = true,
   fold_open = '-', -- icon used for open folds
   fold_closed = '+', -- icon used for closed folds
-  indent_lines = false, -- add an indent guide below the fold icons
+  indent_lines = true, -- add an indent guide below the fold icons
   use_diagnostic_signs = true, -- enabling this will use the signs defined in your lsp client
   auto_preview = false, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
 }
@@ -359,5 +359,5 @@ require('which-key').setup()
 local oil = require('oil')
 vim.keymap.set('n', '-', oil.open, { desc = 'Open parent directory' })
 oil.setup({
-  columns = { 'size', 'mtime' },
+  columns = { 'size', 'mtime', 'icon' },
 })

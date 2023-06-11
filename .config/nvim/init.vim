@@ -43,7 +43,7 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-omni'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'folke/trouble.nvim'
-Plug 'j-hui/fidget.nvim'
+Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
@@ -65,6 +65,7 @@ Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesEnable', 'IndentGu
 Plug 'danilamihailov/beacon.nvim'
 Plug 'ilyachur/cmake4vim', { 'on': ['CMake', 'CMakeBuild', 'CMakeClean', 'CMakeInfo'] }
 Plug 'AndrewRadev/linediff.vim', { 'on': ['Linediff'] }
+Plug 'nvim-tree/nvim-web-devicons'
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 Plug 'folke/which-key.nvim'
