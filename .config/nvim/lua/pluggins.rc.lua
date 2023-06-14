@@ -329,7 +329,7 @@ if vim.env.JENKINS_URL then
   vim.keymap.set('n', '<Leader>jv', jenkinsfile_linter.validate, default_map_opts)
 
   -- Run with autocommand too
-  vim.api.nvim_create_autocmd({'BufEnter', 'BufWinEnter', 'BufWritePost'}, {
+  vim.api.nvim_create_autocmd({'BufEnter', 'BufWritePost'}, {
     pattern = {'*.Jenkinsfile'},
     callback = jenkinsfile_linter.validate,
   })
