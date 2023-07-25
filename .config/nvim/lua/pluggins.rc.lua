@@ -281,8 +281,8 @@ require'nvim-treesitter.configs'.setup {
     disable = {},
   },
   indent = {
-    enable = false,
-    disable = true,
+    enable = true,
+    disable = {'python'},
   },
   yati = {
     enable = true,
@@ -304,6 +304,7 @@ require'nvim-treesitter.configs'.setup {
     'json',
     'cmake',
     'vim',
+    'groovy',
   },
 }
 
