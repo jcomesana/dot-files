@@ -4,7 +4,12 @@ if vim.fn.has('nvim-0.9') then
 end
 
 -- Plugin nvim-cmp
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 local cmp = require('cmp')
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
 cmp.setup({
   window = {
     completion = cmp.config.window.bordered(),
@@ -361,4 +366,11 @@ local oil = require('oil')
 vim.keymap.set('n', '-', oil.open, { desc = 'Open parent directory' })
 oil.setup({
   columns = { 'size', 'mtime', 'icon' },
+})
+
+-- Plugin nvim-autopairs
+require('nvim-autopairs').setup({
+  fast_wrap = {
+    map = '<M-w>',
+  }
 })
