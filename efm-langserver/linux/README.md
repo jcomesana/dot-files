@@ -32,6 +32,13 @@ properties.
 
 `DidChangeConfiguration` only supports V2 configuration and cannot set `LogFile`.
 
+`efm-langserver` does not include formatters/linters for any languages, you must install these manually,
+e.g.
+ - lua: [LuaFormatter](https://github.com/Koihik/LuaFormatter)
+ - python: [yapf](https://github.com/google/yapf) [isort](https://github.com/PyCQA/isort)
+ - [vint](https://github.com/Kuniwak/vint) for Vim script
+ - [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli) for Markdown
+ - etc...
 
 #### InitializeParams
 
@@ -44,6 +51,7 @@ Example
 {
     "initializationOptions": {
         "documentFormatting": true,
+        "documentRangeFormatting": true,
         "hover": true,
         "documentSymbol": true,
         "codeAction": true,
@@ -59,7 +67,7 @@ Location of config.yaml is:
 * UNIX: `$XDG_CONFIG_HOME/efm-langserver/config.yaml` or `$HOME/.config/efm-langserver/config.yaml`
 * Windows: `%APPDATA%\efm-langserver\config.yaml`
 
-Below is example for `config.yaml` for Windows.
+Below is example for `config.yaml` for Windows. Please see [schema.md](schema.md) for full documentation of the available options.
 
 ```yaml
 version: 2
@@ -99,6 +107,13 @@ tools:
     lint-offset: 1
     format-stdin: true
     format-command: htmlbeautifier
+
+  gitcommit-gitlint: &gitcommit-gitlint
+    lint-command: 'gitlint'
+    lint-stdin: true
+    lint-formats:
+      - '%l: %m: "%r"'
+      - '%l: %m'
 
   html-prettier: &html-prettier
     format-command: './node_modules/.bin/prettier ${--tab-width:tabWidth} ${--single-quote:singleQuote} --parser html'
@@ -269,6 +284,9 @@ languages:
   eruby:
     - <<: *eruby-erb
 
+  gitcommit:
+    - <<: *gitcommit-gitlint
+
   html:
     - <<: *html-prettier
 
@@ -377,7 +395,7 @@ coc-settings.json
   },
 ```
 
-### Configuration for [elgot](https://github.com/joaotavora/eglot)
+### Configuration for [Eglot](https://github.com/joaotavora/eglot)
 
 Add to eglot-server-programs with major mode you want.
 
@@ -389,10 +407,11 @@ Add to eglot-server-programs with major mode you want.
 
 ### Configuration for [neovim builtin LSP](https://neovim.io/doc/user/lsp.html) with [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 
-init.vim
+Neovim's built-in LSP client sends `DidChangeConfiguration`, so `config.yaml` is optional.
 
-```vim
-lua << EOF
+`init.lua` example (`settings` follows [`schema.md`](schema.md)):
+
+```lua
 require "lspconfig".efm.setup {
     init_options = {documentFormatting = true},
     settings = {
@@ -404,10 +423,17 @@ require "lspconfig".efm.setup {
         }
     }
 }
-EOF
 ```
 
-- be sure to declare `languages` as a table:
+You can get premade tool definitions from [`creativenull/efmls-configs-nvim`](https://github.com/creativenull/efmls-configs-nvim):
+```lua
+lua = {
+  require('efmls-configs.linters.luacheck'),
+  require('efmls-configs.formatters.stylua'),
+}
+```
+
+If you define your own, make sure to define as table:
 
 ```lua
 lua = {
@@ -424,19 +450,6 @@ lua = {
     {formatCommand = "lua-pretty -i"}
 }
 ```
-
-- install supported formatters
-
-efm does not include formatters for any languages, you must install these manually,
-e.g.
- - lua: [LuaFormatter](https://github.com/Koihik/LuaFormatter)
- - python: [yapf](https://github.com/google/yapf) [isort](https://github.com/PyCQA/isort)
- - etc...
-
-## Supported Lint tools
-
-* [vint](https://github.com/Kuniwak/vint) for Vim script
-* [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli) for Markdown
 
 ## Installation
 
