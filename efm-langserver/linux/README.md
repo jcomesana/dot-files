@@ -164,6 +164,16 @@ tools:
       - mix.lock
       - mix.exs
 
+  perl-perlcritic: &perl-perlcritic
+    lint-command: 'perlcritic --nocolor -3 --verbose "%l:%c %m\n"'
+    lint-ignore-exit-code: true
+    lint-formats:
+      - '%l:%c %m'
+
+  perl-perltidy: &perl-perltidy
+    format-command: "perltidy -b"
+    format-stdin: true
+
   php-phpstan: &php-phpstan
     lint-command: './vendor/bin/phpstan analyze --error-format raw --no-progress'
 
@@ -309,6 +319,10 @@ languages:
     - <<: *markdown-markdownlint
     - <<: *markdown-pandoc
 
+  perl:
+    - <<: *perl-perltidy
+    - <<: *perl-perlcritic
+
   php:
     - <<: *php-phpstan
     - <<: *php-psalm
@@ -449,6 +463,20 @@ lua = {
     {formatCommand = "lua-format -i", formatStdin = true},
     {formatCommand = "lua-pretty -i"}
 }
+```
+
+### Configuration for [Helix](https://github.com/helix-editor/helix)
+`~/.config/helix/languages.toml`
+```toml
+[language-server.efm]
+command = "efm-langserver"
+
+[[language]]
+name = "typescript"
+language-servers = [
+  { name = "efm", only-features = [ "diagnostics", "format" ] },
+  { name = "typescript-language-server", except-features = [ "format" ] }
+]
 ```
 
 ## Installation
