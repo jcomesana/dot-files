@@ -43,7 +43,7 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-omni'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'folke/trouble.nvim'
-Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
+Plug 'j-hui/fidget.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sleuth'
