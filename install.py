@@ -169,17 +169,17 @@ def operation_install_nvim():
     """
     dotfiles_folder = find_dotfiles_folder_path()
     nvim_paths = NVimPaths(sys.platform)
-    nvim_dotfiles_folder = dotfiles_folder / '.config' / 'nvim'
+    nvim_dotfiles_folder = dotfiles_folder / '.config_lua_neovim' / 'nvim'
     for item in nvim_dotfiles_folder.glob('**/*'):
         if item.is_file():
             src_config_file = item
             relative_file_path = item.relative_to(nvim_dotfiles_folder)
             dst_config_file = nvim_paths.path / relative_file_path
             verbose_link(src_config_file, dst_config_file)
-    for item in (dotfiles_folder / 'vimextras').glob('*'):
-        if item.is_file():
-            extra_dest_path = nvim_paths.extras_path / item.name
-            verbose_link(item, extra_dest_path)
+    # for item in (dotfiles_folder / 'vimextras').glob('*'):
+    #     if item.is_file():
+    #         extra_dest_path = nvim_paths.extras_path / item.name
+    #         verbose_link(item, extra_dest_path)
 
 
 @InstallOperation('Install tmux configuration', ['linux'])

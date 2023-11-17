@@ -1,0 +1,31 @@
+version: 2
+# log-level: 3
+# log-file: /home/jcom/efmlanserver.log
+root-markers:
+  - .ignore
+  - .groovylintrc.json
+  - .git/
+  - .gitignore
+lint-debounce: 3s
+
+tools:
+  groovylint: &npm-groovy-lint
+    lint-command: 'npm-groovy-lint --output json --noserver ${INPUT} | jq -r -f %NVIM_EXTRAS_DIR%/jq_npm-groovy-lint_filter.txt'
+    lint-ignore-exit-code: true
+    lint-stdin: true
+    lint-offset-columns: 1
+    lint-formats:
+      - '%f  %l  %c  %tnfo  %m'
+      - '%f  %l  %c  %tarning  %m'
+      - '%f  %l  %c  %trror  %m'
+    lint-category-map:
+      i: I
+      w: W
+      e: E
+
+languages:
+  groovy:
+    - <<: *npm-groovy-lint
+
+  Jenkinsfile:
+    - <<: *npm-groovy-lint
