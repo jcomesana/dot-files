@@ -1056,6 +1056,7 @@ end
 
 -- [[ Configure vim-closetag ]]
 vim.g['closetag_filenames'] = '*.html,*.xhtml,*.phtml,*.xml'
+vim.g['closetag_filetypes'] = 'html,xhtml,phtml,xml'
 
 -- [[ random colorscheme ]]
 
