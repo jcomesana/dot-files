@@ -557,6 +557,10 @@ vim.g['python3_host_prog'] = 'python3'
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Page up and down and center
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { expr = false, silent = true })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { expr = false, silent = true })
+
 -- move through buffers with F8 and F9
 vim.keymap.set('n', '<F8>', ':bprevious<CR>', { noremap = true, silent = true, desc = 'Go to previous buffer' })
 vim.keymap.set('n', '<F9>', ':bnext<CR>', { noremap = true, silent = true, desc = 'Go to next buffer'  })
@@ -586,7 +590,6 @@ vim.keymap.set('n', '<Leader>vs', ':vsplit<CR>', { noremap = true, silent = fals
 vim.keymap.set('n', '<Leader>pa', ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = 'P4 open for [a]dd' })
 vim.keymap.set('n', '<Leader>pe', ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = 'P4 open for [e]dit' })
 vim.keymap.set('n', '<Leader>pr', ':!p4 revert "%"<CR>', { noremap = true, silent = false, desc = 'P4 [r]evert' })
-
 
 -- Custom commands
 -- CDC = Change to Directory of Current file
