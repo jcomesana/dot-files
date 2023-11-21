@@ -145,6 +145,9 @@ require('lazy').setup({
       -- Buffer completion
       'hrsh7th/cmp-buffer',
 
+      -- Treesitter completion
+      'ray-x/cmp-treesitter',
+
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
 
@@ -218,11 +221,6 @@ require('lazy').setup({
   },
   {
     'bluz71/vim-nightfly-guicolors',
-    priority = 1000,
-  },
-  {
-    'challenger-deep-theme/vim',
-    name = 'challenger-deep',
     priority = 1000,
   },
   {
@@ -992,9 +990,11 @@ cmp.setup {
       option = {
         get_bufnrs = function()
           return vim.api.nvim_list_bufs()
-        end
+        end,
+        indexing_batch_size = 1200,
       }
     },
+    { name = 'treesitter' },
   },
   formatting = {
     format = require('lspkind').cmp_format({
