@@ -581,8 +581,10 @@ vim.keymap.set('n', ',cl', ':let @+=expand("%:p")<CR>', { noremap = true, silent
 vim.keymap.set('n', ',yA', ':%y<CR>', { noremap = true, silent = false, desc = '[Y]ank [A]ll' })
 
 -- Split windows
-vim.keymap.set('n', '<Leader>hs', ':split<CR>', { noremap = true, silent = false, desc = '[H]orizontal window [S]plit' })
-vim.keymap.set('n', '<Leader>vs', ':vsplit<CR>', { noremap = true, silent = false, desc = '[V]ertical window [S]plit' })
+vim.keymap.set('n', '<Leader>ih', ':split<CR>', { noremap = true, silent = false, desc = '[H]orizontal window spl[i]t' })
+vim.keymap.set('n', '<Leader>iv', ':vsplit<CR>', { noremap = true, silent = false, desc = '[V]ertical window spl[i]t' })
+vim.keymap.set('n', '<Leader>in', ':vsplit<CR>:bnext<CR>', { noremap = true, silent = false, desc = '[V]ertical window split & [N]ext buffer' })
+vim.keymap.set('n', '<Leader>ip', ':vsplit<CR>:bprevious<CR>', { noremap = true, silent = false, desc = '[V]ertical window split & [P]revious buffer' })
 
 -- Keymaps for P4 operations
 vim.keymap.set('n', '<Leader>pa', ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = 'P4 open for [a]dd' })
