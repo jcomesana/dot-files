@@ -405,10 +405,6 @@ require('lazy').setup({
     ft = 'ps1'
   },
   {
-    'elzr/vim-json',
-    ft = 'json'
-  },
-  {
     'Vimjas/vim-python-pep8-indent',
     ft = 'python'
   },
