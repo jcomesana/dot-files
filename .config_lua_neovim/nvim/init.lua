@@ -591,6 +591,19 @@ vim.keymap.set('n', '<Leader>pr', ':!p4 revert "%"<CR>', { noremap = true, silen
 -- CDC = Change to Directory of Current file
 vim.api.nvim_create_user_command('CDC', 'cd %:p:h', {})
 
+-- [[ Workaround for autoread not working, use autocommands ]]
+local autoread_fix_augroup = vim.api.nvim_create_augroup('autoread_fix', { clear = true })
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  pattern = '*',
+  group = autoread_fix_augroup,
+  command = "if mode() != 'c' | checktime | endif"
+})
+vim.api.nvim_create_autocmd({ 'FileChangedShellPost' }, {
+  pattern = '*',
+  group = autoread_fix_augroup,
+  command = 'echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None'
+})
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
