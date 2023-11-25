@@ -4,7 +4,7 @@ set mousehide
 
 " Try to render font ligatures
 if exists(':GuiRenderLigatures')
-    GuiRenderLigatures 1
+    GuiRenderLigatures 0
 endif
 
 " Override the default Qt Style/Theme
@@ -29,9 +29,9 @@ if exists(':GuiFont')
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
         if has('win32')
-            GuiFont! CaskaydiaCove NFM:h9:b
+            GuiFont! CaskaydiaCove NF:h8:b
         else
-            GuiFont! CaskaydiaCove NFM:h10:b
+            GuiFont! CaskaydiaCove NF:h10:b
         endif
         GuiLinespace 0
     endif
