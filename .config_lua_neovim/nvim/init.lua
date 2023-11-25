@@ -159,7 +159,16 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  {
+    'folke/which-key.nvim',
+    opts = {
+      icons = {
+        breadcrumb = '»', -- symbol used in the command line area that shows your active key combo
+        separator = '', -- symbol used between a key and it's label
+        group = '+', -- symbol prepended to a group
+      },
+    }
+  },
 
   -- Buffer navigation
   { 'mihaifm/bufstop' },
@@ -586,6 +595,9 @@ vim.keymap.set('n', '<Leader>ip', ':vsplit<CR>:bprevious<CR>', { noremap = true,
 vim.keymap.set('n', '<Leader>pa', ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = 'P4 open for [a]dd' })
 vim.keymap.set('n', '<Leader>pe', ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = 'P4 open for [e]dit' })
 vim.keymap.set('n', '<Leader>pr', ':!p4 revert "%"<CR>', { noremap = true, silent = false, desc = 'P4 [r]evert' })
+
+-- which-key
+vim.keymap.set('n', '<Leader>wk', ':WhichKey<CR>', { noremap = true, silent = false, desc = '[W]hich [K]ey' })
 
 -- Custom commands
 -- CDC = Change to Directory of Current file
