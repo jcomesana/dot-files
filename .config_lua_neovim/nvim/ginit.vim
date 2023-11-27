@@ -31,7 +31,7 @@ if exists(':GuiFont')
         if has('win32')
             GuiFont! CaskaydiaCove NF:h8:b
         else
-            GuiFont! CaskaydiaCove NF:h10:b
+            GuiFont! CaskaydiaCove Nerd Font:h10:b
         endif
         GuiLinespace 0
     endif
