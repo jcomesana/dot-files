@@ -305,15 +305,24 @@ require('lazy').setup({
         section_separators = '',
       },
       sections = {
-        lualine_c = {
+        lualine_b = {
           {
             'filename',
             symbols = {
               readonly = '[RO]',
             },
           },
-        }, -- lualine_c
+        }, -- lualine_b
+        lualine_c = {'branch',
+                     'diff',
+                     {
+                      'diagnostics',
+                      symbols = { error = '', warn = '', info = '󰽁', hint = '󰋇' },
+                      on_click = function() require('trouble').toggle() end
+                     }
+        }, -- lualine_b
       },
+      extensions = { 'fugitive', 'toggleterm', 'trouble' }
     },
   },
 
