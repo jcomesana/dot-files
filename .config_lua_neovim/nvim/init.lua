@@ -317,7 +317,7 @@ require('lazy').setup({
                      'diff',
                      {
                       'diagnostics',
-                      symbols = { error = '', warn = '', info = '󰽁', hint = '󰋇' },
+                      symbols = { error = ' ', warn = '  ', hint = ' ', info = ' ' },
                       on_click = function() require('trouble').toggle() end
                      }
         }, -- lualine_b
