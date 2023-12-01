@@ -36,6 +36,10 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now :)
 --]]
 
+
+-- To be able to use this for lualine
+local diagnostics_signs = { Error = '', Warn = ' ', Hint = '', Info = '' }
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -317,7 +321,10 @@ require('lazy').setup({
                      'diff',
                      {
                       'diagnostics',
-                      symbols = { error = ' ', warn = '  ', hint = ' ', info = ' ' },
+                      symbols = { error = diagnostics_signs['Error'] .. ' ',
+                                  warn = diagnostics_signs['Warn'] .. ' ',
+                                  hint = diagnostics_signs['Hint'] .. ' ',
+                                  info = diagnostics_signs['Info'] .. ' '},
                       on_click = function() require('trouble').toggle() end
                      }
         }, -- lualine_b
@@ -786,8 +793,7 @@ vim.diagnostic.config({
     severity_sort = true,
   },
 })
-local signs = { Error = '', Warn = ' ', Hint = '', Info = '' }
-for type, icon in pairs(signs) do
+for type, icon in pairs(diagnostics_signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
