@@ -333,6 +333,17 @@ require('lazy').setup({
                      }
         }, -- lualine_b
       },
+      inactive_sections = {
+        lualine_b = {
+          {
+            'filename',
+            symbols = {
+              readonly = '[RO]',
+            },
+          },
+        }, -- lualine_b
+        lualine_c = {},
+      },
       extensions = { 'fugitive', 'toggleterm', 'trouble' }
     },
   },
