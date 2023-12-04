@@ -297,6 +297,10 @@ require('lazy').setup({
     'srcery-colors/srcery-vim',
     priority = 1000,
   },
+  {
+    'dam9000/colorscheme-midnightblue',
+    priority = 1000,
+  },
 
   {
     -- Set lualine as statusline
