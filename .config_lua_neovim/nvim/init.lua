@@ -412,18 +412,6 @@ require('lazy').setup({
 
   -- File type specific plugins
   {
-    'vim-jp/vim-cpp',
-    ft = { 'c', 'cpp' }
-  },
-  {
-    'bfrg/vim-cpp-modern',
-    ft = { 'c', 'cpp' }
-  },
-  {
-    'pboettch/vim-cmake-syntax',
-    ft = 'CMake'
-  },
-  {
     'blankname/vim-fish',
     ft = 'fish'
   },
@@ -441,10 +429,6 @@ require('lazy').setup({
   },
   {
     'Vimjas/vim-python-pep8-indent',
-    ft = 'python'
-  },
-  {
-    'vim-python/python-syntax',
     ft = 'python'
   },
   {
