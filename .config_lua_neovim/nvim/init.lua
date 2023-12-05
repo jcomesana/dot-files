@@ -404,6 +404,11 @@ require('lazy').setup({
     end,
   },
 
+  -- Use telescope as vim.ui.select
+  {
+    'nvim-telescope/telescope-ui-select.nvim',
+  },
+
   {
     -- Ag for telescope
     'kelly-lin/telescope-ag'
@@ -686,10 +691,19 @@ require('telescope').setup {
       },
     },
   },
+  extensions = {
+    ['ui-select'] = {
+      require('telescope.themes').get_dropdown {
+        -- even more opts
+      }
+    }
+  },
 }
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
+-- Enable telescope-ui-select
+require('telescope').load_extension('ui-select')
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<Leader>to', require('telescope.builtin').oldfiles, { desc = 'Telescope recently [O]pened files' })
@@ -890,6 +904,9 @@ local on_attach = function(_, bufnr)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
 end
+
+vim.lsp.handlers['textDocument/hover'] =  vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
