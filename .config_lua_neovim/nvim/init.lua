@@ -123,6 +123,29 @@ require('lazy').setup({
   },
 
   {
+    -- Code actions indicator
+    'kosayoda/nvim-lightbulb',
+    event = 'VeryLazy',
+    opts = {
+      sign = {
+        text = '󱠂',
+      },
+      number = {
+        enabled = true,
+      },
+      autocmd = {
+        -- Whether or not to enable autocmd creation.
+        enabled = true,
+        updatetime = 250,
+      },
+      ignore = {
+        clients = { 'ruff_lsp' },
+        actions_without_kind = true,
+      },
+    },
+  },
+
+  {
     -- To display diagnostics
     'folke/trouble.nvim',
     opts = {
