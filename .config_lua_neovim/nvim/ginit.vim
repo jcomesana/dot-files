@@ -32,8 +32,8 @@ if exists(':GuiFont')
             GuiFont! CaskaydiaCove NF:h8:b
         else
             GuiFont! CaskaydiaCove Nerd Font:h10:b
+            GuiLinespace -2
         endif
-        GuiLinespace 0
     endif
 endif
 
