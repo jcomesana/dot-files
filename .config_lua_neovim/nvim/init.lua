@@ -61,6 +61,11 @@ vim.opt.rtp:prepend(lazypath)
 --
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
+local lazy_opts = {}
+if vim.env.NVIM_LAZY_CONCURRENCY then
+  lazy_opts['concurrency'] = tonumber(vim.env.NVIM_LAZY_CONCURRENCY)
+end
+
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
@@ -495,7 +500,7 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
-}, {})
+}, lazy_opts)
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
