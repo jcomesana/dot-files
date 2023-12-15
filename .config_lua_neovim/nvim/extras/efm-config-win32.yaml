@@ -10,7 +10,7 @@ lint-debounce: 3s
 
 tools:
   groovylint: &npm-groovy-lint
-    lint-command: 'npm-groovy-lint --output json --noserver ${INPUT} | jq -r -f %NVIM_EXTRAS_DIR%/jq_npm-groovy-lint_filter.txt'
+    lint-command: 'npm-groovy-lint --output json ${INPUT} | jq -r -f %NVIM_EXTRAS_DIR%/jq_npm-groovy-lint_filter.txt'
     lint-ignore-exit-code: true
     lint-stdin: true
     lint-offset-columns: 1
