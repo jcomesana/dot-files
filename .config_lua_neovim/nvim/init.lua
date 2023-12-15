@@ -430,6 +430,8 @@ require('lazy').setup({
       'nvim-treesitter/nvim-treesitter-textobjects',
       -- Provide context based on treesitter
       'nvim-treesitter/nvim-treesitter-context',
+      -- Indentation engine
+      'yioneko/nvim-yati',
     },
     build = ':TSUpdate',
   },
