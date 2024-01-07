@@ -231,8 +231,8 @@ def verbose_link(source, destination):
     """
     Create a link from the source path to the destination path.
     """
-    if destination.exists() and destination.is_symlink():
-        if destination.readlink() == source:
+    if destination.is_symlink():
+        if destination.exists() and destination.readlink() == source:
             logging.debug('  link %s already exists', destination)
             return
         logging.info('Removing outdated symbolic link %s', destination)
