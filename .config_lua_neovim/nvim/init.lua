@@ -1156,6 +1156,10 @@ end
 vim.g['closetag_filenames'] = '*.html,*.xhtml,*.phtml,*.xml'
 vim.g['closetag_filetypes'] = 'html,xhtml,phtml,xml'
 
+-- [[ Configure Comment.nvim ]]
+local comment_ft = require('Comment.ft')
+comment_ft.set('Jenkinsfile', {'//%s', '/*%s*/'})
+
 -- [[ random colorscheme ]]
 
 local function select_colorscheme()
