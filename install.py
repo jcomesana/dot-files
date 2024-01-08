@@ -170,12 +170,20 @@ def operation_install_nvim():
     dotfiles_folder = find_dotfiles_folder_path()
     nvim_paths = NVimPaths(sys.platform)
     nvim_dotfiles_folder = dotfiles_folder / '.config_lua_neovim' / 'nvim'
+    created_config_files = set()
     for item in nvim_dotfiles_folder.glob('**/*'):
         if item.is_file():
             src_config_file = item
             relative_file_path = item.relative_to(nvim_dotfiles_folder)
             dst_config_file = nvim_paths.path / relative_file_path
             verbose_link(src_config_file, dst_config_file)
+            created_config_files.add(dst_config_file)
+    for item in nvim_paths.path.glob('**/*.*'):
+        if not item.is_symlink():
+            continue
+        if item not in created_config_files:
+            logging.warning('Extra file %s, deleting', item)
+            item.unlink()
     # for item in (dotfiles_folder / 'vimextras').glob('*'):
     #     if item.is_file():
     #         extra_dest_path = nvim_paths.extras_path / item.name
@@ -210,21 +218,17 @@ def operation_install_efm():
     Install efm-langserver and the configuration file.
     """
     dotfiles_folder = find_dotfiles_folder_path()
-    nvim_paths = NVimPaths(sys.platform)
     vim_paths = VimPaths(sys.platform)
     src_efm_folder = dotfiles_folder / 'efm-langserver'
     vim_efm_folder = vim_paths.extras_path / 'efm-langserver'
-    nvim_efm_folder = nvim_paths.extras_path / 'efm-langserver'
     src_efm_config_file = src_efm_folder / 'jq_filter.txt'
-    for dst_folder in (vim_efm_folder, nvim_efm_folder):
+    for dst_folder in (vim_efm_folder, ):
         verbose_link(src_efm_config_file, dst_folder / src_efm_config_file.name)
     src_efm_exe_folder = src_efm_folder / sys.platform
     for item in src_efm_exe_folder.glob('*'):
         if item.is_file():
             vim_dest_path = vim_efm_folder / item.name
-            nvim_dest_path = nvim_efm_folder / item.name
             verbose_link(item, vim_dest_path)
-            verbose_link(item, nvim_dest_path)
 
 
 def verbose_link(source, destination):
