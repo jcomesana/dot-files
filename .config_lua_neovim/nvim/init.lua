@@ -390,37 +390,42 @@ require('lazy').setup({
   },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
-
-  -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-  -- Only load if `make` is available. Make sure you have the system
-  -- requirements installed.
   {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    -- NOTE: If you are having trouble with this installation,
-    --       refer to the README for telescope-fzf-native for more instructions.
-    build = function()
-      if vim.fn.has('win32') == 1 then
-        return 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
-      end
-      return 'make'
-    end,
-    cond = function()
-      if vim.fn.has('win32') == 1 then
-        return vim.fn.executable 'cmake' == 1
-      end
-      return vim.fn.executable 'make' == 1
-    end,
-  },
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      -- Fuzzy Finder Algorithm which requires local dependencies to be built.
+      -- Only load if `make` is available. Make sure you have the system
+      -- requirements installed.
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        -- NOTE: If you are having trouble with this installation,
+        --       refer to the README for telescope-fzf-native for more instructions.
+        build = function()
+          if vim.fn.has('win32') == 1 then
+            return 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+          end
+          return 'make'
+        end,
+        cond = function()
+          if vim.fn.has('win32') == 1 then
+            return vim.fn.executable 'cmake' == 1
+          end
+          return vim.fn.executable 'make' == 1
+        end,
+      },
 
-  -- Use telescope as vim.ui.select
-  {
-    'nvim-telescope/telescope-ui-select.nvim',
-  },
+      {
+        -- Use telescope as vim.ui.select
+        'nvim-telescope/telescope-ui-select.nvim',
+      },
 
-  {
-    -- Ag for telescope
-    'kelly-lin/telescope-ag'
+      {
+        -- Ag for telescope
+        'kelly-lin/telescope-ag'
+      },
+    }
   },
 
   -- FZF
