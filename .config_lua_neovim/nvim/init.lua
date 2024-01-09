@@ -303,7 +303,11 @@ require('lazy').setup({
   },
   {
     'ribru17/bamboo.nvim',
+    lazy = false,
     priority = 1000,
+    config = function()
+      require('bamboo').load()
+    end,
   },
   {
     'rhysd/vim-color-spring-night',
