@@ -61,7 +61,14 @@ vim.opt.rtp:prepend(lazypath)
 --
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
-local lazy_opts = {}
+local lazy_opts = {
+  git = {
+    timeout = 380,
+  },
+  ui = {
+    border = 'rounded',
+  },
+}
 if vim.env.NVIM_LAZY_CONCURRENCY then
   lazy_opts['concurrency'] = tonumber(vim.env.NVIM_LAZY_CONCURRENCY)
 end
@@ -446,14 +453,12 @@ require('lazy').setup({
   },
 
   {
-    -- Auto-save plugin
-    'https://git.sr.ht/~nedia/auto-save.nvim',
-    event = { 'BufReadPre' },
+    -- auto-save plugin
+    'okuuva/auto-save.nvim',
+    event = { 'InsertLeave', 'TextChanged' },
     opts = {
-      events = { 'InsertLeave', 'BufLeave' },
-      silent = false,
-      exclude_ft = { 'neo-tree' },
-    },
+      enabled = true,
+    }
   },
 
   {
