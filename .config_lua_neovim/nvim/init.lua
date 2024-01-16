@@ -454,10 +454,14 @@ require('lazy').setup({
 
   {
     -- auto-save plugin
-    'okuuva/auto-save.nvim',
-    event = { 'InsertLeave', 'TextChanged' },
+    'willothy/savior.nvim',
+    dependencies = { 'j-hui/fidget.nvim' },
+    event = { 'InsertEnter', 'TextChanged' },
+    config = true,
     opts = {
-      enabled = true,
+      throttle_ms = 5000,
+      interval_ms = 35000,
+      defer_ms = 1000
     }
   },
 
@@ -604,7 +608,7 @@ vim.o.startofline = false
 -- Completion --
 vim.o.completeopt = 'menuone,noselect'
 
--- Backups, autoread, autosave --
+-- Backups, autoread
 local backups_dir = vim.fn.stdpath 'config' .. '/backups'
 vim.o.undofile = true
 vim.o.backup = true
