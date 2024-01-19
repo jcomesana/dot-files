@@ -961,7 +961,7 @@ if vim.env.GROOVY_HOME then
   table.insert(groovy_lsp_classpath, groovy_lib)
 end
 
-local is_not_termux = not vim.env.ANDROID_DATA
+local is_not_termux = not vim.env.TERMUX_APP_PID
 
 local lsp_servers = {
   clangd = {
