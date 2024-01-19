@@ -961,7 +961,7 @@ if vim.env.GROOVY_HOME then
   table.insert(groovy_lsp_classpath, groovy_lib)
 end
 
-local is_not_termux = not vim.env.TERMUX_APP_PID
+local is_termux = not not vim.env.TERMUX_APP_PID
 
 local lsp_servers = {
   clangd = {
@@ -972,7 +972,7 @@ local lsp_servers = {
   },
 
   efm = {
-    mason = not is_not_termux,
+    mason = not is_termux,
     filetypes = { 'groovy', 'Jenkinsfile'},
     flags = {
       debounce_text_changes = 1500,
@@ -982,7 +982,7 @@ local lsp_servers = {
   },
 
   groovyls = {
-    mason = not is_not_termux,
+    mason = not is_termux,
     filetypes = { 'groovy', 'Jenkinsfile'},
     groovy = {
       classpath = groovy_lsp_classpath,
@@ -990,7 +990,7 @@ local lsp_servers = {
   },
 
   lua_ls = {
-    mason = not is_not_termux,
+    mason = not is_termux,
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
@@ -1016,7 +1016,7 @@ local lsp_servers = {
   },
 
   ruff_lsp = {
-    mason = not is_not_termux,
+    mason = not is_termux,
   },
 }
 
