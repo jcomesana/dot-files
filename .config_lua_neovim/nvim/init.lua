@@ -370,7 +370,19 @@ require('lazy').setup({
                                   info = diagnostics_signs['Info'] .. ' '},
                       on_click = function() require('trouble').toggle() end
                      }
-        }, -- lualine_b
+        }, -- lualine_c
+        lualine_x = {
+                      {
+                        require('lazy.status').updates,
+                        cond = require('lazy.status').has_updates,
+                        color = { fg = '#ff9e64' },
+                      },
+                      'encoding',
+                      'fileformat',
+                      'filetype'
+        },
+        lualine_y = {'progress'},
+        lualine_z = {'location'},
       },
       inactive_sections = {
         lualine_b = {
