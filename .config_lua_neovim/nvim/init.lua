@@ -62,6 +62,10 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 local lazy_opts = {
+  checker = {
+    -- automatically check for plugin updates
+    enabled = true,
+  },
   git = {
     timeout = 380,
   },
