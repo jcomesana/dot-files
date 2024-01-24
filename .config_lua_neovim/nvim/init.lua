@@ -380,6 +380,7 @@ require('lazy').setup({
                         require('lazy.status').updates,
                         cond = require('lazy.status').has_updates,
                         color = { fg = '#ff9e64' },
+                        on_click = function() vim.cmd('Lazy sync') end
                       },
                       'encoding',
                       'fileformat',
