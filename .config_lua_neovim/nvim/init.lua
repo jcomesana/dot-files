@@ -88,7 +88,10 @@ require('lazy').setup({
   'mhinz/vim-signify',
 
   -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
+  {
+    'tpope/vim-sleuth',
+    event = 'VeryLazy',
+  },
 
   -- Remember last position
   'farmergreg/vim-lastplace',
@@ -648,6 +651,7 @@ vim.g['loaded_node_provider'] = false
 vim.g['loaded_ruby_provider'] = false
 
 vim.g['python3_host_prog'] = 'python3'
+vim.g['python_recommended_style'] = 0
 
 -- [[ Keymaps ]]
 
