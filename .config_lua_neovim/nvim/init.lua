@@ -1248,8 +1248,8 @@ local function select_colorscheme()
       table.insert(colorschemes_table, colorscheme_name)
     end
   end
-  math.randomseed(vim.fn.localtime())
-  local selected_index = math.random(1, #colorschemes_table)
+  math.randomseed(os.time())
+  local selected_index = math.random(#colorschemes_table)
   vim.cmd.colorscheme(colorschemes_table[selected_index])
 end
 select_colorscheme()
