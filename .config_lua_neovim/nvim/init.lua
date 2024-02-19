@@ -237,6 +237,9 @@ require('lazy').setup({
     cmd = 'Oil',
     opts = {
       columns = { 'size', 'mtime', 'icon' },
+      view_options = {
+        show_hidden = true,
+      }
     }
   },
 
