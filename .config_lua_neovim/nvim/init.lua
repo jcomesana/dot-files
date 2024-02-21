@@ -239,8 +239,20 @@ require('lazy').setup({
       columns = { 'size', 'mtime', 'icon' },
       view_options = {
         show_hidden = true,
-      }
+      },
+      win_options = {
+        signcolumn = 'yes:2',
+      },
     }
+  },
+  {
+    'refractalize/oil-git-status.nvim',
+
+    dependencies = {
+      'stevearc/oil.nvim',
+    },
+
+    config = true,
   },
 
   {
