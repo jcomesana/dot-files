@@ -29,9 +29,9 @@ if exists(':GuiFont')
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
         if has('win32')
-            GuiFont! CaskaydiaCove NF:h8:b
+            GuiFont! Iosevka Nerd Font:h10
         else
-            GuiFont! CaskaydiaCove Nerd Font:h10:b
+            GuiFont! Iosevka Nerd Font:h10
             GuiLinespace -2
         endif
     endif
