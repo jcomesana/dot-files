@@ -1011,6 +1011,9 @@ local lsp_servers = {
     },
   },
 
+  dockerls = {
+  },
+
   efm = {
     mason = not is_termux,
     filetypes = { 'groovy', 'Jenkinsfile'},
