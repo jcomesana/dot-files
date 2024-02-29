@@ -129,6 +129,7 @@ require('lazy').setup({
         config = true,
       },
       'williamboman/mason-lspconfig.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP
       { 'j-hui/fidget.nvim', opts = {} },
@@ -609,7 +610,7 @@ vim.o.display = 'lastline,msgsep'
 vim.o.sidescroll = 1
 vim.o.scrolloff = 4
 vim.o.ttyfast = true
-vim.o.listchars = 'tab:> ,trail:-,extends:>,precedes:<,nbsp:+'
+vim.o.listchars = 'tab:> ,trail:-,extends:>,precedes:<,nbsp:␣'
 vim.o.report = 0
 
 -- Syntax highlighting --
@@ -768,7 +769,7 @@ require('telescope').setup {
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 -- Enable telescope-ui-select
-require('telescope').load_extension('ui-select')
+pcall(require('telescope').load_extension, 'ui-select')
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<Leader>to', require('telescope.builtin').oldfiles, { desc = 'Telescope recently [O]pened files' })
@@ -1069,7 +1070,7 @@ require('neodev').setup()
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
@@ -1090,8 +1091,9 @@ for server_name, server_config in pairs(lsp_servers) do
     }
   end
 end
-mason_lspconfig.setup {
+require('mason-tool-installer').setup {
   ensure_installed = lsp_servers_handled_with_mason,
+  auto_update = true,
 }
 
 mason_lspconfig.setup_handlers {
