@@ -1012,6 +1012,7 @@ local lsp_servers = {
   },
 
   dockerls = {
+    mason = not is_termux,
   },
 
   efm = {
