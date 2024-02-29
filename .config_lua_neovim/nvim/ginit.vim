@@ -84,9 +84,9 @@ endif
 " Settings for neovide
 if exists("g:neovide")
     if has('win32')
-        set guifont=CaskaydiaCove\ Nerd\ Font:h8:b
+        set guifont=Iosevka\ Nerd\ Font:h8:b
     else
-        set guifont=CaskaydiaCove\ Nerd\ Font:h10:b
+        set guifont=Iosevka\ Nerd\ Font:h10:b
     endif
     let g:neovide_hide_mouse_when_typing = v:true
     let g:neovide_cursor_animation_length = 0.10
