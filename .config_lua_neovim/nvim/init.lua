@@ -1209,6 +1209,11 @@ require('nvim-autopairs').setup({
 vim.keymap.set('n', '<F7>', ':BufstopFast<CR>', { noremap = true, silent = false, desc = 'Open buflist with BufstopFast' })
 vim.keymap.set('n', '<Leader>bv', ':Bufstop<CR>', { noremap = true, silent = false, desc = 'Open buflist with Bufstop' })
 vim.keymap.set('n', '<Leader>bp', ':BufstopPreview<CR>', { noremap = true, silent = false, desc = 'Open buflist with BufstopPreview' })
+vim.g.BufstopFileSymbolFunc = function (path)
+  local filename = vim.fn.fnamemodify(path, ':t')
+  local extension = vim.fn.fnamemodify(path, ':e')
+  return require'nvim-web-devicons'.get_icon(filename, extension, { default = true })
+end
 
 -- [[ Configure oil ]]
 vim.keymap.set('n', '-', require('oil').open, { desc = 'Open parent directory' })
