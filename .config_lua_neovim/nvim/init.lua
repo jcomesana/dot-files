@@ -184,6 +184,7 @@ require('lazy').setup({
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       'L3MON4D3/LuaSnip',
@@ -211,6 +212,7 @@ require('lazy').setup({
   -- Useful plugin to show you pending keybinds.
   {
     'folke/which-key.nvim',
+    event = 'VeryLazy',
     opts = {
       icons = {
         breadcrumb = '»', -- symbol used in the command line area that shows your active key combo
@@ -235,6 +237,7 @@ require('lazy').setup({
   {
     -- File navigation
     'stevearc/oil.nvim',
+    event = 'VeryLazy',
     cmd = 'Oil',
     opts = {
       columns = { 'size', 'mtime', 'icon' },
@@ -440,6 +443,7 @@ require('lazy').setup({
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
+    event = 'VeryLazy',
     dependencies = {
       'nvim-lua/plenary.nvim',
       -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -1122,6 +1126,7 @@ cmp.setup {
       luasnip.lsp_expand(args.body)
     end,
   },
+  completion = { completeopt = 'menu,menuone,noinsert' },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
