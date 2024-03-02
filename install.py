@@ -162,7 +162,7 @@ def operation_install_vim():
             verbose_link(item, extra_dest_path)
 
 
-@InstallOperation('Install neovim configuration files', ['linux', 'win32'])
+@InstallOperation('Install neovim configuration files', ['darwin', 'linux', 'win32'])
 def operation_install_nvim():
     """
     Create the basic folder structure and link the files.
@@ -190,7 +190,7 @@ def operation_install_nvim():
     #         verbose_link(item, extra_dest_path)
 
 
-@InstallOperation('Install tmux configuration', ['linux'])
+@InstallOperation('Install tmux configuration', ['darwin', 'linux'])
 def operation_install_tmux():
     """
     Install tmux configuration.
