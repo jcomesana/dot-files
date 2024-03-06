@@ -30,6 +30,9 @@ if exists(':GuiFont')
     else
         if has('win32')
             GuiFont! Iosevka Nerd Font:h10
+        elseif has('macunix')
+            GuiFont! Iosevka Nerd Font:h12
+            GuiLinespace -2
         else
             GuiFont! Iosevka Nerd Font:h10
             GuiLinespace -2
@@ -85,6 +88,8 @@ endif
 if exists("g:neovide")
     if has('win32')
         set guifont=Iosevka\ Nerd\ Font:h8:b
+    elseif has('macunix')
+        set guifont=Iosevka\ Nerd\ Font:h12:b
     else
         set guifont=Iosevka\ Nerd\ Font:h10:b
     endif
