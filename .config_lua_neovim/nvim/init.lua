@@ -1036,6 +1036,7 @@ local lsp_servers = {
     groovy = {
       classpath = groovy_lsp_classpath,
     },
+    cmd = { 'groovy-language-server' },
   },
 
   lua_ls = {
