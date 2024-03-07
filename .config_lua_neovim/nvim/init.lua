@@ -739,6 +739,14 @@ vim.api.nvim_create_autocmd({ 'FileChangedShellPost' }, {
   command = 'echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None'
 })
 
+-- [[ New filetypes ]]
+local new_filetypes_augroup = vim.api.nvim_create_augroup('new_filetypes', { clear = true })
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  pattern = { '*.jobdsl' },
+  group = new_filetypes_augroup,
+  command = 'setfiletype groovy'
+})
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
