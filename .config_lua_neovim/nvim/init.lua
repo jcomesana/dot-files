@@ -247,6 +247,21 @@ require('lazy').setup({
       win_options = {
         signcolumn = 'yes:2',
       },
+      keymaps = {
+        ['\\o?'] = 'actions.show_help',
+        ['\\os'] = 'actions.select_vsplit',
+        ['\\oh'] = 'actions.select_split',
+        ['\\ot'] = 'actions.select_tab',
+        ['\\ov'] = 'actions.preview',
+        ['\\ol'] = 'actions.add_to_loclist',
+        ['\\oq'] = 'actions.close',
+        ['\\or'] = 'actions.refresh',
+        ['\\op'] = 'actions.copy_entry_path',
+        ['\\of'] = 'actions.change_sort',
+        ['\\ox'] = 'actions.open_external',
+        ['\\o.'] = 'actions.toggle_hidden',
+        ['\\ob'] = 'actions.toggle_trash',
+      },
     }
   },
   {
