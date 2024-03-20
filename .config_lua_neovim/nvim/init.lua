@@ -491,6 +491,11 @@ require('lazy').setup({
         -- Ag for telescope
         'kelly-lin/telescope-ag'
       },
+
+      {
+          'isak102/telescope-git-file-history.nvim',
+          dependencies = { 'tpope/vim-fugitive' }
+      }
     }
   },
 
@@ -777,12 +782,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
   defaults = {
-    mappings = {
-      i = {
-        ['<C-u>'] = false,
-        ['<C-d>'] = false,
-      },
-    },
   },
   extensions = {
     ['ui-select'] = {
@@ -797,6 +796,8 @@ require('telescope').setup {
 pcall(require('telescope').load_extension, 'fzf')
 -- Enable telescope-ui-select
 pcall(require('telescope').load_extension, 'ui-select')
+-- Enable telescope-git-history
+pcall(require('telescope').load_extension, 'git_file_history')
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<Leader>to', require('telescope.builtin').oldfiles, { desc = 'Telescope recently [O]pened files' })
@@ -825,6 +826,7 @@ vim.keymap.set('n', '<Leader>tS', require('telescope.builtin').lsp_workspace_sym
 vim.keymap.set('n', '<Leader>tr', require('telescope.builtin').lsp_references, { desc = 'Telescope LSP [R]eferences' })
 vim.keymap.set('n', '<Leader>tI', require('telescope.builtin').lsp_implementations, { desc = 'Telescope LSP [I]mplementation' })
 vim.keymap.set('n', '<Leader>tm', require('telescope.builtin').resume, { desc = 'Telescope search resu[m]e' })
+vim.keymap.set('n', '<Leader>tH', require('telescope').extensions.git_file_history.git_file_history, { desc = 'Telescope git [H]istory' })
 
 -- [[ Configure FZF ]]
 vim.keymap.set('n', '<Leader>ff', ':FZF<CR>', { desc = 'FZF Files' })
