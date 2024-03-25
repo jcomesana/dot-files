@@ -68,6 +68,8 @@ local lazy_opts = {
   checker = {
     -- automatically check for plugin updates
     enabled = true,
+    notify = false,
+    frequency = 10800,
   },
   git = {
     timeout = 380,
