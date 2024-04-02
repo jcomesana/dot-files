@@ -784,6 +784,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
   defaults = {
+    mappings = {
+      i = {
+        ['<RightMouse>'] = require('telescope.actions').close,
+        ['<LeftMouse>'] = require('telescope.actions').select_default,
+        ['<ScrollWheelDown>'] = require('telescope.actions').move_selection_next,
+        ['<ScrollWheelUp>'] = require('telescope.actions').move_selection_previous,
+      },
+    },
   },
   extensions = {
     ['ui-select'] = {
