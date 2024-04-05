@@ -1106,6 +1106,11 @@ local lsp_servers = {
   ruff_lsp = {
     mason = not is_termux,
   },
+
+  sourcekit = {
+    mason = false,
+    filetypes = { 'swift' }
+  },
 }
 
 -- Setup neovim lua configuration
