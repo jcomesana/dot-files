@@ -237,6 +237,11 @@ require('lazy').setup({
   },
 
   {
+    'stevearc/dressing.nvim',
+    opts = {},
+  },
+
+  {
     -- File navigation
     'stevearc/oil.nvim',
     event = 'VeryLazy',
@@ -482,11 +487,6 @@ require('lazy').setup({
           end
           return vim.fn.executable 'make' == 1
         end,
-      },
-
-      {
-        -- Use telescope as vim.ui.select
-        'nvim-telescope/telescope-ui-select.nvim',
       },
 
       {
@@ -793,19 +793,10 @@ require('telescope').setup {
       },
     },
   },
-  extensions = {
-    ['ui-select'] = {
-      require('telescope.themes').get_dropdown {
-        -- even more opts
-      }
-    }
-  },
 }
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
--- Enable telescope-ui-select
-pcall(require('telescope').load_extension, 'ui-select')
 -- Enable telescope-git-history
 pcall(require('telescope').load_extension, 'git_file_history')
 
