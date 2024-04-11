@@ -349,10 +349,6 @@ require('lazy').setup({
     opts = {},
   },
   {
-    'jsit/toast.vim',
-    priority = 1000,
-  },
-  {
     'lvim-tech/lvim-colorscheme',
     priority = 1000,
   },
