@@ -282,6 +282,13 @@ require('lazy').setup({
 
     config = true,
   },
+  {
+    'albenisolmos/telescope-oil.nvim',
+
+    dependencies = {
+      'stevearc/oil.nvim',
+    },
+  },
 
   {
     -- Toggleterm
@@ -797,6 +804,8 @@ require('telescope').setup {
 pcall(require('telescope').load_extension, 'fzf')
 -- Enable telescope-git-history
 pcall(require('telescope').load_extension, 'git_file_history')
+-- Open a directory in oil with telescope
+pcall(require('telescope').load_extension, 'oil')
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<Leader>to', require('telescope.builtin').oldfiles, { desc = 'Telescope recently [O]pened files' })
@@ -826,6 +835,7 @@ vim.keymap.set('n', '<Leader>tr', require('telescope.builtin').lsp_references, {
 vim.keymap.set('n', '<Leader>tI', require('telescope.builtin').lsp_implementations, { desc = 'Telescope LSP [I]mplementation' })
 vim.keymap.set('n', '<Leader>tm', require('telescope.builtin').resume, { desc = 'Telescope search resu[m]e' })
 vim.keymap.set('n', '<Leader>tH', require('telescope').extensions.git_file_history.git_file_history, { desc = 'Telescope git [H]istory' })
+vim.keymap.set('n', '<Leader>t-', require('telescope').extensions.oil.oil, { desc = 'Open Oil from Telescope' })
 
 -- [[ Configure FZF ]]
 vim.keymap.set('n', '<Leader>ff', ':FZF<CR>', { desc = 'FZF Files' })
