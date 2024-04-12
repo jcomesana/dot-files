@@ -1300,6 +1300,7 @@ local function select_colorscheme()
     'slate',
     'torte',
     'zellner',
+    'bamboo-light',
     'lvim-light',
     'tokyonight-day',
   }
