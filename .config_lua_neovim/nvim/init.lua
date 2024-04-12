@@ -268,6 +268,8 @@ require('lazy').setup({
         ['\\ox'] = 'actions.open_external',
         ['\\o.'] = 'actions.toggle_hidden',
         ['\\ob'] = 'actions.toggle_trash',
+        ['<Left>'] = 'actions.parent',
+        ['<Right>'] = 'actions.select',
       },
     }
   },
