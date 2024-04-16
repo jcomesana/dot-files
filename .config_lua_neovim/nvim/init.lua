@@ -818,8 +818,9 @@ vim.keymap.set('n', '<Leader>tz', function()
   })
 end, { desc = 'Telescope fu[Z]zily in current buffer' })
 
-vim.keymap.set('n', '<Leader>tg', require('telescope.builtin').git_files, { desc = 'Telescope [G]it files' })
-vim.keymap.set('n', '<Leader>tc', require('telescope.builtin').git_commits, { desc = 'Telescope git [C]ommits' })
+vim.keymap.set('n', '<Leader>tgf', require('telescope.builtin').git_files, { desc = 'Telescope [G]it [F]iles' })
+vim.keymap.set('n', '<Leader>tgc', require('telescope.builtin').git_commits, { desc = 'Telescope [G]it [C]ommits' })
+vim.keymap.set('n', '<Leader>tgb', require('telescope.builtin').git_branches, { desc = 'Telescope [G]it [B]ranches' })
 vim.keymap.set('n', '<Leader>tf', require('telescope.builtin').find_files, { desc = 'Telescope [F]iles' })
 vim.keymap.set('n', '<Leader>tF', function()
   return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden', vim.fn.expand('<cword>') } })
@@ -834,7 +835,7 @@ vim.keymap.set('n', '<Leader>tS', require('telescope.builtin').lsp_workspace_sym
 vim.keymap.set('n', '<Leader>tr', require('telescope.builtin').lsp_references, { desc = 'Telescope LSP [R]eferences' })
 vim.keymap.set('n', '<Leader>tI', require('telescope.builtin').lsp_implementations, { desc = 'Telescope LSP [I]mplementation' })
 vim.keymap.set('n', '<Leader>tm', require('telescope.builtin').resume, { desc = 'Telescope search resu[m]e' })
-vim.keymap.set('n', '<Leader>tH', require('telescope').extensions.git_file_history.git_file_history, { desc = 'Telescope git [H]istory' })
+vim.keymap.set('n', '<Leader>tgh', require('telescope').extensions.git_file_history.git_file_history, { desc = 'Telescope [G]it [H]istory' })
 vim.keymap.set('n', '<Leader>t-', require('telescope').extensions.oil.oil, { desc = 'Open Oil from Telescope' })
 
 -- [[ Configure FZF ]]
