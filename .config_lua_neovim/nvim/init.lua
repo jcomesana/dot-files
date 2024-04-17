@@ -89,6 +89,16 @@ require('lazy').setup({
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
 
+  {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim',         -- required
+      'sindrets/diffview.nvim',        -- optional - Diff integration
+      'nvim-telescope/telescope.nvim', -- optional
+    },
+    config = true
+  },
+
   -- Git, P4
   'mhinz/vim-signify',
 
@@ -1287,6 +1297,14 @@ vim.g['closetag_filetypes'] = 'html,xhtml,phtml,xml'
 -- [[ Configure Comment.nvim ]]
 local comment_ft = require('Comment.ft')
 comment_ft.set('Jenkinsfile', {'//%s', '/*%s*/'})
+
+-- [[ Configure neogit ]]
+vim.keymap.set('n', '<Leader>ngo', function()
+  require('neogit').open({ kind = 'split' })
+end, { noremap = true, silent = true, desc = 'Neogit open' })
+vim.keymap.set('n', '<Leader>ngc', function()
+  require('neogit').open({ 'commit' })
+end, { noremap = true, silent = true, desc = 'Neogit open' })
 
 -- [[ random colorscheme ]]
 
