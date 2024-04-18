@@ -86,8 +86,14 @@ require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
+  {
+    'tpope/vim-fugitive',
+    event = 'VeryLazy',
+  },
+  {
+    'tpope/vim-rhubarb',
+    event = 'VeryLazy',
+  },
 
   {
     'NeogitOrg/neogit',
@@ -278,8 +284,6 @@ require('lazy').setup({
         ['\\ox'] = 'actions.open_external',
         ['\\o.'] = 'actions.toggle_hidden',
         ['\\ob'] = 'actions.toggle_trash',
-        ['<Left>'] = 'actions.parent',
-        ['<Right>'] = 'actions.select',
       },
     }
   },
@@ -1299,10 +1303,10 @@ local comment_ft = require('Comment.ft')
 comment_ft.set('Jenkinsfile', {'//%s', '/*%s*/'})
 
 -- [[ Configure neogit ]]
-vim.keymap.set('n', '<Leader>ngo', function()
+vim.keymap.set('n', '<Leader>go', function()
   require('neogit').open({ kind = 'split' })
 end, { noremap = true, silent = true, desc = 'Neogit open' })
-vim.keymap.set('n', '<Leader>ngc', function()
+vim.keymap.set('n', '<Leader>gc', function()
   require('neogit').open({ 'commit' })
 end, { noremap = true, silent = true, desc = 'Neogit open' })
 
