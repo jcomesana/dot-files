@@ -372,10 +372,6 @@ require('lazy').setup({
     opts = {},
   },
   {
-    'lvim-tech/lvim-colorscheme',
-    priority = 1000,
-  },
-  {
     'ray-x/aurora',
     priority = 1000,
   },
@@ -1336,7 +1332,6 @@ local function select_colorscheme()
     'torte',
     'zellner',
     'bamboo-light',
-    'lvim-light',
     'tokyonight-day',
   }
 
