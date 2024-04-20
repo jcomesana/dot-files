@@ -799,6 +799,45 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
   defaults = {
+    -- configure to use ripgrep
+    vimgrep_arguments = {
+      'rg',
+      '--follow',        -- Follow symbolic links
+      '--hidden',        -- Search for hidden files
+      '--no-heading',    -- Don't group matches by each file
+      '--with-filename', -- Print the file path with the matched lines
+      '--line-number',   -- Show line numbers
+      '--column',        -- Show column numbers
+      '--smart-case',    -- Smart case search
+
+      -- Exclude some patterns from search
+      '--glob=!**/.git/*',
+      '--glob=!**/.idea/*',
+      '--glob=!**/.vscode/*',
+      '--glob=!**/build/*',
+      '--glob=!**/dist/*',
+      '--glob=!**/yarn.lock',
+      '--glob=!**/package-lock.json',
+    },
+    pickers = {
+      find_files = {
+        hidden = true,
+        -- needed to exclude some files & dirs from general search
+        -- when not included or specified in .gitignore
+        find_command = {
+          'rg',
+          '--files',
+          '--hidden',
+          '--glob=!**/.git/*',
+          '--glob=!**/.idea/*',
+          '--glob=!**/.vscode/*',
+          '--glob=!**/build/*',
+          '--glob=!**/dist/*',
+          '--glob=!**/yarn.lock',
+          '--glob=!**/package-lock.json',
+        },
+      },
+    },
     mappings = {
       i = {
         ['<RightMouse>'] = require('telescope.actions').close,
@@ -831,7 +870,9 @@ end, { desc = 'Telescope fu[Z]zily in current buffer' })
 vim.keymap.set('n', '<Leader>tgf', require('telescope.builtin').git_files, { desc = 'Telescope [G]it [F]iles' })
 vim.keymap.set('n', '<Leader>tgc', require('telescope.builtin').git_commits, { desc = 'Telescope [G]it [C]ommits' })
 vim.keymap.set('n', '<Leader>tgb', require('telescope.builtin').git_branches, { desc = 'Telescope [G]it [B]ranches' })
-vim.keymap.set('n', '<Leader>tf', require('telescope.builtin').find_files, { desc = 'Telescope [F]iles' })
+vim.keymap.set('n', '<Leader>tf', function ()
+  return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden' } })
+end , { desc = 'Telescope [F]iles' })
 vim.keymap.set('n', '<Leader>tF', function()
   return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden', vim.fn.expand('<cword>') } })
 end, { desc = 'Telescope [F]iles under cursor' })
