@@ -846,6 +846,10 @@ require('telescope').setup {
         ['<ScrollWheelUp>'] = require('telescope.actions').move_selection_previous,
       },
     },
+    layout_config = {
+      prompt_position = 'top',
+    },
+    sorting_strategy = 'ascending',
   },
 }
 
