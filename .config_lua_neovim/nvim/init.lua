@@ -925,7 +925,7 @@ vim.defer_fn(function()
     highlight = { enable = true },
     indent = {
       enable = true,
-      disable = { 'python', 'xml', }
+      disable = { 'groovy', 'python', 'xml', }
     },
     incremental_selection = {
       enable = true,
