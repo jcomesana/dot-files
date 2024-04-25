@@ -1113,6 +1113,10 @@ local lsp_servers = {
     mason = not is_termux,
   },
 
+  docker_compose_language_service = {
+    mason = not is_termux,
+  },
+
   efm = {
     mason = not is_termux,
     filetypes = { 'groovy', 'Jenkinsfile'},
