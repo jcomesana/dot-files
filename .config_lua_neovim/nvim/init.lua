@@ -1136,35 +1136,41 @@ local lsp_servers = {
   groovyls = {
     mason = not is_termux,
     filetypes = { 'groovy', 'Jenkinsfile'},
-    groovy = {
-      classpath = groovy_lsp_classpath,
+    settings = {
+      groovy = {
+        classpath = groovy_lsp_classpath,
+      },
     },
     cmd = { 'groovy-language-server' },
   },
 
   lua_ls = {
     mason = not is_termux,
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
+    settings = {
+      Lua = {
+        workspace = { checkThirdParty = false },
+        telemetry = { enable = false },
+      },
     },
   },
 
   pylsp = {
-    pylsp = {
-      plugins = {
-        flake8 = {
-          enabled = false,
-          maxLineLength = 200,
-        },
-        pycodestyle = {
-          maxLineLength = 200,
-        },
-        pylint = {
-          enabled = true,
-          args = {'--max-line-length 200'}
-        },
-      }
+    settings = {
+      pylsp = {
+        plugins = {
+          flake8 = {
+            enabled = false,
+            maxLineLength = 200,
+          },
+          pycodestyle = {
+            maxLineLength = 200,
+          },
+          pylint = {
+            enabled = true,
+            args = {'--max-line-length 200'}
+          },
+        }
+      },
     },
   },
 
@@ -1197,7 +1203,7 @@ for server_name, server_config in pairs(lsp_servers) do
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
       on_attach = on_attach,
-      settings = server_config,
+      settings = (server_config or {}).settings,
       filetypes = (server_config or {}).filetypes,
       cmd = (server_config or {}).cmd,
       flags = (server_config or {}).flags,
@@ -1214,7 +1220,7 @@ mason_lspconfig.setup_handlers {
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
       on_attach = on_attach,
-      settings = lsp_servers[server_name],
+      settings = (lsp_servers[server_name] or {}).settings,
       filetypes = (lsp_servers[server_name] or {}).filetypes,
       cmd = (lsp_servers[server_name] or {}).cmd,
       flags = (lsp_servers[server_name] or {}).flags,
