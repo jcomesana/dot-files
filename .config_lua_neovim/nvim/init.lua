@@ -445,6 +445,7 @@ require('lazy').setup({
                         color = { fg = '#ff9e64' },
                         on_click = function() vim.cmd('Lazy sync') end
                       },
+                      'searchcount',
                       'encoding',
                       'fileformat',
                       'filetype'
@@ -463,7 +464,7 @@ require('lazy').setup({
         }, -- lualine_b
         lualine_c = {},
       },
-      extensions = { 'fugitive', 'toggleterm', 'trouble' }
+      extensions = { 'fugitive', 'oil', 'toggleterm', 'trouble' }
     },
   },
 
@@ -777,11 +778,16 @@ vim.api.nvim_create_autocmd({ 'FileChangedShellPost' }, {
 })
 
 -- [[ New filetypes ]]
-local new_filetypes_augroup = vim.api.nvim_create_augroup('new_filetypes', { clear = true })
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-  pattern = { '*.jobdsl' },
-  group = new_filetypes_augroup,
-  command = 'setfiletype groovy'
+vim.filetype.add({
+  filename = {
+    ['docker-compose.yml'] = 'yaml.docker-compose',
+    ['docker-compose.yaml'] = 'yaml.docker-compose',
+    ['compose.yml'] = 'yaml.docker-compose',
+    ['compose.yaml'] = 'yaml.docker-compose',
+  },
+  extension = {
+    ['jobdsl'] = 'Jenkinsfile'
+  }
 })
 
 -- [[ Highlight on yank ]]
