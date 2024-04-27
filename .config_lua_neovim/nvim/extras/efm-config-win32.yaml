@@ -2,11 +2,9 @@ version: 2
 # log-level: 3
 # log-file: /home/jcom/efmlanserver.log
 root-markers:
-  - .ignore
-  - .groovylintrc.json
   - .git/
-  - .gitignore
-lint-debounce: 3s
+  - .ignore
+lint-debounce: 2s
 
 tools:
   groovylint: &npm-groovy-lint
@@ -18,10 +16,6 @@ tools:
       - '%f  %l  %c  %tnfo  %m'
       - '%f  %l  %c  %tarning  %m'
       - '%f  %l  %c  %trror  %m'
-    lint-category-map:
-      i: I
-      w: W
-      e: E
 
 languages:
   groovy:

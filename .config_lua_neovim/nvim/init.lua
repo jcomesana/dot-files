@@ -1127,7 +1127,7 @@ local lsp_servers = {
     mason = not is_termux,
     filetypes = { 'groovy', 'Jenkinsfile'},
     flags = {
-      debounce_text_changes = 1500,
+      debounce_text_changes = 1000,
       allow_incremental_sync = false,
     },
     cmd = { 'efm-langserver', '-c', efm_config_file }
