@@ -16,6 +16,7 @@ tools:
       - '%f  %l  %c  %tnfo  %m'
       - '%f  %l  %c  %tarning  %m'
       - '%f  %l  %c  %trror  %m'
+    lint-source: 'npm-groovy-lint'
 
 languages:
   groovy:
