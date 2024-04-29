@@ -1304,6 +1304,9 @@ vim.g['signify_sign_delete']            = '-'
 vim.g['signify_sign_delete_first_line'] = '‾'
 vim.g['signify_sign_change']            = '*'
 vim.g['signify_sign_change_delete']     = 'd'
+vim.keymap.set('n', '<Leader>gh', ':SignifyHunkDiff<CR>', { noremap = true, silent = false, desc = 'Si[g]nify [H]unk diff' })
+vim.keymap.set('n', '<Leader>gd', ':SignifyDiff<CR>', { noremap = true, silent = false, desc = 'Si[g]nify [D]iff' })
+vim.keymap.set('n', '<Leader>gu', ':SignifyHunkUndo<CR>', { noremap = true, silent = false, desc = 'Si[g]nify hunk [U]ndo' })
 
 -- [[ Configure vim-sandwich ]]
 vim.g['sandwich#recipes'] = vim.deepcopy(vim.g['sandwich#default_recipes'])
@@ -1353,14 +1356,6 @@ vim.g['closetag_filetypes'] = 'html,xhtml,phtml,xml'
 -- [[ Configure Comment.nvim ]]
 local comment_ft = require('Comment.ft')
 comment_ft.set('Jenkinsfile', {'//%s', '/*%s*/'})
-
--- [[ Configure neogit ]]
-vim.keymap.set('n', '<Leader>go', function()
-  require('neogit').open({ kind = 'split' })
-end, { noremap = true, silent = true, desc = 'Neogit open' })
-vim.keymap.set('n', '<Leader>gc', function()
-  require('neogit').open({ 'commit' })
-end, { noremap = true, silent = true, desc = 'Neogit open' })
 
 -- [[ random colorscheme ]]
 
