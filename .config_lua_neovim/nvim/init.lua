@@ -95,6 +95,15 @@ require('lazy').setup({
     event = 'VeryLazy',
   },
 
+  -- Git blame visualizer
+  {
+    'FabijanZulj/blame.nvim',
+    config = function()
+      require('blame').setup()
+    end,
+    event = 'VeryLazy',
+  },
+
   {
     'sindrets/diffview.nvim',    -- Diff integration
     config = true
@@ -1327,6 +1336,9 @@ vim.g['signify_sign_change_delete']     = 'd'
 vim.keymap.set('n', '<Leader>gh', ':SignifyHunkDiff<CR>', { noremap = true, silent = false, desc = 'Si[g]nify [H]unk diff' })
 vim.keymap.set('n', '<Leader>gd', ':SignifyDiff<CR>', { noremap = true, silent = false, desc = 'Si[g]nify [D]iff' })
 vim.keymap.set('n', '<Leader>gu', ':SignifyHunkUndo<CR>', { noremap = true, silent = false, desc = 'Si[g]nify hunk [U]ndo' })
+
+-- [[ Configure blame.nvim ]]
+vim.keymap.set('n', '<Leader>gb', ':BlameToggle<CR>', { noremap = true, silent = false, desc = '[G]it [B]lame toggle' })
 
 -- [[ Configure vim-sandwich ]]
 vim.g['sandwich#recipes'] = vim.deepcopy(vim.g['sandwich#default_recipes'])
