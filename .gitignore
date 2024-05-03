@@ -4,3 +4,4 @@
 .config/nvim/plugged/
 .config/nvim/swap/
 .config/nvim/undodir/
+.DS_Store
