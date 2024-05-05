@@ -623,7 +623,7 @@ vim.o.softtabstop = 4
 vim.o.shiftround = true
 vim.o.smarttab = true
 vim.o.expandtab = true
-vim.o.fixeol = true and (vim.env.NVIM_FIXEOL == '1')
+vim.o.fixeol = (vim.env.NVIM_FIXEOL and vim.env.NVIM_FIXEOL) or true
 
 -- UI Config --
 vim.o.title = true
