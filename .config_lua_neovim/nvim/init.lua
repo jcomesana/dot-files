@@ -222,7 +222,7 @@ require('lazy').setup({
       -- Add icons to the completion menu
       {
         'onsails/lspkind.nvim',
-      },
+      },auto_preview = true
     },
   },
 
@@ -618,7 +618,7 @@ vim.o.softtabstop = 4
 vim.o.shiftround = true
 vim.o.smarttab = true
 vim.o.expandtab = true
-vim.o.fixeol = (vim.env.NVIM_FIXEOL and vim.env.NVIM_FIXEOL) or true
+vim.o.fixeol = vim.env.NVIM_FIXEOL == '0' and false or (vim.env.NVIM_FIXEOL == '1' or not vim.env.NVIM_FIXEOL)
 
 -- UI Config --
 vim.o.title = true
