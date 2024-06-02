@@ -194,12 +194,7 @@ require('lazy').setup({
     -- To display diagnostics
     'folke/trouble.nvim',
     opts = {
-      icons = true,
-      fold_open = '-', -- icon used for open folds
-      fold_closed = '+', -- icon used for closed folds
-      indent_lines = true, -- add an indent guide below the fold icons
-      use_diagnostic_signs = true, -- enabling this will use the signs defined in your lsp client
-      auto_preview = false, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
+      auto_preview = false,
     }
   },
 
@@ -439,7 +434,7 @@ require('lazy').setup({
                                   warn = diagnostics_signs['Warn'] .. ' ',
                                   hint = diagnostics_signs['Hint'] .. ' ',
                                   info = diagnostics_signs['Info'] .. ' '},
-                      on_click = function() require('trouble').toggle() end
+                      on_click = function() require('trouble').toggle( { mode = 'diagnostics', focus = false }) end
                      }
         }, -- lualine_c
         lualine_x = {
@@ -1040,13 +1035,8 @@ vim.keymap.set('n', '<Leader>dm', vim.diagnostic.open_float, { desc = 'Open floa
 vim.keymap.set('n', '<Leader>dl', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- [[ Configure trouble.nvim ]]
--- require('trouble').setup {
-vim.keymap.set('n', '<Leader>xt', '<cmd>TroubleToggle<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim' })
-vim.keymap.set('n', '<Leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim workspace diagnostics' })
-vim.keymap.set('n', '<Leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim document diagnostics' })
-vim.keymap.set('n', '<Leader>xl', '<cmd>TroubleToggle loclist<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim to loclist' })
-vim.keymap.set('n', '<Leader>xq', '<cmd>TroubleToggle quickfix<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim to [q]uickfix' })
-vim.keymap.set('n', '<Leader>xr', '<cmd>TroubleToggle lsp_references<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim LSP [r]efs' })
+vim.keymap.set('n', '<Leader>xd', '<cmd>Trouble diagnostics toggle focus=false filter.buf=0<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim with diagnostics' })
+vim.keymap.set('n', '<Leader>xl', '<cmd>Trouble lsp toggle focus=false<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim with lsp' })
 
 -- [[ Configure LSP ]]
 
