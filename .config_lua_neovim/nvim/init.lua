@@ -127,6 +127,19 @@ require('lazy').setup({
   -- To surround words, lines with " or [
   'machakann/vim-sandwich',
 
+  -- To close html or xml tags
+  {
+    'windwp/nvim-ts-autotag',
+    opts = {
+      opts = {
+        -- Defaults
+        enable_close = true, -- Auto close tags
+        enable_rename = true, -- Auto rename pairs of tags
+        enable_close_on_slash = true -- Auto close on trailing </
+      },
+    }
+  },
+
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
@@ -328,8 +341,6 @@ require('lazy').setup({
 
   -- nvim-web-devicons
   { 'nvim-tree/nvim-web-devicons' },
-
-  -- File type specific plugins
 
   -- Colorschemes
   {
@@ -579,10 +590,6 @@ require('lazy').setup({
   {
     'Vimjas/vim-python-pep8-indent',
     ft = 'python'
-  },
-  {
-    'alvan/vim-closetag',
-    ft = { 'html', 'xml' }
   },
   {
     'MTDL9/vim-log-highlighting'
@@ -1371,10 +1378,6 @@ if vim.env.JENKINS_URL then
     group = jenkinsfile_linter_group
   })
 end
-
--- [[ Configure vim-closetag ]]
-vim.g['closetag_filenames'] = '*.html,*.xhtml,*.phtml,*.xml'
-vim.g['closetag_filetypes'] = 'html,xhtml,phtml,xml'
 
 -- [[ Configure Comment.nvim ]]
 local comment_ft = require('Comment.ft')
