@@ -1404,6 +1404,7 @@ local function select_colorscheme()
     'shine',
     'slate',
     'torte',
+    'vim',
     'zellner',
     'bamboo-light',
     'tokyonight-day',
