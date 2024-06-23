@@ -632,7 +632,7 @@ vim.o.fixeol = vim.env.NVIM_FIXEOL == '0' and false or (vim.env.NVIM_FIXEOL == '
 vim.o.title = true
 vim.o.modeline = true
 vim.wo.number = true
-vim.wo.signcolumn = 'yes:4'
+vim.wo.signcolumn = 'auto:1-4'
 vim.o.showmode = false
 vim.o.showcmd = true
 vim.o.cmdheight = 2
