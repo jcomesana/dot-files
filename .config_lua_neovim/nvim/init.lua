@@ -632,7 +632,7 @@ vim.o.fixeol = vim.env.NVIM_FIXEOL == '0' and false or (vim.env.NVIM_FIXEOL == '
 vim.o.title = true
 vim.o.modeline = true
 vim.wo.number = true
-vim.wo.signcolumn = 'auto:1-4'
+vim.wo.signcolumn = 'auto:3-4'
 vim.o.showmode = false
 vim.o.showcmd = true
 vim.o.cmdheight = 2
@@ -1047,6 +1047,7 @@ vim.keymap.set('n', '<Leader>xd', '<cmd>Trouble diagnostics toggle focus=false f
 vim.keymap.set('n', '<Leader>xl', '<cmd>Trouble lsp toggle focus=false<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim with lsp' })
 
 -- [[ Configure LSP ]]
+vim.lsp.inlay_hint.enable()
 
 -- [[ Configure lsp_signature ]]
 require('lsp_signature').setup({
@@ -1087,6 +1088,9 @@ local on_attach = function(_, bufnr)
   nmap('<Leader>lt', vim.lsp.buf.type_definition, '[T]ype Definition')
   nmap('<Leader>lh', vim.lsp.buf.hover, '[H]over Documentation')
   nmap('<Leader>ls', vim.lsp.buf.signature_help, '[S]ignature Documentation')
+  nmap('<Leader>ln', function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+  end, 'Toggle i[N]lay hints')
 
   -- Lesser used LSP functionality
   nmap('<Leader>lD', vim.lsp.buf.declaration, 'Goto [D]eclaration')
