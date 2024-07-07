@@ -1397,6 +1397,7 @@ local function select_colorscheme()
   local colorschemes_table = {}
   local excluded_colorschemes = {
     'blue',
+    'darkblue',
     'default',
     'delek',
     'desert',
@@ -1416,6 +1417,7 @@ local function select_colorscheme()
     'slate',
     'torte',
     'vim',
+    'zaitbatsu',
     'zellner',
     'bamboo-light',
     'tokyonight-day',
