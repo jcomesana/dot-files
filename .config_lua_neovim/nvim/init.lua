@@ -367,11 +367,6 @@ require('lazy').setup({
     priority = 1000,
   },
   {
-    'dustypomerleau/tol.nvim',
-    lazy = false,
-    priority = 1000,
-  },
-  {
     'embark-theme/vim',
     name = 'embark',
     priority = 1000,
@@ -1415,6 +1410,7 @@ local function select_colorscheme()
     'ron',
     'shine',
     'slate',
+    'sorbet',
     'torte',
     'vim',
     'zaitbatsu',
