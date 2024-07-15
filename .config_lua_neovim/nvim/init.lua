@@ -1413,7 +1413,7 @@ local function select_colorscheme()
     'sorbet',
     'torte',
     'vim',
-    'zaitbatsu',
+    'zaibatsu',
     'zellner',
     'bamboo-light',
     'tokyonight-day',
