@@ -905,6 +905,7 @@ end, { desc = 'Telescope fu[Z]zily in current buffer' })
 
 vim.keymap.set('n', '<Leader>tgf', require('telescope.builtin').git_files, { desc = 'Telescope [G]it [F]iles' })
 vim.keymap.set('n', '<Leader>tgc', require('telescope.builtin').git_commits, { desc = 'Telescope [G]it [C]ommits' })
+vim.keymap.set('n', '<Leader>tgh', require('telescope.builtin').git_bcommits, { desc = 'Telescope [G]it Buffer Commits ([H]istory)' })
 vim.keymap.set('n', '<Leader>tgb', require('telescope.builtin').git_branches, { desc = 'Telescope [G]it [B]ranches' })
 vim.keymap.set('n', '<Leader>tf', function ()
   return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden' } })
