@@ -515,11 +515,6 @@ require('lazy').setup({
         -- Ag for telescope
         'kelly-lin/telescope-ag'
       },
-
-      {
-          'isak102/telescope-git-file-history.nvim',
-          dependencies = { 'tpope/vim-fugitive' }
-      }
     }
   },
 
@@ -878,6 +873,8 @@ require('telescope').setup {
         ['<ScrollWheelUp>'] = require('telescope.actions').move_selection_previous,
         ['<C-o>'] = function(prompt_bufnr) require('telescope.actions').add_selected_to_qflist(prompt_bufnr) vim.cmd('copen') vim.cmd.cfirst() end,
         ['<CR>'] = select_one_or_multi,
+        ['<C-d>'] = require('telescope.actions').cycle_previewers_next,
+				['<C-f>'] = require('telescope.actions').cycle_previewers_prev,
       },
     },
     layout_config = {
@@ -889,10 +886,31 @@ require('telescope').setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
--- Enable telescope-git-history
-pcall(require('telescope').load_extension, 'git_file_history')
 -- Open a directory in oil with telescope
 pcall(require('telescope').load_extension, 'oil')
+
+-- For telescope git
+local custom_git_commits = function(opts)
+  opts = opts or {}
+  opts.previewer = {
+    require('telescope.previewers').git_commit_diff_as_was.new(opts),
+    require('telescope.previewers').git_commit_diff_to_head.new(opts),
+    require('telescope.previewers').git_commit_message.new(opts),
+  }
+
+  require('telescope.builtin').git_commits(opts)
+end
+
+local custom_git_bcommits = function(opts)
+  opts = opts or {}
+  opts.previewer = {
+    require('telescope.previewers').git_commit_diff_as_was.new(opts),
+    require('telescope.previewers').git_commit_message.new(opts),
+    require('telescope.previewers').git_commit_diff_to_head.new(opts),
+  }
+
+  require('telescope.builtin').git_bcommits(opts)
+end
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<Leader>to', require('telescope.builtin').oldfiles, { desc = 'Telescope recently [O]pened files' })
@@ -906,8 +924,8 @@ vim.keymap.set('n', '<Leader>tz', function()
 end, { desc = 'Telescope fu[Z]zily in current buffer' })
 
 vim.keymap.set('n', '<Leader>tgf', require('telescope.builtin').git_files, { desc = 'Telescope [G]it [F]iles' })
-vim.keymap.set('n', '<Leader>tgc', require('telescope.builtin').git_commits, { desc = 'Telescope [G]it [C]ommits' })
-vim.keymap.set('n', '<Leader>tgy', require('telescope.builtin').git_bcommits, { desc = 'Telescope [G]it Buffer Commits (histor[Y])' })
+vim.keymap.set('n', '<Leader>tgc', custom_git_commits, { desc = 'Telescope [G]it [C]ommits' })
+vim.keymap.set('n', '<Leader>tgh', custom_git_bcommits, { desc = 'Telescope [G]it Buffer Commits ([History)' })
 vim.keymap.set('n', '<Leader>tgb', require('telescope.builtin').git_branches, { desc = 'Telescope [G]it [B]ranches' })
 vim.keymap.set('n', '<Leader>tf', function ()
   return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden', '--no-ignore-vcs', '--exclude', '.git/' } })
@@ -925,7 +943,6 @@ vim.keymap.set('n', '<Leader>tS', require('telescope.builtin').lsp_workspace_sym
 vim.keymap.set('n', '<Leader>tr', require('telescope.builtin').lsp_references, { desc = 'Telescope LSP [R]eferences' })
 vim.keymap.set('n', '<Leader>tI', require('telescope.builtin').lsp_implementations, { desc = 'Telescope LSP [I]mplementation' })
 vim.keymap.set('n', '<Leader>tm', require('telescope.builtin').resume, { desc = 'Telescope search resu[m]e' })
-vim.keymap.set('n', '<Leader>tgh', require('telescope').extensions.git_file_history.git_file_history, { desc = 'Telescope [G]it [H]istory' })
 vim.keymap.set('n', '<Leader>t-', require('telescope').extensions.oil.oil, { desc = 'Open Oil from Telescope' })
 
 -- [[ Configure FZF ]]
