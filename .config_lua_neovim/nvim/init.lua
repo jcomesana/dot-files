@@ -839,6 +839,7 @@ require('telescope').setup {
       '--line-number',   -- Show line numbers
       '--column',        -- Show column numbers
       '--smart-case',    -- Smart case search
+      '--no-ignore-vcs', -- Ignore .gitignore
 
       -- Exclude some patterns from search
       '--glob=!**/.git/*',
@@ -858,6 +859,7 @@ require('telescope').setup {
           'rg',
           '--files',
           '--hidden',
+          '--no-ignore-vcs',
           '--glob=!**/.git/*',
           '--glob=!**/.idea/*',
           '--glob=!**/.vscode/*',
@@ -908,10 +910,10 @@ vim.keymap.set('n', '<Leader>tgc', require('telescope.builtin').git_commits, { d
 vim.keymap.set('n', '<Leader>tgy', require('telescope.builtin').git_bcommits, { desc = 'Telescope [G]it Buffer Commits (histor[Y])' })
 vim.keymap.set('n', '<Leader>tgb', require('telescope.builtin').git_branches, { desc = 'Telescope [G]it [B]ranches' })
 vim.keymap.set('n', '<Leader>tf', function ()
-  return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden' } })
+  return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden', '--no-ignore-vcs', '--exclude', '.git/' } })
 end , { desc = 'Telescope [F]iles' })
 vim.keymap.set('n', '<Leader>tF', function()
-  return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden', vim.fn.expand('<cword>') } })
+  return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden', '--no-ignore-vcs', '--exclude', '.git/', vim.fn.expand('<cword>') } })
 end, { desc = 'Telescope [F]iles under cursor' })
 vim.keymap.set('n', '<Leader>th', require('telescope.builtin').help_tags, { desc = 'Telescope [H]elp' })
 vim.keymap.set('n', '<Leader>tw', require('telescope.builtin').grep_string, { desc = 'Telescope current [W]ord' })
