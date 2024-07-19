@@ -1414,6 +1414,7 @@ local function select_colorscheme()
     'sorbet',
     'torte',
     'vim',
+    'wildcharm',
     'zaibatsu',
     'zellner',
     'bamboo-light',
