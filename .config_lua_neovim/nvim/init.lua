@@ -204,6 +204,11 @@ require('lazy').setup({
   },
 
   {
+    'nvimtools/none-ls.nvim',
+    event = 'VeryLazy',
+  },
+
+  {
     -- To display diagnostics
     'folke/trouble.nvim',
     opts = {
@@ -1065,6 +1070,13 @@ vim.keymap.set('n', '<Leader>xd', '<cmd>Trouble diagnostics toggle focus=false f
 vim.keymap.set('n', '<Leader>xl', '<cmd>Trouble lsp toggle focus=false<cr>', { noremap = true, silent = true, desc = 'Toggle trouble.nvim with lsp' })
 
 -- [[ Configure LSP ]]
+local null_ls = require('null-ls')
+null_ls.setup({
+  sources = {
+    null_ls.builtins.diagnostics.npm_groovy_lint
+  },
+})
+
 vim.lsp.inlay_hint.enable()
 
 -- [[ Configure lsp_signature ]]
@@ -1135,15 +1147,6 @@ vim.lsp.handlers['textDocument/signatureHelp'] =  vim.lsp.with(vim.lsp.handlers.
 --
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
-local extras_path = require('lspconfig').util.path.join(vim.fn.stdpath('config'), 'extras')
-vim.env.NVIM_EXTRAS_DIR = extras_path
-local efm_config_file = ''
-if (vim.fn.has('win32') == 1) then
-  efm_config_file = require('lspconfig').util.path.join(extras_path, 'efm-config-win32.yaml')
-else
-  efm_config_file = require('lspconfig').util.path.join(extras_path, 'efm-config-unix.yaml')
-end
-
 local groovy_lsp_classpath = {}
 if vim.env.GROOVY_HOME then
   local groovy_lib = vim.env.GROOVY_HOME .. '/lib'
@@ -1166,16 +1169,6 @@ local lsp_servers = {
 
   docker_compose_language_service = {
     mason = not is_termux,
-  },
-
-  efm = {
-    mason = not is_termux,
-    filetypes = { 'groovy', 'Jenkinsfile'},
-    flags = {
-      debounce_text_changes = 1000,
-      allow_incremental_sync = false,
-    },
-    cmd = { 'efm-langserver', '-c', efm_config_file }
   },
 
   groovyls = {

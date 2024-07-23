@@ -1,1 +1,0 @@
-.files | to_entries[] | .key as $file | .value.errors[] as $errors | "\($file)  \($errors.line)  \($errors.range.start.character // 0)  \($errors.severity)  \($errors.msg) \($errors.rule)"
