@@ -29,12 +29,12 @@ if exists(':GuiFont')
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
         if has('win32')
-            GuiFont! Iosevka Nerd Font:h10
+            GuiFont! CaskaydiaCove Nerd Font:h10
         elseif has('macunix')
-            GuiFont! Iosevka Nerd Font:h12
+            GuiFont! CaskaydiaCove Nerd Font:h12
             GuiLinespace -2
         else
-            GuiFont! Iosevka Nerd Font:h10
+            GuiFont! CaskaydiaCove Nerd Font:h10
             GuiLinespace -2
         endif
     endif
@@ -87,11 +87,11 @@ endif
 " Settings for neovide
 if exists("g:neovide")
     if has('win32')
-        set guifont=Iosevka\ Nerd\ Font:h8:b
+        set guifont=CaskaydiaCove\ Nerd\ Font:h8
     elseif has('macunix')
-        set guifont=Iosevka\ Nerd\ Font:h12:b
+        set guifont=CaskaydiaCove\ Nerd\ Font:h12
     else
-        set guifont=Iosevka\ Nerd\ Font:h10:b
+        set guifont=CaskaydiaCove\ Nerd\ Font:h10
     endif
     let g:neovide_hide_mouse_when_typing = v:true
     let g:neovide_cursor_animation_length = 0.10
