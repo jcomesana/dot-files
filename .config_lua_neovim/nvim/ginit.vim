@@ -32,10 +32,10 @@ if exists(':GuiFont')
             GuiFont! CaskaydiaCove Nerd Font:h10
         elseif has('macunix')
             GuiFont! CaskaydiaCove Nerd Font:h12
-            GuiLinespace -2
+            GuiLinespace 0
         else
             GuiFont! CaskaydiaCove Nerd Font:h10
-            GuiLinespace -2
+            GuiLinespace -1
         endif
     endif
 endif
