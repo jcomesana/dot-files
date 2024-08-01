@@ -524,8 +524,27 @@ require('lazy').setup({
   },
 
   -- FZF
-  { 'junegunn/fzf' },
-  { 'junegunn/fzf.vim' },
+  {
+    'ibhagwan/fzf-lua',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('fzf-lua').setup({
+        actions = {
+          files = {
+            ['default'] = require('fzf-lua.actions').file_edit_or_qf,
+            ['ctrl-v']  = require('fzf-lua.actions').file_vsplit,
+            ['ctrl-t']  = require('fzf-lua.actions').file_tabedit,
+            ['alt-q']   = require('fzf-lua.actions').file_sel_to_qf,
+          },
+          git_branches = {
+            ['default'] = require('fzf-lua.actions').git_switch,
+            ['ctrl-a'] = require('fzf-lua.actions').git_branch_add,
+          },
+        },
+      })
+    end,
+    event = 'VeryLazy',
+  },
 
   {
     -- Highlight, edit, and navigate code
@@ -930,7 +949,7 @@ end, { desc = 'Telescope fu[Z]zily in current buffer' })
 
 vim.keymap.set('n', '<Leader>tgf', require('telescope.builtin').git_files, { desc = 'Telescope [G]it [F]iles' })
 vim.keymap.set('n', '<Leader>tgc', custom_git_commits, { desc = 'Telescope [G]it [C]ommits' })
-vim.keymap.set('n', '<Leader>tgh', custom_git_bcommits, { desc = 'Telescope [G]it Buffer Commits ([History)' })
+vim.keymap.set('n', '<Leader>tgh', custom_git_bcommits, { desc = 'Telescope [G]it Buffer Commits ([H]istory)' })
 vim.keymap.set('n', '<Leader>tgb', require('telescope.builtin').git_branches, { desc = 'Telescope [G]it [B]ranches' })
 vim.keymap.set('n', '<Leader>tf', function ()
   return require('telescope.builtin').find_files({ find_command = { 'fd', '--hidden', '--no-ignore-vcs', '--exclude', '.git/' } })
@@ -951,22 +970,31 @@ vim.keymap.set('n', '<Leader>tm', require('telescope.builtin').resume, { desc = 
 vim.keymap.set('n', '<Leader>t-', require('telescope').extensions.oil.oil, { desc = 'Open Oil from Telescope' })
 
 -- [[ Configure FZF ]]
-vim.keymap.set('n', '<Leader>ff', ':FZF<CR>', { desc = 'FZF Files' })
-vim.keymap.set('n', '<Leader>fg', ':Rg<CR>', { desc = 'Ripgrep' })
-vim.keymap.set('n', '<Leader>fG', ':Rg <C-R><C-W><CR>', { desc = 'Ripgrep with word under cursor' })
 vim.keymap.set('n', '<Leader>fa', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word under cursor' })
 vim.keymap.set('n', '<Leader>fA', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word under cursor' })
-vim.keymap.set('n', '<Leader>fb', ':W<CR>', { desc = 'FZF Buffers' })
-vim.keymap.set('n', '<Leader>fl', ':Lines<CR>', { desc = 'FZF Lines of open buffers' })
-vim.keymap.set('n', '<Leader>fc', ':Commits<CR>', { desc = 'FZF Commits' })
-vim.g['fzf_layout'] = {['up'] = '~94%',
-                       ['window'] = { ['width'] = 0.9,
-                                      ['height'] = 0.9,
-                                      ['yoffset'] = 0.5,
-                                      ['xoffset'] = 0.5,
-                                      ['border'] = 'sharp' } }
-vim.env.FZF_DEFAULT_OPTS = '--layout=reverse -i --color=dark --ansi'
-vim.env.FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob "!node_modules" --glob "!.git"'
+
+vim.keymap.set('n', '<Leader>ff', require('fzf-lua').files, { desc = 'FZF Files' })
+vim.keymap.set('n', '<Leader>fF', function()
+  return require('fzf-lua').files({ cmd = 'fd --hidden --no-ignore-vcs --exclude .git/ ' .. vim.fn.expand('<cword>') })
+end, { desc = '[F]iles under cursor' })
+vim.keymap.set('n', '<Leader>fr', require('fzf-lua').grep, { desc = 'G[R]ep' })
+vim.keymap.set('n', '<Leader>fv', require('fzf-lua').grep, { desc = 'Grep [V]isual selection' })
+vim.keymap.set('n', '<Leader>fn', require('fzf-lua').live_grep_native, { desc = '[L]ive grep native' })
+vim.keymap.set('n', '<Leader>fm', require('fzf-lua').live_grep_resume, { desc = 'Resu[m]e last query' })
+vim.keymap.set('n', '<Leader>fw', require('fzf-lua').grep_cword, { desc = 'Ripgrep with word under cursor' })
+vim.keymap.set('n', '<Leader>fc', require('fzf-lua').lines, { desc = 'FZF Lines of open buffers' })
+vim.keymap.set('n', '<Leader>fgc', require('fzf-lua').git_commits, { desc = '[G]it [C]ommits' })
+vim.keymap.set('n', '<Leader>fgh', require('fzf-lua').git_bcommits, { desc = '[G]it buffer commits ([H]istory)' })
+vim.keymap.set('n', '<Leader>fgb', require('fzf-lua').git_branches, { desc = '[G]it [B]ranches' })
+vim.keymap.set('n', '<Leader>fgf', require('fzf-lua').git_files, { desc = '[G]it [F]iles' })
+vim.keymap.set('n', '<Leader>fd', require('fzf-lua').diagnostics_workspace, { desc = '[D]iagnostics' })
+vim.keymap.set('n', '<Leader>fb', require('fzf-lua').buffers, { desc = '[B]uffers' })
+vim.keymap.set('n', '<Leader>fh', require('fzf-lua').helptags, { desc = '[H]elp tags' })
+vim.keymap.set('n', '<Leader>fla', require('fzf-lua').lsp_code_actions, { desc = '[L]SP [A]ctions' })
+vim.keymap.set('n', '<Leader>flf', require('fzf-lua').lsp_finder, { desc = '[L]SP [F]inder' })
+vim.keymap.set('n', '<Leader>flr', require('fzf-lua').lsp_references, { desc = '[L]SP [R]eferences' })
+vim.keymap.set('n', '<Leader>fls', require('fzf-lua').lsp_document_symbols, { desc = '[L]SP document [s]ymbols' })
+vim.keymap.set('n', '<Leader>flS', require('fzf-lua').lsp_workspace_symbols, { desc = '[L]SP workspace [S]ymbols' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
