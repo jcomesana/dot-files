@@ -528,20 +528,6 @@ require('lazy').setup({
     'ibhagwan/fzf-lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      require('fzf-lua').setup({
-        actions = {
-          files = {
-            ['default'] = require('fzf-lua.actions').file_edit_or_qf,
-            ['ctrl-v']  = require('fzf-lua.actions').file_vsplit,
-            ['ctrl-t']  = require('fzf-lua.actions').file_tabedit,
-            ['alt-q']   = require('fzf-lua.actions').file_sel_to_qf,
-          },
-          git_branches = {
-            ['default'] = require('fzf-lua.actions').git_switch,
-            ['ctrl-a'] = require('fzf-lua.actions').git_branch_add,
-          },
-        },
-      })
     end,
     event = 'VeryLazy',
   },
@@ -969,9 +955,34 @@ vim.keymap.set('n', '<Leader>tI', require('telescope.builtin').lsp_implementatio
 vim.keymap.set('n', '<Leader>tm', require('telescope.builtin').resume, { desc = 'Telescope search resu[m]e' })
 vim.keymap.set('n', '<Leader>t-', require('telescope').extensions.oil.oil, { desc = 'Open Oil from Telescope' })
 
--- [[ Configure FZF ]]
-vim.keymap.set('n', '<Leader>fa', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word under cursor' })
-vim.keymap.set('n', '<Leader>fA', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word under cursor' })
+vim.keymap.set('n', '<Leader>ta', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word under cursor' })
+vim.keymap.set('n', '<Leader>tA', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word under cursor' })
+
+-- [[ Configure fzf-lua ]]
+local fzf_lua_actions = require('fzf-lua.actions')
+require('fzf-lua').setup({
+    files = {
+      rg_opts = [[--color=never --files --hidden --follow -g "!.git" --no-ignore ]],
+      actions = {
+        ['default'] = fzf_lua_actions.file_edit_or_qf,
+        ['ctrl-v']  = fzf_lua_actions.file_vsplit,
+        ['ctrl-t']  = fzf_lua_actions.file_tabedit,
+        ['alt-q']   = fzf_lua_actions.file_sel_to_qf,
+      },
+    },
+    git = {
+      branches = {
+        actions = {
+          ['default'] = fzf_lua_actions.git_switch,
+          ['ctrl-s']  = fzf_lua_actions.git_switch,
+          ['ctrl-a']  = fzf_lua_actions.git_branch_add,
+        },
+      },
+    },
+    grep = {
+      rg_opts = "--column --line-number --no-heading --color=always --smart-case --no-ignore "
+    },
+})
 
 vim.keymap.set('n', '<Leader>ff', require('fzf-lua').files, { desc = 'FZF Files' })
 vim.keymap.set('n', '<Leader>fF', function()
@@ -979,7 +990,7 @@ vim.keymap.set('n', '<Leader>fF', function()
 end, { desc = '[F]iles under cursor' })
 vim.keymap.set('n', '<Leader>fr', require('fzf-lua').grep, { desc = 'G[R]ep' })
 vim.keymap.set('n', '<Leader>fv', require('fzf-lua').grep, { desc = 'Grep [V]isual selection' })
-vim.keymap.set('n', '<Leader>fn', require('fzf-lua').live_grep_native, { desc = '[L]ive grep native' })
+vim.keymap.set('n', '<Leader>fn', require('fzf-lua').live_grep_native, { desc = 'Live grep [N]ative' })
 vim.keymap.set('n', '<Leader>fm', require('fzf-lua').live_grep_resume, { desc = 'Resu[m]e last query' })
 vim.keymap.set('n', '<Leader>fw', require('fzf-lua').grep_cword, { desc = 'Ripgrep with word under cursor' })
 vim.keymap.set('n', '<Leader>fc', require('fzf-lua').lines, { desc = 'FZF Lines of open buffers' })
