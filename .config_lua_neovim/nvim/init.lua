@@ -975,12 +975,8 @@ require('fzf-lua').setup({
         actions = {
           ['default'] = fzf_lua_actions.git_switch,
           ['ctrl-s']  = fzf_lua_actions.git_switch,
-          ['ctrl-a']  = fzf_lua_actions.git_branch_add,
         },
       },
-    },
-    grep = {
-      rg_opts = "--column --line-number --no-heading --color=always --smart-case --no-ignore "
     },
 })
 
