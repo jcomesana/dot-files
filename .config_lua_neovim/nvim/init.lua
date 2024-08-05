@@ -1272,6 +1272,10 @@ capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp'
 local mason_lspconfig = require 'mason-lspconfig'
 
 local lsp_servers_handled_with_mason = {}
+if (not is_termux) then
+  table.insert(lsp_servers_handled_with_mason, 'npm-groovy-lint')
+end
+
 for server_name, server_config in pairs(lsp_servers) do
   if server_config.mason or server_config.mason == nil then
     table.insert(lsp_servers_handled_with_mason, server_name)
