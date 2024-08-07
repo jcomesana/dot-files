@@ -959,25 +959,10 @@ vim.keymap.set('n', '<Leader>ta', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word u
 vim.keymap.set('n', '<Leader>tA', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word under cursor' })
 
 -- [[ Configure fzf-lua ]]
-local fzf_lua_actions = require('fzf-lua.actions')
 require('fzf-lua').setup({
-    files = {
-      rg_opts = [[--color=never --files --hidden --follow -g "!.git" --no-ignore ]],
-      actions = {
-        ['default'] = fzf_lua_actions.file_edit_or_qf,
-        ['ctrl-v']  = fzf_lua_actions.file_vsplit,
-        ['ctrl-t']  = fzf_lua_actions.file_tabedit,
-        ['alt-q']   = fzf_lua_actions.file_sel_to_qf,
-      },
-    },
-    git = {
-      branches = {
-        actions = {
-          ['default'] = fzf_lua_actions.git_switch,
-          ['ctrl-s']  = fzf_lua_actions.git_switch,
-        },
-      },
-    },
+  grep = {
+    rg_opts = '--no-ignore-vcs ' .. require('fzf-lua').defaults.grep.rg_opts
+  }
 })
 
 vim.keymap.set('n', '<Leader>ff', require('fzf-lua').files, { desc = 'FZF Files' })
