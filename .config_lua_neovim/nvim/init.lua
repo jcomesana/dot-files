@@ -130,6 +130,7 @@ require('lazy').setup({
   -- To close html or xml tags
   {
     'windwp/nvim-ts-autotag',
+    event = 'InsertEnter',
     opts = {
       opts = {
         -- Defaults
