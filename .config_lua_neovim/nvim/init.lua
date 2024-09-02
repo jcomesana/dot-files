@@ -248,7 +248,7 @@ require('lazy').setup({
       -- Add icons to the completion menu
       {
         'onsails/lspkind.nvim',
-      },auto_preview = true
+      }
     },
   },
 
@@ -269,15 +269,14 @@ require('lazy').setup({
   { 'mihaifm/bufstop' },
 
   {
-    -- Beacon
-    'rainbowhxch/beacon.nvim',
-    opts = {
-      size = 100,
-      focus_gained = false,
-    }
+    -- To animate cursor movement
+    'echasnovski/mini.animate',
+    event = 'VeryLazy',
+    opts = {},
   },
 
   {
+    -- to improve the default vim.ui interfaces
     'stevearc/dressing.nvim',
     opts = {},
   },
