@@ -265,9 +265,6 @@ require('lazy').setup({
     }
   },
 
-  -- Buffer navigation
-  { 'mihaifm/bufstop' },
-
   {
     -- To animate cursor movement
     'echasnovski/mini.animate',
@@ -994,6 +991,7 @@ vim.keymap.set('n', '<Leader>fgf', require('fzf-lua').git_files, { desc = '[G]it
 vim.keymap.set('n', '<Leader>fgs', require('fzf-lua').git_status, { desc = '[G]it [S]tatus' })
 vim.keymap.set('n', '<Leader>fd', require('fzf-lua').diagnostics_workspace, { desc = '[D]iagnostics' })
 vim.keymap.set('n', '<Leader>fb', require('fzf-lua').buffers, { desc = '[B]uffers' })
+vim.keymap.set('n', '<Leader>b', require('fzf-lua').buffers, { desc = '[B]uffers' })
 vim.keymap.set('n', '<Leader>fh', require('fzf-lua').helptags, { desc = '[H]elp tags' })
 vim.keymap.set('n', '<Leader>fla', require('fzf-lua').lsp_code_actions, { desc = '[L]SP [A]ctions' })
 vim.keymap.set('n', '<Leader>flf', require('fzf-lua').lsp_finder, { desc = '[L]SP [F]inder' })
@@ -1400,16 +1398,6 @@ require('nvim-autopairs').setup({
     map = '<M-w>',
   }
 })
-
--- [[ Configure bufstop ]]
-vim.keymap.set('n', '<F7>', ':BufstopFast<CR>', { noremap = true, silent = false, desc = 'Open buflist with BufstopFast' })
-vim.keymap.set('n', '<Leader>bv', ':Bufstop<CR>', { noremap = true, silent = false, desc = 'Open buflist with Bufstop' })
-vim.keymap.set('n', '<Leader>bp', ':BufstopPreview<CR>', { noremap = true, silent = false, desc = 'Open buflist with BufstopPreview' })
-vim.g.BufstopFileSymbolFunc = function (path)
-  local filename = vim.fn.fnamemodify(path, ':t')
-  local extension = vim.fn.fnamemodify(path, ':e')
-  return require'nvim-web-devicons'.get_icon(filename, extension, { default = true })
-end
 
 -- [[ Configure oil ]]
 vim.keymap.set('n', '-', require('oil').open, { desc = 'Open parent directory' })
