@@ -272,7 +272,11 @@ require('lazy').setup({
     -- To animate cursor movement
     'echasnovski/mini.animate',
     event = 'VeryLazy',
-    opts = {},
+    opts = {
+      scroll = {
+        enable = false,
+      },
+    },
   },
 
   {
