@@ -640,7 +640,7 @@ vim.o.fixeol = vim.env.NVIM_FIXEOL == '0' and false or (vim.env.NVIM_FIXEOL == '
 vim.o.title = true
 vim.o.modeline = true
 vim.wo.number = true
-vim.wo.signcolumn = 'auto:3-4'
+vim.wo.signcolumn = 'yes:3'
 vim.o.showmode = false
 vim.o.showcmd = true
 vim.o.cmdheight = 2
@@ -670,6 +670,7 @@ vim.o.scrolloff = 4
 vim.o.ttyfast = true
 vim.o.listchars = 'tab:> ,trail:-,extends:>,precedes:<,nbsp:␣'
 vim.o.report = 0
+vim.o.guicursor = 'n-v-c:block,i-ci-ve:ver45,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff600-blinkon450-Cursor/lCursor,sm:block-blinkwait175-blinkoff350-blinkon375'
 
 -- Syntax highlighting --
 vim.o.syntax = 'ON'
