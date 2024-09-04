@@ -145,7 +145,10 @@ require('lazy').setup({
   { 'numToStr/Comment.nvim', opts = {} },
 
   -- Better handling of dangling spaces
-  { 'ntpeters/vim-better-whitespace' },
+  {
+    'echasnovski/mini.trailspace',
+    version = false,
+  },
 
   -- To diff specific parts of 2 files
   {
@@ -360,10 +363,6 @@ require('lazy').setup({
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
-    priority = 1000,
-  },
-  {
-    'ajmwagar/vim-dues',
     priority = 1000,
   },
   {
@@ -1403,10 +1402,10 @@ require('nvim-autopairs').setup({
 -- [[ Configure oil ]]
 vim.keymap.set('n', '-', require('oil').open, { desc = 'Open parent directory' })
 
--- [[ Configure better-whitespace ]]
-vim.g['better_whitespace_filetypes_blacklist'] = {'diff', 'git', 'gitcommit',
-                                                  'unite', 'qf', 'help', 'markdown',
-                                                  'fugitive', 'toggleterm'}
+-- [[ Configure mini.trailspace ]]
+require('mini.trailspace').setup()
+vim.keymap.set('n', '<Leader>st', MiniTrailspace.trim, { noremap = true, silent = false, desc = 'Trim [T]railing whitespace' })
+vim.keymap.set('n', '<Leader>sl', MiniTrailspace.trim_last_lines, { noremap = true, silent = false, desc = 'Trim [L]ast empty lines' })
 
 -- [[ Configure nvim-jenkinsfile-linter ]]
 if vim.env.JENKINS_URL then
