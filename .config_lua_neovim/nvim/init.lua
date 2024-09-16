@@ -77,6 +77,7 @@ local lazy_opts = {
   ui = {
     border = 'rounded',
   },
+  rocks = { enabled = false },
 }
 if vim.env.NVIM_LAZY_CONCURRENCY then
   lazy_opts['concurrency'] = tonumber(vim.env.NVIM_LAZY_CONCURRENCY)
@@ -111,6 +112,26 @@ require('lazy').setup({
 
   -- Git, P4
   'mhinz/vim-signify',
+
+  -- Git GUI
+  {
+    'SuperBo/fugit2.nvim',
+    opts = {
+      width = 170,
+      libgit2_path = 'libgit2.so.1.7',
+    },
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      {
+        'chrisgrieser/nvim-tinygit', -- optional: for Github PR view
+        dependencies = { 'stevearc/dressing.nvim' }
+      },
+    },
+    cmd = { 'Fugit2', 'Fugit2Diff', 'Fugit2Graph' },
+    keys = {
+      { '<leader>G', mode = 'n', '<cmd>Fugit2<cr>' }
+    },
+  },
 
   -- Detect tabstop and shiftwidth automatically
   {
