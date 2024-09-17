@@ -43,6 +43,25 @@ vim.g.loaded_netrw = 1
 -- To be able to use this for lualine
 local diagnostics_signs = { Error = '', Warn = ' ', Hint = '', Info = '' }
 
+-- libgit2 version for fugit2
+local function find_libgit2()
+  local init_path = ''
+  if vim.fn.has('mac') then
+    init_path = '/opt/homebrew/lib'
+  end
+  if vim.fn.has('linux') then
+    init_path = '/usr/lib64'
+  end
+  local results = vim.fn.globpath(init_path, 'libgit2.*', false, true)
+  vim.print(results)
+  if (next(results) == nil) then
+    return ''
+  end
+  return results[1]
+end
+
+local libgit2_lib = find_libgit2()
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -118,7 +137,7 @@ require('lazy').setup({
     'SuperBo/fugit2.nvim',
     opts = {
       width = 170,
-      libgit2_path = 'libgit2.so.1.7',
+      libgit2_path = libgit2_lib,
     },
     dependencies = {
       'MunifTanjim/nui.nvim',
