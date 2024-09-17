@@ -458,6 +458,10 @@ require('lazy').setup({
     priority = 1000,
   },
   {
+    'scottmckendry/cyberdream.nvim',
+    priority = 1000,
+  },
+  {
     'srcery-colors/srcery-vim',
     priority = 1000,
   },
