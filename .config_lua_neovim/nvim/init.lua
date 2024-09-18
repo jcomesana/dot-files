@@ -56,7 +56,6 @@ local function find_libgit2()
     init_path = '/data/data/com.termux/files/usr/lib'
   end
   local results = vim.fn.globpath(init_path, 'libgit2.*', false, true)
-  vim.print(results)
   if (next(results) == nil) then
     return ''
   end
