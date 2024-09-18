@@ -43,14 +43,17 @@ vim.g.loaded_netrw = 1
 -- To be able to use this for lualine
 local diagnostics_signs = { Error = '', Warn = ' ', Hint = '', Info = '' }
 
+-- To detect if it is running on termux
+local is_termux = not not vim.env.TERMUX_APP_PID
+
 -- libgit2 version for fugit2
 local function find_libgit2()
-  local init_path = ''
-  if vim.fn.has('mac') then
+  local init_path = '/usr/lib64'
+  if vim.loop.os_uname().sysname == 'Darwin' then
     init_path = '/opt/homebrew/lib'
   end
-  if vim.fn.has('linux') then
-    init_path = '/usr/lib64'
+  if is_termux then
+    init_path = '/data/data/com.termux/files/usr/lib'
   end
   local results = vim.fn.globpath(init_path, 'libgit2.*', false, true)
   vim.print(results)
@@ -1227,8 +1230,6 @@ if vim.env.GROOVY_HOME then
   local groovy_lib = vim.env.GROOVY_HOME .. '/lib'
   table.insert(groovy_lsp_classpath, groovy_lib)
 end
-
-local is_termux = not not vim.env.TERMUX_APP_PID
 
 local lsp_servers = {
   clangd = {
