@@ -138,7 +138,8 @@ require('lazy').setup({
   {
     'SuperBo/fugit2.nvim',
     opts = {
-      width = 170,
+      width = '94%',
+      max_width = '94%',
       libgit2_path = libgit2_lib,
     },
     dependencies = {
