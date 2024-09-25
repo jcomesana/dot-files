@@ -461,15 +461,15 @@ require('lazy').setup({
     priority = 1000,
   },
   {
-    'scottmckendry/cyberdream.nvim',
-    priority = 1000,
-  },
-  {
     'srcery-colors/srcery-vim',
     priority = 1000,
   },
   {
     'dam9000/colorscheme-midnightblue',
+    priority = 1000,
+  },
+  {
+    'qaptoR-nvim/chocolatier.nvim',
     priority = 1000,
   },
 
