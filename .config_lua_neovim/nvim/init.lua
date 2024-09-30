@@ -1045,6 +1045,7 @@ vim.keymap.set('n', '<Leader>flf', require('fzf-lua').lsp_finder, { desc = '[L]S
 vim.keymap.set('n', '<Leader>flr', require('fzf-lua').lsp_references, { desc = '[L]SP [R]eferences' })
 vim.keymap.set('n', '<Leader>fls', require('fzf-lua').lsp_document_symbols, { desc = '[L]SP document [s]ymbols' })
 vim.keymap.set('n', '<Leader>flS', require('fzf-lua').lsp_workspace_symbols, { desc = '[L]SP workspace [S]ymbols' })
+vim.keymap.set('n', '<Leader>ft', require('fzf-lua').treesitter, { desc = '[T]reesitter symbols' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
