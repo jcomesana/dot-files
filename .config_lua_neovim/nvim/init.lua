@@ -46,24 +46,6 @@ local diagnostics_signs = { Error = '', Warn = ' ', Hint = '', Info = '
 -- To detect if it is running on termux
 local is_termux = not not vim.env.TERMUX_APP_PID
 
--- libgit2 version for fugit2
-local function find_libgit2()
-  local init_path = '/usr/lib64'
-  if vim.loop.os_uname().sysname == 'Darwin' then
-    init_path = '/opt/homebrew/lib'
-  end
-  if is_termux then
-    init_path = '/data/data/com.termux/files/usr/lib'
-  end
-  local results = vim.fn.globpath(init_path, 'libgit2.*', false, true)
-  if (next(results) == nil) then
-    return ''
-  end
-  return results[1]
-end
-
-local libgit2_lib = find_libgit2()
-
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -136,26 +118,6 @@ require('lazy').setup({
 
   -- Git GUI
   {
-    'SuperBo/fugit2.nvim',
-    opts = {
-      width = '94%',
-      max_width = '94%',
-      libgit2_path = libgit2_lib,
-    },
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      {
-        'chrisgrieser/nvim-tinygit', -- optional: for Github PR view
-        dependencies = { 'stevearc/dressing.nvim' }
-      },
-    },
-    cmd = { 'Fugit2', 'Fugit2Diff', 'Fugit2Graph' },
-    keys = {
-      { '<leader>G', mode = 'n', '<cmd>Fugit2<cr>' }
-    },
-  },
-
-  {
     'kdheepak/lazygit.nvim',
     lazy = true,
     cmd = {
@@ -172,7 +134,7 @@ require('lazy').setup({
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
     keys = {
-      { '<Leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' }
+      { '<Leader>G', '<cmd>LazyGit<cr>', desc = 'LazyGit' }
     }
   },
 
@@ -490,7 +452,7 @@ require('lazy').setup({
     priority = 1000,
   },
   {
-    'qaptoR-nvim/chocolatier.nvim',
+    'EdenEast/nightfox.nvim',
     priority = 1000,
   },
 
