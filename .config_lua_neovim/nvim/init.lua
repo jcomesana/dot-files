@@ -455,6 +455,10 @@ require('lazy').setup({
     'EdenEast/nightfox.nvim',
     priority = 1000,
   },
+  {
+    'Zeioth/neon.nvim',
+    priority = 1000,
+  },
 
   {
     -- Set lualine as statusline
@@ -1485,6 +1489,8 @@ local function select_colorscheme()
     'zellner',
     'bamboo-light',
     'tokyonight-day',
+    'dayfox',
+    'dawnfox',
   }
 
   local color_files = vim.fn.globpath(vim.o.runtimepath, 'colors/*.vim', false, true)
