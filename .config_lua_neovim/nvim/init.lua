@@ -206,8 +206,13 @@ require('lazy').setup({
 
   {
     -- Better LSP signature help
-    'ray-x/lsp_signature.nvim',
+    'Dan7h3x/signup.nvim',
     event = 'VeryLazy',
+    config = function()
+      require('signup').setup({
+        -- Your configuration options here
+      })
+    end
   },
 
   {
@@ -1149,19 +1154,6 @@ null_ls.setup({
 
 vim.lsp.inlay_hint.enable()
 
--- [[ Configure lsp_signature ]]
-require('lsp_signature').setup({
-  bind = true, -- This is mandatory, otherwise border config won't get registered.
-  doc_lines = 4,
-  handler_opts = {
-    border = 'rounded'
-  },
-  hint_enable = false,
-  hint_prefix = '» ',
-  always_trigger = true,
-  fix_pos = true,
-})
-
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
@@ -1170,7 +1162,6 @@ local on_attach = function(_, bufnr)
   --
   -- In this case, we create a function that lets us more easily define mappings specific
   -- for LSP related items. It sets the mode, buffer and description for us each time.
-  require 'lsp_signature'.on_attach()
 
   local nmap = function(keys, func, desc)
     if desc then
