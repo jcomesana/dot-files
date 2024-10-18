@@ -1004,7 +1004,11 @@ vim.keymap.set('n', '<Leader>tA', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word u
 require('fzf-lua').setup({
   grep = {
     rg_opts = '--no-ignore-vcs ' .. require('fzf-lua').defaults.grep.rg_opts
-  }
+  },
+  lsp = {
+    -- make lsp requests synchronous so they work with null-ls
+    async_or_timeout = 3000,
+  },
 })
 
 vim.keymap.set('n', '<Leader>ff', require('fzf-lua').files, { desc = 'FZF Files' })
@@ -1139,7 +1143,7 @@ vim.keymap.set('n', '<Leader>xl', '<cmd>Trouble lsp toggle focus=false<cr>', { n
 local null_ls = require('null-ls')
 null_ls.setup({
   sources = {
-    null_ls.builtins.diagnostics.npm_groovy_lint
+    null_ls.builtins.diagnostics.npm_groovy_lint.with({ filetypes = { 'groovy', 'Jenkinsfile' }, })
   },
 })
 
