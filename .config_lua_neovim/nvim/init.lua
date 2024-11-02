@@ -421,14 +421,6 @@ require('lazy').setup({
     priority = 1000,
   },
   {
-    'ribru17/bamboo.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require('bamboo').load()
-    end,
-  },
-  {
     'rhysd/vim-color-spring-night',
     priority = 1000,
   },
@@ -1492,7 +1484,6 @@ local function select_colorscheme()
     'wildcharm',
     'zaibatsu',
     'zellner',
-    'bamboo-light',
     'tokyonight-day',
     'dayfox',
     'dawnfox',
