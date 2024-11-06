@@ -259,7 +259,10 @@ require('lazy').setup({
     event = 'InsertEnter',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
-      'L3MON4D3/LuaSnip',
+      {
+        'L3MON4D3/LuaSnip',
+        build = 'make install_jsregexp'
+      },
       'saadparwaiz1/cmp_luasnip',
 
       -- Adds LSP completion capabilities
@@ -385,6 +388,7 @@ require('lazy').setup({
 
   -- nvim-web-devicons
   { 'nvim-tree/nvim-web-devicons' },
+  { 'echasnovski/mini.icons', version = '*' },
 
   -- Colorschemes
   {
@@ -794,6 +798,9 @@ vim.keymap.set('n', '<Leader>ih', ':split<CR>', { noremap = true, silent = false
 vim.keymap.set('n', '<Leader>iv', ':vsplit<CR>', { noremap = true, silent = false, desc = '[V]ertical window spl[i]t' })
 vim.keymap.set('n', '<Leader>in', ':vsplit<CR>:bnext<CR>', { noremap = true, silent = false, desc = '[V]ertical window split & [N]ext buffer' })
 vim.keymap.set('n', '<Leader>ip', ':vsplit<CR>:bprevious<CR>', { noremap = true, silent = false, desc = '[V]ertical window split & [P]revious buffer' })
+
+-- Remove empty lines
+vim.keymap.set('n', '<Leader>se', ':g/^$/d<CR>', { noremap = true, silent = false, desc = 'Remove [E]mpty lines' })
 
 -- Keymaps for P4 operations
 vim.keymap.set('n', '<Leader>pa', ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = 'P4 open for [a]dd' })
