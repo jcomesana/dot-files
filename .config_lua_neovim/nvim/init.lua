@@ -227,7 +227,7 @@ require('lazy').setup({
         updatetime = 250,
       },
       ignore = {
-        clients = { 'ruff_lsp' },
+        clients = { 'ruff' },
         actions_without_kind = true,
       },
     },
@@ -1273,7 +1273,7 @@ local lsp_servers = {
     },
   },
 
-  ruff_lsp = {
+  ruff = {
     mason = not is_termux,
   },
 
