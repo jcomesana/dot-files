@@ -1260,24 +1260,12 @@ local lsp_servers = {
     },
   },
 
-  pylsp = {
+  basedpyright = {
     settings = {
-      pylsp = {
-        plugins = {
-          flake8 = {
-            enabled = false,
-            maxLineLength = 200,
-          },
-          pycodestyle = {
-            maxLineLength = 200,
-          },
-          pylint = {
-            enabled = true,
-            args = {'--max-line-length 200'}
-          },
-        }
+      basedpyright = {
+        typeCheckingMode = 'basic'
       },
-    },
+    }
   },
 
   ruff = {
