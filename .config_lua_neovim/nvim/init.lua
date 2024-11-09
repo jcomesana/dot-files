@@ -810,6 +810,9 @@ vim.keymap.set('n', '<Leader>pr', ':!p4 revert "%"<CR>', { noremap = true, silen
 -- which-key
 vim.keymap.set('n', '<Leader>wk', ':WhichKey<CR>', { noremap = true, silent = false, desc = '[W]hich [K]ey' })
 
+-- Make current file executable
+vim.keymap.set('n', '<Leader>mx', ':!chmod +x %<CR>', { noremap = true, silent = false, desc = '[M]ake current file e[X]ecutable' })
+
 -- Custom commands
 -- CDC = Change to Directory of Current file
 vim.api.nvim_create_user_command('CDC', 'cd %:p:h', {})
