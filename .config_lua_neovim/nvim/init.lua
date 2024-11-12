@@ -343,6 +343,18 @@ require('lazy').setup({
         ['\\ox'] = 'actions.open_terminal',
         ['\\o.'] = 'actions.toggle_hidden',
         ['\\ob'] = 'actions.toggle_trash',
+        ['\\oz'] = {
+          callback = function()
+            require('fzf-lua').files({ cwd = require('oil').get_current_dir() })
+          end,
+          desc = 'Find files with fzf-lua',
+          mode = 'n' },
+        ['\\og'] = {
+          callback = function()
+            require('fzf-lua').live_grep_native({ cwd = require('oil').get_current_dir() })
+          end,
+          desc = 'Grep files with fzf-lua',
+          mode = 'n' },
       },
     }
   },
@@ -354,13 +366,6 @@ require('lazy').setup({
     },
 
     config = true,
-  },
-  {
-    'albenisolmos/telescope-oil.nvim',
-
-    dependencies = {
-      'stevearc/oil.nvim',
-    },
   },
 
   {
@@ -783,6 +788,28 @@ vim.api.nvim_create_autocmd('FileType', {
   command = 'set nobuflisted'
 })
 
+vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+  pattern = '*',
+  callback = function()
+    for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+      if vim.api.nvim_win_get_config(winid).zindex then
+        return
+      end
+    end
+    vim.diagnostic.open_float({
+      scope = 'cursor',
+      focusable = false,
+      close_events = {
+        'CursorMoved',
+        'CursorMovedI',
+        'BufHidden',
+        'InsertCharPre',
+        'WinLeave',
+      },
+    })
+  end
+})
+
 -- Disable highlighting and redraw
 vim.keymap.set({ 'n', 'v' }, '<Space>', ':noh<CR>:syn sync fromstart<CR>:redrawstatus<CR>', { silent = true })
 
@@ -941,8 +968,6 @@ require('telescope').setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
--- Open a directory in oil with telescope
-pcall(require('telescope').load_extension, 'oil')
 
 -- For telescope git
 local custom_git_commits = function(opts)
@@ -998,7 +1023,6 @@ vim.keymap.set('n', '<Leader>tS', require('telescope.builtin').lsp_workspace_sym
 vim.keymap.set('n', '<Leader>tr', require('telescope.builtin').lsp_references, { desc = 'Telescope LSP [R]eferences' })
 vim.keymap.set('n', '<Leader>tI', require('telescope.builtin').lsp_implementations, { desc = 'Telescope LSP [I]mplementation' })
 vim.keymap.set('n', '<Leader>tm', require('telescope.builtin').resume, { desc = 'Telescope search resu[m]e' })
-vim.keymap.set('n', '<Leader>t-', require('telescope').extensions.oil.oil, { desc = 'Open Oil from Telescope' })
 
 vim.keymap.set('n', '<Leader>ta', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word under cursor' })
 vim.keymap.set('n', '<Leader>tA', ':Ag <C-R><C-W><CR>', { desc = 'Ag with word under cursor' })
