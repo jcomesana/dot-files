@@ -620,10 +620,6 @@ require('lazy').setup({
     ft = 'fish'
   },
   {
-    'martinda/Jenkinsfile-vim-syntax',
-    ft = 'Jenkinsfile'
-  },
-  {
     'ckipp01/nvim-jenkinsfile-linter',
     ft = 'Jenkinsfile'
   },
@@ -867,9 +863,12 @@ vim.filetype.add({
   },
   pattern = {
     ['Dockerfile.*'] = 'dockerfile',
+    ['Jenkinsfile'] = 'groovy',
+    ['Jenkinsfile.*'] = 'groovy',
+    ['*.Jenkinsfile'] = 'groovy',
   },
   extension = {
-    ['jobdsl'] = 'Jenkinsfile'
+    ['jobdsl'] = 'groovy'
   }
 })
 
@@ -1483,10 +1482,6 @@ if vim.env.JENKINS_URL then
     group = jenkinsfile_linter_group
   })
 end
-
--- [[ Configure Comment.nvim ]]
-local comment_ft = require('Comment.ft')
-comment_ft.set('Jenkinsfile', {'//%s', '/*%s*/'})
 
 -- [[ random colorscheme ]]
 
