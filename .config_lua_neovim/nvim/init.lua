@@ -87,7 +87,43 @@ if vim.env.NVIM_LAZY_CONCURRENCY then
 end
 
 require('lazy').setup({
-  -- NOTE: First, some plugins that don't require any configuration
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      bigfile = {
+        enabled = true,
+        size = 20 * 1024 * 1024,
+      },
+      gitbrowse = {
+        enabled = true,
+      },
+      lazygit = {
+        enabled = true,
+      },
+      notifier = {
+        enabled = true,
+        style = "fancy",
+        timeout = 3500,
+      },
+      quickfile = { enabled = true },
+      statuscolumn = { enabled = false },
+      terminal = {
+        enabled = true,
+      },
+      words = { enabled = true },
+    },
+    keys = {
+      { "<Leader>G", function() Snacks.lazygit() end, desc = "Lazygit" },
+      { "<Leader>gB", function() Snacks.gitbrowse() end, desc = "[G]it [B]rowse" },
+      { "<Leader>nh", function() Snacks.notifier.show_history() end, desc = "[N]otifications [H]istory" },
+      { "<C-s>", function() Snacks.terminal() end, desc = "Toggle Terminal" },
+    },
+  },
 
   -- Git related plugins
   {
@@ -115,28 +151,6 @@ require('lazy').setup({
 
   -- Git, P4
   'mhinz/vim-signify',
-
-  -- Git GUI
-  {
-    'kdheepak/lazygit.nvim',
-    lazy = true,
-    cmd = {
-      'LazyGit',
-      'LazyGitConfig',
-      'LazyGitCurrentFile',
-      'LazyGitFilter',
-      'LazyGitFilterCurrentFile',
-    },
-    -- optional for floating window border decoration
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    -- setting the keybinding for LazyGit with 'keys' is recommended in
-    -- order to load the plugin when the command is run for the first time
-    keys = {
-      { '<Leader>G', '<cmd>LazyGit<cr>', desc = 'LazyGit' }
-    }
-  },
 
   -- Detect tabstop and shiftwidth automatically
   {
@@ -195,9 +209,6 @@ require('lazy').setup({
       },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-      -- Useful status updates for LSP
-      { 'j-hui/fidget.nvim', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -366,24 +377,6 @@ require('lazy').setup({
     },
 
     config = true,
-  },
-
-  {
-    -- Toggleterm
-    'akinsho/toggleterm.nvim',
-    version = '*',
-    opts = {
-      open_mapping = '<C-s>',
-      direction = 'vertical',
-      shade_terminals = true,
-      size = function(term)
-          if term.direction == 'horizontal' then
-            return 20
-          elseif term.direction == 'vertical' then
-            return vim.o.columns * 0.5
-          end
-        end,
-    }
   },
 
   {
@@ -590,28 +583,17 @@ require('lazy').setup({
 
   {
     -- auto-save plugin
-    'willothy/savior.nvim',
-    dependencies = { 'j-hui/fidget.nvim' },
-    event = { 'InsertEnter', 'TextChanged' },
-    config = true,
+    "okuuva/auto-save.nvim",
+    version = "*",
+    event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
     opts = {
-      throttle_ms = 5000,
-      interval_ms = 35000,
-      defer_ms = 1000
-    }
+      debounce_delay = 3000,
+    },
   },
 
   {
     -- GUI shim
     'equalsraf/neovim-gui-shim'
-  },
-
-  {
-    -- Handle big files
-    'LunarVim/bigfile.nvim',
-    opts = {
-      filesize = 20 -- 20 MB
-    }
   },
 
   -- File type specific plugins
@@ -1482,6 +1464,68 @@ if vim.env.JENKINS_URL then
     group = jenkinsfile_linter_group
   })
 end
+
+-- [[ Configure snacks ]]
+---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+local progress = vim.defaulttable()
+vim.api.nvim_create_autocmd("LspProgress", {
+  ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+    if not client or type(value) ~= "table" then
+      return
+    end
+    local p = progress[client.id]
+
+    for i = 1, #p + 1 do
+      if i == #p + 1 or p[i].token == ev.data.params.token then
+        p[i] = {
+          token = ev.data.params.token,
+          msg = ("[%3d%%] %s%s"):format(
+            value.kind == "end" and 100 or value.percentage or 100,
+            value.title or "",
+            value.message and (" **%s**"):format(value.message) or ""
+          ),
+          done = value.kind == "end",
+        }
+        break
+      end
+    end
+
+    local msg = {} ---@type string[]
+    progress[client.id] = vim.tbl_filter(function(v)
+      return table.insert(msg, v.msg) or not v.done
+    end, p)
+
+    local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+    vim.notify(table.concat(msg, "\n"), "info", {
+      id = "lsp_progress",
+      title = client.name,
+      opts = function(notif)
+        notif.icon = #progress[client.id] == 0 and " "
+          or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+      end,
+    })
+  end,
+})
+
+
+-- [[ Configuration for auto-save ]]
+local autosave_augroup = vim.api.nvim_create_augroup("autosave", {})
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "AutoSaveWritePost",
+    group = autosave_augroup,
+    callback = function(opts)
+        if opts.data.saved_buffer ~= nil then
+            local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(opts.data.saved_buffer), ":p:~:.")
+            if filename ~= "/" and filename ~= "" then
+              Snacks.notify.info(("File saved: `%s`"):format(filename), { title = "auto-save" })
+            end
+        end
+    end,
+})
 
 -- [[ random colorscheme ]]
 
