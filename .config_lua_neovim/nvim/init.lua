@@ -120,8 +120,12 @@ require('lazy').setup({
     keys = {
       { "<Leader>G", function() Snacks.lazygit() end, desc = "Lazygit" },
       { "<Leader>gB", function() Snacks.gitbrowse() end, desc = "[G]it [B]rowse" },
+      { "<Leader>gL", function() Snacks.git.blame_line() end, desc = "[G]it Blame [L]ine" },
+      { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazy[G]it Current [F]ile History" },
       { "<Leader>nh", function() Snacks.notifier.show_history() end, desc = "[N]otifications [H]istory" },
       { "<C-s>", function() Snacks.terminal() end, desc = "Toggle Terminal" },
+      { "<Leader>wn", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
+      { "<Leader>wp", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
     },
   },
 
@@ -808,9 +812,9 @@ vim.keymap.set("n", "<Leader>ip", ":vsplit<CR>:bprevious<CR>", { noremap = true,
 vim.keymap.set("n", "<Leader>se", ":g/^$/d<CR>", { noremap = true, silent = false, desc = "Remove [E]mpty lines" })
 
 -- Keymaps for P4 operations
-vim.keymap.set("n", "<Leader>pa", ":!p4 add "%"<CR>", { noremap = true, silent = false, desc = "P4 open for [a]dd" })
-vim.keymap.set("n", "<Leader>pe", ":!p4 edit "%"<CR>", { noremap = true, silent = false, desc = "P4 open for [e]dit" })
-vim.keymap.set("n", "<Leader>pr", ":!p4 revert "%"<CR>", { noremap = true, silent = false, desc = "P4 [r]evert" })
+vim.keymap.set("n", "<Leader>pa", ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [a]dd" })
+vim.keymap.set("n", "<Leader>pe", ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [e]dit" })
+vim.keymap.set("n", "<Leader>pr", ':!p4 revert "%"<CR>', { noremap = true, silent = false, desc = "P4 [r]evert" })
 
 -- which-key
 vim.keymap.set("n", "<Leader>wk", ":WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
