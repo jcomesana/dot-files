@@ -111,6 +111,9 @@ require('lazy').setup({
         timeout = 3500,
       },
       quickfile = { enabled = true },
+      scratch = {
+        enabled = true,
+      },
       statuscolumn = {
         enabled = true,
         git = {
@@ -132,6 +135,8 @@ require('lazy').setup({
       { "<C-s>", function() Snacks.terminal() end, desc = "Toggle Terminal" },
       { "<Leader>wn", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
       { "<Leader>wp", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+      { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
+      { "<Leader>ss", function() Snacks.scratch.select() end, desc = "[S]elect a [S]cratch Buffer", mode = { "n", "t" } },
     },
   },
 
