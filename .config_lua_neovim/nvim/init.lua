@@ -821,6 +821,9 @@ vim.keymap.set("n", "<Leader>ip", ":vsplit<CR>:bprevious<CR>", { noremap = true,
 -- Remove empty lines
 vim.keymap.set("n", "<Leader>se", ":g/^$/d<CR>", { noremap = true, silent = false, desc = "Remove [E]mpty lines" })
 
+-- Remove leading spaces
+vim.keymap.set("n", "<Leader>sb", ":%s/^\\s\\+//ge<CR>", { noremap = true, silent = false, desc = "Remove spaces at the [B]egining of the line" })
+
 -- Keymaps for P4 operations
 vim.keymap.set("n", "<Leader>pa", ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [a]dd" })
 vim.keymap.set("n", "<Leader>pe", ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [e]dit" })
