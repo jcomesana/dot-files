@@ -438,10 +438,6 @@ require('lazy').setup({
     priority = 1000,
   },
   {
-    "rhysd/vim-color-spring-night",
-    priority = 1000,
-  },
-  {
     "sainnhe/edge",
     priority = 1000,
   },
