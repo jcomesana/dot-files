@@ -156,9 +156,7 @@ require('lazy').setup({
   -- Git blame visualizer
   {
     "FabijanZulj/blame.nvim",
-    config = function()
-      require("blame").setup()
-    end,
+    opts = {},
     event = "VeryLazy",
   },
 
@@ -575,8 +573,7 @@ require('lazy').setup({
   {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-    end,
+    opts = {},
     event = "VeryLazy",
   },
 
