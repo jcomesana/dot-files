@@ -102,6 +102,9 @@ require('lazy').setup({
       gitbrowse = {
         enabled = true,
       },
+      indent = {
+        enabled = true,
+      },
       lazygit = {
         enabled = true,
       },
@@ -136,7 +139,7 @@ require('lazy').setup({
       { "<Leader>wn", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
       { "<Leader>wp", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
-      { "<Leader>ss", function() Snacks.scratch.select() end, desc = "[S]elect a [S]cratch Buffer", mode = { "n", "t" } },
+      { "<Leader>ss", function() Snacks.scratch.select() end, desc = "[S]elect a [S]cratch Buffer" },
     },
   },
 
@@ -337,7 +340,14 @@ require('lazy').setup({
   {
     -- to improve the default vim.ui interfaces
     "stevearc/dressing.nvim",
-    opts = {},
+    opts = {
+      input = {
+        enabled = true,
+      },
+      select = {
+        backend = { "fzf_lua", "telescope", "fzf", "builtin", "nui" },
+      },
+    },
   },
 
   {
@@ -524,15 +534,6 @@ require('lazy').setup({
       },
       extensions = { "fugitive", "oil", "toggleterm", "trouble" }
     },
-  },
-
-  {
-    -- Add indentation guides even on blank lines
-    "lukas-reineke/indent-blankline.nvim",
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    main = "ibl",
-    opts = {},
   },
 
   -- Fuzzy Finder (files, lsp, etc)
