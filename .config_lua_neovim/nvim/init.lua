@@ -321,6 +321,11 @@ require('lazy').setup({
   },
 
   {
+    -- Scrollbar that displays diagnostics, search matches, marks and other things
+    "lewis6991/satellite.nvim",
+  },
+
+  {
     -- to improve the default vim.ui interfaces
     "stevearc/dressing.nvim",
     opts = {
