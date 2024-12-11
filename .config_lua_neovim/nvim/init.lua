@@ -546,11 +546,6 @@ require('lazy').setup({
           return vim.fn.executable "make" == 1
         end,
       },
-
-      {
-        -- Ag for telescope
-        "kelly-lin/telescope-ag"
-      },
     }
   },
 
@@ -1000,9 +995,6 @@ vim.keymap.set("n", "<Leader>tS", require("telescope.builtin").lsp_workspace_sym
 vim.keymap.set("n", "<Leader>tr", require("telescope.builtin").lsp_references, { desc = "Telescope LSP [R]eferences" })
 vim.keymap.set("n", "<Leader>tI", require("telescope.builtin").lsp_implementations, { desc = "Telescope LSP [I]mplementation" })
 vim.keymap.set("n", "<Leader>tm", require("telescope.builtin").resume, { desc = "Telescope search resu[m]e" })
-
-vim.keymap.set("n", "<Leader>ta", ":Ag <C-R><C-W><CR>", { desc = "Ag with word under cursor" })
-vim.keymap.set("n", "<Leader>tA", ":Ag <C-R><C-W><CR>", { desc = "Ag with word under cursor" })
 
 -- [[ Configure fzf-lua ]]
 require("fzf-lua").setup({
