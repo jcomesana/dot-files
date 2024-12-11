@@ -100,6 +100,24 @@ class NVimPaths:
         return self.path / 'extras'
 
 
+class NeovidePaths:
+    """
+    Class to handle neovide paths.
+    """
+
+    def __init__(self, platform):
+        self.platform = platform
+        nvim_directory = '~/.config/neovide' if self.platform != 'win32' else '~/AppData/Roaming/neovide'
+        self._path = pathlib.Path(nvim_directory).expanduser().resolve()
+
+    @property
+    def path(self):
+        """
+        Get the editor path in the platform.
+        """
+        return self._path
+
+
 class InstallOperation:
     """
     Decorator for install operations.
@@ -184,6 +202,15 @@ def operation_install_nvim():
         if item not in created_config_files:
             logging.warning('Extra file %s, deleting', item)
             item.unlink()
+    neovide_configs_folder = pathlib.Path('neovide')
+    neovide_paths = NeovidePaths(sys.platform)
+    for item in neovide_configs_folder.glob('**/*.*'):
+        if item.is_file():
+            src_config_file = item
+            relative_file_path = item.relative_to(neovide_configs_folder)
+            dst_config_file = neovide_paths.path / relative_file_path
+            verbose_link(src_config_file, dst_config_file)
+            created_config_files.add(dst_config_file)
     # for item in (dotfiles_folder / 'vimextras').glob('*'):
     #     if item.is_file():
     #         extra_dest_path = nvim_paths.extras_path / item.name
