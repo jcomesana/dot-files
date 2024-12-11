@@ -99,6 +99,15 @@ require('lazy').setup({
         enabled = true,
         size = 20 * 1024 * 1024,
       },
+      dashboard = {
+        enabled = true,
+        sections = {
+          { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
+          { icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+          { icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+          { section = "startup" },
+        },
+      },
       gitbrowse = {
         enabled = true,
       },
@@ -198,8 +207,16 @@ require('lazy').setup({
 
   -- Better handling of dangling spaces
   {
-    "echasnovski/mini.trailspace",
-    version = false,
+    "cappyzawa/trim.nvim",
+    opts = {
+      ft_blocklist = { "markdown" },
+      highlight = true,
+      trim_on_write = false,
+      trim_trailing = true,
+      trim_last_line = true,
+      trim_first_line = true,
+    },
+    event = "VeryLazy",
   },
 
   -- To diff specific parts of 2 files
@@ -1437,10 +1454,8 @@ require("nvim-autopairs").setup({
 -- [[ Configure oil ]]
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 
--- [[ Configure mini.trailspace ]]
-require("mini.trailspace").setup()
-vim.keymap.set("n", "<Leader>st", MiniTrailspace.trim, { noremap = true, silent = false, desc = "Trim [T]railing whitespace" })
-vim.keymap.set("n", "<Leader>sl", MiniTrailspace.trim_last_lines, { noremap = true, silent = false, desc = "Trim [L]ast empty lines" })
+-- [[ Configure trim.nvim ]]
+vim.keymap.set("n", "<Leader>st", ":Trim<CR>", { noremap = true, silent = false, desc = "Trim [T]railing whitespace" })
 
 -- [[ Configure nvim-jenkinsfile-linter ]]
 if vim.env.JENKINS_URL then
