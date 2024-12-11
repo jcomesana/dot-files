@@ -117,6 +117,9 @@ require('lazy').setup({
       scratch = {
         enabled = true,
       },
+      scroll = {
+        enabled = true,
+      },
       statuscolumn = {
         enabled = true,
         git = {
@@ -322,17 +325,6 @@ require('lazy').setup({
         group = "+", -- symbol prepended to a group
       },
     }
-  },
-
-  {
-    -- To animate cursor movement
-    "echasnovski/mini.animate",
-    event = "VeryLazy",
-    opts = {
-      scroll = {
-        enable = false,
-      },
-    },
   },
 
   {
