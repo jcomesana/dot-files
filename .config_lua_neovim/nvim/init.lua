@@ -104,7 +104,18 @@ require('lazy').setup({
         preset = {
           pick =  function (cmd, opts)
             return require("fzf-lua")[cmd](opts)
-          end
+          end,
+          keys = {
+            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+            { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+            { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
+            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
+            { icon = "󰁜", key = "S", desc = "Select Session", action = ":Telescope persisted" },
+            { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
+            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+          },
         },
         sections = {
           { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
@@ -1006,6 +1017,7 @@ require("telescope").setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require("telescope").load_extension, "fzf")
+require("telescope").load_extension("persisted")
 
 -- For telescope git
 local custom_git_commits = function(opts)
@@ -1499,7 +1511,27 @@ require("nvim-autopairs").setup({
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 
 -- [[ Configure trim.nvim ]]
-vim.keymap.set("n", "<Leader>st", ":Trim<CR>", { noremap = true, silent = false, desc = "Trim [T]railing whitespace" })
+vim.keymap.set("n", "<Leader>st", ":Trim<CR>", { noremap = true, silent = true, desc = "Trim [T]railing whitespace" })
+
+-- [[ Configure persisted.nvim ]]
+vim.keymap.set("n", "<Leader>mr", ":SessionStart<CR>", { noremap = true, silent = false, desc = "Start session [R]ecording" })
+vim.keymap.set("n", "<Leader>mv", ":SessionSave<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
+vim.keymap.set("n", "<Leader>ml", ":SessionLoad<CR>", { noremap = true, silent = false, desc = "Session [L]oad for current dir" })
+vim.keymap.set("n", "<Leader>ms", ":Telescope persisted<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PersistedLoadPost",
+  callback = function(session)
+    Snacks.notify.info("Session loaded", { title = "persisted" })
+  end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PersistedSavePost",
+  callback = function(session)
+    Snacks.notify.info("Session saved", { title = "persisted" })
+  end,
+})
 
 -- [[ Configure nvim-jenkinsfile-linter ]]
 if vim.env.JENKINS_URL then
