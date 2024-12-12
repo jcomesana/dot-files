@@ -163,6 +163,16 @@ require('lazy').setup({
     },
   },
 
+  {
+    -- A session manager
+    "olimorris/persisted.nvim",
+    lazy = false, -- make sure the plugin is always loaded at startup
+    opts = {
+      use_git_branch = false
+    },
+    config = true
+  },
+
   -- Git related plugins
   {
     "tpope/vim-fugitive",
@@ -756,6 +766,9 @@ vim.o.backupdir = backups_dir
 vim.o.fsync = false
 vim.o.autoread = true
 vim.o.autowrite = true
+
+-- Session
+vim.o.sessionoptions = "buffers,curdir,folds,globals,tabpages,winpos,winsize"
 
 -- Enable mouse mode
 vim.o.mouse = "a"
