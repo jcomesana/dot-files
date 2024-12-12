@@ -101,6 +101,11 @@ require('lazy').setup({
       },
       dashboard = {
         enabled = true,
+        preset = {
+          pick =  function (cmd, opts)
+            return require("fzf-lua")[cmd](opts)
+          end
+        },
         sections = {
           { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
           { icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
@@ -123,6 +128,9 @@ require('lazy').setup({
         timeout = 3500,
       },
       quickfile = { enabled = true },
+      scope = {
+        enabled = true,
+      },
       scratch = {
         enabled = true,
       },
@@ -277,6 +285,16 @@ require('lazy').setup({
     -- To highlight words or variables
     "RRethy/vim-illuminate",
     event = "VeryLazy",
+    config = function ()
+      require("illuminate").configure({
+        filetypes_denylist = {
+          "dirbuf",
+          "dirvish",
+          "fugitive",
+          "snacks_dashboard"
+        },
+    })
+    end
   },
 
   {
