@@ -155,7 +155,7 @@ require('lazy').setup({
       { "<Leader>gL", function() Snacks.git.blame_line() end, desc = "[G]it Blame [L]ine" },
       { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazy[G]it Current [F]ile History" },
       { "<Leader>nh", function() Snacks.notifier.show_history() end, desc = "[N]otifications [H]istory" },
-      { "<C-s>", function() Snacks.terminal() end, desc = "Toggle Terminal" },
+      { "<C-s>", function() Snacks.terminal(vim.o.shell, { win = { style = "terminal", position = "right" } }) end, desc = "Toggle Terminal" },
       { "<Leader>wn", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
       { "<Leader>wp", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
@@ -396,6 +396,8 @@ require('lazy').setup({
       win_options = {
         signcolumn = "yes:2",
       },
+      constrain_cursor = "name",
+      watch_for_changes = true,
       keymaps = {
         ["\\o?"] = "actions.show_help",
         ["\\os"] = "actions.select_vsplit",
@@ -409,7 +411,17 @@ require('lazy').setup({
         ["\\of"] = "actions.copy_entry_filename",
         ["\\oo"] = "actions.change_sort",
         ["\\oe"] = "actions.open_external",
-        ["\\ox"] = "actions.open_terminal",
+        ["\\ox"] = {
+          callback = function ()
+            local opts = {
+              cwd = require("oil").get_current_dir(),
+              win = { style = "terminal", position = "right" },
+            }
+            Snacks.terminal(vim.o.shell, opts)
+          end,
+          desc = "Open a terminal in current directory",
+          mode = "n"
+        },
         ["\\o."] = "actions.toggle_hidden",
         ["\\ob"] = "actions.toggle_trash",
         ["\\oz"] = {
@@ -417,7 +429,8 @@ require('lazy').setup({
             require("fzf-lua").files({ cwd = require("oil").get_current_dir() })
           end,
           desc = "Find files with fzf-lua",
-          mode = "n" },
+          mode = "n"
+        },
         ["\\og"] = {
           callback = function()
             require("fzf-lua").live_grep_native({ cwd = require("oil").get_current_dir() })
@@ -603,7 +616,7 @@ require('lazy').setup({
   {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {},
+    opts = { "fzf-native" },
     event = "VeryLazy",
   },
 
@@ -626,7 +639,7 @@ require('lazy').setup({
     version = "*",
     event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
     opts = {
-      debounce_delay = 3000,
+      debounce_delay = 5000,
     },
   },
 
