@@ -179,7 +179,8 @@ require('lazy').setup({
     "olimorris/persisted.nvim",
     lazy = false, -- make sure the plugin is always loaded at startup
     opts = {
-      use_git_branch = false
+      autostart = false,
+      use_git_branch = true,
     },
     config = true
   },
@@ -884,7 +885,7 @@ vim.keymap.set("n", "<Leader>pr", ':!p4 revert "%"<CR>', { noremap = true, silen
 vim.keymap.set("n", "<Leader>wk", ":WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
 
 -- Make current file executable
-vim.keymap.set("n", "<Leader>mx", ":!chmod +x %<CR>", { noremap = true, silent = false, desc = "[M]ake current file e[X]ecutable" })
+vim.keymap.set("n", "<Leader>sx", ":!chmod +x %<CR>", { noremap = true, silent = false, desc = "Make current [S]cript e[X]ecutable" })
 
 -- Custom commands
 -- CDC = Change to Directory of Current file
@@ -1514,23 +1515,44 @@ vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" }
 vim.keymap.set("n", "<Leader>st", ":Trim<CR>", { noremap = true, silent = true, desc = "Trim [T]railing whitespace" })
 
 -- [[ Configure persisted.nvim ]]
-vim.keymap.set("n", "<Leader>mr", ":SessionStart<CR>", { noremap = true, silent = false, desc = "Start session [R]ecording" })
+vim.keymap.set("n", "<Leader>mr", ":SessionStart<CR>", { noremap = true, silent = false, desc = "Start [R]ecording session" })
+vim.keymap.set("n", "<Leader>mt", ":SessionStop<CR>", { noremap = true, silent = false, desc = "S[T]op recording session" })
 vim.keymap.set("n", "<Leader>mv", ":SessionSave<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
 vim.keymap.set("n", "<Leader>ml", ":SessionLoad<CR>", { noremap = true, silent = false, desc = "Session [L]oad for current dir" })
 vim.keymap.set("n", "<Leader>ms", ":Telescope persisted<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
 
+local persisted_group = vim.api.nvim_create_augroup("persisted_group", { clear = true })
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PersistedStart",
+  callback = function()
+    Snacks.notify.info("Session started", { title = "persisted.nvim" })
+  end,
+  group = persisted_group,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PersistedStop",
+  callback = function()
+    Snacks.notify.info("Session stopped", { title = "persisted.nvim" })
+  end,
+  group = persisted_group,
+})
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "PersistedLoadPost",
-  callback = function(session)
-    Snacks.notify.info("Session loaded", { title = "persisted" })
+  callback = function()
+    Snacks.notify.info("Session loaded", { title = "persisted.nvim" })
   end,
+  group = persisted_group,
 })
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "PersistedSavePost",
-  callback = function(session)
-    Snacks.notify.info("Session saved", { title = "persisted" })
+  callback = function()
+    Snacks.notify.info("Session saved", { title = "persisted.nvim" })
   end,
+  group = persisted_group,
 })
 
 -- [[ Configure nvim-jenkinsfile-linter ]]
