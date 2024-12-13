@@ -514,14 +514,6 @@ require('lazy').setup({
     priority = 1000,
   },
   {
-    "sainnhe/sonokai",
-    priority = 1000,
-  },
-  {
-    "srcery-colors/srcery-vim",
-    priority = 1000,
-  },
-  {
     "dam9000/colorscheme-midnightblue",
     priority = 1000,
   },
