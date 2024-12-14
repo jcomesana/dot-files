@@ -1045,21 +1045,10 @@ vim.keymap.set("n", "<Leader>tz", function()
   })
 end, { desc = "Telescope fu[Z]zily in current buffer" })
 
-vim.keymap.set("n", "<Leader>tgf", require("telescope.builtin").git_files, { desc = "Telescope [G]it [F]iles" })
 vim.keymap.set("n", "<Leader>tgc", custom_git_commits, { desc = "Telescope [G]it [C]ommits" })
 vim.keymap.set("n", "<Leader>tgh", custom_git_bcommits, { desc = "Telescope [G]it Buffer Commits ([H]istory)" })
 vim.keymap.set("n", "<Leader>tgb", require("telescope.builtin").git_branches, { desc = "Telescope [G]it [B]ranches" })
-vim.keymap.set("n", "<Leader>tf", function ()
-  return require("telescope.builtin").find_files({ find_command = { "fd", "--hidden", "--no-ignore-vcs", "--exclude", ".git/" } })
-end , { desc = "Telescope [F]iles" })
-vim.keymap.set("n", "<Leader>tF", function()
-  return require("telescope.builtin").find_files({ find_command = { "fd", "--hidden", "--no-ignore-vcs", "--exclude", ".git/", vim.fn.expand("<cword>") } })
-end, { desc = "Telescope [F]iles under cursor" })
 vim.keymap.set("n", "<Leader>th", require("telescope.builtin").help_tags, { desc = "Telescope [H]elp" })
-vim.keymap.set("n", "<Leader>tw", require("telescope.builtin").grep_string, { desc = "Telescope current [W]ord" })
-vim.keymap.set("n", "<Leader>tl", require("telescope.builtin").live_grep, { desc = "Telescope [L]ive grep" })
-vim.keymap.set("n", "<Leader>td", require("telescope.builtin").diagnostics, { desc = "Telescope [D]iagnostics" })
-vim.keymap.set("n", "<Leader>tt", require("telescope.builtin").treesitter, { desc = "Telescope [T]reesitter" })
 vim.keymap.set("n", "<Leader>ts", require("telescope.builtin").lsp_document_symbols, { desc = "Telescope document [s]ymbols" })
 vim.keymap.set("n", "<Leader>tS", require("telescope.builtin").lsp_workspace_symbols, { desc = "Telescope workspace [S]ymbols" })
 vim.keymap.set("n", "<Leader>tr", require("telescope.builtin").lsp_references, { desc = "Telescope LSP [R]eferences" })
@@ -1613,7 +1602,7 @@ vim.api.nvim_create_autocmd("User", {
     group = autosave_augroup,
     callback = function(opts)
         if opts.data.saved_buffer ~= nil then
-            local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(opts.data.saved_buffer), ":p:~:.")
+            local filename = vim.fs.basename(vim.api.nvim_buf_get_name(opts.data.saved_buffer))
             if filename ~= "/" and filename ~= "" then
               Snacks.notify.info(("File saved: `%s`"):format(filename), { title = "auto-save" })
             end
