@@ -112,7 +112,15 @@ require('lazy').setup({
             { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
             { icon = " ", key = "s", desc = "Restore Session", section = "session" },
             { icon = "󰁜 ", key = "S", desc = "Select Session", action = ":Telescope persisted" },
-            { icon = "󰊢 ", key = "G", desc = "Lazygit", action = ":lua Snacks.lazygit()" },
+            {
+              icon = "󰊢 ",
+              key = "G",
+              desc = "Lazygit",
+              action = ":lua Snacks.lazygit()",
+              enabled = function ()
+                return Snacks.git.get_root() ~= nil
+              end
+            },
             { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
           },
@@ -120,6 +128,19 @@ require('lazy').setup({
         sections = {
           { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
           { icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1, limit = 10 },
+          {
+            icon = " ",
+            title = "Git Status",
+            section = "terminal",
+            enabled = function()
+              return Snacks.git.get_root() ~= nil
+            end,
+            cmd = "git status --short --branch --renames",
+            height = 5,
+            padding = 1,
+            ttl = 5 * 60,
+            indent = 2,
+          },
           { section = "startup" },
         },
       },
@@ -131,6 +152,10 @@ require('lazy').setup({
       },
       lazygit = {
         enabled = true,
+        win = {
+          width = 0.95,
+          height = 0.95,
+        },
       },
       notifier = {
         enabled = true,
@@ -156,6 +181,9 @@ require('lazy').setup({
       },
       terminal = {
         enabled = true,
+        win = {
+          position = "right",
+        },
       },
       words = { enabled = true },
     },
@@ -165,7 +193,7 @@ require('lazy').setup({
       { "<Leader>gL", function() Snacks.git.blame_line() end, desc = "[G]it Blame [L]ine" },
       { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazy[G]it Current [F]ile History" },
       { "<Leader>nh", function() Snacks.notifier.show_history() end, desc = "[N]otifications [H]istory" },
-      { "<C-s>", function() Snacks.terminal(vim.o.shell, { win = { style = "terminal", position = "right" } }) end, desc = "Toggle Terminal" },
+      { "<C-s>", function() Snacks.terminal(vim.o.shell, { win = { style = "terminal" } }) end, desc = "Toggle Terminal" },
       { "<Leader>wn", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
       { "<Leader>wp", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
@@ -426,7 +454,6 @@ require('lazy').setup({
           callback = function ()
             local opts = {
               cwd = require("oil").get_current_dir(),
-              win = { style = "terminal", position = "right" },
             }
             Snacks.terminal(vim.o.shell, opts)
           end,
