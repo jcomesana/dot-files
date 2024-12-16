@@ -153,8 +153,8 @@ require('lazy').setup({
       lazygit = {
         enabled = true,
         win = {
-          width = 0.95,
-          height = 0.95,
+          width = 0.94,
+          height = 0.94,
         },
       },
       notifier = {
@@ -181,9 +181,6 @@ require('lazy').setup({
       },
       terminal = {
         enabled = true,
-        win = {
-          position = "right",
-        },
       },
       words = { enabled = true },
     },
@@ -193,7 +190,7 @@ require('lazy').setup({
       { "<Leader>gL", function() Snacks.git.blame_line() end, desc = "[G]it Blame [L]ine" },
       { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazy[G]it Current [F]ile History" },
       { "<Leader>nh", function() Snacks.notifier.show_history() end, desc = "[N]otifications [H]istory" },
-      { "<C-s>", function() Snacks.terminal(vim.o.shell, { win = { style = "terminal" } }) end, desc = "Toggle Terminal" },
+      { "<C-s>", function() Snacks.terminal(vim.o.shell, { win = { style = "terminal", position = "right" } }) end, desc = "Toggle Terminal" },
       { "<Leader>wn", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
       { "<Leader>wp", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
@@ -428,14 +425,14 @@ require('lazy').setup({
     event = "VeryLazy",
     cmd = "Oil",
     opts = {
-      columns = { "size", "mtime", "icon" },
+      columns = { "icon", "size", "mtime", "permissions" },
       view_options = {
         show_hidden = true,
       },
       win_options = {
         signcolumn = "yes:2",
       },
-      constrain_cursor = "name",
+      constrain_cursor = "editable",
       watch_for_changes = true,
       keymaps = {
         ["\\o?"] = "actions.show_help",
@@ -454,6 +451,7 @@ require('lazy').setup({
           callback = function ()
             local opts = {
               cwd = require("oil").get_current_dir(),
+              win = { style = "terminal", position = "right" },
             }
             Snacks.terminal(vim.o.shell, opts)
           end,
@@ -474,7 +472,8 @@ require('lazy').setup({
             require("fzf-lua").live_grep_native({ cwd = require("oil").get_current_dir() })
           end,
           desc = "Grep files with fzf-lua",
-          mode = "n" },
+          mode = "n"
+        },
       },
     }
   },
@@ -919,7 +918,9 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHo
 vim.api.nvim_create_autocmd({ "FileChangedShellPost" }, {
   pattern = "*",
   group = autoread_fix_augroup,
-  command = 'echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None'
+  callback = function ()
+    Snacks.notify.warn("File changed on disk. Buffer reloaded.", { title = "File modified" })
+  end
 })
 
 -- [[ New filetypes ]]
