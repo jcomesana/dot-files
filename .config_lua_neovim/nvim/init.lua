@@ -221,7 +221,8 @@ require('lazy').setup({
 
   {
     "sindrets/diffview.nvim",    -- Diff integration
-    config = true
+    config = true,
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" }
   },
 
   -- Git, P4
@@ -237,10 +238,16 @@ require('lazy').setup({
   "farmergreg/vim-lastplace",
 
   -- Auto pairs completion
-  { "windwp/nvim-autopairs" },
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+  },
 
   -- To surround words, lines with " or [
-  "machakann/vim-sandwich",
+  {
+    "machakann/vim-sandwich",
+    event = "InsertEnter",
+  },
 
   -- To close html or xml tags
   {
@@ -257,7 +264,11 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { "numToStr/Comment.nvim", opts = {} },
+  {
+    "numToStr/Comment.nvim",
+    event = "InsertEnter",
+    opts = {}
+  },
 
   -- Better handling of dangling spaces
   {
@@ -307,7 +318,7 @@ require('lazy').setup({
   {
     -- Code actions indicator
     "kosayoda/nvim-lightbulb",
-    event = "VeryLazy",
+    event = "LspAttach",
     opts = {
       sign = {
         text = "󱠂",
@@ -354,7 +365,8 @@ require('lazy').setup({
     "folke/trouble.nvim",
     opts = {
       auto_preview = false,
-    }
+    },
+    event = "VeryLazy",
   },
 
   {
@@ -674,7 +686,8 @@ require('lazy').setup({
 
   {
     -- GUI shim
-    "equalsraf/neovim-gui-shim"
+    "equalsraf/neovim-gui-shim",
+    cond = vim.fn.has("gui_running") == 1
   },
 
   -- File type specific plugins
@@ -695,7 +708,8 @@ require('lazy').setup({
     ft = "python"
   },
   {
-    "MTDL9/vim-log-highlighting"
+    "MTDL9/vim-log-highlighting",
+    ft = "log"
   }
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
