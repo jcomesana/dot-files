@@ -102,13 +102,10 @@ require('lazy').setup({
       dashboard = {
         enabled = true,
         preset = {
-          pick =  function (cmd, opts)
-            return require("fzf-lua")[cmd](opts)
-          end,
           keys = {
             { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-            { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = " ", key = "t", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
             { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
             { icon = " ", key = "s", desc = "Restore Session", section = "session" },
             { icon = "󰁜 ", key = "S", desc = "Select Session", action = ":Telescope persisted" },
@@ -173,7 +170,7 @@ require('lazy').setup({
         enabled = true,
       },
       statuscolumn = {
-        enabled = true,
+        enabled = false,
         git = {
           -- patterns to match Git signs
           patterns = { "GitSign", "MiniDiffSign", "SignifySign" },
@@ -710,7 +707,12 @@ require('lazy').setup({
   {
     "MTDL9/vim-log-highlighting",
     ft = "log"
-  }
+  },
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^5', -- Recommended
+    lazy = false, -- This plugin is already lazy
+  },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -778,6 +780,7 @@ vim.o.ttyfast = true
 vim.o.listchars = "tab:> ,trail:-,extends:>,precedes:<,nbsp:␣"
 vim.o.report = 0
 vim.o.guicursor = "n-v-c:block,i-ci-ve:ver45,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff600-blinkon450-Cursor/lCursor,sm:block-blinkwait175-blinkoff350-blinkon375"
+vim.o.signcolumn = "yes:2"
 
 -- Syntax highlighting --
 vim.o.syntax = "ON"
@@ -1141,7 +1144,7 @@ vim.keymap.set("n", "<Leader>ft", require("fzf-lua").treesitter, { desc = "[T]re
 vim.defer_fn(function()
   require("nvim-treesitter.configs").setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { "c", "cmake", "cpp", "dockerfile", "groovy", "html", "java", "json", "kotlin", "lua", "python", "swift", "vimdoc", "vim", "xml", "yaml", "yang" },
+    ensure_installed = { "c", "cmake", "cpp", "dockerfile", "groovy", "html", "java", "json", "kotlin", "lua", "python", "rust", "swift", "toml", "vimdoc", "vim", "xml", "yaml", "yang" },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -1381,6 +1384,10 @@ local lsp_servers = {
     mason = not is_termux,
   },
 
+  rust_analyzer = {
+    skip_lspconfig_setup = true,
+  },
+
   sourcekit = {
     mason = false,
     filetypes = { "swift" }
@@ -1396,6 +1403,23 @@ capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp"
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require "mason-lspconfig"
+
+vim.g.rustaceanvim = {
+  server = {
+    cmd = function()
+local mason_registry = require("mason-registry")
+if mason_registry.is_installed("rust-analyzer") then
+	-- This may need to be tweaked depending on the operating system.
+	local ra = mason_registry.get_package("rust-analyzer")
+	local ra_filename = ra:get_receipt():get().links.bin["rust-analyzer"]
+	return { ("%s/%s"):format(ra:get_install_path(), ra_filename or "rust-analyzer") }
+else
+	-- global installation
+	return { "rust-analyzer" }
+end
+    end,
+  },
+}
 
 local lsp_servers_handled_with_mason = {}
 if (not is_termux) then
@@ -1424,14 +1448,17 @@ require("mason-tool-installer").setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
-    require("lspconfig")[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = (lsp_servers[server_name] or {}).settings,
-      filetypes = (lsp_servers[server_name] or {}).filetypes,
-      cmd = (lsp_servers[server_name] or {}).cmd,
-      flags = (lsp_servers[server_name] or {}).flags,
-    }
+    local server_config = lsp_servers[server_name] or {}
+    if not server_config.skip_lspconfig_setup then
+      require("lspconfig")[server_name].setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = server_config.settings,
+        filetypes = server_config.filetypes,
+        cmd = server_config.cmd,
+        flags = server_config.flags,
+      }
+    end
   end
 }
 
