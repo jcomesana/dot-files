@@ -300,9 +300,6 @@ require('lazy').setup({
       },
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
-
-      -- Additional lua configuration, makes nvim stuff amazing!
-      "folke/neodev.nvim",
     },
   },
 
@@ -364,6 +361,19 @@ require('lazy').setup({
       auto_preview = false,
     },
     event = "VeryLazy",
+  },
+
+  {
+    -- For using LuaLS with neovim config files
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
   },
 
   {
@@ -1385,6 +1395,7 @@ local lsp_servers = {
   },
 
   rust_analyzer = {
+    mason = not is_termux,
     skip_lspconfig_setup = true,
   },
 
@@ -1393,9 +1404,6 @@ local lsp_servers = {
     filetypes = { "swift" }
   },
 }
-
--- Setup neovim lua configuration
-require("neodev").setup()
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -1418,6 +1426,7 @@ else
 	return { "rust-analyzer" }
 end
     end,
+    on_attach = on_attach,
   },
 }
 
@@ -1517,6 +1526,7 @@ cmp.setup {
       }
     },
     { name = "treesitter" },
+    { name = "lazydev", group_index = 0 }, -- set group index to 0 to skip loading LuaLS completions
   },
   formatting = {
     format = require("lspkind").cmp_format({
