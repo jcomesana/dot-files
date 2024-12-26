@@ -405,6 +405,78 @@ require('lazy').setup({
         "onsails/lspkind.nvim",
       }
     },
+    opts = function (self, opts)
+      local cmp = require "cmp"
+      local luasnip = require "luasnip"
+      require("luasnip.loaders.from_vscode").lazy_load()
+      luasnip.config.setup {}
+      opts.snippet = {
+        expand = function(args)
+          luasnip.lsp_expand(args.body)
+        end,
+      }
+      opts.completion = { completeopt = "menu,menuone,noinsert" }
+      opts.mapping = cmp.mapping.preset.insert {
+        ["<C-n>"] = cmp.mapping.select_next_item(),
+        ["<C-p>"] = cmp.mapping.select_prev_item(),
+        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-Space>"] = cmp.mapping.complete {},
+        ["<CR>"] = cmp.mapping.confirm {
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        },
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.locally_jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+      }
+      opts.sources = {
+        { name = "nvim_lsp" },
+        { name = "luasnip" },
+        { name = "buffer",
+          option = {
+            get_bufnrs = function()
+              return vim.api.nvim_list_bufs()
+            end,
+            indexing_batch_size = 1200,
+          }
+        },
+        { name = "treesitter" },
+        { name = "lazydev", group_index = 0 }, -- set group index to 0 to skip loading LuaLS completions
+      }
+      opts.formatting = {
+        format = require("lspkind").cmp_format({
+          mode = "symbol_text", -- show only symbol annotations
+          preset = "codicons",
+          maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+          ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+        })
+      }
+      opts.window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      }
+      cmp.event:on(
+        "confirm_done",
+        require("nvim-autopairs.completion.cmp").on_confirm_done()
+      )
+      return opts
+    end
   },
 
   -- Useful plugin to show you pending keybinds.
@@ -1470,82 +1542,6 @@ mason_lspconfig.setup_handlers {
     end
   end
 }
-
--- [[ Configure nvim-cmp ]]
--- See `:help cmp`
-local cmp = require "cmp"
-local luasnip = require "luasnip"
-require("luasnip.loaders.from_vscode").lazy_load()
-luasnip.config.setup {}
-
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  completion = { completeopt = "menu,menuone,noinsert" },
-  mapping = cmp.mapping.preset.insert {
-    ["<C-n>"] = cmp.mapping.select_next_item(),
-    ["<C-p>"] = cmp.mapping.select_prev_item(),
-    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete {},
-    ["<CR>"] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-  },
-  sources = {
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
-    { name = "buffer",
-      option = {
-        get_bufnrs = function()
-          return vim.api.nvim_list_bufs()
-        end,
-        indexing_batch_size = 1200,
-      }
-    },
-    { name = "treesitter" },
-    { name = "lazydev", group_index = 0 }, -- set group index to 0 to skip loading LuaLS completions
-  },
-  formatting = {
-    format = require("lspkind").cmp_format({
-      mode = "symbol_text", -- show only symbol annotations
-      preset = "codicons",
-      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-      ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-    })
-  },
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
-}
-
-cmp.event:on(
-  "confirm_done",
-  require("nvim-autopairs.completion.cmp").on_confirm_done()
-)
 
 -- [[ Configure signify ]]
 vim.g["signify_sign_add"]               = "+"
