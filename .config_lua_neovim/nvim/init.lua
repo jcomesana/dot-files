@@ -1504,7 +1504,7 @@ end
 
 local lsp_servers_handled_with_mason = {}
 if (not is_termux) then
-  table.insert(lsp_servers_handled_with_mason, { "npm-groovy-lint", version = "14.6.0" })
+  table.insert(lsp_servers_handled_with_mason, "npm-groovy-lint")
 end
 
 for server_name, server_config in pairs(lsp_servers) do
@@ -1706,6 +1706,7 @@ local function select_colorscheme()
     "pablo",
     "peachpuff",
     "quiet",
+    "retrobox",
     "ron",
     "shine",
     "slate",
