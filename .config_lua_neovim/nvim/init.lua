@@ -333,22 +333,6 @@ require('lazy').setup({
   },
 
   {
-    -- To highlight words or variables
-    "RRethy/vim-illuminate",
-    event = "VeryLazy",
-    config = function ()
-      require("illuminate").configure({
-        filetypes_denylist = {
-          "dirbuf",
-          "dirvish",
-          "fugitive",
-          "snacks_dashboard"
-        },
-    })
-    end
-  },
-
-  {
     -- Integrates linters with the diagnostics system
     "nvimtools/none-ls.nvim",
     event = "VeryLazy",
