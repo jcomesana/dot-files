@@ -725,7 +725,6 @@ require('lazy').setup({
   {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = { "fzf-native" },
     event = "VeryLazy",
   },
 
@@ -1173,6 +1172,7 @@ vim.keymap.set("n", "<Leader>tm", require("telescope.builtin").resume, { desc = 
 
 -- [[ Configure fzf-lua ]]
 require("fzf-lua").setup({
+  "fzf-native",
   grep = {
     rg_opts = "--no-ignore-vcs " .. require("fzf-lua").defaults.grep.rg_opts
   },
