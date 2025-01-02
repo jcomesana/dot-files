@@ -237,6 +237,11 @@ require('lazy').setup({
   -- Auto pairs completion
   {
     "windwp/nvim-autopairs",
+    opts = {
+      fast_wrap = {
+        map = "<M-w>",
+      },
+    },
     event = "InsertEnter",
   },
 
@@ -741,7 +746,7 @@ require('lazy').setup({
     -- auto-save plugin
     "okuuva/auto-save.nvim",
     version = "*",
-    event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
+    event = { "InsertLeave" }, -- optional for lazy loading on trigger events
     opts = {
       debounce_delay = 5000,
     },
@@ -1539,13 +1544,6 @@ vim.keymap.set("n", "<Leader>gu", ":SignifyHunkUndo<CR>", { noremap = true, sile
 
 -- [[ Configure vim-sandwich ]]
 vim.g["sandwich#recipes"] = vim.deepcopy(vim.g["sandwich#default_recipes"])
-
--- [[ Configure nvim-autopairs ]]
-require("nvim-autopairs").setup({
-  fast_wrap = {
-    map = "<M-w>",
-  }
-})
 
 -- [[ Configure oil ]]
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
