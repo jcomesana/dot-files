@@ -587,12 +587,11 @@ require('lazy').setup({
     priority = 1000,
   },
   {
-    "dracula/vim",
-    name = "dracula",
+    "drewtempelmeyer/palenight.vim",
     priority = 1000,
   },
   {
-    "drewtempelmeyer/palenight.vim",
+    "eldritch-theme/eldritch.nvim",
     priority = 1000,
   },
   {
