@@ -513,7 +513,6 @@ require('lazy').setup({
         signcolumn = "yes:2",
       },
       constrain_cursor = "editable",
-      watch_for_changes = true,
       keymaps = {
         ["\\o?"] = "actions.show_help",
         ["\\os"] = "actions.select_vsplit",
