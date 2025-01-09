@@ -276,7 +276,7 @@ require('lazy').setup({
   {
     "cappyzawa/trim.nvim",
     opts = {
-      ft_blocklist = { "markdown" },
+      ft_blocklist = { "markdown", "oil" },
       highlight = true,
       trim_on_write = false,
       trim_trailing = true,
@@ -502,8 +502,9 @@ require('lazy').setup({
   {
     -- File navigation
     "stevearc/oil.nvim",
-    event = "VeryLazy",
     cmd = "Oil",
+    ---@module 'oil'
+    ---@type oil.SetupOpts
     opts = {
       columns = { "icon", "size", "mtime", "permissions" },
       view_options = {
@@ -511,6 +512,7 @@ require('lazy').setup({
       },
       win_options = {
         signcolumn = "yes:2",
+        statuscolumn = "",
       },
       constrain_cursor = "editable",
       keymaps = {
@@ -557,13 +559,9 @@ require('lazy').setup({
     }
   },
   {
-    "refractalize/oil-git-status.nvim",
-
-    dependencies = {
-      "stevearc/oil.nvim",
-    },
-
-    config = true,
+      "FerretDetective/oil-git-signs.nvim",
+      ft = "oil",
+      opts = {},
   },
 
   {
@@ -573,7 +571,7 @@ require('lazy').setup({
 
   -- nvim-web-devicons
   { "nvim-tree/nvim-web-devicons" },
-  { "echasnovski/mini.icons", version = "*" },
+  { "echasnovski/mini.icons", version = "*", opts = {} },
 
   -- Colorschemes
   {
@@ -685,7 +683,34 @@ require('lazy').setup({
         }, -- lualine_b
         lualine_c = {},
       },
-      extensions = { "fugitive", "oil", "toggleterm", "trouble" }
+      extensions = {
+        "fugitive",
+        "toggleterm",
+        "trouble",
+        {
+          sections = {
+            lualine_a = {
+                function()
+                    local buf_name = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
+                    local adapter_url, path = require("oil.util").parse_url(buf_name)
+                    assert(adapter_url ~= nil and path ~= nil, "invalid oil url")
+
+                    local adapter_name = require("oil.config").adapters[adapter_url]
+
+                    return ("%s: %s"):format(adapter_name:upper(), vim.fn.fnamemodify(path, ":~"))
+                end,
+            },
+            lualine_b = {
+                "branch",
+                "oil_git_signs_diff",
+            },
+            lualine_x = {},
+            lualine_y = { "progress" },
+            lualine_z = { "location" },
+          },
+          filetypes = { "oil" },
+        },
+      },
     },
   },
 
@@ -984,7 +1009,7 @@ vim.keymap.set("n", "<Leader>pe", ':!p4 edit "%"<CR>', { noremap = true, silent 
 vim.keymap.set("n", "<Leader>pr", ':!p4 revert "%"<CR>', { noremap = true, silent = false, desc = "P4 [r]evert" })
 
 -- which-key
-vim.keymap.set("n", "<Leader>wk", ":WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
+vim.keymap.set("n", "<Leader>wk", "<CMD>WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
 
 -- Make current file executable
 vim.keymap.set("n", "<Leader>sx", ":!chmod +x %<CR>", { noremap = true, silent = false, desc = "Make current [S]cript e[X]ecutable" })
@@ -1536,25 +1561,25 @@ vim.g["signify_sign_delete"]            = "-"
 vim.g["signify_sign_delete_first_line"] = "‾"
 vim.g["signify_sign_change"]            = "*"
 vim.g["signify_sign_change_delete"]     = "d"
-vim.keymap.set("n", "<Leader>gh", ":SignifyHunkDiff<CR>", { noremap = true, silent = false, desc = "Si[g]nify [H]unk diff" })
-vim.keymap.set("n", "<Leader>gd", ":SignifyDiff<CR>", { noremap = true, silent = false, desc = "Si[g]nify [D]iff" })
-vim.keymap.set("n", "<Leader>gu", ":SignifyHunkUndo<CR>", { noremap = true, silent = false, desc = "Si[g]nify hunk [U]ndo" })
+vim.keymap.set("n", "<Leader>gh", "<CMD>SignifyHunkDiff<CR>", { noremap = true, silent = false, desc = "Si[g]nify [H]unk diff" })
+vim.keymap.set("n", "<Leader>gd", "<CMD>SignifyDiff<CR>", { noremap = true, silent = false, desc = "Si[g]nify [D]iff" })
+vim.keymap.set("n", "<Leader>gu", "<CMD>SignifyHunkUndo<CR>", { noremap = true, silent = false, desc = "Si[g]nify hunk [U]ndo" })
 
 -- [[ Configure vim-sandwich ]]
 vim.g["sandwich#recipes"] = vim.deepcopy(vim.g["sandwich#default_recipes"])
 
 -- [[ Configure oil ]]
-vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 -- [[ Configure trim.nvim ]]
-vim.keymap.set("n", "<Leader>st", ":Trim<CR>", { noremap = true, silent = true, desc = "Trim [T]railing whitespace" })
+vim.keymap.set("n", "<Leader>st", "<CMD>Trim<CR>", { noremap = true, silent = true, desc = "Trim [T]railing whitespace" })
 
 -- [[ Configure persisted.nvim ]]
-vim.keymap.set("n", "<Leader>mr", ":SessionStart<CR>", { noremap = true, silent = false, desc = "Start [R]ecording session" })
-vim.keymap.set("n", "<Leader>mt", ":SessionStop<CR>", { noremap = true, silent = false, desc = "S[T]op recording session" })
-vim.keymap.set("n", "<Leader>mv", ":SessionSave<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
-vim.keymap.set("n", "<Leader>ml", ":SessionLoad<CR>", { noremap = true, silent = false, desc = "Session [L]oad for current dir" })
-vim.keymap.set("n", "<Leader>ms", ":Telescope persisted<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
+vim.keymap.set("n", "<Leader>mr", "<CMD>SessionStart<CR>", { noremap = true, silent = false, desc = "Start [R]ecording session" })
+vim.keymap.set("n", "<Leader>mt", "<CMD>SessionStop<CR>", { noremap = true, silent = false, desc = "S[T]op recording session" })
+vim.keymap.set("n", "<Leader>mv", "<CMD>SessionSave<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
+vim.keymap.set("n", "<Leader>ml", "<CMD>SessionLoad<CR>", { noremap = true, silent = false, desc = "Session [L]oad for current dir" })
+vim.keymap.set("n", "<Leader>ms", "<CMD>Telescope persisted<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
 
 local persisted_group = vim.api.nvim_create_augroup("persisted_group", { clear = true })
 
@@ -1596,7 +1621,7 @@ if vim.env.JENKINS_URL then
 
   -- Run with autocommand too
   local jenkinsfile_linter_group = vim.api.nvim_create_augroup("jenkinsfile_linter_group", { clear = true })
-  vim.api.nvim_create_autocmd({"BufWinEnter", "BufWritePost"}, {
+  vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWritePost" }, {
     pattern = {"*.Jenkinsfile"},
     callback = require("jenkinsfile_linter").validate,
     group = jenkinsfile_linter_group
