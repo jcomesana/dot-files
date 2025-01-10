@@ -571,7 +571,6 @@ require('lazy').setup({
 
   -- nvim-web-devicons
   { "nvim-tree/nvim-web-devicons" },
-  { "echasnovski/mini.icons", version = "*", opts = {} },
 
   -- Colorschemes
   {
@@ -1028,8 +1027,11 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHo
 vim.api.nvim_create_autocmd({ "FileChangedShellPost" }, {
   pattern = "*",
   group = autoread_fix_augroup,
-  callback = function ()
-    Snacks.notify.warn("File changed on disk. Buffer reloaded.", { title = "File modified" })
+  callback = function (ev)
+    if ev.file ~= nil then
+      local filename = vim.fs.basename(ev.file)
+      Snacks.notify.warn(("File `%s` changed on disk. Buffer reloaded."):format(filename), { title = "File modified" })
+    end
   end
 })
 
@@ -1681,12 +1683,12 @@ vim.api.nvim_create_autocmd("User", {
     pattern = "AutoSaveWritePost",
     group = autosave_augroup,
     callback = function(opts)
-        if opts.data.saved_buffer ~= nil then
-            local filename = vim.fs.basename(vim.api.nvim_buf_get_name(opts.data.saved_buffer))
-            if filename ~= "/" and filename ~= "" then
-              Snacks.notify.info(("File saved: `%s`"):format(filename), { title = "auto-save" })
-            end
+      if opts.data.saved_buffer ~= nil then
+        local filename = vim.fs.basename(vim.api.nvim_buf_get_name(opts.data.saved_buffer))
+        if filename ~= "/" and filename ~= "" then
+          Snacks.notify.info(("File saved: `%s`"):format(filename), { title = "auto-save" })
         end
+      end
     end,
 })
 
