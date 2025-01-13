@@ -98,6 +98,17 @@ require('lazy').setup({
       bigfile = {
         enabled = true,
         size = 20 * 1024 * 1024,
+        ---@param ctx {buf: number, ft:string}
+        setup = function(ctx)
+          vim.bo[ctx.buf].bufhidden = 'unload'
+          vim.bo[ctx.buf].buftype = 'nowrite'
+          vim.bo[ctx.buf].undolevels = -1
+          vim.bo[ctx.buf].undofile = false
+          vim.bo[ctx.buf].swapfile = false
+          vim.cmd([[NoMatchParen]])
+          Snacks.util.wo(0, { foldmethod = "manual", statuscolumn = "", conceallevel = 0 })
+          require('cmp').setup({ enabled = false })
+        end,
       },
       dashboard = {
         enabled = true,
@@ -167,7 +178,7 @@ require('lazy').setup({
         enabled = true,
       },
       scroll = {
-        enabled = true,
+        enabled = false,
       },
       statuscolumn = {
         enabled = false,
@@ -482,11 +493,6 @@ require('lazy').setup({
   },
 
   {
-    -- Scrollbar that displays diagnostics, search matches, marks and other things
-    "lewis6991/satellite.nvim",
-  },
-
-  {
     -- to improve the default vim.ui interfaces
     "stevearc/dressing.nvim",
     opts = {
@@ -720,26 +726,6 @@ require('lazy').setup({
     event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-      -- Only load if `make` is available. Make sure you have the system
-      -- requirements installed.
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        -- NOTE: If you are having trouble with this installation,
-        --       refer to the README for telescope-fzf-native for more instructions.
-        build = function()
-          if vim.fn.has("win32") == 1 then
-            return "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
-          end
-          return "make"
-        end,
-        cond = function()
-          if vim.fn.has("win32") == 1 then
-            return vim.fn.executable "cmake" == 1
-          end
-          return vim.fn.executable "make" == 1
-        end,
-      },
     }
   },
 
@@ -1147,8 +1133,6 @@ require("telescope").setup {
   },
 }
 
--- Enable telescope fzf native, if installed
-pcall(require("telescope").load_extension, "fzf")
 require("telescope").load_extension("persisted")
 
 -- For telescope git
@@ -1191,8 +1175,6 @@ vim.keymap.set("n", "<Leader>tgb", require("telescope.builtin").git_branches, { 
 vim.keymap.set("n", "<Leader>th", require("telescope.builtin").help_tags, { desc = "Telescope [H]elp" })
 vim.keymap.set("n", "<Leader>ts", require("telescope.builtin").lsp_document_symbols, { desc = "Telescope document [s]ymbols" })
 vim.keymap.set("n", "<Leader>tS", require("telescope.builtin").lsp_workspace_symbols, { desc = "Telescope workspace [S]ymbols" })
-vim.keymap.set("n", "<Leader>tr", require("telescope.builtin").lsp_references, { desc = "Telescope LSP [R]eferences" })
-vim.keymap.set("n", "<Leader>tI", require("telescope.builtin").lsp_implementations, { desc = "Telescope LSP [I]mplementation" })
 vim.keymap.set("n", "<Leader>tm", require("telescope.builtin").resume, { desc = "Telescope search resu[m]e" })
 
 -- [[ Configure fzf-lua ]]

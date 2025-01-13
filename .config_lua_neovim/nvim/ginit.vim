@@ -50,9 +50,9 @@ if exists(':GuiPopupmenu')
     GuiPopupmenu 0
 endif
 
-" Disable GUI ScrollBar
+" Enable GUI ScrollBar
 if exists(':GuiScrollBar')
-    GuiScrollBar 0
+    GuiScrollBar 1
 endif
 
 " Settings for fvim
