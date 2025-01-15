@@ -988,6 +988,9 @@ vim.keymap.set("n", "<Leader>pa", ':!p4 add "%"<CR>', { noremap = true, silent =
 vim.keymap.set("n", "<Leader>pe", ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [e]dit" })
 vim.keymap.set("n", "<Leader>pr", ':!p4 revert "%"<CR>', { noremap = true, silent = false, desc = "P4 [r]evert" })
 
+-- Keymaps for Git operations
+vim.keymap.set("n", "<Leader>gp", ':!git pull && git submodule update --init --recursive<CR>', { noremap = true, silent = false, desc = "Git pull and submodules" })
+
 -- which-key
 vim.keymap.set("n", "<Leader>wk", "<CMD>WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
 
@@ -1356,9 +1359,10 @@ local on_attach = function(_, bufnr)
   nmap("<Leader>ln", vim.lsp.buf.rename, "Re[N]ame")
   nmap("<Leader>la", vim.lsp.buf.code_action, "Code [A]ction")
   nmap("<Leader>ld", vim.lsp.buf.definition, "Goto [D]efinition")
-  nmap("<Leader>lr", vim.lsp.buf.references, "[R]eferences")
-  nmap("<Leader>li", vim.lsp.buf.implementation, "Goto [I]mplementation")
-  nmap("<Leader>lt", vim.lsp.buf.type_definition, "[T]ype Definition")
+  nmap("<Leader>lr", Snacks.picker.lsp_references, "[R]eferences")
+  nmap("<Leader>li", Snacks.picker.lsp_implementations, "Goto [I]mplementation")
+  nmap("<Leader>lt", Snacks.picker.lsp_type_definitions, "[T]ype Definition")
+  nmap("<Leader>lm", Snacks.picker.lsp_symbols, "Document Sy[M]bols")
   nmap("<Leader>lh", vim.lsp.buf.hover, "[H]over Documentation")
   nmap("<Leader>ls", vim.lsp.buf.signature_help, "[S]ignature Documentation")
   nmap("<Leader>ly", function()
