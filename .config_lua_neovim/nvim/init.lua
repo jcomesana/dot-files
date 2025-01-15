@@ -113,6 +113,7 @@ require('lazy').setup({
       dashboard = {
         enabled = true,
         preset = {
+          header = " Neovim v" .. tostring(vim.version()),
           keys = {
             { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
@@ -134,6 +135,7 @@ require('lazy').setup({
           },
         },
         sections = {
+          { section = "header" },
           { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
           { icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1, limit = 10 },
           {
@@ -158,6 +160,9 @@ require('lazy').setup({
       indent = {
         enabled = true,
       },
+      input = {
+        enabled = true,
+      },
       lazygit = {
         enabled = true,
         win = {
@@ -169,6 +174,9 @@ require('lazy').setup({
         enabled = true,
         style = "fancy",
         timeout = 3500,
+      },
+      picker = {
+        enabled = true,
       },
       quickfile = { enabled = true },
       scope = {
@@ -490,19 +498,6 @@ require('lazy').setup({
         group = "+", -- symbol prepended to a group
       },
     }
-  },
-
-  {
-    -- to improve the default vim.ui interfaces
-    "stevearc/dressing.nvim",
-    opts = {
-      input = {
-        enabled = true,
-      },
-      select = {
-        backend = { "fzf_lua", "telescope", "fzf", "builtin", "nui" },
-      },
-    },
   },
 
   {
@@ -1222,7 +1217,7 @@ vim.keymap.set("n", "<Leader>ft", require("fzf-lua").treesitter, { desc = "[T]re
 vim.defer_fn(function()
   require("nvim-treesitter.configs").setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { "c", "cmake", "cpp", "dockerfile", "groovy", "html", "java", "json", "kotlin", "lua", "python", "rust", "swift", "toml", "vimdoc", "vim", "xml", "yaml", "yang" },
+    ensure_installed = { "c", "cmake", "cpp", "dockerfile", "groovy", "html", "java", "json", "kotlin", "lua", "python", "regex", "rust", "swift", "toml", "vimdoc", "vim", "xml", "yaml", "yang" },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
