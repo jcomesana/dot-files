@@ -86,6 +86,8 @@ if vim.env.NVIM_LAZY_CONCURRENCY then
   lazy_opts['concurrency'] = tonumber(vim.env.NVIM_LAZY_CONCURRENCY)
 end
 
+---@module 'snacks'
+
 require('lazy').setup({
   {
     "folke/snacks.nvim",
@@ -1218,12 +1220,14 @@ vim.keymap.set("n", "<Leader>ft", require("fzf-lua").treesitter, { desc = "[T]re
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of "nvim {filename}"
 vim.defer_fn(function()
+---@diagnostic disable-next-line: missing-fields
   require("nvim-treesitter.configs").setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = { "c", "cmake", "cpp", "dockerfile", "groovy", "html", "java", "json", "kotlin", "lua", "python", "regex", "rust", "swift", "toml", "vimdoc", "vim", "xml", "yaml", "yang" },
 
-    -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
+    sync_install = false,
+    ignore_install = {},
 
     highlight = { enable = true },
     indent = {
@@ -1645,7 +1649,7 @@ vim.api.nvim_create_autocmd("LspProgress", {
     end, p)
 
     local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-    vim.notify(table.concat(msg, "\n"), "info", {
+    vim.notify(table.concat(msg, "\n"), vim.log.levels.INFO, {
       id = "lsp_progress",
       title = client.name,
       opts = function(notif)
@@ -1722,6 +1726,7 @@ local function select_colorscheme()
   math.randomseed(os.time())
   local selected_index = math.random(#colorschemes_table)
   vim.cmd.colorscheme(colorschemes_table[selected_index])
+  Snacks.notify.info(("Selected: `%s`"):format(colorschemes_table[selected_index]), { title = "random colorscheme" })
 end
 select_colorscheme()
 
