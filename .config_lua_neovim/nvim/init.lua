@@ -114,13 +114,15 @@ require('lazy').setup({
       },
       dashboard = {
         enabled = true,
+        width= 54,
         preset = {
+          pick = "fzf-lua",
           header = " Neovim v" .. tostring(vim.version()),
           keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = " ", key = "f", desc = "Find File", action = ":lua require('fzf-lua').files()" },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-            { icon = " ", key = "t", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
-            { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+            { icon = " ", key = "t", desc = "Find Text", action = ":lua require('fzf-lua').grep_project()" },
+            { icon = " ", key = "r", desc = "Recent Files", action = ":lua require('fzf-lua').oldfiles()" },
             { icon = " ", key = "s", desc = "Restore Session", section = "session" },
             { icon = "󰁜 ", key = "S", desc = "Select Session", action = ":Telescope persisted" },
             {
@@ -1726,7 +1728,7 @@ local function select_colorscheme()
   math.randomseed(os.time())
   local selected_index = math.random(#colorschemes_table)
   vim.cmd.colorscheme(colorschemes_table[selected_index])
-  Snacks.notify.info(("Selected: `%s`"):format(colorschemes_table[selected_index]), { title = "random colorscheme" })
+  Snacks.notify.info(("  `%s`"):format(colorschemes_table[selected_index]), { title = "colorscheme" })
 end
 select_colorscheme()
 
