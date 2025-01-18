@@ -192,7 +192,7 @@ require('lazy').setup({
         enabled = false,
       },
       statuscolumn = {
-        enabled = false,
+        enabled = true,
         git = {
           -- patterns to match Git signs
           patterns = { "GitSign", "MiniDiffSign", "SignifySign" },
@@ -856,7 +856,6 @@ vim.o.ttyfast = true
 vim.o.listchars = "tab:> ,trail:-,extends:>,precedes:<,nbsp:␣"
 vim.o.report = 0
 vim.o.guicursor = "n-v-c:block,i-ci-ve:ver45,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff600-blinkon450-Cursor/lCursor,sm:block-blinkwait175-blinkoff350-blinkon375"
-vim.o.signcolumn = "yes:2"
 
 -- Syntax highlighting --
 vim.o.syntax = "ON"
