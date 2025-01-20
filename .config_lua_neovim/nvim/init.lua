@@ -179,7 +179,15 @@ require('lazy').setup({
         timeout = 3500,
       },
       picker = {
-        enabled = true,
+        enabled = false,
+        win = {
+          -- input window
+          input = {
+            keys = {
+              ["<Esc>"] = { "close", mode = { "n", "i" } },
+            }
+          },
+        },
       },
       quickfile = { enabled = true },
       scope = {
@@ -1188,6 +1196,7 @@ require("fzf-lua").setup({
     async_or_timeout = 3000,
   },
 })
+require("fzf-lua").register_ui_select()
 
 vim.keymap.set("n", "<Leader>ff", require("fzf-lua").files, { desc = "FZF Files" })
 vim.keymap.set("n", "<Leader>fF", function()
@@ -1215,6 +1224,8 @@ vim.keymap.set("n", "<Leader>flr", require("fzf-lua").lsp_references, { desc = "
 vim.keymap.set("n", "<Leader>fls", require("fzf-lua").lsp_document_symbols, { desc = "[L]SP document [s]ymbols" })
 vim.keymap.set("n", "<Leader>flS", require("fzf-lua").lsp_workspace_symbols, { desc = "[L]SP workspace [S]ymbols" })
 vim.keymap.set("n", "<Leader>ft", require("fzf-lua").treesitter, { desc = "[T]reesitter symbols" })
+vim.keymap.set("n", "<Leader>fll", require("fzf-lua").loclist, { desc = "[L]oc[L]ist" })
+vim.keymap.set("n", "<Leader>fq", require("fzf-lua").quickfix, { desc = "[Q]uickfix" })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -1363,10 +1374,10 @@ local on_attach = function(_, bufnr)
   nmap("<Leader>ln", vim.lsp.buf.rename, "Re[N]ame")
   nmap("<Leader>la", vim.lsp.buf.code_action, "Code [A]ction")
   nmap("<Leader>ld", vim.lsp.buf.definition, "Goto [D]efinition")
-  nmap("<Leader>lr", Snacks.picker.lsp_references, "[R]eferences")
-  nmap("<Leader>li", Snacks.picker.lsp_implementations, "Goto [I]mplementation")
-  nmap("<Leader>lt", Snacks.picker.lsp_type_definitions, "[T]ype Definition")
-  nmap("<Leader>lm", Snacks.picker.lsp_symbols, "Document Sy[M]bols")
+  nmap("<Leader>lr", require("fzf-lua").lsp_references, "[R]eferences")
+  nmap("<Leader>li", require("fzf-lua").lsp_implementations, "Goto [I]mplementation")
+  nmap("<Leader>lt", require("fzf-lua").lsp_typedefs, "[T]ype Definition")
+  nmap("<Leader>lm", require("fzf-lua").lsp_document_symbols, "Document Sy[M]bols")
   nmap("<Leader>lh", vim.lsp.buf.hover, "[H]over Documentation")
   nmap("<Leader>ls", vim.lsp.buf.signature_help, "[S]ignature Documentation")
   nmap("<Leader>ly", function()
