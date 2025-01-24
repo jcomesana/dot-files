@@ -514,7 +514,7 @@ require('lazy').setup({
   {
     -- File navigation
     "stevearc/oil.nvim",
-    cmd = "Oil",
+    lazy = false,
     ---@module 'oil'
     ---@type oil.SetupOpts
     opts = {
@@ -583,6 +583,7 @@ require('lazy').setup({
 
   -- nvim-web-devicons
   { "nvim-tree/nvim-web-devicons" },
+  { "echasnovski/mini.icons", opts = {} },
 
   -- Colorschemes
   {
