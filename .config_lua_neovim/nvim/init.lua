@@ -760,7 +760,7 @@ require('lazy').setup({
     -- auto-save plugin
     "okuuva/auto-save.nvim",
     version = "*",
-    event = { "InsertLeave" }, -- optional for lazy loading on trigger events
+    event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
     opts = {
       debounce_delay = 5000,
     },
@@ -1227,6 +1227,80 @@ vim.keymap.set("n", "<Leader>flS", require("fzf-lua").lsp_workspace_symbols, { d
 vim.keymap.set("n", "<Leader>ft", require("fzf-lua").treesitter, { desc = "[T]reesitter symbols" })
 vim.keymap.set("n", "<Leader>fll", require("fzf-lua").loclist, { desc = "[L]oc[L]ist" })
 vim.keymap.set("n", "<Leader>fq", require("fzf-lua").quickfix, { desc = "[Q]uickfix" })
+
+---Escapes special characters before performing string substitution
+---From persisted
+---@param str string
+---@param pattern string
+---@param replace string
+---@param n? integer
+---@return string
+---@return integer
+local function escape_pattern(str, pattern, replace, n)
+  pattern = string.gsub(pattern, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
+  replace = string.gsub(replace, "[%%]", "%%%%") -- escape replacement
+
+  return string.gsub(str, pattern, replace, n)
+end
+
+local persisted_config = require("persisted.config")
+local persisted_utils = require("persisted.utils")
+local persisted_sep = persisted_utils.dir_pattern()
+
+local function transform_session_name(session_file)
+  local session_name = escape_pattern(session_file, persisted_config.save_dir, "")
+    :gsub("%%", persisted_sep)
+    :gsub(vim.fn.expand("~"), persisted_sep)
+    :gsub("//", "")
+    :sub(1, -5)
+
+  if vim.fn.has("win32") == 1 then
+    session_name = escape_pattern(session_name, persisted_sep, ":", 1)
+    session_name = escape_pattern(session_name, persisted_sep, "\\")
+  end
+
+  local branch, dir_path
+
+  if string.find(session_name, "@@", 1, true) then
+    local splits = vim.split(session_name, "@@", { plain = true })
+    branch = table.remove(splits, #splits)
+    dir_path = vim.fn.join(splits, "@@")
+  else
+    dir_path = session_name
+  end
+  if branch then
+    return dir_path .. "  (" .. branch .. ")"
+  end
+  return dir_path
+end
+
+local function fzf_persisted_sessions(fzf_cb)
+  local persisted = require("persisted")
+  local sessions_list = persisted.list()
+  for _, session_file in ipairs(sessions_list) do
+    fzf_cb(transform_session_name(session_file))
+  end
+  fzf_cb()
+end
+
+vim.keymap.set("n", "<Leader>fs", function ()
+  require("fzf-lua").fzf_exec(fzf_persisted_sessions, { prompt = "Select a session> ",
+                                                        actions = {
+                                                          ["default"] = {
+                                                            fn = function (selected)
+                                                              require("persisted").load({ session = selected[1] })
+                                                            end
+                                                          },
+                                                          ["ctrl-d"] = {
+                                                            fn = function (selected)
+                                                              local session_file = selected[1]
+                                                              vim.fn.delete(session_file)
+                                                              Snacks.notify.info("Session deleted", { title = "persisted.nvim" })
+                                                            end,
+                                                          }
+                                                        },
+  })
+end, { desc = "[S]ession" })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -1723,6 +1797,7 @@ local function select_colorscheme()
     "tokyonight-day",
     "dayfox",
     "dawnfox",
+    "midnightgreen",
   }
 
   local color_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim", false, true)
