@@ -179,7 +179,8 @@ require('lazy').setup({
         timeout = 3500,
       },
       picker = {
-        enabled = false,
+        enabled = true,
+        ui_select = true,
         win = {
           -- input window
           input = {
@@ -222,6 +223,13 @@ require('lazy').setup({
       { "<Leader>wp", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
       { "<Leader>ss", function() Snacks.scratch.select() end, desc = "[S]elect a [S]cratch Buffer" },
+      { "<Leader>pf", function() Snacks.picker.pick("files") end, desc = "[F]iles" },
+      { "<Leader>pr", function() Snacks.picker.pick("grep") end, desc = "G[R]ep" },
+      { "<Leader>pM", function() Snacks.picker.pick("man") end, desc = "[M]an" },
+      { "<Leader>pn", function() Snacks.picker.pick("notifications") end, desc = "[N]otifications" },
+      { "<Leader>pi", function() Snacks.picker.pick("icons", { icon_sources = { "nerd_fonts" } }) end, desc = "[I]cons" },
+      { "<Leader>pgs", function() Snacks.picker.pick("git_status") end, desc = "[G]it [S]tatus" },
+      { "<Leader>pm", function() Snacks.picker.pick("resume") end, desc = "Resu[m]e last query" },
     },
   },
 
@@ -1197,7 +1205,6 @@ require("fzf-lua").setup({
     async_or_timeout = 3000,
   },
 })
-require("fzf-lua").register_ui_select()
 
 vim.keymap.set("n", "<Leader>ff", require("fzf-lua").files, { desc = "FZF Files" })
 vim.keymap.set("n", "<Leader>fF", function()
@@ -1227,6 +1234,7 @@ vim.keymap.set("n", "<Leader>flS", require("fzf-lua").lsp_workspace_symbols, { d
 vim.keymap.set("n", "<Leader>ft", require("fzf-lua").treesitter, { desc = "[T]reesitter symbols" })
 vim.keymap.set("n", "<Leader>fll", require("fzf-lua").loclist, { desc = "[L]oc[L]ist" })
 vim.keymap.set("n", "<Leader>fq", require("fzf-lua").quickfix, { desc = "[Q]uickfix" })
+vim.keymap.set("n", "<Leader>fM", require("fzf-lua").man, { desc = "[M]an" })
 
 ---Escapes special characters before performing string substitution
 ---From persisted
