@@ -186,6 +186,7 @@ require('lazy').setup({
           input = {
             keys = {
               ["<Esc>"] = { "close", mode = { "n", "i" } },
+              ["<F1>"] = { "toggle_help", mode = { "n", "i" } },
             }
           },
         },
@@ -224,10 +225,14 @@ require('lazy').setup({
       { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
       { "<Leader>ss", function() Snacks.scratch.select() end, desc = "[S]elect a [S]cratch Buffer" },
       { "<Leader>pf", function() Snacks.picker.pick("files") end, desc = "[F]iles" },
+      { "<Leader>pb", function() Snacks.picker.pick("buffers") end, desc = "[B]uffers" },
+      { "<Leader>po", function() Snacks.picker.pick("recent") end, desc = "Recent or [O]ld files" },
       { "<Leader>pr", function() Snacks.picker.pick("grep") end, desc = "G[R]ep" },
+      { "<Leader>pw", function() Snacks.picker.pick("grep_word") end, desc = "Grep [W]ord" },
       { "<Leader>pM", function() Snacks.picker.pick("man") end, desc = "[M]an" },
       { "<Leader>pn", function() Snacks.picker.pick("notifications") end, desc = "[N]otifications" },
       { "<Leader>pi", function() Snacks.picker.pick("icons", { icon_sources = { "nerd_fonts" } }) end, desc = "[I]cons" },
+      { "<Leader>pgb", function() Snacks.picker.pick("git_branches") end, desc = "[G]it [B]ranches" },
       { "<Leader>pgs", function() Snacks.picker.pick("git_status") end, desc = "[G]it [S]tatus" },
       { "<Leader>pm", function() Snacks.picker.pick("resume") end, desc = "Resu[m]e last query" },
     },
@@ -1076,9 +1081,9 @@ vim.keymap.set("n", "<Leader>se", ":g/^$/d<CR>", { noremap = true, silent = fals
 vim.keymap.set("n", "<Leader>sb", ":%s/^\\s\\+//ge<CR>", { noremap = true, silent = false, desc = "Remove spaces at the [B]egining of the line" })
 
 -- Keymaps for P4 operations
-vim.keymap.set("n", "<Leader>pa", ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [a]dd" })
-vim.keymap.set("n", "<Leader>pe", ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [e]dit" })
-vim.keymap.set("n", "<Leader>pr", ':!p4 revert "%"<CR>', { noremap = true, silent = false, desc = "P4 [r]evert" })
+vim.keymap.set("n", "<Leader>p4a", ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [a]dd" })
+vim.keymap.set("n", "<Leader>p4e", ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [e]dit" })
+vim.keymap.set("n", "<Leader>p4r", ':!p4 revert "%"<CR>', { noremap = true, silent = false, desc = "P4 [r]evert" })
 
 -- Keymaps for Git operations
 vim.keymap.set("n", "<Leader>gp", ':!git pull && git submodule update --init --recursive<CR>', { noremap = true, silent = false, desc = "Git pull and submodules" })
@@ -1283,6 +1288,7 @@ vim.keymap.set("n", "<Leader>ff", require("fzf-lua").files, { desc = "FZF Files"
 vim.keymap.set("n", "<Leader>fF", function()
   return require("fzf-lua").files({ cmd = "fd --hidden --no-ignore-vcs --exclude .git/ " .. vim.fn.expand("<cword>") })
 end, { desc = "[F]iles under cursor" })
+vim.keymap.set("n", "<Leader>fo", require("fzf-lua").oldfiles, { desc = "Recent or [O]ld files" })
 vim.keymap.set("n", "<Leader>fr", require("fzf-lua").grep, { desc = "G[R]ep" })
 vim.keymap.set("n", "<Leader>fv", require("fzf-lua").grep_visual, { desc = "Grep [V]isual selection" })
 vim.keymap.set("n", "<Leader>fn", require("fzf-lua").live_grep_native, { desc = "Live grep [N]ative" })
