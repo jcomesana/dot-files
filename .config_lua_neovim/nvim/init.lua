@@ -231,6 +231,7 @@ require('lazy').setup({
       { "<Leader>pw", function() Snacks.picker.pick("grep_word") end, desc = "Grep [W]ord" },
       { "<Leader>pM", function() Snacks.picker.pick("man") end, desc = "[M]an" },
       { "<Leader>pn", function() Snacks.picker.pick("notifications") end, desc = "[N]otifications" },
+      { "<Leader>ph", function() Snacks.picker.pick("help") end, desc = "[H]elp" },
       { "<Leader>pi", function() Snacks.picker.pick("icons", { icon_sources = { "nerd_fonts" } }) end, desc = "[I]cons" },
       { "<Leader>pgb", function() Snacks.picker.pick("git_branches") end, desc = "[G]it [B]ranches" },
       { "<Leader>pgs", function() Snacks.picker.pick("git_status") end, desc = "[G]it [S]tatus" },
@@ -775,7 +776,7 @@ require('lazy').setup({
     version = "*",
     event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
     opts = {
-      debounce_delay = 5000,
+      debounce_delay = 20000,
     },
   },
 
@@ -826,79 +827,6 @@ require('lazy').setup({
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
 }, lazy_opts)
-
----Escapes special characters before performing string substitution
----From persisted
----@param str string
----@param pattern string
----@param replace string
----@param n? integer
----@return string
----@return integer
-local function escape_pattern(str, pattern, replace, n)
-  pattern = string.gsub(pattern, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
-  replace = string.gsub(replace, "[%%]", "%%%%") -- escape replacement
-
-  return string.gsub(str, pattern, replace, n)
-end
-
-local persisted_config = require("persisted.config")
-local persisted_utils = require("persisted.utils")
-local persisted_sep = persisted_utils.dir_pattern()
-
-local function get_session_name_and_branch(session_file)
-  local session_name = escape_pattern(session_file, persisted_config.save_dir, "")
-    :gsub("%%", persisted_sep)
-    :gsub(vim.fn.expand("~"), persisted_sep)
-    :gsub("//", "")
-    :sub(1, -5)
-
-  if vim.fn.has("win32") == 1 then
-    session_name = escape_pattern(session_name, persisted_sep, ":", 1)
-    session_name = escape_pattern(session_name, persisted_sep, "\\")
-  end
-
-  local branch, dir_path
-
-  if string.find(session_name, "@@", 1, true) then
-    local splits = vim.split(session_name, "@@", { plain = true })
-    branch = table.remove(splits, #splits)
-    dir_path = vim.fn.join(splits, "@@")
-  else
-    dir_path = session_name
-  end
-  if branch then
-    return dir_path .. "  (" .. branch .. ")", branch
-  end
-  return dir_path, nil
-end
-
-local function get_persisted_sessions()
-	local items = {}
-	local sessions_list = require("persisted").list()
-  for _, session_file in ipairs(sessions_list) do
-    local session_name, branch = get_session_name_and_branch(session_file)
-		table.insert(items, { text = session_name, file = session_file, branch = branch })
-  end
-	return items
-end
-
-local function show_persisted_sessions()
-  Snacks.picker.pick({
-	  source = "persisted",
-	  items = get_persisted_sessions(),
-	  preview = "none",
-	  layout = { preset = "vscode" },
-	  title = "Persisted Sessions",
-	  format = "text",
-	  confirm = function(picker, item)
-		  picker:close()
-		  require("persisted").load({ session = item.file})
-	  end,
-  })
-end
-
-vim.keymap.set("n", "<Leader>pS", show_persisted_sessions, { noremap = true, silent = true, desc = "Persisted [S]essions" })
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -1661,6 +1589,80 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 vim.keymap.set("n", "<Leader>st", "<CMD>Trim<CR>", { noremap = true, silent = true, desc = "Trim [T]railing whitespace" })
 
 -- [[ Configure persisted.nvim ]]
+
+local persisted_config = require("persisted.config")
+
+local function get_session_name_and_branch(session_file)
+  local file = session_file:sub(#persisted_config.save_dir + 1, -5)
+  local dir_path, branch = unpack(vim.split(file, "@@", { plain = true }))
+  dir_path = dir_path:gsub("%%", "/")
+  if jit.os:find("Windows") then
+    dir_path = dir_path:gsub("^(%w)/", "%1:/")
+  end
+
+  dir_path = vim.fn.fnamemodify(dir_path, ":p:~"):sub(3, -2)
+  if branch then
+    return dir_path .. "  (" .. branch .. ")", branch
+  end
+  return dir_path, nil
+end
+
+local function get_persisted_sessions()
+	local items = {}
+	local sessions_list = require("persisted").list()
+  for _, session_file in ipairs(sessions_list) do
+    local session_name, branch = get_session_name_and_branch(session_file)
+		table.insert(items, { text = session_name, file = session_file, branch = branch })
+  end
+	return items
+end
+
+local function show_persisted_sessions()
+  Snacks.picker.pick({
+	  source = "persisted",
+	  items = get_persisted_sessions(),
+	  preview = "none",
+	  layout = { preset = "vscode" },
+	  title = "Persisted Sessions",
+	  format = "text",
+	  confirm = function(picker, item)
+		  picker:close()
+      vim.api.nvim_input("<ESC>:%bd!<CR>")
+      vim.schedule(function()
+		    require("persisted").load({ session = item.file})
+      end)
+	  end,
+	  actions = {
+	    delete_session = function(picker)
+        local uv = vim.uv or vim.loop
+        for _, selected_item in ipairs(picker:selected({ fallback = true })) do
+	        local selected_session_file = selected_item.file
+	        if selected_session_file and uv.fs_stat(selected_session_file) then
+            if vim.fn.confirm("Delete [" .. selected_item.text .. "]?", "&Yes\n&No") == 1 then
+              vim.fn.delete(selected_item.file)
+            end
+	        end
+          picker.list:unselect(selected_item)
+	      end
+        local cursor = picker.list.cursor
+        picker:find({
+          on_done = function()
+            picker.list:view(cursor)
+          end,
+        })
+	    end
+	  },
+    win = {
+      input = {
+        keys = {
+          ["<c-x>"] = { "delete_session", mode = { "n", "i" }, desc = "Delete session" },
+        },
+      },
+    },
+  })
+end
+
+vim.keymap.set("n", "<Leader>pS", show_persisted_sessions, { noremap = true, silent = true, desc = "Persisted [S]essions" })
 vim.keymap.set("n", "<Leader>mr", "<CMD>SessionStart<CR>", { noremap = true, silent = false, desc = "Start [R]ecording session" })
 vim.keymap.set("n", "<Leader>mt", "<CMD>SessionStop<CR>", { noremap = true, silent = false, desc = "S[T]op recording session" })
 vim.keymap.set("n", "<Leader>mv", "<CMD>SessionSave<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
@@ -1688,7 +1690,21 @@ vim.api.nvim_create_autocmd("User", {
 vim.api.nvim_create_autocmd("User", {
   pattern = "PersistedLoadPost",
   callback = function()
-    Snacks.notify.info("Session loaded", { title = "persisted.nvim" })
+    local message = "Session loaded"
+    if vim.g.persisted_loaded_session then
+      local session_name, branch = get_session_name_and_branch(vim.g.persisted_loaded_session)
+      message = ("%s: `%s`"):format(message, session_name)
+      if branch then
+        local dir_branch = vim.fn.systemlist("git branch --show-current")[1]
+        if vim.v.shell_error == 0 and dir_branch and branch ~= dir_branch then
+          vim.fn.systemlist("git switch " .. branch)
+          if vim.v.shell_error == 0 then
+            Snacks.notify.info(("Switched to git branch: `%s`"):format(branch), { title = "picker" })
+          end
+        end
+      end
+    end
+    Snacks.notify.info(message, { title = "persisted.nvim" })
   end,
   group = persisted_group,
 })
