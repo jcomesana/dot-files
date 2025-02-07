@@ -488,6 +488,7 @@ require("lazy").setup({
       }
       opts.sources = {
         { name = "nvim_lsp" },
+        { name = "copilot", group_index = 2 },
         { name = "luasnip" },
         { name = "buffer",
           option = {
@@ -506,6 +507,7 @@ require("lazy").setup({
           preset = "codicons",
           maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
           ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+          symbol_map = { Copilot = "" },
         })
       }
       opts.window = {
@@ -697,6 +699,7 @@ require("lazy").setup({
                         color = { fg = "#ff9e64" },
                         on_click = function() vim.cmd("Lazy sync") end
                       },
+                      "copilot",
                       "searchcount",
                       "encoding",
                       { "fileformat", fmt = function(str) return is_narrow_window() and "" or str end },
@@ -786,6 +789,25 @@ require("lazy").setup({
     -- GUI shim
     "equalsraf/neovim-gui-shim",
     cond = vim.fn.has("gui_running") == 1
+  },
+
+  {
+    -- Copilot
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    opts = {},
+  },
+
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end,
+  },
+
+  {
+    "AndreM222/copilot-lualine"
   },
 
   -- File type specific plugins
