@@ -40,6 +40,9 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrw = 1
 
+-- For lualine, to disable some options in narrow windows
+local function is_narrow_window() return vim.fn.winwidth(0) < 100 end
+
 -- To be able to use this for lualine
 local diagnostics_signs = { Error = "", Warn = " ", Hint = "", Info = "" }
 
@@ -657,7 +660,6 @@ require("lazy").setup({
   {
     -- Set lualine as statusline
     "nvim-lualine/lualine.nvim",
-    -- See `:help lualine.txt`
     opts = {
       options = {
         icons_enabled = true,
@@ -665,6 +667,9 @@ require("lazy").setup({
         section_separators = "",
       },
       sections = {
+        lualine_a = {
+          { "mode", fmt = function(str) return is_narrow_window() and str:sub(1, 3) or str end },
+        },
         lualine_b = {
           {
             "filename",
@@ -680,9 +685,10 @@ require("lazy").setup({
                       symbols = { error = diagnostics_signs["Error"] .. " ",
                                   warn = diagnostics_signs["Warn"] .. " ",
                                   hint = diagnostics_signs["Hint"] .. " ",
-                                  info = diagnostics_signs["Info"] .. " "},
-                      on_click = function() require("trouble").toggle( { mode = "diagnostics", focus = false }) end
-                     }
+                                  info = diagnostics_signs["Info"] .. " ",
+                      },
+                      on_click = function() require("trouble").toggle({ mode = "diagnostics", focus = false }) end,
+                     },
         }, -- lualine_c
         lualine_x = {
                       {
@@ -693,10 +699,10 @@ require("lazy").setup({
                       },
                       "searchcount",
                       "encoding",
-                      "fileformat",
-                      "filetype"
+                      { "fileformat", fmt = function(str) return is_narrow_window() and "" or str end },
+                      { "filetype", fmt = function(str) return is_narrow_window() and str:sub(1, 1) or str end },
         },
-        lualine_y = {"progress"},
+        lualine_y = { { "progress", fmt = function(str) return is_narrow_window() and "" or str end } },
         lualine_z = {"location"},
       },
       inactive_sections = {
@@ -741,14 +747,9 @@ require("lazy").setup({
     },
   },
 
-  -- Fuzzy Finder (files, lsp, etc)
   {
-    "nvim-telescope/telescope.nvim",
-    branch = "0.1.x",
-    event = "VeryLazy",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    }
+    -- Library used by several plugins
+    "nvim-lua/plenary.nvim",
   },
 
   -- FZF
@@ -1075,132 +1076,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   pattern = "*",
 })
 
--- [[ Configure Telescope ]]
--- See `:help telescope` and `:help telescope.setup()`
-
-local select_one_or_multi = function(prompt_bufnr)
-  local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-  local multi = picker:get_multi_selection()
-  if not vim.tbl_isempty(multi) then
-    require("telescope.actions").close(prompt_bufnr)
-    for _, j in pairs(multi) do
-      if j.lnum ~= nil then
-        vim.cmd(string.format("edit +%s %s", j.lnum, j.path))
-      else
-        vim.cmd(string.format("edit %s", j.path))
-      end
-    end
-  else
-    require("telescope.actions").select_default(prompt_bufnr)
-  end
-end
-
-require("telescope").setup {
-  defaults = {
-    -- configure to use ripgrep
-    vimgrep_arguments = {
-      "rg",
-      "--follow",        -- Follow symbolic links
-      "--hidden",        -- Search for hidden files
-      "--no-heading",    -- Don"t group matches by each file
-      "--with-filename", -- Print the file path with the matched lines
-      "--line-number",   -- Show line numbers
-      "--column",        -- Show column numbers
-      "--smart-case",    -- Smart case search
-      "--no-ignore-vcs", -- Ignore .gitignore
-
-      -- Exclude some patterns from search
-      "--glob=!**/.git/*",
-      "--glob=!**/.idea/*",
-      "--glob=!**/.vscode/*",
-      "--glob=!**/build/*",
-      "--glob=!**/dist/*",
-      "--glob=!**/yarn.lock",
-      "--glob=!**/package-lock.json",
-    },
-    pickers = {
-      find_files = {
-        hidden = true,
-        -- needed to exclude some files & dirs from general search
-        -- when not included or specified in .gitignore
-        find_command = {
-          "rg",
-          "--files",
-          "--hidden",
-          "--no-ignore-vcs",
-          "--glob=!**/.git/*",
-          "--glob=!**/.idea/*",
-          "--glob=!**/.vscode/*",
-          "--glob=!**/build/*",
-          "--glob=!**/dist/*",
-          "--glob=!**/yarn.lock",
-          "--glob=!**/package-lock.json",
-        },
-      },
-    },
-    mappings = {
-      i = {
-        ["<RightMouse>"] = require("telescope.actions").close,
-        ["<LeftMouse>"] = require("telescope.actions").select_default,
-        ["<ScrollWheelDown>"] = require("telescope.actions").move_selection_next,
-        ["<ScrollWheelUp>"] = require("telescope.actions").move_selection_previous,
-        ["<C-o>"] = function(prompt_bufnr) require("telescope.actions").add_selected_to_qflist(prompt_bufnr) vim.cmd("copen") vim.cmd.cfirst() end,
-        ["<CR>"] = select_one_or_multi,
-        ["<C-d>"] = require("telescope.actions").cycle_previewers_next,
-				["<C-f>"] = require("telescope.actions").cycle_previewers_prev,
-      },
-    },
-    layout_config = {
-      prompt_position = "top",
-    },
-    sorting_strategy = "ascending",
-  },
-}
-
-require("telescope").load_extension("persisted")
-
--- For telescope git
-local custom_git_commits = function(opts)
-  opts = opts or {}
-  opts.previewer = {
-    require("telescope.previewers").git_commit_diff_as_was.new(opts),
-    require("telescope.previewers").git_commit_diff_to_head.new(opts),
-    require("telescope.previewers").git_commit_message.new(opts),
-  }
-
-  require("telescope.builtin").git_commits(opts)
-end
-
-local custom_git_bcommits = function(opts)
-  opts = opts or {}
-  opts.previewer = {
-    require("telescope.previewers").git_commit_diff_as_was.new(opts),
-    require("telescope.previewers").git_commit_message.new(opts),
-    require("telescope.previewers").git_commit_diff_to_head.new(opts),
-  }
-
-  require("telescope.builtin").git_bcommits(opts)
-end
-
--- See `:help telescope.builtin`
-vim.keymap.set("n", "<Leader>to", require("telescope.builtin").oldfiles, { desc = "Telescope recently [O]pened files" })
-vim.keymap.set("n", "<Leader>tb", require("telescope.builtin").buffers, { desc = "Telescope [B]uffers" })
-vim.keymap.set("n", "<Leader>tz", function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
-end, { desc = "Telescope fu[Z]zily in current buffer" })
-
-vim.keymap.set("n", "<Leader>tgc", custom_git_commits, { desc = "Telescope [G]it [C]ommits" })
-vim.keymap.set("n", "<Leader>tgh", custom_git_bcommits, { desc = "Telescope [G]it Buffer Commits ([H]istory)" })
-vim.keymap.set("n", "<Leader>tgb", require("telescope.builtin").git_branches, { desc = "Telescope [G]it [B]ranches" })
-vim.keymap.set("n", "<Leader>th", require("telescope.builtin").help_tags, { desc = "Telescope [H]elp" })
-vim.keymap.set("n", "<Leader>ts", require("telescope.builtin").lsp_document_symbols, { desc = "Telescope document [s]ymbols" })
-vim.keymap.set("n", "<Leader>tS", require("telescope.builtin").lsp_workspace_symbols, { desc = "Telescope workspace [S]ymbols" })
-vim.keymap.set("n", "<Leader>tm", require("telescope.builtin").resume, { desc = "Telescope search resu[m]e" })
-
 -- [[ Configure fzf-lua ]]
 require("fzf-lua").setup({
   "fzf-native",
@@ -1231,8 +1106,6 @@ vim.keymap.set("n", "<Leader>fgb", require("fzf-lua").git_branches, { desc = "[G
 vim.keymap.set("n", "<Leader>fgf", require("fzf-lua").git_files, { desc = "[G]it [F]iles" })
 vim.keymap.set("n", "<Leader>fgs", require("fzf-lua").git_status, { desc = "[G]it [S]tatus" })
 vim.keymap.set("n", "<Leader>fd", require("fzf-lua").diagnostics_workspace, { desc = "[D]iagnostics" })
-vim.keymap.set("n", "<Leader>fb", require("fzf-lua").buffers, { desc = "[B]uffers" })
-vim.keymap.set("n", "<Leader>b", require("fzf-lua").buffers, { desc = "[B]uffers" })
 vim.keymap.set("n", "<Leader>fh", require("fzf-lua").helptags, { desc = "[H]elp tags" })
 vim.keymap.set("n", "<Leader>fla", require("fzf-lua").lsp_code_actions, { desc = "[L]SP [A]ctions" })
 vim.keymap.set("n", "<Leader>flf", require("fzf-lua").lsp_finder, { desc = "[L]SP [F]inder" })
