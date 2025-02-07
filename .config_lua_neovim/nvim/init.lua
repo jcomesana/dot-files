@@ -1620,10 +1620,10 @@ local function get_persisted_sessions()
 	return items
 end
 
-local function show_persisted_sessions()
+function Show_persisted_sessions()
   Snacks.picker.pick({
 	  source = "persisted",
-	  items = get_persisted_sessions(),
+	  finder = get_persisted_sessions,
 	  preview = "none",
 	  layout = { preset = "vscode" },
 	  title = "Persisted Sessions",
@@ -1664,13 +1664,14 @@ local function show_persisted_sessions()
     },
   })
 end
+vim.api.nvim_create_user_command("PickerSessions", ":lua Show_persisted_sessions()", {})
 
-vim.keymap.set("n", "<Leader>pS", show_persisted_sessions, { noremap = true, silent = true, desc = "Persisted [S]essions" })
+vim.keymap.set("n", "<Leader>pS", Show_persisted_sessions, { noremap = true, silent = true, desc = "Persisted [S]essions" })
 vim.keymap.set("n", "<Leader>mr", "<CMD>SessionStart<CR>", { noremap = true, silent = false, desc = "Start [R]ecording session" })
 vim.keymap.set("n", "<Leader>mt", "<CMD>SessionStop<CR>", { noremap = true, silent = false, desc = "S[T]op recording session" })
 vim.keymap.set("n", "<Leader>mv", "<CMD>SessionSave<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
 vim.keymap.set("n", "<Leader>ml", "<CMD>SessionLoad<CR>", { noremap = true, silent = false, desc = "Session [L]oad for current dir" })
-vim.keymap.set("n", "<Leader>ms", "<CMD>Telescope persisted<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
+vim.keymap.set("n", "<Leader>ms", "<CMD>PickerSessions<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
 
 local persisted_group = vim.api.nvim_create_augroup("persisted_group", { clear = true })
 
