@@ -41,7 +41,7 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrw = 1
 
 -- To be able to use this for lualine
-local diagnostics_signs = { Error = '', Warn = ' ', Hint = '', Info = '' }
+local diagnostics_signs = { Error = "", Warn = " ", Hint = "", Info = "" }
 
 -- To detect if it is running on termux
 local is_termux = not not vim.env.TERMUX_APP_PID
@@ -49,14 +49,14 @@ local is_termux = not not vim.env.TERMUX_APP_PID
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
     lazypath,
   }
 end
@@ -83,12 +83,12 @@ local lazy_opts = {
   rocks = { enabled = false },
 }
 if vim.env.NVIM_LAZY_CONCURRENCY then
-  lazy_opts['concurrency'] = tonumber(vim.env.NVIM_LAZY_CONCURRENCY)
+  lazy_opts["concurrency"] = tonumber(vim.env.NVIM_LAZY_CONCURRENCY)
 end
 
----@module 'snacks'
+---@module "snacks"
 
-require('lazy').setup({
+require("lazy").setup({
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -102,14 +102,14 @@ require('lazy').setup({
         size = 20 * 1024 * 1024,
         ---@param ctx {buf: number, ft:string}
         setup = function(ctx)
-          vim.bo[ctx.buf].bufhidden = 'unload'
-          vim.bo[ctx.buf].buftype = 'nowrite'
+          vim.bo[ctx.buf].bufhidden = "unload"
+          vim.bo[ctx.buf].buftype = "nowrite"
           vim.bo[ctx.buf].undolevels = -1
           vim.bo[ctx.buf].undofile = false
           vim.bo[ctx.buf].swapfile = false
           vim.cmd([[NoMatchParen]])
           Snacks.util.wo(0, { foldmethod = "manual", statuscolumn = "", conceallevel = 0 })
-          require('cmp').setup({ enabled = false })
+          require("cmp").setup({ enabled = false })
         end,
       },
       dashboard = {
@@ -118,13 +118,14 @@ require('lazy').setup({
         preset = {
           pick = "fzf-lua",
           header = " Neovim v" .. tostring(vim.version()),
+          ---@type snacks.dashboard.Item[]
           keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":lua require('fzf-lua').files()" },
+            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-            { icon = " ", key = "t", desc = "Find Text", action = ":lua require('fzf-lua').grep_project()" },
-            { icon = " ", key = "r", desc = "Recent Files", action = ":lua require('fzf-lua').oldfiles()" },
+            { icon = " ", key = "t", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
             { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-            { icon = "󰁜 ", key = "S", desc = "Select Session", action = ":Telescope persisted" },
+            { icon = "󰁜 ", key = "S", desc = "Select Session", action = ":PickerSessions" },
             {
               icon = "󰊢 ",
               key = "G",
@@ -225,7 +226,9 @@ require('lazy').setup({
       { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
       { "<Leader>ss", function() Snacks.scratch.select() end, desc = "[S]elect a [S]cratch Buffer" },
       { "<Leader>pf", function() Snacks.picker.pick("files") end, desc = "[F]iles" },
-      { "<Leader>pb", function() Snacks.picker.pick("buffers") end, desc = "[B]uffers" },
+      { "<Leader>pF", function() Snacks.picker.pick("files", { args = { vim.fn.expand("<cword>") }, }) end, desc = "[F]ile under the cursor" },
+      { "<Leader>pb", function() Snacks.picker.pick("buffers", { current = false }) end, desc = "[B]uffers" },
+      { "<Leader>b", function() Snacks.picker.pick("buffers", { current = false }) end, desc = "[B]uffers" },
       { "<Leader>po", function() Snacks.picker.pick("recent") end, desc = "Recent or [O]ld files" },
       { "<Leader>pr", function() Snacks.picker.pick("grep") end, desc = "G[R]ep" },
       { "<Leader>pw", function() Snacks.picker.pick("grep_word") end, desc = "Grep [W]ord" },
@@ -235,6 +238,8 @@ require('lazy').setup({
       { "<Leader>pi", function() Snacks.picker.pick("icons", { icon_sources = { "nerd_fonts" } }) end, desc = "[I]cons" },
       { "<Leader>pgb", function() Snacks.picker.pick("git_branches") end, desc = "[G]it [B]ranches" },
       { "<Leader>pgs", function() Snacks.picker.pick("git_status") end, desc = "[G]it [S]tatus" },
+      { "<Leader>pl", function() Snacks.picker.pick("loclist") end, desc = "[L]oc[L]ist" },
+      { "<Leader>pq", function() Snacks.picker.pick("qflist") end, desc = "[Q]flist" },
       { "<Leader>pm", function() Snacks.picker.pick("resume") end, desc = "Resu[m]e last query" },
     },
   },
@@ -448,7 +453,7 @@ require('lazy').setup({
           luasnip.lsp_expand(args.body)
         end,
       }
-      opts.completion = { completeopt = "menu,menuone,noinsert" }
+      opts.completion = { completeopt = "menu,menuone,noselect" }
       opts.mapping = cmp.mapping.preset.insert {
         ["<C-n>"] = cmp.mapping.select_next_item(),
         ["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -629,7 +634,7 @@ require('lazy').setup({
     opts = {},
   },
   {
-    "ray-x/aurora",
+    "oonamo/ef-themes.nvim",
     priority = 1000,
   },
   {
@@ -641,15 +646,11 @@ require('lazy').setup({
     priority = 1000,
   },
   {
-    "dam9000/colorscheme-midnightblue",
+    "timmypidashev/darkbox.nvim",
     priority = 1000,
   },
   {
     "EdenEast/nightfox.nvim",
-    priority = 1000,
-  },
-  {
-    "Zeioth/neon.nvim",
     priority = 1000,
   },
 
@@ -1584,6 +1585,8 @@ vim.g["sandwich#recipes"] = vim.deepcopy(vim.g["sandwich#default_recipes"])
 
 -- [[ Configure oil ]]
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+vim.keymap.set("n", "<Leader>od", "<CMD>Oil " .. vim.fn.stdpath("data") .. "<CR>", { desc = "Open [D]ata directory" })
+vim.keymap.set("n", "<Leader>ol", "<CMD>Oil " .. vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") .. "<CR>", { desc = "Open [L]azy data directory" })
 
 -- [[ Configure trim.nvim ]]
 vim.keymap.set("n", "<Leader>st", "<CMD>Trim<CR>", { noremap = true, silent = true, desc = "Trim [T]railing whitespace" })
