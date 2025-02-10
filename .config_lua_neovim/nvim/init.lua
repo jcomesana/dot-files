@@ -807,6 +807,11 @@ require("lazy").setup({
   },
 
   {
+    "olimorris/codecompanion.nvim",
+    opts = {},
+  },
+
+  {
     "AndreM222/copilot-lualine"
   },
 
