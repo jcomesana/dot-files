@@ -96,4 +96,5 @@ if exists("g:neovide")
     let g:neovide_hide_mouse_when_typing = v:true
     let g:neovide_cursor_animation_length = 0.10
     let g:neovide_cursor_trail_size = 0.5
+    let g:neovide_input_macos_option_key_is_meta = 'only_left'
 endif
