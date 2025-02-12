@@ -807,12 +807,14 @@ require("lazy").setup({
   },
 
   {
-    "olimorris/codecompanion.nvim",
-    opts = {},
+    "AndreM222/copilot-lualine"
   },
 
   {
-    "AndreM222/copilot-lualine"
+    "olimorris/codecompanion.nvim",
+    opts = {
+      send_code = false,
+    },
   },
 
   -- File type specific plugins
