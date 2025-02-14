@@ -258,18 +258,9 @@ require("lazy").setup({
     config = true
   },
 
-  -- Git related plugins
   {
-    "tpope/vim-fugitive",
-    event = "VeryLazy",
-  },
-  {
-    "tpope/vim-rhubarb",
-    event = "VeryLazy",
-  },
-
-  {
-    "sindrets/diffview.nvim",    -- Diff integration
+    -- Diff integration
+    "sindrets/diffview.nvim",
     config = true,
     cmd = { "DiffviewOpen", "DiffviewFileHistory" }
   },
