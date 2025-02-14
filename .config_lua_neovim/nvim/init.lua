@@ -239,7 +239,21 @@ require("lazy").setup({
       { "<Leader>pn", function() Snacks.picker.pick("notifications") end, desc = "[N]otifications" },
       { "<Leader>ph", function() Snacks.picker.pick("help") end, desc = "[H]elp" },
       { "<Leader>pi", function() Snacks.picker.pick("icons", { icon_sources = { "nerd_fonts" } }) end, desc = "[I]cons" },
-      { "<Leader>pgb", function() Snacks.picker.pick("git_branches") end, desc = "[G]it [B]ranches" },
+      { "<Leader>pgb", function() Snacks.picker.pick("git_branches",
+          {
+            win = {
+              input = {
+                keys = {
+                  ["<c-a>"] = { "git_branch_add", mode = { "n", "i" } },
+                  ["<c-x>"] = { "git_branch_del", mode = { "n", "i" } },
+                  ["<c-y>"] = { "yank_branch", mode = { "n", "i" }, desc = "yank branch name" },
+                },
+              },
+            },
+            actions = {
+              yank_branch = { action = "yank", field = "branch" }
+            },
+          }) end, desc = "[G]it [B]ranches" },
       { "<Leader>pgs", function() Snacks.picker.pick("git_status") end, desc = "[G]it [S]tatus" },
       { "<Leader>pl", function() Snacks.picker.pick("loclist") end, desc = "[L]oc[L]ist" },
       { "<Leader>pq", function() Snacks.picker.pick("qflist") end, desc = "[Q]flist" },
