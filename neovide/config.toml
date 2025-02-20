@@ -1,5 +1,5 @@
-fork = false
-frame = "full"
+fork = true
+frame = "transparent"
 idle = true
 maximized = false
 no-multigrid = false

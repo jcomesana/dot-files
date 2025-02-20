@@ -202,7 +202,7 @@ def operation_install_nvim():
         if item not in created_config_files:
             logging.warning('Extra file %s, deleting', item)
             item.unlink()
-    neovide_configs_folder = pathlib.Path('neovide')
+    neovide_configs_folder = dotfiles_folder / pathlib.Path('neovide')
     neovide_paths = NeovidePaths(sys.platform)
     for item in neovide_configs_folder.glob('**/*.*'):
         if item.is_file():
