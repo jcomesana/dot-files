@@ -1438,7 +1438,7 @@ end
 
 local lsp_servers_handled_with_mason = {}
 if (not is_termux) then
-  table.insert(lsp_servers_handled_with_mason, { "npm-groovy-lint", version = "14.6.0" })
+  table.insert(lsp_servers_handled_with_mason, { "npm-groovy-lint", version = "15.1.0" })
 end
 
 for server_name, server_config in pairs(lsp_servers) do
@@ -1753,7 +1753,7 @@ local function select_colorscheme()
   math.randomseed(os.time())
   local selected_index = math.random(#colorschemes_table)
   vim.cmd.colorscheme(colorschemes_table[selected_index])
-  Snacks.notify.info(("  `%s`"):format(colorschemes_table[selected_index]), { title = "colorscheme" })
+  -- Snacks.notify.info(("  `%s`"):format(colorschemes_table[selected_index]), { title = "colorscheme" })
 end
 select_colorscheme()
 
