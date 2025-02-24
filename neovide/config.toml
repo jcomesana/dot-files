@@ -1,5 +1,4 @@
 fork = true
-frame = "full"
 idle = true
 maximized = false
 no-multigrid = false
