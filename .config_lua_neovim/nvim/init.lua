@@ -1760,4 +1760,11 @@ local function select_colorscheme()
 end
 select_colorscheme()
 
+-- Fix for neovide on macOS
+if vim.fn.exists("g.neovide") and vim.fn.has("macunix") == 1 then
+  if vim.fn.getcwd() == "/" then
+    vim.cmd("cd ~")
+  end
+end
+
 -- vim: ts=2 sts=2 sw=2 et
