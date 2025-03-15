@@ -123,7 +123,7 @@ require("lazy").setup({
           header = " Neovim v" .. tostring(vim.version()),
           ---@type snacks.dashboard.Item[]
           keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files', { ignored = true, hidden = true })" },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             { icon = " ", key = "t", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
             { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
@@ -228,8 +228,8 @@ require("lazy").setup({
       { "<Leader>wp", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
       { "<Leader>ss", function() Snacks.scratch.select() end, desc = "[S]elect a [S]cratch Buffer" },
-      { "<Leader>pf", function() Snacks.picker.pick("files") end, desc = "[F]iles" },
-      { "<Leader>pF", function() Snacks.picker.pick("files", { args = { vim.fn.expand("<cword>") }, }) end, desc = "[F]ile under the cursor" },
+      { "<Leader>pf", function() Snacks.picker.pick("files", { ignored = true, hidden = true }) end, desc = "[F]iles" },
+      { "<Leader>pF", function() Snacks.picker.pick("files", { args = { vim.fn.expand("<cword>") }, ignored = true, hidden = true }) end, desc = "[F]ile under the cursor" },
       { "<Leader>pb", function() Snacks.picker.pick("buffers", { current = false }) end, desc = "[B]uffers" },
       { "<Leader>b", function() Snacks.picker.pick("buffers", { current = false }) end, desc = "[B]uffers" },
       { "<Leader>po", function() Snacks.picker.pick("recent") end, desc = "Recent or [O]ld files" },
@@ -241,6 +241,7 @@ require("lazy").setup({
       { "<Leader>pi", function() Snacks.picker.pick("icons", { icon_sources = { "nerd_fonts" } }) end, desc = "[I]cons" },
       { "<Leader>pgb", function() Snacks.picker.pick("git_branches",
           {
+            all = true,
             win = {
               input = {
                 keys = {
@@ -508,9 +509,10 @@ require("lazy").setup({
       }
       opts.formatting = {
         format = require("lspkind").cmp_format({
-          mode = "symbol_text", -- show only symbol annotations
+          mode = "symbol_text",
           preset = "codicons",
-          maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+          show_labelDetails = true,
+          maxwidth = { menu = 60, abbr = 60 },
           ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
           symbol_map = { Copilot = "" },
         })
@@ -915,6 +917,7 @@ vim.o.ttyfast = true
 vim.o.listchars = "tab:> ,trail:-,extends:>,precedes:<,nbsp:␣"
 vim.o.report = 0
 vim.o.guicursor = "n-v-c:block,i-ci-ve:ver45,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff600-blinkon450-Cursor/lCursor,sm:block-blinkwait175-blinkoff350-blinkon375"
+vim.o.pumwidth = 32
 
 -- Syntax highlighting --
 vim.o.syntax = "ON"
