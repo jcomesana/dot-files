@@ -119,7 +119,6 @@ require("lazy").setup({
         enabled = true,
         width= 54,
         preset = {
-          pick = "fzf-lua",
           header = " Neovim v" .. tostring(vim.version()),
           ---@type snacks.dashboard.Item[]
           keys = {
@@ -235,6 +234,7 @@ require("lazy").setup({
       { "<Leader>po", function() Snacks.picker.pick("recent") end, desc = "Recent or [O]ld files" },
       { "<Leader>pr", function() Snacks.picker.pick("grep") end, desc = "G[R]ep" },
       { "<Leader>pw", function() Snacks.picker.pick("grep_word") end, desc = "Grep [W]ord" },
+      { "<Leader>pc", function() Snacks.picker.pick("grep_buffers") end, desc = "Buffers [c]ontent" },
       { "<Leader>pM", function() Snacks.picker.pick("man") end, desc = "[M]an" },
       { "<Leader>pn", function() Snacks.picker.pick("notifications") end, desc = "[N]otifications" },
       { "<Leader>ph", function() Snacks.picker.pick("help") end, desc = "[H]elp" },
@@ -598,6 +598,20 @@ require("lazy").setup({
           desc = "Grep files with fzf-lua",
           mode = "n"
         },
+        ["\\oF"] = {
+          callback = function()
+            Snacks.picker("files", { cwd = require("oil").get_current_dir(), ignored = true, hidden = true })
+          end,
+          desc = "Find files with Snacks.picker",
+          mode = "n"
+        },
+        ["\\oG"] = {
+          callback = function()
+            Snacks.picker("grep", { cwd = require("oil").get_current_dir(), ignored = true, hidden = true })
+          end,
+          desc = "Grep files with Snacks.picker",
+          mode = "n"
+        },
       },
     }
   },
@@ -706,6 +720,7 @@ require("lazy").setup({
                         color = { fg = "#ff9e64" },
                         on_click = function() vim.cmd("Lazy sync") end
                       },
+                      { "lsp_status", ignore_lsp = { "copilot" } },
                       "copilot",
                       "searchcount",
                       "encoding",
@@ -1116,6 +1131,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- [[ Configure fzf-lua ]]
 require("fzf-lua").setup({
   "fzf-native",
+  fzf_colors = true,
   grep = {
     rg_opts = "--no-ignore-vcs " .. require("fzf-lua").defaults.grep.rg_opts
   },
@@ -1643,52 +1659,6 @@ if vim.env.JENKINS_URL then
     group = jenkinsfile_linter_group
   })
 end
-
--- [[ Configure snacks ]]
----@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
-local progress = vim.defaulttable()
-vim.api.nvim_create_autocmd("LspProgress", {
-  ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
-    if not client or type(value) ~= "table" then
-      return
-    end
-    local p = progress[client.id]
-
-    for i = 1, #p + 1 do
-      if i == #p + 1 or p[i].token == ev.data.params.token then
-        p[i] = {
-          token = ev.data.params.token,
-          msg = ("[%3d%%] %s%s"):format(
-            value.kind == "end" and 100 or value.percentage or 100,
-            value.title or "",
-            value.message and (" **%s**"):format(value.message) or ""
-          ),
-          done = value.kind == "end",
-        }
-        break
-      end
-    end
-
-    local msg = {} ---@type string[]
-    progress[client.id] = vim.tbl_filter(function(v)
-      return table.insert(msg, v.msg) or not v.done
-    end, p)
-
-    local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-    vim.notify(table.concat(msg, "\n"), vim.log.levels.INFO, {
-      id = "lsp_progress",
-      title = client.name,
-      opts = function(notif)
-        notif.icon = #progress[client.id] == 0 and " "
-          or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-      end,
-    })
-  end,
-})
-
 
 -- [[ Configuration for auto-save ]]
 local autosave_augroup = vim.api.nvim_create_augroup("autosave", {})
