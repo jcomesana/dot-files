@@ -124,7 +124,7 @@ require("lazy").setup({
           keys = {
             { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files', { ignored = true, hidden = true })" },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-            { icon = " ", key = "t", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = " ", key = "t", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep', { ignored = true, hidden = true })" },
             { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
             { icon = " ", key = "s", desc = "Restore Session", section = "session" },
             { icon = "󰁜 ", key = "S", desc = "Select Session", action = ":PickerSessions" },
@@ -933,6 +933,9 @@ vim.o.listchars = "tab:> ,trail:-,extends:>,precedes:<,nbsp:␣"
 vim.o.report = 0
 vim.o.guicursor = "n-v-c:block,i-ci-ve:ver45,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff600-blinkon450-Cursor/lCursor,sm:block-blinkwait175-blinkoff350-blinkon375"
 vim.o.pumwidth = 32
+if vim.fn.has("nvim-0.11") == 1 then
+  vim.o.winborder = "rounded"
+end
 
 -- Syntax highlighting --
 vim.o.syntax = "ON"
@@ -1018,27 +1021,29 @@ vim.api.nvim_create_autocmd("FileType", {
   command = "set nobuflisted"
 })
 
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  pattern = "*",
-  callback = function()
-    for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
-      if vim.api.nvim_win_get_config(winid).zindex then
-        return
+if vim.fn.has("nvim-0.11") == 0 then
+  vim.api.nvim_create_autocmd({ "CursorHold" }, {
+    pattern = "*",
+    callback = function()
+      for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+        if vim.api.nvim_win_get_config(winid).zindex then
+          return
+        end
       end
+      vim.diagnostic.open_float({
+        scope = "line",
+        focusable = false,
+        close_events = {
+          "CursorMoved",
+          "CursorMovedI",
+          "BufHidden",
+          "InsertCharPre",
+          "WinLeave",
+        },
+      })
     end
-    vim.diagnostic.open_float({
-      scope = "cursor",
-      focusable = false,
-      close_events = {
-        "CursorMoved",
-        "CursorMovedI",
-        "BufHidden",
-        "InsertCharPre",
-        "WinLeave",
-      },
-    })
-  end
-})
+  })
+end
 
 -- Disable highlighting and redraw
 vim.keymap.set({ "n", "v" }, "<Space>", ":noh<CR>:syn sync fromstart<CR>:redrawstatus<CR>", { silent = true })
@@ -1245,27 +1250,55 @@ vim.defer_fn(function()
 end, 0)
 
 -- [[ Diagnostics ]]
-vim.diagnostic.config({
+local diagnostic_opts = {
   virtual_text = true,
   signs = true,
   underline = false,
   update_in_insert = false,
   severity_sort = true,
-  -- source = true,
   float = {
     border = "rounded",
+    scope = "line",
     source = true,
     severity_sort = true,
   },
-})
-for type, icon in pairs(diagnostics_signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+}
+if vim.fn.has("nvim-0.11") == 1 then
+  diagnostic_opts["virtual_lines"] = { current_line = true }
+  diagnostic_opts["signs"] = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = diagnostics_signs["Error"],
+      [vim.diagnostic.severity.WARN]  = diagnostics_signs["Warn"],
+      [vim.diagnostic.severity.HINT]  = diagnostics_signs["Hint"],
+      [vim.diagnostic.severity.INFO]  = diagnostics_signs["Info"],
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+      [vim.diagnostic.severity.WARN]  = "DiagnosticSignWarn",
+      [vim.diagnostic.severity.HINT]  = "DiagnosticSignHint",
+      [vim.diagnostic.severity.INFO]  = "DiagnosticSignInfo",
+    },
+  }
+else
+  for type, icon in pairs(diagnostics_signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+  end
 end
+vim.diagnostic.config(diagnostic_opts)
 
 -- Diagnostic keymaps
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+if vim.fn.has("nvim-0.11") == 1 then
+  vim.keymap.set("n", "[d", function ()
+    vim.diagnostic.jump({ count = -1, float = false })
+  end, { desc = "Go to previous diagnostic message" })
+  vim.keymap.set("n", "]d", function ()
+    vim.diagnostic.jump({ count = 1, float = false })
+  end, { desc = "Go to next diagnostic message" })
+else
+  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
+  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+end
 vim.keymap.set("n", "<Leader>dm", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 vim.keymap.set("n", "<Leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
@@ -1341,9 +1374,10 @@ local on_attach = function(_, bufnr)
   end, { desc = "Format current buffer with LSP" })
 end
 
-vim.lsp.handlers["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-vim.lsp.handlers["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
-
+if vim.fn.has("nvim-0.11") == 0 then
+  vim.lsp.handlers["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+  vim.lsp.handlers["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+end
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --
@@ -1703,6 +1737,7 @@ local function select_colorscheme()
     "slate",
     "sorbet",
     "torte",
+    "unokai",
     "vim",
     "wildcharm",
     "zaibatsu",
@@ -1711,6 +1746,8 @@ local function select_colorscheme()
     "dayfox",
     "dawnfox",
     "midnightgreen",
+    "ef-duo-light",
+    "ef-summer",
   }
 
   local color_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim", false, true)
