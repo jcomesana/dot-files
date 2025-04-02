@@ -1747,7 +1747,10 @@ local function select_colorscheme()
     "dawnfox",
     "midnightgreen",
     "ef-duo-light",
+    "ef-light",
+    "ef-reverie",
     "ef-summer",
+    "ef-trio-light",
   }
 
   local color_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim", false, true)
