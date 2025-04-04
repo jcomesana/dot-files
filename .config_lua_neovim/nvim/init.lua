@@ -143,6 +143,7 @@ require("lazy").setup({
         },
         sections = {
           { section = "header" },
+          { section = "startup", padding = 1 },
           { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
           {
             icon = " ",
@@ -157,7 +158,6 @@ require("lazy").setup({
             ttl = 5 * 60,
             indent = 2,
           },
-          { section = "startup" },
         },
       },
       gitbrowse = {
@@ -1746,6 +1746,7 @@ local function select_colorscheme()
     "dayfox",
     "dawnfox",
     "midnightgreen",
+    "ef-deuteranopia-light",
     "ef-duo-light",
     "ef-light",
     "ef-reverie",
@@ -1769,12 +1770,5 @@ local function select_colorscheme()
   -- Snacks.notify.info(("  `%s`"):format(colorschemes_table[selected_index]), { title = "colorscheme" })
 end
 select_colorscheme()
-
--- Fix for neovide on macOS
-if vim.fn.exists("g.neovide") and vim.fn.has("macunix") == 1 then
-  if vim.fn.getcwd() == "/" then
-    vim.cmd("cd ~")
-  end
-end
 
 -- vim: ts=2 sts=2 sw=2 et
