@@ -664,10 +664,6 @@ require("lazy").setup({
     priority = 1000,
   },
   {
-    "sainnhe/edge",
-    priority = 1000,
-  },
-  {
     "sainnhe/everforest",
     priority = 1000,
   },
@@ -810,7 +806,8 @@ require("lazy").setup({
   {
     -- GUI shim
     "equalsraf/neovim-gui-shim",
-    cond = vim.fn.has("gui_running") == 1
+    cond = vim.fn.has("gui_running") == 1,
+    event = "VeryLazy",
   },
 
   {
@@ -1770,5 +1767,12 @@ local function select_colorscheme()
   -- Snacks.notify.info(("  `%s`"):format(colorschemes_table[selected_index]), { title = "colorscheme" })
 end
 select_colorscheme()
+
+-- Fix for neovide on macOS
+if vim.fn.exists("g.neovide") and vim.fn.has("macunix") == 1 then
+  if vim.fn.getcwd() == "/" then
+    vim.cmd("cd ~")
+  end
+end
 
 -- vim: ts=2 sts=2 sw=2 et
