@@ -4,7 +4,7 @@ set mousehide
 
 " Try to render font ligatures
 if exists(':GuiRenderLigatures')
-    GuiRenderLigatures 0
+    GuiRenderLigatures 1
 endif
 
 " Override the default Qt Style/Theme
