@@ -807,7 +807,6 @@ require("lazy").setup({
     -- GUI shim
     "equalsraf/neovim-gui-shim",
     cond = vim.fn.has("gui_running") == 1,
-    event = "VeryLazy",
   },
 
   {
