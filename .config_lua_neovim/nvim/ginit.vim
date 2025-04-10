@@ -2,9 +2,9 @@
 set mouse=a
 set mousehide
 
-" Try to render font ligatures
+" With ligatures there are some glitches
 if exists(':GuiRenderLigatures')
-    GuiRenderLigatures 1
+    GuiRenderLigatures 0
 endif
 
 " Override the default Qt Style/Theme
@@ -58,9 +58,9 @@ endif
 " Settings for fvim
 if exists('g:fvim_loaded')
     if g:fvim_os == 'windows' || g:fvim_render_scale > 1.0
-        set guifont=Iosevka\ SS04:h12
+        set guifont=CaskaydiaCove\ Nerd\ Font:h10
     else
-        set guifont=Iosevka\ SS04:h13
+        set guifont=CaskaydiaCove\ Nerd\ Font:h12
     endif
 
     " Title bar tweaks
