@@ -1017,30 +1017,6 @@ vim.api.nvim_create_autocmd("FileType", {
   command = "set nobuflisted"
 })
 
-if vim.fn.has("nvim-0.11") == 0 then
-  vim.api.nvim_create_autocmd({ "CursorHold" }, {
-    pattern = "*",
-    callback = function()
-      for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
-        if vim.api.nvim_win_get_config(winid).zindex then
-          return
-        end
-      end
-      vim.diagnostic.open_float({
-        scope = "line",
-        focusable = false,
-        close_events = {
-          "CursorMoved",
-          "CursorMovedI",
-          "BufHidden",
-          "InsertCharPre",
-          "WinLeave",
-        },
-      })
-    end
-  })
-end
-
 -- Disable highlighting and redraw
 vim.keymap.set({ "n", "v" }, "<Space>", ":noh<CR>:syn sync fromstart<CR>:redrawstatus<CR>", { silent = true })
 
@@ -1374,14 +1350,7 @@ if vim.fn.has("nvim-0.11") == 0 then
   vim.lsp.handlers["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
   vim.lsp.handlers["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 end
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. They will be passed to
---  the `settings` field of the server config. You must look up that documentation yourself.
---
---  If you want to override the default filetypes that your language server will attach to you can
---  define the property "filetypes" to the map in question.
+-- Enable the language servers
 local groovy_lsp_classpath = {}
 if vim.env.GROOVY_HOME then
   local groovy_lib = vim.env.GROOVY_HOME .. "/lib"
