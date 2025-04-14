@@ -668,10 +668,6 @@ require("lazy").setup({
     priority = 1000,
   },
   {
-    "timmypidashev/darkbox.nvim",
-    priority = 1000,
-  },
-  {
     "EdenEast/nightfox.nvim",
     priority = 1000,
   },
@@ -1714,6 +1710,7 @@ local function select_colorscheme()
     "ef-deuteranopia-light",
     "ef-duo-light",
     "ef-light",
+    "ef-owl",
     "ef-reverie",
     "ef-summer",
     "ef-trio-light",
