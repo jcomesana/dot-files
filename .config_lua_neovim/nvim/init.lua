@@ -112,7 +112,7 @@ require("lazy").setup({
           vim.bo[ctx.buf].swapfile = false
           vim.cmd([[NoMatchParen]])
           Snacks.util.wo(0, { foldmethod = "manual", statuscolumn = "", conceallevel = 0 })
-          require("cmp").setup({ enabled = false })
+          -- require("cmp").setup({ enabled = false })
         end,
       },
       dashboard = {
@@ -424,109 +424,70 @@ require("lazy").setup({
   },
 
   {
-    -- Autocompletion
-    "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
+    "saghen/blink.cmp",
+    -- optional: provides snippets for the snippet source
     dependencies = {
-      -- Snippet Engine & its associated nvim-cmp source
-      {
-        "L3MON4D3/LuaSnip",
-        build = "make install_jsregexp"
-      },
-      "saadparwaiz1/cmp_luasnip",
-
-      -- Adds LSP completion capabilities
-      "hrsh7th/cmp-nvim-lsp",
-
-      -- Buffer completion
-      "hrsh7th/cmp-buffer",
-
-      -- Treesitter completion
-      "ray-x/cmp-treesitter",
-
-      -- Adds a number of user-friendly snippets
       "rafamadriz/friendly-snippets",
-
-      -- Add icons to the completion menu
-      {
-        "onsails/lspkind.nvim",
-      }
+      "giuxtaposition/blink-cmp-copilot",
     },
-    opts = function (self, opts)
-      local cmp = require "cmp"
-      local luasnip = require "luasnip"
-      require("luasnip.loaders.from_vscode").lazy_load()
-      luasnip.config.setup {}
-      opts.snippet = {
-        expand = function(args)
-          luasnip.lsp_expand(args.body)
-        end,
-      }
-      opts.completion = { completeopt = "menu,menuone,noselect" }
-      opts.mapping = cmp.mapping.preset.insert {
-        ["<C-n>"] = cmp.mapping.select_next_item(),
-        ["<C-p>"] = cmp.mapping.select_prev_item(),
-        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete {},
-        ["<CR>"] = cmp.mapping.confirm {
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = true,
+
+    -- use a release tag to download pre-built binaries
+    version = "1.*",
+    -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+    -- build = 'cargo build --release',
+    -- If you use nix, you can build from source using latest nightly rust with:
+    -- build = 'nix run .#build-plugin',
+
+    ---@module "blink.cmp"
+    ---@type blink.cmp.Config
+    opts = {
+      -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+      -- 'super-tab' for mappings similar to vscode (tab to accept)
+      -- 'enter' for enter to accept
+      -- 'none' for no mappings
+      --
+      -- All presets have the following mappings:
+      -- C-space: Open menu or open docs if already open
+      -- C-n/C-p or Up/Down: Select next/previous item
+      -- C-e: Hide menu
+      -- C-k: Toggle signature help (if signature.enabled = true)
+      --
+      -- See :h blink-cmp-config-keymap for defining your own keymap
+      keymap = {
+        preset = "default",
+        ["<S-Tab>"] = { "select_prev", "fallback" },
+        ["<Tab>"] = { "select_next", "fallback" },
+        ["<Enter>"] = { "select_and_accept", "fallback" },
+      },
+
+      -- (Default) Only show the documentation popup when manually triggered
+      completion = { documentation = { auto_show = false } },
+
+      -- Default list of enabled providers defined so that you can extend it
+      -- elsewhere in your config, without redefining it, due to `opts_extend`
+      sources = {
+        default = { "lsp", "snippets", "buffer", "copilot" },
+
+        providers = {
+          copilot = {
+            name = "copilot",
+            module = "blink-cmp-copilot",
+            score_offset = 100,
+            async = true,
+          },
         },
-        ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          elseif luasnip.expand_or_locally_jumpable() then
-            luasnip.expand_or_jump()
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif luasnip.locally_jumpable(-1) then
-            luasnip.jump(-1)
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-      }
-      opts.sources = {
-        { name = "nvim_lsp" },
-        { name = "copilot", group_index = 2 },
-        { name = "luasnip" },
-        { name = "buffer",
-          option = {
-            get_bufnrs = function()
-              return vim.api.nvim_list_bufs()
-            end,
-            indexing_batch_size = 1200,
-          }
-        },
-        { name = "treesitter" },
-        { name = "lazydev", group_index = 0 }, -- set group index to 0 to skip loading LuaLS completions
-      }
-      opts.formatting = {
-        format = require("lspkind").cmp_format({
-          mode = "symbol_text",
-          preset = "codicons",
-          show_labelDetails = true,
-          maxwidth = { menu = 60, abbr = 60 },
-          ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-          symbol_map = { Copilot = "" },
-        })
-      }
-      opts.window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-      }
-      cmp.event:on(
-        "confirm_done",
-        require("nvim-autopairs.completion.cmp").on_confirm_done()
-      )
-      return opts
-    end
+      },
+
+      signature = { enabled = true },
+
+      -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+      -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+      -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+      --
+      -- See the fuzzy documentation for more information
+      fuzzy = { implementation = "prefer_rust_with_warning" }
+    },
+    opts_extend = { "sources.default" }
   },
 
   -- Useful plugin to show you pending keybinds.
@@ -811,13 +772,6 @@ require("lazy").setup({
     cmd = "Copilot",
     event = "InsertEnter",
     opts = {},
-  },
-
-  {
-    "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
   },
 
   {
@@ -1425,9 +1379,8 @@ local lsp_servers = {
   },
 }
 
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require "mason-lspconfig"
