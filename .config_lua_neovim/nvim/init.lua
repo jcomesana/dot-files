@@ -235,6 +235,7 @@ require("lazy").setup({
       { "<Leader>pr", function() Snacks.picker.pick("grep", { ignored = true, hidden = true }) end, desc = "G[R]ep" },
       { "<Leader>pw", function() Snacks.picker.pick("grep_word", { ignored = true, hidden = true }) end, desc = "Grep [W]ord" },
       { "<Leader>pc", function() Snacks.picker.pick("grep_buffers") end, desc = "Buffers [c]ontent" },
+      { "<Leader>pt", function() Snacks.picker.pick("treesitter") end, desc = "[t]reesitter" },
       { "<Leader>pM", function() Snacks.picker.pick("man") end, desc = "[M]an" },
       { "<Leader>pn", function() Snacks.picker.pick("notifications") end, desc = "[N]otifications" },
       { "<Leader>ph", function() Snacks.picker.pick("help") end, desc = "[H]elp" },
@@ -427,7 +428,17 @@ require("lazy").setup({
     "saghen/blink.cmp",
     -- optional: provides snippets for the snippet source
     dependencies = {
-      "rafamadriz/friendly-snippets",
+      {
+        'L3MON4D3/LuaSnip',
+        build = "make install_jsregexp",
+        version = "v2.*",
+        dependencies = {
+          "rafamadriz/friendly-snippets",
+          config = function()
+            require("luasnip.loaders.from_vscode").lazy_load()
+          end
+        },
+      },
       "giuxtaposition/blink-cmp-copilot",
     },
 
@@ -457,11 +468,22 @@ require("lazy").setup({
         preset = "default",
         ["<S-Tab>"] = { "select_prev", "fallback" },
         ["<Tab>"] = { "select_next", "fallback" },
-        ["<Enter>"] = { "select_and_accept", "fallback" },
+        ["<CR>"] = { "select_and_accept", "fallback" },
+        ["<C-h>"] = { "show_documentation", "hide_documentation", "fallback" },
+        ["<C-s>"] = { "show_signature", "hide_signature", "fallback" },
       },
 
       -- (Default) Only show the documentation popup when manually triggered
-      completion = { documentation = { auto_show = false } },
+      completion = {
+        documentation = {
+          auto_show = true
+        },
+        menu = {
+          draw = {
+            columns = { { "kind_icon", "kind", gap = 1 }, { "label", "label_description", gap = 1 },  },
+          },
+        },
+      },
 
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
@@ -469,6 +491,10 @@ require("lazy").setup({
         default = { "lsp", "snippets", "buffer", "copilot" },
 
         providers = {
+          snippets = {
+            min_keyword_length = 1,
+            score_offset = 4,
+          },
           copilot = {
             name = "copilot",
             module = "blink-cmp-copilot",
@@ -478,7 +504,9 @@ require("lazy").setup({
         },
       },
 
-      signature = { enabled = true },
+      signature = {
+        enabled = true,
+      },
 
       -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
       -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
