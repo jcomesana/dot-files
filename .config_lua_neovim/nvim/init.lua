@@ -476,9 +476,16 @@ require("lazy").setup({
       -- (Default) Only show the documentation popup when manually triggered
       completion = {
         documentation = {
-          auto_show = true
+          auto_show = true,
+          window = {
+            min_width = 20,
+            max_width = 90,
+            max_height = 30,
+            border = "rounded",
+          }
         },
         menu = {
+          border = "rounded",
           draw = {
             columns = { { "kind_icon", "kind", gap = 1 }, { "label", "label_description", gap = 1 },  },
           },
@@ -506,6 +513,9 @@ require("lazy").setup({
 
       signature = {
         enabled = true,
+        window = {
+          border = "rounded",
+        },
       },
 
       -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
