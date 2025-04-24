@@ -705,9 +705,9 @@ require("lazy").setup({
                         color = { fg = "#ff9e64" },
                         on_click = function() vim.cmd("Lazy sync") end
                       },
+                      "searchcount",
                       { "lsp_status", ignore_lsp = { "copilot" } },
                       "copilot",
-                      "searchcount",
                       "encoding",
                       { "fileformat", fmt = function(str) return is_narrow_window() and "" or str end },
                       { "filetype", fmt = function(str) return is_narrow_window() and str:sub(1, 1) or str end },
