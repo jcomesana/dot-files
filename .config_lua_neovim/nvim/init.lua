@@ -434,14 +434,6 @@ require("lazy").setup({
         },
       },
       "giuxtaposition/blink-cmp-copilot",
-      {
-        "xzbdmw/colorful-menu.nvim",
-         config = function()
-          require("colorful-menu").setup({
-            max_width = 80,
-          })
-          end,
-      },
     },
 
     -- use a release tag to download pre-built binaries
@@ -489,17 +481,31 @@ require("lazy").setup({
         menu = {
           border = "rounded",
           draw = {
-            columns = { { "kind_icon", "kind", gap = 1 }, { "label", gap = 1 }, },
+            columns = { { "kind_icon", "kind", gap = 1 }, { "label", "label_description", gap = 1 },  },
             components = {
-              label = {
+              kind_icon = {
                 text = function(ctx)
-                  require("colorful-menu").blink_components_text(ctx)
+                  local kind_icon = ctx.kind_icon
+                  if ctx.kind == "Copilot" then
+                    kind_icon = ""
+                  else
+                    kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                  end
+                  return kind_icon
                 end,
+
                 highlight = function(ctx)
-                  return require("colorful-menu").blink_components_highlight(ctx)
+                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                  return hl
                 end,
               },
-            },
+              kind = {
+                highlight = function(ctx)
+                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                  return hl
+                end,
+              }
+            }
           },
         },
       },
