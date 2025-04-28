@@ -37,8 +37,8 @@ if exists(':GuiFont')
             GuiLinespace 0
         else
             " GuiFont! CaskaydiaCove Nerd Font:h10
+            " GuiLinespace -1
             GuiFont! 0xProto Nerd Font:h10
-            GuiLinespace -1
         endif
     endif
 endif
