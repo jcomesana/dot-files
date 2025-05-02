@@ -935,9 +935,7 @@ vim.o.listchars = "tab:> ,trail:-,extends:>,precedes:<,nbsp:␣"
 vim.o.report = 0
 vim.o.guicursor = "n-v-c:block,i-ci-ve:ver45,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff600-blinkon450-Cursor/lCursor,sm:block-blinkwait175-blinkoff350-blinkon375"
 vim.o.pumwidth = 32
-if vim.fn.has("nvim-0.11") == 1 then
-  vim.o.winborder = "rounded"
-end
+vim.o.winborder = "rounded"
 
 -- Syntax highlighting --
 vim.o.syntax = "ON"
@@ -1241,42 +1239,31 @@ local diagnostic_opts = {
     severity_sort = true,
   },
 }
-if vim.fn.has("nvim-0.11") == 1 then
-  diagnostic_opts["virtual_lines"] = { current_line = true }
-  diagnostic_opts["signs"] = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = diagnostics_signs["Error"],
-      [vim.diagnostic.severity.WARN]  = diagnostics_signs["Warn"],
-      [vim.diagnostic.severity.HINT]  = diagnostics_signs["Hint"],
-      [vim.diagnostic.severity.INFO]  = diagnostics_signs["Info"],
-    },
-    numhl = {
-      [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
-      [vim.diagnostic.severity.WARN]  = "DiagnosticSignWarn",
-      [vim.diagnostic.severity.HINT]  = "DiagnosticSignHint",
-      [vim.diagnostic.severity.INFO]  = "DiagnosticSignInfo",
-    },
-  }
-else
-  for type, icon in pairs(diagnostics_signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-  end
-end
+
+diagnostic_opts["virtual_lines"] = { current_line = true }
+diagnostic_opts["signs"] = {
+  text = {
+    [vim.diagnostic.severity.ERROR] = diagnostics_signs["Error"],
+    [vim.diagnostic.severity.WARN]  = diagnostics_signs["Warn"],
+    [vim.diagnostic.severity.HINT]  = diagnostics_signs["Hint"],
+    [vim.diagnostic.severity.INFO]  = diagnostics_signs["Info"],
+  },
+  numhl = {
+    [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+    [vim.diagnostic.severity.WARN]  = "DiagnosticSignWarn",
+    [vim.diagnostic.severity.HINT]  = "DiagnosticSignHint",
+    [vim.diagnostic.severity.INFO]  = "DiagnosticSignInfo",
+  },
+}
 vim.diagnostic.config(diagnostic_opts)
 
 -- Diagnostic keymaps
-if vim.fn.has("nvim-0.11") == 1 then
-  vim.keymap.set("n", "[d", function ()
-    vim.diagnostic.jump({ count = -1, float = false })
-  end, { desc = "Go to previous diagnostic message" })
-  vim.keymap.set("n", "]d", function ()
-    vim.diagnostic.jump({ count = 1, float = false })
-  end, { desc = "Go to next diagnostic message" })
-else
-  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
-end
+vim.keymap.set("n", "[d", function ()
+  vim.diagnostic.jump({ count = -1, float = false })
+end, { desc = "Go to previous diagnostic message" })
+vim.keymap.set("n", "]d", function ()
+  vim.diagnostic.jump({ count = 1, float = false })
+end, { desc = "Go to next diagnostic message" })
 vim.keymap.set("n", "<Leader>dm", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 vim.keymap.set("n", "<Leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
@@ -1338,10 +1325,6 @@ local on_attach = function(_, bufnr)
   end, { desc = "Format current buffer with LSP" })
 end
 
-if vim.fn.has("nvim-0.11") == 0 then
-  vim.lsp.handlers["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-  vim.lsp.handlers["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
-end
 -- Enable the language servers
 local groovy_lsp_classpath = {}
 if vim.env.GROOVY_HOME then
