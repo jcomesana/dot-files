@@ -886,11 +886,6 @@ require("lazy").setup({
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
--- Editing text --
-vim.o.joinspaces = false
-vim.o.langnoremap = true
-vim.o.langremap = false
-
 -- Spaces and tabs --
 vim.o.tabstop = 8
 vim.o.shiftwidth = 4
