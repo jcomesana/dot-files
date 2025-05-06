@@ -1400,22 +1400,18 @@ local lsp_servers = {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
--- Ensure the servers above are installed
-local mason_lspconfig = require "mason-lspconfig"
-
 vim.g.rustaceanvim = {
   server = {
     cmd = function()
-local mason_registry = require("mason-registry")
-if mason_registry.is_installed("rust-analyzer") then
-	-- This may need to be tweaked depending on the operating system.
-	local ra = mason_registry.get_package("rust-analyzer")
-	local ra_filename = ra:get_receipt():get().links.bin["rust-analyzer"]
-	return { ("%s/%s"):format(ra:get_install_path(), ra_filename or "rust-analyzer") }
-else
-	-- global installation
-	return { "rust-analyzer" }
-end
+      local mason_registry = require("mason-registry")
+      if mason_registry.is_installed("rust-analyzer") then
+	      -- This may need to be tweaked depending on the operating system.
+	      local ra_exe_path = vim.fn.expand("$MASON/bin/rust-analyzer")
+	      return { ra_exe_path }
+      else
+	      -- global installation
+	      return { "rust-analyzer" }
+      end
     end,
     on_attach = on_attach,
   },
@@ -1429,8 +1425,9 @@ end
 for server_name, server_config in pairs(lsp_servers) do
   if server_config.mason or server_config.mason == nil then
     table.insert(lsp_servers_handled_with_mason, server_name)
-  else
-    -- Manualy handled LSP servers
+  end
+  -- Configure the LSP servers
+  if not server_config.skip_lspconfig_setup then
     require("lspconfig")[server_name].setup {
       capabilities = capabilities,
       on_attach = on_attach,
@@ -1444,22 +1441,6 @@ end
 require("mason-tool-installer").setup {
   ensure_installed = lsp_servers_handled_with_mason,
   auto_update = true,
-}
-
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    local server_config = lsp_servers[server_name] or {}
-    if not server_config.skip_lspconfig_setup then
-      require("lspconfig")[server_name].setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = server_config.settings,
-        filetypes = server_config.filetypes,
-        cmd = server_config.cmd,
-        flags = server_config.flags,
-      }
-    end
-  end
 }
 
 -- [[ Configure signify ]]
