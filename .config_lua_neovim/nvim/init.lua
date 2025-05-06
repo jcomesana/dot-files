@@ -433,7 +433,9 @@ require("lazy").setup({
           end
         },
       },
-      "giuxtaposition/blink-cmp-copilot",
+      {
+        "fang2hou/blink-copilot",
+      },
     },
 
     -- use a release tag to download pre-built binaries
@@ -485,13 +487,11 @@ require("lazy").setup({
             components = {
               kind_icon = {
                 text = function(ctx)
-                  local kind_icon = ctx.kind_icon
-                  if ctx.kind == "Copilot" then
-                    kind_icon = ""
-                  else
-                    kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                  local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                  if kind_icon and kind_icon ~= require("mini.icons").get("default", "lsp") then
+                    return kind_icon
                   end
-                  return kind_icon
+                  return ctx.kind_icon
                 end,
 
                 highlight = function(ctx)
@@ -521,10 +521,7 @@ require("lazy").setup({
             score_offset = 4,
           },
           copilot = {
-            name = "copilot",
-            module = "blink-cmp-copilot",
-            score_offset = 100,
-            async = true,
+            module = "blink-copilot",
           },
         },
       },
@@ -827,7 +824,14 @@ require("lazy").setup({
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
-    opts = {},
+    opts = {
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+      filetypes = {
+        markdown = true,
+        help = true,
+      },
+    },
   },
 
   {
@@ -885,11 +889,6 @@ require("lazy").setup({
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
-
--- Editing text --
-vim.o.joinspaces = false
-vim.o.langnoremap = true
-vim.o.langremap = false
 
 -- Spaces and tabs --
 vim.o.tabstop = 8
