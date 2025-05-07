@@ -1428,14 +1428,15 @@ for server_name, server_config in pairs(lsp_servers) do
   end
   -- Configure the LSP servers
   if not server_config.skip_lspconfig_setup then
-    require("lspconfig")[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = (server_config or {}).settings,
-      filetypes = (server_config or {}).filetypes,
-      cmd = (server_config or {}).cmd,
-      flags = (server_config or {}).flags,
-    }
+    vim.lsp.enable(server_name)
+    vim.lsp.config(server_name, {
+                   capabilities = capabilities,
+                   on_attach = on_attach,
+                   settings = (server_config or {}).settings,
+                   filetypes = (server_config or {}).filetypes,
+                   cmd = (server_config or {}).cmd,
+                   flags = (server_config or {}).flags,
+                  })
   end
 end
 require("mason-tool-installer").setup {
