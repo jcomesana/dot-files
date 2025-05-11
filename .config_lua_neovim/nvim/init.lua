@@ -1384,6 +1384,25 @@ local lsp_servers = {
 
   ruff = {
     mason = not is_termux,
+    -- Reference: https://docs.astral.sh/ruff/editors/settings/
+    init_options = {
+      settings = {
+        configurationPreference = "filesystemFirst",
+        lineLength = 200,
+        -- Organize imports on save
+        organizeImports = true,
+        -- Show syntax errors
+        showSyntaxErrors = true,
+        -- Log level
+        logLevel = 'info',
+        fixAll = true,
+        lint = {
+          enable = true,
+          preview = true,
+          select = { "E", "F", "B", "C", "W", "SIM" },
+        },
+      },
+    },
   },
 
   rust_analyzer = {
@@ -1432,6 +1451,7 @@ for server_name, server_config in pairs(lsp_servers) do
     vim.lsp.config(server_name, {
                    capabilities = capabilities,
                    on_attach = on_attach,
+                   init_options = (server_config or {}).init_options,
                    settings = (server_config or {}).settings,
                    filetypes = (server_config or {}).filetypes,
                    cmd = (server_config or {}).cmd,
