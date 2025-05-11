@@ -1399,7 +1399,33 @@ local lsp_servers = {
         lint = {
           enable = true,
           preview = true,
-          select = { "E", "F", "B", "C", "W", "SIM" },
+          select = {
+            -- Reference: https://docs.astral.sh/ruff/rules/
+            "E",   -- pycodestyle
+            "EXE", -- flake8-executable
+            "F",   -- pyflakes
+            "A",   -- flake8-builtins
+            "B",   -- flake8-bugbear
+            "W",   -- pycodestyle
+            "D",   -- pydocstyle
+            "PGH", -- pygrep-hooks
+            "PIE", -- flake8-pie
+            "YTT", -- flake8-2020
+            "PLC", -- pylint
+            "PLE", -- pylint
+            "PLR", -- pylint
+            "PLW", -- pylint
+            "RUF", -- ruff rules
+            "SIM", -- flake8-simplify
+            "UP",  -- pyupgrade
+          },
+          ignore = {
+            "D105", -- Missing docstring in magic method
+            "D107", -- Missing docstring in __init__
+            "D200", -- One-line docstring should fit within a single line
+            "D212", -- Multi-line docstring summary should start at the first line
+            "SIM102", -- Use single if statement
+          },
         },
       },
     },
