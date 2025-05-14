@@ -513,7 +513,7 @@ require("lazy").setup({
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { "lsp", "snippets", "buffer", "copilot" },
+        default = { "buffer", "omni", "snippets", "buffer", "lsp", "copilot" },
 
         providers = {
           snippets = {
