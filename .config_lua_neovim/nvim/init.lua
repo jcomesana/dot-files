@@ -516,6 +516,10 @@ require("lazy").setup({
         default = { "buffer", "omni", "snippets", "buffer", "lsp", "copilot" },
 
         providers = {
+          lsp = {
+            async = true,
+            timeout_ms = 1000,
+          },
           snippets = {
             min_keyword_length = 1,
             score_offset = 4,
