@@ -306,8 +306,10 @@ require("lazy").setup({
 
   -- To surround words, lines with " or [
   {
-    "machakann/vim-sandwich",
+    "echasnovski/mini.surround",
+    version = "*",
     event = "InsertEnter",
+    opts = {}
   },
 
   -- To close html or xml tags
