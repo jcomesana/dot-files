@@ -1497,6 +1497,15 @@ require("mason-tool-installer").setup {
   auto_update = true,
 }
 
+-- autocmd to stop the LSPs on leave
+local leavepre_group = vim.api.nvim_create_augroup("leavepre_group", { clear = true })
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = function()
+    vim.iter(vim.lsp.get_clients()):each(function(client) client:stop() end)
+  end,
+  group = leavepre_group,
+})
+
 -- [[ Configure signify ]]
 vim.g["signify_sign_add"]               = "+"
 vim.g["signify_sign_delete"]            = "-"
