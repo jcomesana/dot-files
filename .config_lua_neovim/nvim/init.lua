@@ -1043,10 +1043,10 @@ vim.keymap.set("n", "<Leader>in", ":vsplit<CR>:bnext<CR>", { noremap = true, sil
 vim.keymap.set("n", "<Leader>ip", ":vsplit<CR>:bprevious<CR>", { noremap = true, silent = false, desc = "[V]ertical window split & [P]revious buffer" })
 
 -- Remove empty lines
-vim.keymap.set("n", "<Leader>se", ":g/^$/d<CR>", { noremap = true, silent = false, desc = "Remove [E]mpty lines" })
+vim.keymap.set("n", "<Leader>se", ":g/^$/d<CR>:noh<CR>", { noremap = true, silent = false, desc = "Remove [E]mpty lines" })
 
 -- Remove leading spaces
-vim.keymap.set("n", "<Leader>sb", ":%s/^\\s\\+//ge<CR>", { noremap = true, silent = false, desc = "Remove spaces at the [B]egining of the line" })
+vim.keymap.set("n", "<Leader>sb", ":%s/^\\s\\+//ge<CR>:noh<CR>", { noremap = true, silent = false, desc = "Remove spaces at the [B]egining of the line" })
 
 -- Keymaps for P4 operations
 vim.keymap.set("n", "<Leader>p4a", ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [a]dd" })
@@ -1496,6 +1496,15 @@ require("mason-tool-installer").setup {
   ensure_installed = lsp_servers_handled_with_mason,
   auto_update = true,
 }
+
+-- autocmd to stop the LSPs on leave
+local leavepre_group = vim.api.nvim_create_augroup("leavepre_group", { clear = true })
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = function()
+    vim.iter(vim.lsp.get_clients()):each(function(client) client:stop() end)
+  end,
+  group = leavepre_group,
+})
 
 -- [[ Configure signify ]]
 vim.g["signify_sign_add"]               = "+"
