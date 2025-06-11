@@ -473,6 +473,9 @@ require("lazy").setup({
 
       -- (Default) Only show the documentation popup when manually triggered
       completion = {
+        accept = {
+          dot_repeat = false, -- Workaround for some glitches with neovide, it should be fixed in the version after 0.15.0
+        },
         documentation = {
           auto_show = true,
           window = {
@@ -480,7 +483,7 @@ require("lazy").setup({
             max_width = 90,
             max_height = 30,
             border = "rounded",
-          }
+          },
         },
         menu = {
           border = "rounded",
