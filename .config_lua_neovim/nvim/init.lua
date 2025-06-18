@@ -513,6 +513,9 @@ require("lazy").setup({
             }
           },
         },
+        trigger = {
+          show_on_insert = true,
+        },
       },
 
       -- Default list of enabled providers defined so that you can extend it
