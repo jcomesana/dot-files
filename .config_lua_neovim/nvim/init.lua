@@ -853,7 +853,18 @@ require("lazy").setup({
   {
     "olimorris/codecompanion.nvim",
     opts = {
-      send_code = false,
+      opts = {
+        send_code = false,
+      },
+
+      strategies = {
+        chat = {
+          adapter = {
+            name = "copilot",
+            model = "gpt-4.1",
+          },
+        },
+      },
     },
   },
 
