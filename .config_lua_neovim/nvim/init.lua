@@ -1059,6 +1059,9 @@ vim.keymap.set("n", "<Leader>se", ":g/^$/d<CR>:noh<CR>", { noremap = true, silen
 -- Remove leading spaces
 vim.keymap.set("n", "<Leader>sb", ":%s/^\\s\\+//ge<CR>:noh<CR>", { noremap = true, silent = false, desc = "Remove spaces at the [B]egining of the line" })
 
+-- Remove empty lines and leading spaces and copy the buffer
+vim.keymap.set("n", "<Leader>s,", ":g/^$/d<CR>:%s/^\\s\\+//ge<CR>:noh<CR>:%y<CR>", { noremap = true, silent = false, desc = "Remove empty lines, leading spaces and copy" })
+
 -- Keymaps for P4 operations
 vim.keymap.set("n", "<Leader>p4a", ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [a]dd" })
 vim.keymap.set("n", "<Leader>p4e", ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [e]dit" })
@@ -1072,6 +1075,9 @@ vim.keymap.set("n", "<Leader>wk", "<CMD>WhichKey<CR>", { noremap = true, silent 
 
 -- Make current file executable
 vim.keymap.set("n", "<Leader>sx", ":!chmod +x %<CR>", { noremap = true, silent = false, desc = "Make current [S]cript e[X]ecutable" })
+
+-- Start CodeCompanionChat
+vim.keymap.set("n", "<Leader>cc", ":CodeCompanionChat<CR>", { noremap = true, silent = false, desc = "Open [C]ode[C]ompanionChat" })
 
 -- Custom commands
 -- CDC = Change to Directory of Current file
