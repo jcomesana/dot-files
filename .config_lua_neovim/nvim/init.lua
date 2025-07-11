@@ -393,6 +393,15 @@ require("lazy").setup({
   },
 
   {
+    -- Show beginning of a code block as virtual text
+    "code-biscuits/nvim-biscuits",
+    opts = {
+      cursor_line_only = true,
+      min_distance = 8,
+    },
+  },
+
+  {
     -- Integrates linters with the diagnostics system
     "nvimtools/none-ls.nvim",
     event = "VeryLazy",
@@ -890,10 +899,17 @@ require("lazy").setup({
     ft = "log"
   },
   {
-    'mrcjkb/rustaceanvim',
+    "mrcjkb/rustaceanvim",
     version = '^6', -- Recommended
     lazy = false, -- This plugin is already lazy
   },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    opts = {
+    },
+    ft = "markdown",
+  },
+
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
