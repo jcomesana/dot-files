@@ -1408,6 +1408,7 @@ local lsp_servers = {
   },
 
   basedpyright = {
+    mason = not is_termux,
     filetypes = { "python" },
     settings = {
       -- Reference: https://docs.basedpyright.com/v1.29.1/configuration/language-server-settings/
