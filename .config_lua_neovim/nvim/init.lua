@@ -895,6 +895,15 @@ require("lazy").setup({
     ft = "python"
   },
   {
+    "benomahony/uv.nvim",
+    opts = {
+      picker_integration = true,
+      keymaps = {
+        prefix = "<leader>uv",
+      },
+    },
+  },
+  {
     "MTDL9/vim-log-highlighting",
     ft = "log"
   },
