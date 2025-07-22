@@ -682,6 +682,7 @@ require("lazy").setup({
   {
     "eldritch-theme/eldritch.nvim",
     priority = 1000,
+    opts = {},
   },
   {
     "embark-theme/vim",
