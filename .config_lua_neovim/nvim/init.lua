@@ -1105,6 +1105,9 @@ vim.keymap.set("n", "<Leader>sx", ":!chmod +x %<CR>", { noremap = true, silent =
 -- Start CodeCompanionChat
 vim.keymap.set("n", "<Leader>cc", ":CodeCompanionChat<CR>", { noremap = true, silent = false, desc = "Open [C]ode[C]ompanionChat" })
 
+-- Go to normal mode in the terminal with Ctrl-Esc
+vim.keymap.set("t", "<C-Esc>", "<C-\\><C-n>", { desc = "Go to normal mode in terminal" })
+
 -- Custom commands
 -- CDC = Change to Directory of Current file
 vim.api.nvim_create_user_command("CDC", "cd %:p:h", {})
