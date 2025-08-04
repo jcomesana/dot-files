@@ -1042,6 +1042,9 @@ vim.g["loaded_ruby_provider"] = false
 vim.g["python3_host_prog"] = "python3"
 vim.g["python_recommended_style"] = 0
 
+-- Diasable Snacks.nvim animations
+vim.g.snacks_animate = false
+
 -- [[ Keymaps ]]
 
 -- remaps for dealing with word wrap
