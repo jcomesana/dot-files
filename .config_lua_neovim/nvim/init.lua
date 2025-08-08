@@ -867,10 +867,6 @@ require("lazy").setup({
   {
     "olimorris/codecompanion.nvim",
     opts = {
-      opts = {
-        send_code = false,
-      },
-
       strategies = {
         chat = {
           adapter = {
@@ -923,6 +919,7 @@ require("lazy").setup({
   {
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {
+      heading = { position = "inline" },
     },
     ft = { "markdown", "codecompanion" }
   },
