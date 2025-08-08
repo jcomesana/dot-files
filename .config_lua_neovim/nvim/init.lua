@@ -532,6 +532,10 @@ require("lazy").setup({
       sources = {
         default = { "buffer", "omni", "snippets", "buffer", "lsp", "copilot" },
 
+        per_filetype = {
+          codecompanion = { "codecompanion" },
+        },
+
         providers = {
           lsp = {
             async = true,
@@ -874,6 +878,9 @@ require("lazy").setup({
             model = "gpt-4.1",
           },
         },
+        inline = {
+          adapter = "copilot"
+        },
       },
     },
   },
@@ -917,7 +924,7 @@ require("lazy").setup({
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {
     },
-    ft = "markdown",
+    ft = { "markdown", "codecompanion" }
   },
 
 
@@ -1106,7 +1113,7 @@ vim.keymap.set("n", "<Leader>wk", "<CMD>WhichKey<CR>", { noremap = true, silent 
 vim.keymap.set("n", "<Leader>sx", ":!chmod +x %<CR>", { noremap = true, silent = false, desc = "Make current [S]cript e[X]ecutable" })
 
 -- Start CodeCompanionChat
-vim.keymap.set("n", "<Leader>cc", ":CodeCompanionChat<CR>", { noremap = true, silent = false, desc = "Open [C]ode[C]ompanionChat" })
+vim.keymap.set("n", "<Leader>cc", ":CodeCompanionChat Toggle<CR>", { noremap = true, silent = false, desc = "Toggle [C]ode[C]ompanionChat" })
 
 -- Go to normal mode in the terminal with Ctrl-Esc
 vim.keymap.set("t", "<C-Esc>", "<C-\\><C-n>", { desc = "Go to normal mode in terminal" })
@@ -1214,7 +1221,9 @@ vim.defer_fn(function()
 ---@diagnostic disable-next-line: missing-fields
   require("nvim-treesitter.configs").setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { "c", "cmake", "cpp", "dockerfile", "groovy", "html", "java", "json", "kotlin", "lua", "python", "regex", "rust", "swift", "toml", "vimdoc", "vim", "xml", "yaml", "yang" },
+    ensure_installed = { "c", "cmake", "cpp", "dockerfile", "groovy", "html", "java", "json",
+                         "kotlin", "lua", "markdown", "markdown_inline", "python", "regex",
+                         "rust", "swift", "toml", "vimdoc", "vim", "xml", "yaml", "yang" },
 
     auto_install = false,
     sync_install = false,
