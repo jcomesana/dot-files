@@ -119,7 +119,7 @@ require("lazy").setup({
         enabled = true,
         width= 54,
         preset = {
-          header = " Neovim v" .. tostring(vim.version()),
+          header = string.format(" Neovim v%s", vim.version()),
           ---@type snacks.dashboard.Item[]
           keys = {
             { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files', { ignored = true, hidden = true })" },
@@ -333,18 +333,13 @@ require("lazy").setup({
     opts = {}
   },
 
-  -- Better handling of dangling spaces
   {
-    "cappyzawa/trim.nvim",
+    "echasnovski/mini.trailspace",
+    version = "*",
+    event = "BufReadPost",
     opts = {
-      ft_blocklist = { "markdown", "oil" },
-      highlight = true,
-      trim_on_write = false,
-      trim_trailing = true,
-      trim_last_line = true,
-      trim_first_line = true,
-    },
-    event = "VeryLazy",
+      only_in_normal_buffers = true,
+    }
   },
 
   -- To diff specific parts of 2 files
@@ -1582,8 +1577,15 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 vim.keymap.set("n", "<Leader>od", "<CMD>Oil " .. vim.fn.stdpath("data") .. "<CR>", { desc = "Open [D]ata directory" })
 vim.keymap.set("n", "<Leader>ol", "<CMD>Oil " .. vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") .. "<CR>", { desc = "Open [L]azy data directory" })
 
--- [[ Configure trim.nvim ]]
-vim.keymap.set("n", "<Leader>st", "<CMD>Trim<CR>", { noremap = true, silent = true, desc = "Trim [T]railing whitespace" })
+-- [[ Configure mini.trailspace ]]
+vim.keymap.set('n', '<Leader>st', function ()
+  require('mini.trailspace').setup()
+  MiniTrailspace.trim()
+end, { noremap = true, silent = false, desc = 'Trim [T]railing whitespace' })
+vim.keymap.set('n', '<Leader>sl', function ()
+  require('mini.trailspace').setup()
+  MiniTrailspace.trim_last_lines()
+end, { noremap = true, silent = false, desc = 'Trim [L]ast empty lines' })
 
 -- [[ Configure persisted.nvim ]]
 
