@@ -306,7 +306,7 @@ require("lazy").setup({
 
   -- To surround words, lines with " or [
   {
-    "echasnovski/mini.surround",
+    "nvim-mini/mini.surround",
     version = "*",
     event = "InsertEnter",
     opts = {}
@@ -334,7 +334,7 @@ require("lazy").setup({
   },
 
   {
-    "echasnovski/mini.trailspace",
+    "nvim-mini/mini.trailspace",
     version = "*",
     event = "BufReadPost",
     opts = {
@@ -662,7 +662,7 @@ require("lazy").setup({
 
   -- nvim-web-devicons
   { "nvim-tree/nvim-web-devicons" },
-  { "echasnovski/mini.icons", opts = {} },
+  { "nvim-mini/mini.icons", opts = {} },
 
   -- Colorschemes
   {
