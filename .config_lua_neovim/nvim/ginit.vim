@@ -103,4 +103,5 @@ if exists("g:neovide")
     let g:neovide_cursor_animation_length = 0.04
     let g:neovide_cursor_trail_size = 0.1
     let g:neovide_input_macos_option_key_is_meta = 'only_left'
+    let g:neovide_show_border = v:true
 endif
