@@ -1166,6 +1166,18 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 require("fzf-lua").setup({
   "fzf-native",
   fzf_colors = true,
+  fzf_opts = {
+      ["--no-scrollbar"] = false,
+      ["--cycle"] = true,
+      ["--ansi"] = true,
+      ["--height"] = "100%",
+      ["--highlight-line"] = true,
+  },
+  winopts = {
+      -- fullscreen = "true",
+      height = 0.95,
+      width = 0.95,
+  },
   grep = {
     rg_opts = "--no-ignore-vcs " .. require("fzf-lua").defaults.grep.rg_opts
   },
