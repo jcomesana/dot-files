@@ -911,14 +911,6 @@ require("lazy").setup({
     version = '^6', -- Recommended
     lazy = false, -- This plugin is already lazy
   },
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    opts = {
-      heading = { position = "inline" },
-    },
-    ft = { "markdown", "codecompanion" }
-  },
-
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
