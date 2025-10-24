@@ -835,6 +835,17 @@ require("lazy").setup({
   },
 
   {
+    -- To change the size of the font in the GUI
+    "tenxsoydev/size-matters.nvim",
+    opts = {
+      default_mappings = false,
+      reset_font = vim.api.nvim_get_option_value("guifont", { scope = "global" }),
+    },
+    config = true,
+    cond = vim.fn.has("gui_running") == 1,
+  },
+
+  {
     -- GUI shim
     "equalsraf/neovim-gui-shim",
     cond = vim.fn.has("gui_running") == 1,
@@ -1749,6 +1760,17 @@ vim.api.nvim_create_autocmd("User", {
       end
     end,
 })
+
+-- [[ Configuration for size-matters ]]
+if vim.fn.has("gui_running") == 1 then
+  local size_matters = require("size-matters")
+	vim.keymap.set("n", "<C-=>", function() size_matters.update_font "grow" end, { desc = "Increase font size" })
+	vim.keymap.set("n", "<C-S-+>", function() size_matters.update_font "grow" end, { desc = "Increase font size" })
+	vim.keymap.set("n", "<C-->", function() size_matters.update_font "shrink" end, { desc = "Decrease font size" })
+	vim.keymap.set("n", "<C-ScrollWheelUp>", function() size_matters.update_font "grow" end, { desc = "Increase font size" })
+	vim.keymap.set("n", "<C-ScrollWheelDown>", function() size_matters.update_font "shrink" end, { desc = "Decrease font size" })
+	vim.keymap.set("n", "<C-S-!>", size_matters.reset_font, { desc = "Reset to default font" })
+end
 
 -- [[ random colorscheme ]]
 
