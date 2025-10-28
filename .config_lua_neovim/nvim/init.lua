@@ -376,6 +376,25 @@ require("lazy").setup({
   },
 
   {
+    -- different inline diagnostic display
+      "rachartier/tiny-inline-diagnostic.nvim",
+      event = "VeryLazy",
+      priority = 1000,
+      config = function()
+          require("tiny-inline-diagnostic").setup({
+            options = {
+              -- Display the source of diagnostics (e.g., "lua_ls", "pyright")
+              show_source = {
+                enabled = true,           -- Enable showing source names
+                if_many = false,           -- Only show source if multiple sources exist for the same diagnostic
+              },
+            }
+          })
+          vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+      end,
+  },
+
+  {
     -- For using LuaLS with neovim config files
     "folke/lazydev.nvim",
     ft = "lua",
@@ -1276,7 +1295,7 @@ local diagnostic_opts = {
   },
 }
 
-diagnostic_opts["virtual_lines"] = { current_line = true }
+diagnostic_opts["virtual_lines"] = false -- { current_line = true }
 diagnostic_opts["signs"] = {
   text = {
     [vim.diagnostic.severity.ERROR] = diagnostics_signs["Error"],
