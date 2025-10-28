@@ -89,7 +89,9 @@ endif
 
 " Settings for neovide
 if exists("g:neovide")
-    if has('win32')
+    if !empty($NVIM_GUI_FONT)
+        execute 'set guifont=' . substitute($NVIM_GUI_FONT, ' ', '\\ ', 'g')
+    elseif has('win32')
         " set guifont=CaskaydiaCove\ Nerd\ Font:h8
         set guifont=0xProto\ Nerd\ Font:h8
     elseif has('macunix')
