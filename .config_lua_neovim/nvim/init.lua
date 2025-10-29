@@ -1284,7 +1284,7 @@ end, 0)
 local diagnostic_opts = {
   virtual_text = true,
   signs = true,
-  underline = false,
+  underline = true,
   update_in_insert = false,
   severity_sort = true,
   float = {
