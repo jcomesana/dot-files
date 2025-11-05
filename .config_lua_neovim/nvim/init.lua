@@ -352,15 +352,6 @@ require("lazy").setup({
   },
 
   {
-    -- Show beginning of a code block as virtual text
-    "code-biscuits/nvim-biscuits",
-    opts = {
-      cursor_line_only = true,
-      min_distance = 8,
-    },
-  },
-
-  {
     -- Integrates linters with the diagnostics system
     "nvimtools/none-ls.nvim",
     event = "VeryLazy",
