@@ -1584,6 +1584,7 @@ local function get_session_name_and_branch(session_file)
   local file = session_file:sub(#persisted_config.save_dir + 1, -5)
   local dir_path, branch = unpack(vim.split(file, "@@", { plain = true }))
   dir_path = dir_path:gsub("%%", "/")
+  branch = branch:gsub("%%", "/")
   if jit.os:find("Windows") then
     dir_path = dir_path:gsub("^(%w)/", "%1:/")
   end
