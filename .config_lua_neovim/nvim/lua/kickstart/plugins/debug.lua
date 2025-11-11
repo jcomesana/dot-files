@@ -91,8 +91,17 @@ return {
       -- You'll need to check that you have the required things installed
       -- online, please don't ask me how to install them :)
       ensure_installed = {
+        "codelldb", -- C/C++ and Rust
         "python",
       },
+    }
+
+    dap.adapters.codelldb = {
+      type = "executable",
+      command = "codelldb",
+
+      -- On windows you may have to uncomment this:
+      -- detached = false,
     }
 
     -- Dap UI setup
