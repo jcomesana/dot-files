@@ -896,6 +896,10 @@ require("lazy").setup({
     version = '^6', -- Recommended
     lazy = false, -- This plugin is already lazy
   },
+  {
+    "davidmh/mdx.nvim",
+    config = true,
+  },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
