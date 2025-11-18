@@ -13,6 +13,26 @@ local diagnostics_signs = { Error = "", Warn = " ", Hint = "", Info = "
 -- To detect if it is running on termux
 local is_termux = not not vim.env.TERMUX_APP_PID
 
+-- Idea from https://github.com/folke/snacks.nvim/discussions/111#discussioncomment-13107994
+local function dashboard_status_section()
+  local custom_status = {
+		align = "center",
+		padding = 1,
+		text = {
+			{ "  ", hl = "special" },
+			{ vim.g.colors_name or "" },
+		},
+	}
+
+
+  local lazy_status = require("lazy.status")
+	if lazy_status.updates() then
+	  table.insert(custom_status.text, { " / Plugin updates ", hl = "special" })
+	  table.insert(custom_status.text, { lazy_status.updates() })
+	end
+	return custom_status
+end
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -76,7 +96,6 @@ require("lazy").setup({
           vim.bo[ctx.buf].swapfile = false
           vim.cmd([[NoMatchParen]])
           Snacks.util.wo(0, { foldmethod = "manual", statuscolumn = "", conceallevel = 0 })
-          -- require("cmp").setup({ enabled = false })
         end,
       },
       dashboard = {
@@ -90,7 +109,6 @@ require("lazy").setup({
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             { icon = " ", key = "t", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep', { ignored = true, hidden = true })" },
             { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
-            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
             { icon = "󰁜 ", key = "S", desc = "Select Session", action = ":PickerSessions" },
             {
               icon = "󰊢 ",
@@ -108,6 +126,7 @@ require("lazy").setup({
         sections = {
           { section = "header" },
           { section = "startup", padding = 1 },
+          dashboard_status_section,
           { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
           {
             icon = " ",
@@ -119,7 +138,7 @@ require("lazy").setup({
             cmd = "git status --short --branch --renames",
             height = 5,
             padding = 1,
-            ttl = 5 * 60,
+            ttl = 3 * 60,
             indent = 2,
           },
         },
@@ -1814,6 +1833,20 @@ local function select_colorscheme()
   -- Snacks.notify.info(("  `%s`"):format(colorschemes_table[selected_index]), { title = "colorscheme" })
 end
 select_colorscheme()
+
+local dashboard_update_callback = function()
+  require("snacks").dashboard.update()
+end
+local dashboard_update_group = vim.api.nvim_create_augroup("dashboard_update", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+  pattern = { "LazyCheck", "LazyVimStarted" },
+	callback = dashboard_update_callback,
+  group = dashboard_update_group,
+})
+vim.api.nvim_create_autocmd({ "ColorScheme" }, {
+	callback = dashboard_update_callback,
+  group = dashboard_update_group,
+})
 
 -- Fix for neovide on macOS
 if vim.fn.exists("g.neovide") and vim.fn.has("macunix") == 1 then
