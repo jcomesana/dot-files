@@ -1839,7 +1839,7 @@ local dashboard_update_callback = function()
 end
 local dashboard_update_group = vim.api.nvim_create_augroup("dashboard_update", { clear = true })
 vim.api.nvim_create_autocmd("User", {
-  pattern = { "LazyCheck", "LazyVimStarted" },
+  pattern = { "LazyCheck", "LazyUpdate", "LazySync", "LazyVimStarted" },
 	callback = dashboard_update_callback,
   group = dashboard_update_group,
 })
