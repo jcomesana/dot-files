@@ -1164,8 +1164,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- [[ Configure fzf-lua ]]
 require("fzf-lua").setup({
-  "fzf-native",
-  fzf_colors = true,
   fzf_opts = {
       ["--no-scrollbar"] = false,
       ["--cycle"] = true,
@@ -1808,6 +1806,8 @@ local function select_colorscheme()
     "dayfox",
     "dawnfox",
     "midnightgreen",
+    "ef-cyprus",
+    "ef-day",
     "ef-deuteranopia-light",
     "ef-duo-light",
     "ef-light",
