@@ -688,15 +688,15 @@ require("lazy").setup({
     opts = {},
   },
   {
-    "oonamo/ef-themes.nvim",
-    priority = 1000,
-  },
-  {
     "sainnhe/everforest",
     priority = 1000,
   },
   {
     "EdenEast/nightfox.nvim",
+    priority = 1000,
+  },
+  {
+    "uhs-robert/oasis.nvim",
     priority = 1000,
   },
 
@@ -1806,15 +1806,6 @@ local function select_colorscheme()
     "dayfox",
     "dawnfox",
     "midnightgreen",
-    "ef-cyprus",
-    "ef-day",
-    "ef-deuteranopia-light",
-    "ef-duo-light",
-    "ef-light",
-    "ef-owl",
-    "ef-reverie",
-    "ef-summer",
-    "ef-trio-light",
   }
 
   local color_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim", false, true)
