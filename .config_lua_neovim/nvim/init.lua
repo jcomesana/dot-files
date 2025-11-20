@@ -625,20 +625,6 @@ require("lazy").setup({
           desc = "Grep files with fzf-lua",
           mode = "n"
         },
-        ["\\oF"] = {
-          callback = function()
-            Snacks.picker("files", { cwd = require("oil").get_current_dir(), ignored = true, hidden = true })
-          end,
-          desc = "Find files with Snacks.picker",
-          mode = "n"
-        },
-        ["\\oG"] = {
-          callback = function()
-            Snacks.picker("grep", { cwd = require("oil").get_current_dir(), ignored = true, hidden = true })
-          end,
-          desc = "Grep files with Snacks.picker",
-          mode = "n"
-        },
       },
     }
   },
@@ -1176,8 +1162,14 @@ require("fzf-lua").setup({
       height = 0.95,
       width = 0.95,
   },
+  files = {
+    hidden = true,
+    no_ignore = true,
+  },
   grep = {
-    rg_opts = "--no-ignore-vcs " .. require("fzf-lua").defaults.grep.rg_opts
+    hidden = true,
+    no_ignore = true,
+    rg_opts = "--no-ignore-vcs --hidden " .. require("fzf-lua").defaults.grep.rg_opts
   },
   lsp = {
     -- make lsp requests synchronous so they work with null-ls
@@ -1189,6 +1181,7 @@ vim.keymap.set("n", "<Leader>ff", require("fzf-lua").files, { desc = "FZF Files"
 vim.keymap.set("n", "<Leader>fF", function()
   return require("fzf-lua").files({ cmd = "fd --hidden --no-ignore-vcs --exclude .git/ " .. vim.fn.expand("<cword>") })
 end, { desc = "[F]iles under cursor" })
+vim.keymap.set("n", "<Leader>fb", require("fzf-lua").buffers, { desc = "[B]uffers" })
 vim.keymap.set("n", "<Leader>fo", require("fzf-lua").oldfiles, { desc = "Recent or [O]ld files" })
 vim.keymap.set("n", "<Leader>fr", require("fzf-lua").grep, { desc = "G[R]ep" })
 vim.keymap.set("n", "<Leader>fv", require("fzf-lua").grep_visual, { desc = "Grep [V]isual selection" })
