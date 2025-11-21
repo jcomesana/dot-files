@@ -210,20 +210,10 @@ require("lazy").setup({
       { "<Leader>wp", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
       { "<Leader>s.", function() Snacks.scratch() end, desc = "Toggle [S]cratch Buffer" },
       { "<Leader>ss", function() Snacks.scratch.select() end, desc = "[S]elect a [S]cratch Buffer" },
-      { "<Leader>pff", function() Snacks.picker.pick("files", { ignored = true, hidden = true }) end, desc = "[f]iles" },
-      { "<Leader>pfr", function() Snacks.picker.pick("recent") end, desc = "[r]ecent [f]iles" },
-      { "<Leader>pF", function() Snacks.picker.pick("files", { args = { vim.fn.expand("<cword>") }, ignored = true, hidden = true }) end, desc = "[F]ile under the cursor" },
-      { "<Leader>pb", function() Snacks.picker.pick("buffers", { current = false }) end, desc = "[B]uffers" },
       { "<Leader>b", function() Snacks.picker.pick("buffers", { current = false }) end, desc = "[B]uffers" },
-      { "<Leader>pr", function() Snacks.picker.pick("grep", { ignored = true, hidden = true }) end, desc = "G[R]ep" },
-      { "<Leader>pw", function() Snacks.picker.pick("grep_word", { ignored = true, hidden = true }) end, desc = "Grep [W]ord" },
-      { "<Leader>pc", function() Snacks.picker.pick("grep_buffers") end, desc = "Buffers [c]ontent" },
-      { "<Leader>pt", function() Snacks.picker.pick("treesitter") end, desc = "[t]reesitter" },
-      { "<Leader>pM", function() Snacks.picker.pick("man") end, desc = "[M]an" },
       { "<Leader>pn", function() Snacks.picker.pick("notifications") end, desc = "[N]otifications" },
-      { "<Leader>ph", function() Snacks.picker.pick("help") end, desc = "[H]elp" },
-      { "<Leader>pi", function() Snacks.picker.pick("icons", { icon_sources = { "nerd_fonts" } }) end, desc = "[I]cons" },
-      { "<Leader>pgb", function() Snacks.picker.pick("git_branches",
+      { "<Leader>fi", function() Snacks.picker.pick("icons", { icon_sources = { "nerd_fonts" } }) end, desc = "[I]cons" },
+      { "<Leader>fgb", function() Snacks.picker.pick("git_branches",
           {
             all = true,
             win = {
@@ -239,9 +229,6 @@ require("lazy").setup({
               yank_branch = { action = "yank", field = "branch" }
             },
           }) end, desc = "[G]it [B]ranches" },
-      { "<Leader>pgs", function() Snacks.picker.pick("git_status") end, desc = "[G]it [S]tatus" },
-      { "<Leader>pl", function() Snacks.picker.pick("loclist") end, desc = "[L]oc[L]ist" },
-      { "<Leader>pq", function() Snacks.picker.pick("qflist") end, desc = "[Q]flist" },
       { "<Leader>pm", function() Snacks.picker.pick("resume") end, desc = "Resu[m]e last query" },
     },
   },
@@ -1194,7 +1181,7 @@ vim.keymap.set("n", "<Leader>fw", require("fzf-lua").grep_cword, { desc = "Ripgr
 vim.keymap.set("n", "<Leader>fc", require("fzf-lua").lines, { desc = "FZF Lines of open buffers" })
 vim.keymap.set("n", "<Leader>fgc", require("fzf-lua").git_commits, { desc = "[G]it [C]ommits" })
 vim.keymap.set("n", "<Leader>fgh", require("fzf-lua").git_bcommits, { desc = "[G]it buffer commits ([H]istory)" })
-vim.keymap.set("n", "<Leader>fgb", require("fzf-lua").git_branches, { desc = "[G]it [B]ranches" })
+-- vim.keymap.set("n", "<Leader>fgb", require("fzf-lua").git_branches, { desc = "[G]it [B]ranches" })
 vim.keymap.set("n", "<Leader>fgf", require("fzf-lua").git_files, { desc = "[G]it [F]iles" })
 vim.keymap.set("n", "<Leader>fgs", require("fzf-lua").git_status, { desc = "[G]it [S]tatus" })
 vim.keymap.set("n", "<Leader>fd", require("fzf-lua").diagnostics_workspace, { desc = "[D]iagnostics" })
