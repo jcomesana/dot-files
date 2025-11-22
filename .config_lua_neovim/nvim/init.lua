@@ -105,10 +105,10 @@ require("lazy").setup({
           header = string.format(" Neovim v%s", vim.version()),
           ---@type snacks.dashboard.Item[]
           keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files', { ignored = true, hidden = true })" },
+            { icon = " ", key = "f", desc = "Find File", action = ":lua require('fzf-lua').files()" },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-            { icon = " ", key = "t", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep', { ignored = true, hidden = true })" },
-            { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
+            { icon = " ", key = "t", desc = "Find Text", action = ":lua require('fzf-lua').live_grep_native()" },
+            { icon = " ", key = "r", desc = "Recent Files", action = ":lua require('fzf-lua').oldfiles()" },
             { icon = "󰁜 ", key = "S", desc = "Select Session", action = ":PickerSessions" },
             {
               icon = "󰊢 ",
