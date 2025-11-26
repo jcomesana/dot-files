@@ -20,7 +20,7 @@ local function dashboard_custom_header()
 		padding = 1,
 		text = {
 			{ "  ", hl = "special" },
-      { string.format("neovim v%s", vim.version()) },
+      { string.format("Neovim v%s", vim.version()) },
 			{ "  ", hl = "special" },
 			{ vim.g.colors_name or "" },
 		},
@@ -627,11 +627,6 @@ require("lazy").setup({
 
   -- Colorschemes
   {
-    -- Theme inspired by Atom
-    "navarasu/onedark.nvim",
-    priority = 1000,
-  },
-  {
     "bluz71/vim-nightfly-guicolors",
     priority = 1000,
   },
@@ -833,6 +828,7 @@ require("lazy").setup({
 
   {
     "olimorris/codecompanion.nvim",
+    version = "17.*",
     opts = {
       strategies = {
         chat = {
@@ -1782,8 +1778,8 @@ local function select_colorscheme()
     "dawnfox",
     "midnightgreen",
     "oasis-day",
-    "oasys-dawnlight",
-    "oasys-dust",
+    "oasis-dawnlight",
+    "oasis-dust",
   }
 
   local color_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim", false, true)
