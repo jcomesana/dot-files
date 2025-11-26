@@ -14,23 +14,19 @@ local diagnostics_signs = { Error = "", Warn = " ", Hint = "", Info = "
 local is_termux = not not vim.env.TERMUX_APP_PID
 
 -- Idea from https://github.com/folke/snacks.nvim/discussions/111#discussioncomment-13107994
-local function dashboard_status_section()
-  local custom_status = {
+local function dashboard_custom_header()
+  local custom_header = {
 		align = "center",
 		padding = 1,
 		text = {
+			{ "  ", hl = "special" },
+      { string.format("neovim v%s", vim.version()) },
 			{ "  ", hl = "special" },
 			{ vim.g.colors_name or "" },
 		},
 	}
 
-
-  local lazy_status = require("lazy.status")
-	if lazy_status.updates() then
-	  table.insert(custom_status.text, { " / Plugin updates ", hl = "special" })
-	  table.insert(custom_status.text, { lazy_status.updates() })
-	end
-	return custom_status
+	return custom_header
 end
 
 -- Install package manager
@@ -102,7 +98,6 @@ require("lazy").setup({
         enabled = true,
         width= 54,
         preset = {
-          header = string.format(" Neovim v%s", vim.version()),
           ---@type snacks.dashboard.Item[]
           keys = {
             { icon = " ", key = "f", desc = "Find File", action = ":lua require('fzf-lua').files()" },
@@ -120,13 +115,13 @@ require("lazy").setup({
               end
             },
             { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
+            { icon = "", key = "U", desc = "Lazy Update", action = ":Lazy update", enabled = (package.loaded.lazy ~= nil) and (require("lazy.status").has_updates) },
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
           },
         },
         sections = {
-          { section = "header" },
+          dashboard_custom_header,
           { section = "startup", padding = 1 },
-          dashboard_status_section,
           { icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
           {
             icon = " ",
@@ -1786,6 +1781,9 @@ local function select_colorscheme()
     "dayfox",
     "dawnfox",
     "midnightgreen",
+    "oasis-day",
+    "oasys-dawnlight",
+    "oasys-dust",
   }
 
   local color_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim", false, true)
