@@ -881,7 +881,6 @@ require("lazy").setup({
   },
   {
     "davidmh/mdx.nvim",
-    config = true,
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
