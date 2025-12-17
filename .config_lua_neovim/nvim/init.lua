@@ -1777,8 +1777,10 @@ local function select_colorscheme()
     "dawnfox",
     "midnightgreen",
     "oasis-day",
+    "oasis-dawn",
     "oasis-dawnlight",
     "oasis-dusk",
+    "oasis-dust",
   }
 
   local color_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim", false, true)
