@@ -153,7 +153,7 @@ class InstallOperation:
         return sys.platform in getattr(operation_func, 'platforms', [])
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def find_dotfiles_folder_path():
     """
     Return the path to the folder containing the dot files.
