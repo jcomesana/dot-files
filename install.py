@@ -23,7 +23,16 @@ def main():
     args = parser.parse_args()
     logging_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=logging_level, format='%(levelname)-6s - %(message)s')
-    install()
+    # install()
+    nvim_dest_path = PlatformPath(win32='~/.vimfiles', linux='~/.vim', darwin='~/.vim')
+    assert nvim_dest_path.is_valid, f'Path is not valid for platform {sys.platform}, supported platforms: {nvim_dest_path.platforms}'
+    logging.info('Neovim path: %s', nvim_dest_path)
+    logging.info('Neovim path exists: %s', nvim_dest_path.exists())
+    install_tmux_stage = InstallConfigStage('Install single dotfiles')
+    install_tmux_stage.add_step(CloneFileStep('Install .tmux.conf', pathlib.Path('.tmux.conf'), PlatformPath(linux='~/.tmux.conf', darwin='~/.tmux.conf')))
+    install_tmux_stage.add_step(CloneFileStep('Install .ruff.toml', pathlib.Path('.ruff.toml'), PlatformPath(linux='~/.ruff.toml', darwin='~/.ruff.toml', win32='~/.ruff.toml')))
+    install_stage_result = install_tmux_stage()
+    logging.info('Install stage result: %s', install_stage_result)
     return 0
 
 
@@ -116,6 +125,111 @@ class NeovidePaths:
         Get the editor path in the platform.
         """
         return self._path
+
+
+class PlatformPath:
+    """
+    A path that can take different values depending on the platform.
+
+    The path will also be expanded.
+    """
+
+    def __init__(self, **platform_paths):
+        self._path = pathlib.Path(platform_paths.get(sys.platform, '')).expanduser() if sys.platform in platform_paths else None
+        self._platforms = sorted(platform_paths.keys())
+
+    @property
+    def platforms(self):
+        """
+        Return the supported platforms.
+        """
+        return list(self._platforms)
+
+    @property
+    def is_valid(self):
+        """
+        Return true if the path is valid for the current platform.
+        """
+        return self._path is not None
+
+    @property
+    def value(self):
+        """
+        Return the path value.
+        """
+        if not self.is_valid:
+            raise ValueError(f'Path is not valid for platform {sys.platform}, supported platforms: {self.platforms}')
+        return self._path
+
+    def __bool__(self):
+        """
+        Return true if the path is valid for the current platform.
+        """
+        return self.is_valid
+
+    def __getattr__(self, name):
+        """
+        Delegate attribute access to the underlying pathlib.Path object.
+        """
+        return getattr(self.value, name)
+
+    def __str__(self):
+        """
+        Return the string representation of the path.
+        """
+        return str(self.value) if self.is_valid else ''
+
+
+class Condition:
+    """
+    To evaluate a condition when a step should be run or not.
+    """
+
+    def __init__(self, condition_function, *, is_static: bool = False) -> None:
+        self.condition_function = condition_function
+        self.is_static = is_static
+        self.last_result = self.condition_function() if is_static else None
+
+    def __bool__(self) -> bool:
+        """
+        Evaluate the condition.
+        """
+        if not self.is_static or self.last_result is None:
+            self.last_result = self.condition_function()
+        return self.last_result
+
+    def __and__(self, other):
+        """
+        Combine two conditions with AND.
+        """
+        return Condition(lambda: bool(self) and bool(other), is_static=self.is_static and other.is_static)
+
+    def __or__(self, other):
+        """
+        Combine two conditions with OR.
+        """
+        return Condition(lambda: bool(self) or bool(other), is_static=self.is_static and other.is_static)
+
+    @staticmethod
+    def always():
+        """
+        Condition that is always true.
+        """
+        return Condition(lambda: True, is_static=True)
+
+    @staticmethod
+    def never():
+        """
+        Condition that is always false.
+        """
+        return Condition(lambda: False, is_static=True)
+
+    @staticmethod
+    def valid_platform(platforms):
+        """
+        Condition that is true if the current platform is in the list.
+        """
+        return Condition(lambda: sys.platform in platforms, is_static=True)
 
 
 class InstallOperation:
@@ -262,25 +376,31 @@ def verbose_link(source, destination):
     """
     Create a link from the source path to the destination path.
     """
-    if destination.is_symlink():
-        if destination.exists() and destination.readlink() == source:
-            logging.debug('  link %s already exists', destination)
+    source_path = source.value if isinstance(source, PlatformPath) else pathlib.Path(source)
+    if not source_path:
+        raise ValueError('Source path is empty or None')
+    destination_path = destination.value if isinstance(destination, PlatformPath) else pathlib.Path(destination)
+    if not destination_path:
+        raise ValueError('Destination path is empty or None')
+    if destination_path.is_symlink():
+        if destination_path.exists() and destination_path.resolve() == source_path:
+            logging.debug('  link %s already exists', destination_path)
             return
-        logging.info('Removing outdated symbolic link %s', destination)
-        destination.unlink()
-    if destination.exists() and destination.is_file():
-        logging.info('  copying %s to %s', source, destination)
-        shutil.copy2(source, destination)
-    elif not destination.exists():
-        parent_folder = destination.parent
+        logging.info('Removing outdated symbolic link %s', destination_path)
+        destination_path.unlink()
+    if destination_path.exists() and destination_path.is_file():
+        logging.info('  copying %s to %s', source_path, destination_path)
+        shutil.copy2(source_path, destination_path)
+    elif not destination_path.exists():
+        parent_folder = destination_path.parent
         verbose_mkdir(parent_folder)
         symlink_available = sys.platform != 'win32' or running_as_admin()
         if symlink_available:
-            logging.info('  linking %s to %s', source, destination)
-            os.symlink(source, destination)
+            logging.info('  linking %s to %s', source_path, destination_path)
+            os.symlink(source_path, destination_path)
         else:
-            logging.info('  copying %s to %s (Windows)', source, destination)
-            shutil.copy2(source, destination)
+            logging.info('  copying %s to %s (Windows)', source_path, destination_path)
+            shutil.copy2(source_path, destination_path)
 
 
 def verbose_mkdir(path):
@@ -303,6 +423,156 @@ def running_as_admin():
     except AttributeError:
         is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
     return is_admin
+
+
+class InstallStepResult:
+    """
+    The result of a step.
+    """
+
+    def __init__(self, description, *, successful: bool, error_message: str = '') -> None:
+        self.description = description
+        self.successful = successful
+        self.error_message = error_message
+
+    @property
+    def failed(self):
+        """
+        Return true if the step failed.
+        """
+        return not self.successful
+
+    def __str__(self) -> str:
+        if self.successful:
+            return f'Step "{self.description}" Ok.'
+        return f'Step "{self.description}" failed: {self.error_message}'
+
+
+class InstallStageResult:
+    """
+    The result of running a stage.
+    """
+
+    def __init__(self, stage_description) -> None:
+        self.stage_description = stage_description
+        self.step_results = []
+
+    def add_step_result(self, step_result: InstallStepResult):
+        """
+        Add the result of a step.
+        """
+        self.step_results.append(step_result)
+
+    @property
+    def was_executed(self):
+        """
+        Return true if at least one step was executed.
+        """
+        return len(self.step_results) > 0
+
+    @property
+    def was_successful(self):
+        """
+        Return true if all the steps were successful.
+        """
+        return all(not step_result.failed for step_result in self.step_results)
+
+    @property
+    def successful_results(self):
+        """
+        Return a list with the successful results.
+        """
+        return [result for result in self.step_results if result.successful]
+
+    @property
+    def failed_results(self):
+        """
+        Return a list with the failed results.
+        """
+        return [result for result in self.step_results if result.failed]
+
+    def __str__(self) -> str:
+        if self.was_executed:
+            if self.was_successful:
+                return f'Stage "{self.stage_description}", all {len(self.step_results)} steps Ok.'
+            return f'Stage "{self.stage_description}", {len(self.successful_results)} steps Ok, {len(self.failed_results)} failed.'
+        return f'Stage {self.stage_description} was not executed.'
+
+
+class InstallStep:
+    """
+    Basic install step, to be used as an interface.
+    """
+
+    def __init__(self, description: str, *, when=None) -> None:
+        self.description = description
+        self.when = when if when is not None else Condition.always()
+
+    def __call__(self) -> InstallStepResult:
+        """
+        Run a step.
+        """
+        raise NotImplementedError('InstallStep is an interface, please implement the __call__ method.')
+
+    def condition(self) -> bool:
+        """
+        Evaluate the condition to run the step.
+        """
+        return bool(self.when) if self.when is not None else True
+
+
+class CloneFileStep(InstallStep):
+    """
+    Clone a file from source to destination.
+    """
+
+    def __init__(self, description: str, source: pathlib.Path, destination: PlatformPath, *, when=None) -> None:
+        super().__init__(description, when=when and Condition.valid_platform(destination.platforms) if when else Condition.valid_platform(destination.platforms))
+        dot_files_folder = find_dotfiles_folder_path()
+        self.source = dot_files_folder / source
+        self.destination = destination
+
+    def __call__(self) -> InstallStepResult:
+        """
+        Run the step.
+        """
+        try:
+            verbose_link(self.source, self.destination)
+            return InstallStepResult(self.description, successful=True)
+        except Exception as ex:
+            return InstallStepResult(self.description, successful=False, error_message=str(ex))
+
+
+class InstallConfigStage:
+    """
+    Represents installing the configuration for a program.
+    """
+
+    def __init__(self, description) -> None:
+        self.description = description
+        self.steps = []
+
+    def add_step(self, step: InstallStep):
+        """
+        Add a step to run.
+        """
+        self.steps.append(step)
+
+    def __call__(self, *, stop_at_first_error=True) -> InstallStageResult:
+        """
+        To run all the steps contained by the stage.
+        """
+        stage_result = InstallStageResult(self.description)
+        if self.steps:
+            logging.info('%s', self.description)
+            for step in self.steps:
+                if step.condition():
+                    step_result = step()
+                    logging.debug('Result of step %s: %s', step.description, step_result)
+                    stage_result.add_step_result(step_result)
+                    if stop_at_first_error and step_result.failed:
+                        break
+        return stage_result
 
 
 if __name__ == '__main__':
