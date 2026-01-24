@@ -224,13 +224,6 @@ class Condition:
         """
         return Condition(lambda: False, is_static=True)
 
-    @staticmethod
-    def valid_platform(platforms):
-        """
-        Condition that is true if the current platform is in the list.
-        """
-        return Condition(lambda: sys.platform in platforms, is_static=True)
-
 
 class InstallOperation:
     """
@@ -527,7 +520,7 @@ class CloneFileStep(InstallStep):
     """
 
     def __init__(self, description: str, source: pathlib.Path, destination: PlatformPath, *, when=None) -> None:
-        super().__init__(description, when=when and Condition.valid_platform(destination.platforms) if when else Condition.valid_platform(destination.platforms))
+        super().__init__(description, when=when and destination.is_valid if when else destination.is_valid)
         dot_files_folder = find_dotfiles_folder_path()
         self.source = dot_files_folder / source
         self.destination = destination
@@ -538,6 +531,37 @@ class CloneFileStep(InstallStep):
         """
         try:
             verbose_link(self.source, self.destination)
+            return InstallStepResult(self.description, successful=True)
+        except Exception as ex:
+            return InstallStepResult(self.description, successful=False, error_message=str(ex))
+
+
+class CloneFolderStep(InstallStep):
+    """
+    Clone a folder from source to destination.
+    """
+
+    def __init__(self, description: str, source: pathlib.Path | PlatformPath, destination: pathlib.Path | PlatformPath, *, when=None, pattern='**/*') -> None:
+        common_platforms = set([sys.platform])
+        if isinstance(source, PlatformPath):
+            common_platforms &= set(source.platforms)
+        if isinstance(destination, PlatformPath):
+            common_platforms &= set(destination.platforms)
+        super().__init__(description, when=when and Condition.valid_platform(common_platforms) if when else Condition.valid_platform(destination.platforms))
+        dot_files_folder = find_dotfiles_folder_path()
+        self.source = dot_files_folder / source
+        self.destination = destination
+
+    def __call__(self) -> InstallStepResult:
+        """
+        Run the step.
+        """
+        try:
+            for item in self.source.glob('**/*'):
+                if item.is_file():
+                    relative_file_path = item.relative_to(self.source)
+                    dst_config_file = self.destination / relative_file_path
+                    verbose_link(item, dst_config_file)
             return InstallStepResult(self.description, successful=True)
         except Exception as ex:
             return InstallStepResult(self.description, successful=False, error_message=str(ex))
