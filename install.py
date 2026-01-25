@@ -513,14 +513,34 @@ class InstallStep:
         """
         return bool(self.when) if self.when is not None else True
 
+    @staticmethod
+    def resolve_path(path: pathlib.Path | PlatformPath | str) -> pathlib.Path:
+        """
+        Resolve a path that can be either a pathlib.Path, str or a PlatformPath.
+        """
+        if isinstance(path, PlatformPath):
+            if path.is_valid:
+                return path.value
+            return None
+        return pathlib.Path(path)
+
 
 class CloneFileStep(InstallStep):
     """
     Clone a file from source to destination.
     """
 
-    def __init__(self, description: str, source: pathlib.Path, destination: PlatformPath, *, when=None) -> None:
-        super().__init__(description, when=when and destination.is_valid if when else destination.is_valid)
+    def __init__(self, description: str, source: pathlib.Path | PlatformPath, destination: pathlib.Path | PlatformPath, *, when=None) -> None:
+        def condition_function():
+            """
+            Condition function to check if both source and destination are valid for the current platform.
+            """
+            source_valid = bool(source)
+            destination_valid = bool(destination)
+            return source_valid and destination_valid
+
+        condition = Condition(condition_function, is_static=True)
+        super().__init__(description, when=when and condition if when else condition)
         dot_files_folder = find_dotfiles_folder_path()
         self.source = dot_files_folder / source
         self.destination = destination
@@ -542,15 +562,26 @@ class CloneFolderStep(InstallStep):
     """
 
     def __init__(self, description: str, source: pathlib.Path | PlatformPath, destination: pathlib.Path | PlatformPath, *, when=None, pattern='**/*') -> None:
-        common_platforms = set([sys.platform])
-        if isinstance(source, PlatformPath):
-            common_platforms &= set(source.platforms)
-        if isinstance(destination, PlatformPath):
-            common_platforms &= set(destination.platforms)
-        super().__init__(description, when=when and Condition.valid_platform(common_platforms) if when else Condition.valid_platform(destination.platforms))
+
+        def condition_function():
+            """
+            Condition function to check if both source and destination are valid for the current platform.
+            """
+            source_valid = bool(source)
+            destination_valid = bool(destination)
+            return source_valid and destination_valid
+        condition = Condition(condition_function, is_static=True)
+        super().__init__(description, when=when and condition if when else condition)
+        source_path = self.resolve_path(source)
+        if source_path is None:
+            raise ValueError('Source path is not valid or None.')
+        destination_path = self.resolve_path(destination)
+        if destination_path is None:
+            raise ValueError('Destination path is not valid or None.')
         dot_files_folder = find_dotfiles_folder_path()
-        self.source = dot_files_folder / source
-        self.destination = destination
+        self.source = dot_files_folder / source_path
+        self.destination = destination_path
+        self.pattern = pattern
 
     def __call__(self) -> InstallStepResult:
         """
