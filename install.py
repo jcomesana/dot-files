@@ -6,7 +6,6 @@ Installation script.
 import argparse
 import ctypes
 import functools
-import inspect
 import logging
 import os
 import pathlib
@@ -23,65 +22,21 @@ def main():
     args = parser.parse_args()
     logging_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=logging_level, format='%(levelname)-6s - %(message)s')
-    # install()
-    nvim_dest_path = PlatformPath(win32='~/.vimfiles', linux='~/.vim', darwin='~/.vim')
-    assert nvim_dest_path.is_valid, f'Path is not valid for platform {sys.platform}, supported platforms: {nvim_dest_path.platforms}'
-    logging.info('Neovim path: %s', nvim_dest_path)
-    logging.info('Neovim path exists: %s', nvim_dest_path.exists())
-    install_tmux_stage = InstallConfigStage('Install single dotfiles')
-    install_tmux_stage.add_step(CloneFileStep('Install .tmux.conf', pathlib.Path('.tmux.conf'), PlatformPath(linux='~/.tmux.conf', darwin='~/.tmux.conf')))
-    install_tmux_stage.add_step(CloneFileStep('Install .ruff.toml', pathlib.Path('.ruff.toml'), PlatformPath(linux='~/.ruff.toml', darwin='~/.ruff.toml', win32='~/.ruff.toml')))
-    install_stage_result = install_tmux_stage()
-    logging.info('Install stage result: %s', install_stage_result)
-    return 0
-
-
-def install():
-    """
-    Run the install operations.
-    """
-    for install_operation in list_install_operations():
-        install_operation()
-
-
-def list_install_operations():
-    """
-    Find the install operations.
-    """
-    def _is_operation_function(member):
-        """
-        Return True if the object is a function with the same name as the command.
-        """
-        return inspect.isfunction(member) and InstallOperation.is_valid(member)
-
-    functions = inspect.getmembers(inspect.getmodule(list_install_operations), _is_operation_function)
-    for _, operation_func in functions:
-        yield operation_func
-
-
-class VimPaths:
-    """
-    Class to handle vim paths.
-    """
-
-    def __init__(self, platform):
-        self.platform = platform
-        vim_directory = '~/.vim' if self.platform != 'win32' else '~/vimfiles'
-        self._path = pathlib.Path(vim_directory).expanduser().resolve()
-
-    @property
-    def path(self):
-        """
-        Get the editor path in the platform.
-        """
-        return self._path
-
-    @property
-    def extras_path(self):
-        """
-        Path to the extras directory.
-        """
-        return self.path / 'extras'
+    results = install()
+    failed_stages_count = 0
+    for result in results:
+        if result.was_executed:
+            if result.was_successful:
+                logging.info('%s', result)
+            else:
+                logging.warning('%s', result)
+            for step_result in result.failed_results:
+                logging.error('  %s', step_result)
+            for step_result in result.successful_results:
+                logging.info('  %s', step_result)
+        else:
+            logging.debug('Stage "%s" was not executed.', result.stage_description)
+    return failed_stages_count
 
 
 class NVimPaths:
@@ -270,23 +225,6 @@ def find_dotfiles_folder_path():
     return dotfiles_folder
 
 
-@InstallOperation('Install vim configuration files', ['linux', 'win32'])
-def operation_install_vim():
-    """
-    Create the basic folder structure and link the files.
-    """
-    dotfiles_folder = find_dotfiles_folder_path()
-    for filename in ('_vimrc', '_gvimrc'):
-        src_vimrc = dotfiles_folder / filename
-        dest_vimrc = pathlib.Path(f'~/{filename}').expanduser()
-        verbose_link(src_vimrc, dest_vimrc)
-    vim_paths = VimPaths(sys.platform)
-    for item in (dotfiles_folder / 'vimextras').glob('*'):
-        if item.is_file():
-            extra_dest_path = vim_paths.extras_path / item.name
-            verbose_link(item, extra_dest_path)
-
-
 @InstallOperation('Install neovim configuration files', ['darwin', 'linux', 'win32'])
 def operation_install_nvim():
     """
@@ -301,7 +239,7 @@ def operation_install_nvim():
             src_config_file = item
             relative_file_path = item.relative_to(nvim_dotfiles_folder)
             dst_config_file = nvim_paths.path / relative_file_path
-            verbose_link(src_config_file, dst_config_file)
+            create_config_link(src_config_file, dst_config_file)
             created_config_files.add(dst_config_file)
     for item in nvim_paths.path.glob('**/*.*'):
         if not item.is_symlink():
@@ -316,34 +254,12 @@ def operation_install_nvim():
             src_config_file = item
             relative_file_path = item.relative_to(neovide_configs_folder)
             dst_config_file = neovide_paths.path / relative_file_path
-            verbose_link(src_config_file, dst_config_file)
+            create_config_link(src_config_file, dst_config_file)
             created_config_files.add(dst_config_file)
     # for item in (dotfiles_folder / 'vimextras').glob('*'):
     #     if item.is_file():
     #         extra_dest_path = nvim_paths.extras_path / item.name
     #         verbose_link(item, extra_dest_path)
-
-
-@InstallOperation('Install tmux configuration', ['darwin', 'linux'])
-def operation_install_tmux():
-    """
-    Install tmux configuration.
-    """
-    dotfiles_folder = find_dotfiles_folder_path()
-    src_config_file = dotfiles_folder / '.tmux.conf'
-    dst_config_file = pathlib.Path('~/.tmux.conf').expanduser()
-    verbose_link(src_config_file, dst_config_file)
-
-
-@InstallOperation('Install ruff configuration', ['linux', 'win32'])
-def operation_install_ruff():
-    """
-    Install tmux configuration.
-    """
-    dotfiles_folder = find_dotfiles_folder_path()
-    src_config_file = dotfiles_folder / '.ruff.toml'
-    dst_config_file = pathlib.Path('~/.ruff.toml').expanduser()
-    verbose_link(src_config_file, dst_config_file)
 
 
 @InstallOperation('Install efm-langserver', ['linux', 'win32'])
@@ -357,54 +273,54 @@ def operation_install_efm():
     vim_efm_folder = vim_paths.extras_path / 'efm-langserver'
     src_efm_config_file = src_efm_folder / 'jq_filter.txt'
     for dst_folder in (vim_efm_folder, ):
-        verbose_link(src_efm_config_file, dst_folder / src_efm_config_file.name)
+        create_config_link(src_efm_config_file, dst_folder / src_efm_config_file.name)
     src_efm_exe_folder = src_efm_folder / sys.platform
     for item in src_efm_exe_folder.glob('*'):
         if item.is_file():
             vim_dest_path = vim_efm_folder / item.name
-            verbose_link(item, vim_dest_path)
+            create_config_link(item, vim_dest_path)
 
 
-def verbose_link(source, destination):
+def create_config_link(source: pathlib.Path, destination: pathlib.Path):
     """
     Create a link from the source path to the destination path.
     """
-    source_path = source.value if isinstance(source, PlatformPath) else pathlib.Path(source)
-    if not source_path:
-        raise ValueError('Source path is empty or None')
-    destination_path = destination.value if isinstance(destination, PlatformPath) else pathlib.Path(destination)
-    if not destination_path:
-        raise ValueError('Destination path is empty or None')
-    if destination_path.is_symlink():
-        if destination_path.exists() and destination_path.resolve() == source_path:
-            logging.debug('  link %s already exists', destination_path)
-            return
-        logging.info('Removing outdated symbolic link %s', destination_path)
-        destination_path.unlink()
-    if destination_path.exists() and destination_path.is_file():
-        logging.info('  copying %s to %s', source_path, destination_path)
-        shutil.copy2(source_path, destination_path)
-    elif not destination_path.exists():
-        parent_folder = destination_path.parent
-        verbose_mkdir(parent_folder)
-        symlink_available = sys.platform != 'win32' or running_as_admin()
-        if symlink_available:
-            logging.info('  linking %s to %s', source_path, destination_path)
-            os.symlink(source_path, destination_path)
-        else:
-            logging.info('  copying %s to %s (Windows)', source_path, destination_path)
-            shutil.copy2(source_path, destination_path)
+    try:
+        if destination.is_symlink():
+            if destination.exists() and destination.resolve() == source:
+                return True, f'link {destination} already exists'
+            destination.unlink()
+        if destination.exists() and destination.is_file():
+            shutil.copy2(source, destination)
+            return True, f'copied {source} to {destination}'
+        elif not destination.exists():
+            parent_folder = destination.parent
+            mkdir_result, mkdir_message = mkdir_config(parent_folder)
+            if not mkdir_result:
+                return False, mkdir_message
+            symlink_available = sys.platform != 'win32' or running_as_admin()
+            if symlink_available:
+                os.symlink(source, destination)
+                return True, f'linked {source} to {destination}'
+            shutil.copy2(source, destination)
+            return True, f'copied {source} to {destination}'
+    except Exception as ex:
+        return False, str(ex)
 
-
-def verbose_mkdir(path):
+def mkdir_config(path: pathlib.Path):
     """
     Create a folder including the parents if it does not exist.
+
+    Return a tuple (successful: bool, message: str).
     """
     if path.exists():
-        logging.debug('  folder %s already exists', path)
+        return True, 'Folder already exists'
     else:
-        logging.info('  creating folder %s', path)
-        path.mkdir(parents=True, exist_ok=True)
+        try:
+            path.mkdir(parents=True, exist_ok=True)
+            return True, 'Folder created'
+        except Exception as ex:
+            return False, str(ex)
 
 
 def running_as_admin():
@@ -418,15 +334,26 @@ def running_as_admin():
     return is_admin
 
 
+def resolve_path(path: pathlib.Path | PlatformPath | str) -> pathlib.Path:
+    """
+    Resolve a path that can be either a pathlib.Path, str or a PlatformPath.
+    """
+    if isinstance(path, PlatformPath):
+        if path.is_valid:
+            return path.value
+        return None
+    return pathlib.Path(path)
+
+
 class InstallStepResult:
     """
     The result of a step.
     """
 
-    def __init__(self, description, *, successful: bool, error_message: str = '') -> None:
+    def __init__(self, description, *, successful: bool, message: str = '') -> None:
         self.description = description
         self.successful = successful
-        self.error_message = error_message
+        self.message = message
 
     @property
     def failed(self):
@@ -437,8 +364,8 @@ class InstallStepResult:
 
     def __str__(self) -> str:
         if self.successful:
-            return f'Step "{self.description}" Ok.'
-        return f'Step "{self.description}" failed: {self.error_message}'
+            return f'* {self.description} -> Ok' + (f': {self.message}' if self.message else '')
+        return f'* {self.description} -> failed: {self.message}'
 
 
 class InstallStageResult:
@@ -513,17 +440,6 @@ class InstallStep:
         """
         return bool(self.when) if self.when is not None else True
 
-    @staticmethod
-    def resolve_path(path: pathlib.Path | PlatformPath | str) -> pathlib.Path:
-        """
-        Resolve a path that can be either a pathlib.Path, str or a PlatformPath.
-        """
-        if isinstance(path, PlatformPath):
-            if path.is_valid:
-                return path.value
-            return None
-        return pathlib.Path(path)
-
 
 class CloneFileStep(InstallStep):
     """
@@ -541,19 +457,25 @@ class CloneFileStep(InstallStep):
 
         condition = Condition(condition_function, is_static=True)
         super().__init__(description, when=when and condition if when else condition)
+        source_path = resolve_path(source)
+        if source_path is None:
+            raise ValueError('Source path is not valid or None.')
+        destination_path = resolve_path(destination)
+        if destination_path is None:
+            raise ValueError('Destination path is not valid or None.')
         dot_files_folder = find_dotfiles_folder_path()
-        self.source = dot_files_folder / source
-        self.destination = destination
+        self.source = dot_files_folder / source_path
+        self.destination = destination_path
 
     def __call__(self) -> InstallStepResult:
         """
         Run the step.
         """
         try:
-            verbose_link(self.source, self.destination)
-            return InstallStepResult(self.description, successful=True)
+            success, message = create_config_link(self.source, self.destination)
+            return InstallStepResult(self.description, successful=success, message=message)
         except Exception as ex:
-            return InstallStepResult(self.description, successful=False, error_message=str(ex))
+            return InstallStepResult(self.description, successful=False, message=str(ex))
 
 
 class CloneFolderStep(InstallStep):
@@ -572,10 +494,10 @@ class CloneFolderStep(InstallStep):
             return source_valid and destination_valid
         condition = Condition(condition_function, is_static=True)
         super().__init__(description, when=when and condition if when else condition)
-        source_path = self.resolve_path(source)
+        source_path = resolve_path(source)
         if source_path is None:
             raise ValueError('Source path is not valid or None.')
-        destination_path = self.resolve_path(destination)
+        destination_path = resolve_path(destination)
         if destination_path is None:
             raise ValueError('Destination path is not valid or None.')
         dot_files_folder = find_dotfiles_folder_path()
@@ -588,14 +510,19 @@ class CloneFolderStep(InstallStep):
         Run the step.
         """
         try:
-            for item in self.source.glob('**/*'):
+            file_count = 0
+            for item in self.source.glob(self.pattern):
                 if item.is_file():
                     relative_file_path = item.relative_to(self.source)
                     dst_config_file = self.destination / relative_file_path
-                    verbose_link(item, dst_config_file)
-            return InstallStepResult(self.description, successful=True)
+                    file_result, file_message = create_config_link(item, dst_config_file)
+                    if file_result:
+                        file_count += 1
+                    else:
+                        return InstallStepResult(self.description, successful=False, message=f'Error cloning file {item}: {file_message} in {self.destination}')
+            return InstallStepResult(self.description, successful=True, message=f'cloned {file_count} files to {self.destination}')
         except Exception as ex:
-            return InstallStepResult(self.description, successful=False, error_message=str(ex))
+            return InstallStepResult(self.description, successful=False, message=str(ex))
 
 
 class InstallConfigStage:
@@ -619,15 +546,31 @@ class InstallConfigStage:
         """
         stage_result = InstallStageResult(self.description)
         if self.steps:
-            logging.info('%s', self.description)
             for step in self.steps:
                 if step.condition():
                     step_result = step()
-                    logging.debug('Result of step %s: %s', step.description, step_result)
                     stage_result.add_step_result(step_result)
                     if stop_at_first_error and step_result.failed:
                         break
         return stage_result
+
+
+def install():
+    """
+    Run the install operations.
+    """
+    stages = []
+    install_single_dotfiles = InstallConfigStage('install single dotfiles')
+    install_single_dotfiles.add_step(CloneFileStep('install .tmux.conf', pathlib.Path('.tmux.conf'), PlatformPath(linux='~/.tmux.conf', darwin='~/.tmux.conf')))
+    install_single_dotfiles.add_step(CloneFileStep('install .ruff.toml', pathlib.Path('.ruff.toml'), PlatformPath(linux='~/.ruff.toml', darwin='~/.ruff.toml', win32='~/.ruff.toml')))
+    stages.append(install_single_dotfiles)
+    install_vim_stage = InstallConfigStage('install vim configuration')
+    install_vim_stage.add_step(CloneFileStep('install vimrc', pathlib.Path('_vimrc'), PlatformPath(linux='~/_vimrc', darwin='~/_vimrc', win32='~/_vimrc')))
+    install_vim_stage.add_step(CloneFileStep('install gvimrc', pathlib.Path('_gvimrc'), PlatformPath(linux='~/_gvimrc', darwin='~/_gvimrc', win32='~/_gvimrc')))
+    install_vim_stage.add_step(CloneFolderStep('install vim extras', pathlib.Path('vimextras'), PlatformPath(linux='~/.vim/extras', darwin='~/.vim/extras', win32='~/vimfiles/extras')))
+    stages.append(install_vim_stage)
+    results = [stage() for stage in stages]
+    return results
 
 
 if __name__ == '__main__':
