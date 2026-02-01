@@ -262,50 +262,34 @@ def operation_install_nvim():
     #         verbose_link(item, extra_dest_path)
 
 
-@InstallOperation('Install efm-langserver', ['linux', 'win32'])
-def operation_install_efm():
-    """
-    Install efm-langserver and the configuration file.
-    """
-    dotfiles_folder = find_dotfiles_folder_path()
-    vim_paths = VimPaths(sys.platform)
-    src_efm_folder = dotfiles_folder / 'efm-langserver'
-    vim_efm_folder = vim_paths.extras_path / 'efm-langserver'
-    src_efm_config_file = src_efm_folder / 'jq_filter.txt'
-    for dst_folder in (vim_efm_folder, ):
-        create_config_link(src_efm_config_file, dst_folder / src_efm_config_file.name)
-    src_efm_exe_folder = src_efm_folder / sys.platform
-    for item in src_efm_exe_folder.glob('*'):
-        if item.is_file():
-            vim_dest_path = vim_efm_folder / item.name
-            create_config_link(item, vim_dest_path)
-
-
 def create_config_link(source: pathlib.Path, destination: pathlib.Path):
     """
     Create a link from the source path to the destination path.
     """
     try:
-        if destination.is_symlink():
-            if destination.exists() and destination.resolve() == source:
-                return True, f'link {destination} already exists'
-            destination.unlink()
-        if destination.exists() and destination.is_file():
-            shutil.copy2(source, destination)
-            return True, f'copied {source} to {destination}'
-        elif not destination.exists():
-            parent_folder = destination.parent
+        effective_destination = destination / source.name if destination.is_dir() else destination
+        if effective_destination.is_symlink():
+            if effective_destination.exists() and effective_destination.resolve() == source:
+                return True, f'link {effective_destination} already exists'
+            effective_destination.unlink()
+        if effective_destination.exists():
+            if effective_destination.is_file():
+                shutil.copy2(source, effective_destination)
+                return True, f'copied {source} to {effective_destination}'
+        elif not effective_destination.exists():
+            parent_folder = effective_destination.parent
             mkdir_result, mkdir_message = mkdir_config(parent_folder)
             if not mkdir_result:
                 return False, mkdir_message
             symlink_available = sys.platform != 'win32' or running_as_admin()
             if symlink_available:
-                os.symlink(source, destination)
-                return True, f'linked {source} to {destination}'
-            shutil.copy2(source, destination)
-            return True, f'copied {source} to {destination}'
+                os.symlink(source, effective_destination)
+                return True, f'linked {source} to {effective_destination}'
+            shutil.copy2(source, effective_destination)
+            return True, f'copied {source} to {effective_destination}'
     except Exception as ex:
         return False, str(ex)
+
 
 def mkdir_config(path: pathlib.Path):
     """
@@ -334,7 +318,7 @@ def running_as_admin():
     return is_admin
 
 
-def resolve_path(path: pathlib.Path | PlatformPath | str) -> pathlib.Path:
+def resolve_path(path: pathlib.Path | PlatformPath | str) -> pathlib.Path | None:
     """
     Resolve a path that can be either a pathlib.Path, str or a PlatformPath.
     """
@@ -560,14 +544,21 @@ def install():
     Run the install operations.
     """
     stages = []
+    # dot files
     install_single_dotfiles = InstallConfigStage('install single dotfiles')
     install_single_dotfiles.add_step(CloneFileStep('install .tmux.conf', pathlib.Path('.tmux.conf'), PlatformPath(linux='~/.tmux.conf', darwin='~/.tmux.conf')))
     install_single_dotfiles.add_step(CloneFileStep('install .ruff.toml', pathlib.Path('.ruff.toml'), PlatformPath(linux='~/.ruff.toml', darwin='~/.ruff.toml', win32='~/.ruff.toml')))
     stages.append(install_single_dotfiles)
+    # vim configuration
     install_vim_stage = InstallConfigStage('install vim configuration')
     install_vim_stage.add_step(CloneFileStep('install vimrc', pathlib.Path('_vimrc'), PlatformPath(linux='~/_vimrc', darwin='~/_vimrc', win32='~/_vimrc')))
     install_vim_stage.add_step(CloneFileStep('install gvimrc', pathlib.Path('_gvimrc'), PlatformPath(linux='~/_gvimrc', darwin='~/_gvimrc', win32='~/_gvimrc')))
-    install_vim_stage.add_step(CloneFolderStep('install vim extras', pathlib.Path('vimextras'), PlatformPath(linux='~/.vim/extras', darwin='~/.vim/extras', win32='~/vimfiles/extras')))
+    dest_vim_extras_path = PlatformPath(linux='~/.vim/extras', darwin='~/.vim/extras', win32='~/vimfiles/extras')
+    install_vim_stage.add_step(CloneFolderStep('install vim extras', pathlib.Path('vimextras'), dest_vim_extras_path))
+    source_efm_path = pathlib.Path('efm-langserver')
+    install_vim_stage.add_step(CloneFileStep('install efm-langserver config file', source_efm_path / 'jq_filter.txt', dest_vim_extras_path.value / 'efm-langserver' / 'jq_filter.txt'))
+    source_efm_exe_path = PlatformPath(linux=source_efm_path / 'linux', win32=source_efm_path / 'win32')
+    install_vim_stage.add_step(CloneFolderStep('install efm-langserver executables', source_efm_exe_path, dest_vim_extras_path.value / 'efm-langserver'))
     stages.append(install_vim_stage)
     results = [stage() for stage in stages]
     return results
