@@ -90,15 +90,15 @@ class PlatformPath:
     """
 
     def __init__(self, **platform_paths):
+        self._platform_paths = platform_paths
         self._path = pathlib.Path(platform_paths.get(sys.platform, '')).expanduser() if sys.platform in platform_paths else None
-        self._platforms = sorted(platform_paths.keys())
 
     @property
     def platforms(self):
         """
         Return the supported platforms.
         """
-        return list(self._platforms)
+        return sorted(self._platform_paths.keys())
 
     @property
     def is_valid(self):
@@ -115,6 +115,12 @@ class PlatformPath:
         if not self.is_valid:
             raise ValueError(f'Path is not valid for platform {sys.platform}, supported platforms: {self.platforms}')
         return self._path
+
+    def with_platforms(self, *platforms):
+        """
+        Create a new PlatformPath with only the specified platforms.
+        """
+        return PlatformPath(**{platform: path for platform, path in self._platform_paths.items() if platform in platforms})
 
     def __bool__(self):
         """
@@ -560,6 +566,12 @@ def install():
     source_efm_exe_path = PlatformPath(linux=source_efm_path / 'linux', win32=source_efm_path / 'win32')
     install_vim_stage.add_step(CloneFolderStep('install efm-langserver executables', source_efm_exe_path, dest_vim_extras_path.value / 'efm-langserver'))
     stages.append(install_vim_stage)
+    # neovim configuration
+    neovim_dest_path = PlatformPath(linux='~/.config/nvim', darwin='~/.config/nvim', win32='~/AppData/Local/nvim')
+    install_neovim_stage = InstallConfigStage('install neovim configuration')
+    install_neovim_stage.add_step(CloneFolderStep('install neovim config files', pathlib.Path('.config_lua_neovim/nvim'), neovim_dest_path))
+    stages.append(install_neovim_stage)
+    install_neovim_stage.add_step(CloneFolderStep('install neovide config', pathlib.Path('neovide'), PlatformPath(linux='~/.config/neovide', darwin='~/.config/neovide', win32='~/AppData/Roaming/neovide')))
     results = [stage() for stage in stages]
     return results
 
