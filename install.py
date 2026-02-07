@@ -140,6 +140,12 @@ class PlatformPath:
         """
         return str(self.value) if self.is_valid else ''
 
+    def __truediv__(self, other):
+        """
+        Support the division operator to join paths.
+        """
+        return PlatformPath(**{platform: pathlib.Path(path) / other for platform, path in self._platform_paths.items()})
+
 
 class Condition:
     """
@@ -562,9 +568,10 @@ def install():
     dest_vim_extras_path = PlatformPath(linux='~/.vim/extras', darwin='~/.vim/extras', win32='~/vimfiles/extras')
     install_vim_stage.add_step(CloneFolderStep('install vim extras', pathlib.Path('vimextras'), dest_vim_extras_path))
     source_efm_path = pathlib.Path('efm-langserver')
-    install_vim_stage.add_step(CloneFileStep('install efm-langserver config file', source_efm_path / 'jq_filter.txt', dest_vim_extras_path.value / 'efm-langserver' / 'jq_filter.txt'))
+    destination_efm_path = dest_vim_extras_path.with_platforms('linux', 'win32') / 'efm-langserver'
+    install_vim_stage.add_step(CloneFileStep('install efm-langserver config file', source_efm_path / 'jq_filter.txt', destination_efm_path / 'jq_filter.txt'))
     source_efm_exe_path = PlatformPath(linux=source_efm_path / 'linux', win32=source_efm_path / 'win32')
-    install_vim_stage.add_step(CloneFolderStep('install efm-langserver executables', source_efm_exe_path, dest_vim_extras_path.value / 'efm-langserver'))
+    install_vim_stage.add_step(CloneFolderStep('install efm-langserver executables', source_efm_exe_path, destination_efm_path))
     stages.append(install_vim_stage)
     # neovim configuration
     neovim_dest_path = PlatformPath(linux='~/.config/nvim', darwin='~/.config/nvim', win32='~/AppData/Local/nvim')
