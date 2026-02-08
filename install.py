@@ -39,49 +39,6 @@ def main():
     return failed_stages_count
 
 
-class NVimPaths:
-    """
-    Class to handle neovim paths.
-    """
-
-    def __init__(self, platform):
-        self.platform = platform
-        nvim_directory = '~/.config/nvim' if self.platform != 'win32' else '~/AppData/Local/nvim'
-        self._path = pathlib.Path(nvim_directory).expanduser().resolve()
-
-    @property
-    def path(self):
-        """
-        Get the editor path in the platform.
-        """
-        return self._path
-
-    @property
-    def extras_path(self):
-        """
-        Path to the extras directory.
-        """
-        return self.path / 'extras'
-
-
-class NeovidePaths:
-    """
-    Class to handle neovide paths.
-    """
-
-    def __init__(self, platform):
-        self.platform = platform
-        nvim_directory = '~/.config/neovide' if self.platform != 'win32' else '~/AppData/Roaming/neovide'
-        self._path = pathlib.Path(nvim_directory).expanduser().resolve()
-
-    @property
-    def path(self):
-        """
-        Get the editor path in the platform.
-        """
-        return self._path
-
-
 class PlatformPath:
     """
     A path that can take different values depending on the platform.
@@ -192,41 +149,6 @@ class Condition:
         return Condition(lambda: False, is_static=True)
 
 
-class InstallOperation:
-    """
-    Decorator for install operations.
-    """
-
-    def __init__(self, description, platforms):
-        self.description = description
-        self.selected_platforms = sorted(platforms)
-
-    def __call__(self, func, *args, **kwargs):
-        if sys.platform in self.selected_platforms:
-            @functools.wraps(func)
-            def inner():
-                """
-                Wrapper function.
-                """
-                logging.info('%s', self.description)
-                return func(*args, **kwargs)
-        else:
-            @functools.wraps(func)
-            def inner(*args, **kwargs):
-                """
-                Dummy function when the platform is not selected.
-                """
-        inner.platforms = self.selected_platforms
-        return inner
-
-    @staticmethod
-    def is_valid(operation_func):
-        """
-        Return true if the function is a valid operation.
-        """
-        return sys.platform in getattr(operation_func, 'platforms', [])
-
-
 @functools.lru_cache
 def find_dotfiles_folder_path():
     """
@@ -235,43 +157,6 @@ def find_dotfiles_folder_path():
     dotfiles_folder = pathlib.Path(__file__).resolve().parent
     logging.debug('The dot files folder is %s', dotfiles_folder)
     return dotfiles_folder
-
-
-@InstallOperation('Install neovim configuration files', ['darwin', 'linux', 'win32'])
-def operation_install_nvim():
-    """
-    Create the basic folder structure and link the files.
-    """
-    dotfiles_folder = find_dotfiles_folder_path()
-    nvim_paths = NVimPaths(sys.platform)
-    nvim_dotfiles_folder = dotfiles_folder / '.config_lua_neovim' / 'nvim'
-    created_config_files = set()
-    for item in nvim_dotfiles_folder.glob('**/*'):
-        if item.is_file():
-            src_config_file = item
-            relative_file_path = item.relative_to(nvim_dotfiles_folder)
-            dst_config_file = nvim_paths.path / relative_file_path
-            create_config_link(src_config_file, dst_config_file)
-            created_config_files.add(dst_config_file)
-    for item in nvim_paths.path.glob('**/*.*'):
-        if not item.is_symlink():
-            continue
-        if item not in created_config_files:
-            logging.warning('Extra file %s, deleting', item)
-            item.unlink()
-    neovide_configs_folder = dotfiles_folder / pathlib.Path('neovide')
-    neovide_paths = NeovidePaths(sys.platform)
-    for item in neovide_configs_folder.glob('**/*.*'):
-        if item.is_file():
-            src_config_file = item
-            relative_file_path = item.relative_to(neovide_configs_folder)
-            dst_config_file = neovide_paths.path / relative_file_path
-            create_config_link(src_config_file, dst_config_file)
-            created_config_files.add(dst_config_file)
-    # for item in (dotfiles_folder / 'vimextras').glob('*'):
-    #     if item.is_file():
-    #         extra_dest_path = nvim_paths.extras_path / item.name
-    #         verbose_link(item, extra_dest_path)
 
 
 def create_config_link(source: pathlib.Path, destination: pathlib.Path):
@@ -578,7 +463,9 @@ def install():
     install_neovim_stage = InstallConfigStage('install neovim configuration')
     install_neovim_stage.add_step(CloneFolderStep('install neovim config files', pathlib.Path('.config_lua_neovim/nvim'), neovim_dest_path))
     stages.append(install_neovim_stage)
-    install_neovim_stage.add_step(CloneFolderStep('install neovide config', pathlib.Path('neovide'), PlatformPath(linux='~/.config/neovide', darwin='~/.config/neovide', win32='~/AppData/Roaming/neovide')))
+    install_neovim_stage.add_step(CloneFolderStep('install neovide config',
+                                                      pathlib.Path('neovide'),
+                                                      PlatformPath(linux='~/.config/neovide', darwin='~/.config/neovide', win32='~/AppData/Roaming/neovide')))
     results = [stage() for stage in stages]
     return results
 
