@@ -1381,7 +1381,12 @@ local lsp_servers = {
     mason = not is_termux,
     settings = {
       Lua = {
-        workspace = { checkThirdParty = false },
+        workspace = {
+          checkThirdParty = false,
+          library = {
+            vim.env.VIMRUNTIME,
+          },
+        },
         telemetry = { enable = false },
       },
     },
@@ -1627,11 +1632,11 @@ end
 vim.api.nvim_create_user_command("PickerSessions", ":lua Show_persisted_sessions()", {})
 
 vim.keymap.set("n", "<Leader>pS", Show_persisted_sessions, { noremap = true, silent = true, desc = "Persisted [S]essions" })
-vim.keymap.set("n", "<Leader>mr", "<CMD>SessionStart<CR>", { noremap = true, silent = false, desc = "Start [R]ecording session" })
-vim.keymap.set("n", "<Leader>mt", "<CMD>SessionStop<CR>", { noremap = true, silent = false, desc = "S[T]op recording session" })
-vim.keymap.set("n", "<Leader>mv", "<CMD>SessionSave<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
-vim.keymap.set("n", "<Leader>ml", "<CMD>SessionLoad<CR>", { noremap = true, silent = false, desc = "Session [L]oad for current dir" })
-vim.keymap.set("n", "<Leader>ms", "<CMD>PickerSessions<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
+vim.keymap.set("n", "<Leader>mr", "<CMD>Persisted start<CR>", { noremap = true, silent = false, desc = "Start [R]ecording session" })
+vim.keymap.set("n", "<Leader>mt", "<CMD>Persisted stop<CR>", { noremap = true, silent = false, desc = "S[T]op recording session" })
+vim.keymap.set("n", "<Leader>mv", "<CMD>Persisted save<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
+vim.keymap.set("n", "<Leader>ml", "<CMD>Persisted load<CR>", { noremap = true, silent = false, desc = "Session [L]oad for current dir" })
+vim.keymap.set("n", "<Leader>ms", "<CMD>Persisted select<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
 
 local persisted_group = vim.api.nvim_create_augroup("persisted_group", { clear = true })
 
