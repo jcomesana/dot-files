@@ -309,17 +309,30 @@ class InstallStep:
         self.description = description
         self.when = when if when is not None else Condition.always()
 
-    def __call__(self) -> InstallStepResult:
+    def __call__(self) -> InstallStepResult | None:
         """
         Run a step.
         """
-        raise NotImplementedError('InstallStep is an interface, please implement the __call__ method.')
+        if self.condition():
+            try:
+                return self.run()
+            except Exception as ex:
+                return InstallStepResult(self.description, successful=False, message=str(ex))
+        return None
 
     def condition(self) -> bool:
         """
         Evaluate the condition to run the step.
         """
         return bool(self.when) if self.when is not None else True
+
+    def run(self) -> InstallStepResult:
+        """
+        Run the step.
+
+        This method should be implemented by subclasses to perform the actual step operations.
+        """
+        raise NotImplementedError('InstallStep is an interface, please implement the run method.')
 
 
 class CloneFileStep(InstallStep):
@@ -334,29 +347,23 @@ class CloneFileStep(InstallStep):
             """
             source_valid = bool(source)
             destination_valid = bool(destination)
+            if when is not None:
+                return source_valid and destination_valid and when
             return source_valid and destination_valid
 
         condition = Condition(condition_function, is_static=True)
-        super().__init__(description, when=when and condition if when else condition)
+        super().__init__(description, when=condition)
         source_path = resolve_path(source)
-        if source_path is None:
-            raise ValueError('Source path is not valid or None.')
         destination_path = resolve_path(destination)
-        if destination_path is None:
-            raise ValueError('Destination path is not valid or None.')
-        dot_files_folder = find_dotfiles_folder_path()
-        self.source = dot_files_folder / source_path
+        self.source = find_dotfiles_folder_path() / source_path if source_path else None
         self.destination = destination_path
 
-    def __call__(self) -> InstallStepResult:
+    def run(self) -> InstallStepResult:
         """
         Run the step.
         """
-        try:
-            success, message = create_config_link(self.source, self.destination)
-            return InstallStepResult(self.description, successful=success, message=message)
-        except Exception as ex:
-            return InstallStepResult(self.description, successful=False, message=str(ex))
+        success, message = create_config_link(self.source, self.destination)
+        return InstallStepResult(self.description, successful=success, message=message)
 
 
 class CloneFolderStep(InstallStep):
@@ -372,38 +379,32 @@ class CloneFolderStep(InstallStep):
             """
             source_valid = bool(source)
             destination_valid = bool(destination)
+            if when is not None:
+                return source_valid and destination_valid and when
             return source_valid and destination_valid
         condition = Condition(condition_function, is_static=True)
-        super().__init__(description, when=when and condition if when else condition)
+        super().__init__(description, when=condition)
         source_path = resolve_path(source)
-        if source_path is None:
-            raise ValueError('Source path is not valid or None.')
         destination_path = resolve_path(destination)
-        if destination_path is None:
-            raise ValueError('Destination path is not valid or None.')
-        dot_files_folder = find_dotfiles_folder_path()
-        self.source = dot_files_folder / source_path
+        self.source = find_dotfiles_folder_path() / source_path if source_path else None
         self.destination = destination_path
         self.pattern = pattern
 
-    def __call__(self) -> InstallStepResult:
+    def run(self) -> InstallStepResult:
         """
         Run the step.
         """
-        try:
-            file_count = 0
-            for item in self.source.glob(self.pattern):
-                if item.is_file():
-                    relative_file_path = item.relative_to(self.source)
-                    dst_config_file = self.destination / relative_file_path
-                    file_result, file_message = create_config_link(item, dst_config_file)
-                    if file_result:
-                        file_count += 1
-                    else:
-                        return InstallStepResult(self.description, successful=False, message=f'Error cloning file {item}: {file_message} in {self.destination}')
-            return InstallStepResult(self.description, successful=True, message=f'cloned {file_count} files to {self.destination}')
-        except Exception as ex:
-            return InstallStepResult(self.description, successful=False, message=str(ex))
+        file_count = 0
+        for item in self.source.glob(self.pattern):
+            if item.is_file():
+                relative_file_path = item.relative_to(self.source)
+                dst_config_file = self.destination / relative_file_path
+                file_result, file_message = create_config_link(item, dst_config_file)
+                if file_result:
+                    file_count += 1
+                else:
+                    return InstallStepResult(self.description, successful=False, message=f'Error cloning file {item}: {file_message} in {self.destination}')
+        return InstallStepResult(self.description, successful=True, message=f'cloned {file_count} files to {self.destination}')
 
 
 class InstallConfigStage:
@@ -464,8 +465,8 @@ def install():
     install_neovim_stage.add_step(CloneFolderStep('install neovim config files', pathlib.Path('.config_lua_neovim/nvim'), neovim_dest_path))
     stages.append(install_neovim_stage)
     install_neovim_stage.add_step(CloneFolderStep('install neovide config',
-                                                      pathlib.Path('neovide'),
-                                                      PlatformPath(linux='~/.config/neovide', darwin='~/.config/neovide', win32='~/AppData/Roaming/neovide')))
+                                                       pathlib.Path('neovide'),
+                                                       PlatformPath(linux='~/.config/neovide', darwin='~/.config/neovide', win32='~/AppData/Roaming/neovide')))
     results = [stage() for stage in stages]
     return results
 
