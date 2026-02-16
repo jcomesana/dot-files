@@ -10,6 +10,7 @@ import logging
 import os
 import pathlib
 import shutil
+import subprocess
 import sys
 
 
@@ -147,6 +148,25 @@ class Condition:
         Condition that is always false.
         """
         return Condition(lambda: False, is_static=True)
+
+    @staticmethod
+    def create_command_is_successful(command: str, *, is_static=False, expected_exit_code=0):
+        """
+        Create a condition that is true if the command is successful.
+        """
+        def run_command():
+            """
+            Run the command and return true if it is successful.
+            """
+            result = False
+            exit_code = None
+            try:
+                exit_code = subprocess.call(command, shell=True)
+            finally:
+                if exit_code is not None:
+                    result = exit_code == expected_exit_code
+            return result
+        return Condition(run_command, is_static=is_static)
 
 
 @functools.lru_cache
