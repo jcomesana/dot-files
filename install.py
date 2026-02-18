@@ -32,9 +32,9 @@ def main():
             else:
                 logging.warning('%s', result)
             for step_result in result.failed_results:
-                logging.error('  %s', step_result)
+                logging.error('%s', step_result)
             for step_result in result.successful_results:
-                logging.info('  %s', step_result)
+                logging.info('%s', step_result)
         else:
             logging.debug('Stage "%s" was not executed.', result.stage_description)
     return failed_stages_count
@@ -187,12 +187,12 @@ def create_config_link(source: pathlib.Path, destination: pathlib.Path):
         effective_destination = destination / source.name if destination.is_dir() else destination
         if effective_destination.is_symlink():
             if effective_destination.exists() and effective_destination.resolve() == source:
-                return True, f'link {effective_destination} already exists'
+                return True, 'link already exists'
             effective_destination.unlink()
         if effective_destination.exists():
             if effective_destination.is_file():
                 shutil.copy2(source, effective_destination)
-                return True, f'copied {source} to {effective_destination}'
+                return True, 'overwritten file'
         elif not effective_destination.exists():
             parent_folder = effective_destination.parent
             mkdir_result, mkdir_message = mkdir_config(parent_folder)
@@ -201,9 +201,9 @@ def create_config_link(source: pathlib.Path, destination: pathlib.Path):
             symlink_available = sys.platform != 'win32' or running_as_admin()
             if symlink_available:
                 os.symlink(source, effective_destination)
-                return True, f'linked {source} to {effective_destination}'
+                return True, 'created link'
             shutil.copy2(source, effective_destination)
-            return True, f'copied {source} to {effective_destination}'
+            return True, 'copied file'
     except Exception as ex:
         return False, str(ex)
 
@@ -251,10 +251,14 @@ class InstallStepResult:
     The result of a step.
     """
 
+    INDENT = '  '
+
     def __init__(self, description, *, successful: bool, message: str = '') -> None:
         self.description = description
         self.successful = successful
         self.message = message
+        self.steps = []
+        self.indent_level = 1
 
     @property
     def failed(self):
@@ -263,10 +267,26 @@ class InstallStepResult:
         """
         return not self.successful
 
+    def increment_indent_level(self, ref=1):
+        """
+        Increment the indent level for the step and its sub-steps.
+        """
+        self.indent_level = ref + 1
+        for step in self.steps:
+            step.increment_indent_level(self.indent_level)
+
+    def add_step(self, step: InstallStepResult):
+        """
+        Add a sub-step result.
+        """
+        step.increment_indent_level(self.indent_level)
+        self.steps.append(step)
+        self.successful = self.successful and step.successful
+
     def __str__(self) -> str:
-        if self.successful:
-            return f'* {self.description} -> Ok' + (f': {self.message}' if self.message else '')
-        return f'* {self.description} -> failed: {self.message}'
+        lines = [f'{InstallStepResult.INDENT * self.indent_level} * {self.description} -> {"Ok" if self.successful else "failed"}: {self.message}']
+        lines.extend(str(step) for step in self.steps)
+        return '\n          '.join(lines)
 
 
 class InstallStageResult:
@@ -415,16 +435,21 @@ class CloneFolderStep(InstallStep):
         Run the step.
         """
         file_count = 0
+        clone_folder_result = InstallStepResult(self.description, successful=True)
         for item in self.source.glob(self.pattern):
             if item.is_file():
                 relative_file_path = item.relative_to(self.source)
                 dst_config_file = self.destination / relative_file_path
                 file_result, file_message = create_config_link(item, dst_config_file)
+                clone_file_result = InstallStepResult(f'clone file to {dst_config_file}', successful=file_result, message=file_message)
+                clone_folder_result.add_step(clone_file_result)
                 if file_result:
                     file_count += 1
                 else:
-                    return InstallStepResult(self.description, successful=False, message=f'Error cloning file {item}: {file_message} in {self.destination}')
-        return InstallStepResult(self.description, successful=True, message=f'cloned {file_count} files to {self.destination}')
+                    clone_folder_result.message = f'Error cloning file {item}: {file_message} in {self.destination}'
+                    return clone_folder_result
+        clone_folder_result.message = f'cloned {file_count} files to {self.destination}'
+        return clone_folder_result
 
 
 class InstallConfigStage:
