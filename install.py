@@ -179,31 +179,36 @@ def find_dotfiles_folder_path():
     return dotfiles_folder
 
 
-def create_config_link(source: pathlib.Path, destination: pathlib.Path):
+def create_config_link(source: pathlib.Path, destination: pathlib.Path, *, force_copy=False):
     """
     Create a link from the source path to the destination path.
     """
     try:
         effective_destination = destination / source.name if destination.is_dir() else destination
-        if effective_destination.is_symlink():
-            if effective_destination.exists() and effective_destination.resolve() == source:
-                return True, 'link already exists'
-            effective_destination.unlink()
-        if effective_destination.exists():
-            if effective_destination.is_file():
-                shutil.copy2(source, effective_destination)
-                return True, 'overwritten file'
-        elif not effective_destination.exists():
-            parent_folder = effective_destination.parent
+        parent_folder = effective_destination.parent
+        if not parent_folder.exists():
             mkdir_result, mkdir_message = mkdir_config(parent_folder)
             if not mkdir_result:
                 return False, mkdir_message
-            symlink_available = sys.platform != 'win32' or running_as_admin()
-            if symlink_available:
-                os.symlink(source, effective_destination)
-                return True, 'created link'
+        if force_copy:
+            if effective_destination.exists():
+                effective_destination.unlink()
             shutil.copy2(source, effective_destination)
             return True, 'copied file'
+        if effective_destination.exists():
+            if effective_destination.is_symlink():
+                if effective_destination.resolve() == source:
+                    return True, 'link already exists'
+                effective_destination.unlink()
+            else:
+                shutil.copy2(source, effective_destination)
+                return True, 'overwritten file'
+        symlink_available = sys.platform != 'win32' or running_as_admin()
+        if symlink_available:
+            os.symlink(source, effective_destination)
+            return True, 'created link'
+        shutil.copy2(source, effective_destination)
+        return True, 'copied file'
     except Exception as ex:
         return False, str(ex)
 
@@ -380,7 +385,7 @@ class CloneFileStep(InstallStep):
     Clone a file from source to destination.
     """
 
-    def __init__(self, description: str, source: pathlib.Path | PlatformPath, destination: pathlib.Path | PlatformPath, *, when=None) -> None:
+    def __init__(self, description: str, source: pathlib.Path | PlatformPath, destination: pathlib.Path | PlatformPath, *, when=None, force_copy=False) -> None:
         def condition_function():
             """
             Condition function to check if both source and destination are valid for the current platform.
@@ -388,7 +393,7 @@ class CloneFileStep(InstallStep):
             source_valid = bool(source)
             destination_valid = bool(destination)
             if when is not None:
-                return source_valid and destination_valid and when
+                return source_valid and destination_valid and bool(when)
             return source_valid and destination_valid
 
         condition = Condition(condition_function, is_static=True)
@@ -397,12 +402,13 @@ class CloneFileStep(InstallStep):
         destination_path = resolve_path(destination)
         self.source = find_dotfiles_folder_path() / source_path if source_path else None
         self.destination = destination_path
+        self.force_copy = force_copy
 
     def run(self) -> InstallStepResult:
         """
         Run the step.
         """
-        success, message = create_config_link(self.source, self.destination)
+        success, message = create_config_link(self.source, self.destination, force_copy=self.force_copy)
         return InstallStepResult(self.description, successful=success, message=message)
 
 
@@ -420,8 +426,8 @@ class CloneFolderStep(InstallStep):
             source_valid = bool(source)
             destination_valid = bool(destination)
             if when is not None:
-                return source_valid and destination_valid and when
-            return source_valid and destination_valid
+                return source_valid and destination_valid and bool(when)
+            return bool(source_valid and destination_valid)
         condition = Condition(condition_function, is_static=True)
         super().__init__(description, when=condition)
         source_path = resolve_path(source)
@@ -450,6 +456,27 @@ class CloneFolderStep(InstallStep):
                     return clone_folder_result
         clone_folder_result.message = f'cloned {file_count} files to {self.destination}'
         return clone_folder_result
+
+
+class ExecCommandStep(InstallStep):
+    """
+    A step to execute a command.
+    """
+
+    def __init__(self, description: str, command: str, *, when=None) -> None:
+        super().__init__(description, when=when)
+        self.command = command
+
+    def run(self) -> InstallStepResult:
+        """
+        Run the commad.
+        """
+        subprocess_result = subprocess.run(self.command, shell=True, capture_output=True, check=False)
+        command_successful = subprocess_result.returncode == 0
+        message = f'Exit code: {subprocess_result.returncode}, stdout: {subprocess_result.stdout.decode("utf-8")}'
+        if not command_successful:
+            message = f'{message}, stderr: {subprocess_result.stderr.decode("utf-8")}'
+        return InstallStepResult(self.description, successful=command_successful, message=message)
 
 
 class InstallConfigStage:
@@ -512,6 +539,22 @@ def install():
     install_neovim_stage.add_step(CloneFolderStep('install neovide config',
                                                        pathlib.Path('neovide'),
                                                        PlatformPath(linux='~/.config/neovide', darwin='~/.config/neovide', win32='~/AppData/Roaming/neovide')))
+    has_flatpak = Condition.create_command_is_successful('flatpak --version', is_static=True)
+    add_wrapper_command = """#!/bin/bash
+    mkdir -p ~/.var/app/dev.neovide.neovide/data/bin
+    nvim_path=$(which nvim)
+    echo -e "#!/usr/bin/env bash\nflatpak-spawn --host $nvim_path $@" > ~/.var/app/dev.neovide.neovide/data/bin/nvim
+    chmod +x ~/.var/app/dev.neovide.neovide/data/bin/nvim
+    """
+    install_neovim_stage.add_step(ExecCommandStep('add neovim wrapper for flatpak', add_wrapper_command, when=has_flatpak))
+    # install_neovim_stage.add_step(CloneFileStep('install neovide config for flatpak',
+    #                                             pathlib.Path('neovide/config.toml'),
+    #                                             PlatformPath(linux='~/.var/app/dev.neovide.neovide/config/neovide/config.toml'), when=has_flatpak, force_copy=True))
+    set_neovide_config = """#!/bin/bash
+     mkdir -p ~/.var/app/dev.neovide.neovide/config/neovide
+    echo -e "neovim-bin = '$HOME/.var/app/dev.neovide.neovide/data/bin/nvim'" >> ~/.var/app/dev.neovide.neovide/config/neovide/config.toml
+    """
+    install_neovim_stage.add_step(ExecCommandStep('add neovim config for flatpak', set_neovide_config, when=has_flatpak))
     results = [stage() for stage in stages]
     return results
 
