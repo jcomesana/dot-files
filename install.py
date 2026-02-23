@@ -190,25 +190,20 @@ def create_config_link(source: pathlib.Path, destination: pathlib.Path, *, force
             mkdir_result, mkdir_message = mkdir_config(parent_folder)
             if not mkdir_result:
                 return False, mkdir_message
-        if force_copy:
+        symlink_available = sys.platform != 'win32' or running_as_admin()
+        copy_file = force_copy or (effective_destination.is_file() and not effective_destination.is_symlink()) or not symlink_available
+        if copy_file:
             if effective_destination.exists():
                 effective_destination.unlink()
             shutil.copy2(source, effective_destination)
             return True, 'copied file'
-        if effective_destination.exists():
+        else:
             if effective_destination.is_symlink():
                 if effective_destination.resolve() == source:
                     return True, 'link already exists'
                 effective_destination.unlink()
-            else:
-                shutil.copy2(source, effective_destination)
-                return True, 'overwritten file'
-        symlink_available = sys.platform != 'win32' or running_as_admin()
-        if symlink_available:
             os.symlink(source, effective_destination)
             return True, 'created link'
-        shutil.copy2(source, effective_destination)
-        return True, 'copied file'
     except Exception as ex:
         return False, str(ex)
 
@@ -543,15 +538,14 @@ def install():
     add_wrapper_command = """#!/bin/bash
     mkdir -p ~/.var/app/dev.neovide.neovide/data/bin
     nvim_path=$(which nvim)
-    echo -e "#!/usr/bin/env bash\nflatpak-spawn --host $nvim_path $@" > ~/.var/app/dev.neovide.neovide/data/bin/nvim
+    echo -e "#!/usr/bin/env bash\nflatpak-spawn --host $nvim_path \\$@" > ~/.var/app/dev.neovide.neovide/data/bin/nvim
     chmod +x ~/.var/app/dev.neovide.neovide/data/bin/nvim
     """
     install_neovim_stage.add_step(ExecCommandStep('add neovim wrapper for flatpak', add_wrapper_command, when=has_flatpak))
-    # install_neovim_stage.add_step(CloneFileStep('install neovide config for flatpak',
-    #                                             pathlib.Path('neovide/config.toml'),
-    #                                             PlatformPath(linux='~/.var/app/dev.neovide.neovide/config/neovide/config.toml'), when=has_flatpak, force_copy=True))
+    install_neovim_stage.add_step(CloneFileStep('install neovide config for flatpak',
+                                                pathlib.Path('neovide/config.toml'),
+                                                PlatformPath(linux='~/.var/app/dev.neovide.neovide/config/neovide/config.toml'), when=has_flatpak, force_copy=True))
     set_neovide_config = """#!/bin/bash
-     mkdir -p ~/.var/app/dev.neovide.neovide/config/neovide
     echo -e "neovim-bin = '$HOME/.var/app/dev.neovide.neovide/data/bin/nvim'" >> ~/.var/app/dev.neovide.neovide/config/neovide/config.toml
     """
     install_neovim_stage.add_step(ExecCommandStep('add neovim config for flatpak', set_neovide_config, when=has_flatpak))
