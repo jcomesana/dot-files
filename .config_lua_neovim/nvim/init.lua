@@ -859,7 +859,7 @@ require("lazy").setup({
   {
     -- GUI shim
     "equalsraf/neovim-gui-shim",
-    cond = vim.fn.has("gui_running") == 1,
+    cond = vim.fn.has("gui_running") == 1 and not vim.fn.exists("g.neovide"),
   },
 
   {
