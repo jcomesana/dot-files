@@ -435,8 +435,12 @@ class CloneFolderStep(InstallStep):
         """
         Run the step.
         """
-        file_count = 0
         clone_folder_result = InstallStepResult(self.description, successful=True)
+        if not self.source or not self.destination:
+            clone_folder_result.successful = False
+            clone_folder_result.message = 'Invalid source or destination'
+            return clone_folder_result
+        file_count = 0
         for item in self.source.glob(self.pattern):
             if item.is_file():
                 relative_file_path = item.relative_to(self.source)
@@ -468,7 +472,9 @@ class ExecCommandStep(InstallStep):
         """
         subprocess_result = subprocess.run(self.command, shell=True, capture_output=True, check=False)
         command_successful = subprocess_result.returncode == 0
-        message = f'Exit code: {subprocess_result.returncode}, stdout: {subprocess_result.stdout.decode("utf-8")}'
+        message = f'Exit code: {subprocess_result.returncode}'
+        if subprocess_result.stdout:
+            message = f'{message}, stdout: {subprocess_result.stdout.decode("utf-8")}'
         if not command_successful:
             message = f'{message}, stderr: {subprocess_result.stderr.decode("utf-8")}'
         return InstallStepResult(self.description, successful=command_successful, message=message)
