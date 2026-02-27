@@ -403,7 +403,10 @@ class CloneFileStep(InstallStep):
         """
         Run the step.
         """
-        success, message = create_config_link(self.source, self.destination, force_copy=self.force_copy)
+        if not self.source or not self.destination:
+            success, message = False, 'Invalid source or destination'
+        else:
+            success, message = create_config_link(self.source, self.destination, force_copy=self.force_copy)
         return InstallStepResult(self.description, successful=success, message=message)
 
 
