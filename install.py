@@ -503,13 +503,12 @@ class InstallConfigStage:
         To run all the steps contained by the stage.
         """
         stage_result = InstallStageResult(self.description)
-        if self.steps:
-            for step in self.steps:
-                if step.condition():
-                    step_result = step()
-                    stage_result.add_step_result(step_result)
-                    if stop_at_first_error and step_result.failed:
-                        break
+        for step in self.steps:
+            if step.condition():
+                step_result = step()
+                stage_result.add_step_result(step_result)
+                if stop_at_first_error and step_result.failed:
+                    break
         return stage_result
 
 
