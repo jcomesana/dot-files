@@ -537,7 +537,7 @@ def install():
     # neovim configuration
     neovim_dest_path = PlatformPath(linux='~/.config/nvim', darwin='~/.config/nvim', win32='~/AppData/Local/nvim')
     install_neovim_stage = InstallConfigStage('install neovim configuration')
-    install_neovim_stage.add_step(CloneFolderStep('install neovim config files', pathlib.Path('.config_lua_neovim/nvim'), neovim_dest_path))
+    install_neovim_stage.add_step(CloneFolderStep('install neovim config files', pathlib.Path('.config/nvim'), neovim_dest_path))
     stages.append(install_neovim_stage)
     install_neovim_stage.add_step(CloneFolderStep('install neovide config',
                                                        pathlib.Path('neovide'),

@@ -2,7 +2,7 @@
 set mouse=a
 set mousehide
 
-" Try to render font ligatures
+" With ligatures there are some glitches
 if exists(':GuiRenderLigatures')
     GuiRenderLigatures 0
 endif
@@ -29,11 +29,17 @@ if exists(':GuiFont')
         execute 'GuiFont! ' . $NVIM_GUI_FONT
     else
         if has('win32')
-            GuiFont! CaskaydiaCove Nerd Font:h8:b
+            " GuiFont! CaskaydiaCove Nerd Font:h10
+            GuiFont! 0xProto Nerd Font:h10
+        elseif has('macunix')
+            " GuiFont! CaskaydiaCove Nerd Font:h12
+            GuiFont! 0xProto Nerd Font:h12
+            GuiLinespace 0
         else
-            GuiFont! CaskaydiaCove Nerd Font:h10:b
+            " GuiFont! CaskaydiaCove Nerd Font:h10
+            " GuiLinespace -1
+            GuiFont! 0xProto Nerd Font:h10
         endif
-        GuiLinespace 0
     endif
 endif
 
@@ -55,9 +61,9 @@ endif
 " Settings for fvim
 if exists('g:fvim_loaded')
     if g:fvim_os == 'windows' || g:fvim_render_scale > 1.0
-        set guifont=Iosevka\ SS04:h12
+        set guifont=CaskaydiaCove\ Nerd\ Font:h10
     else
-        set guifont=Iosevka\ SS04:h13
+        set guifont=CaskaydiaCove\ Nerd\ Font:h12
     endif
 
     " Title bar tweaks
@@ -83,12 +89,21 @@ endif
 
 " Settings for neovide
 if exists("g:neovide")
-    if has('win32')
-        set guifont=CaskaydiaCove\ Nerd\ Font:h8:b
+    if !empty($NVIM_GUI_FONT)
+        execute 'set guifont=' . substitute($NVIM_GUI_FONT, ' ', '\\ ', 'g')
+    elseif has('win32')
+        " set guifont=CaskaydiaCove\ Nerd\ Font:h8
+        set guifont=0xProto\ Nerd\ Font:h8
+    elseif has('macunix')
+        " set guifont=CaskaydiaCove\ Nerd\ Font:h12
+        set guifont=0xProto\ Nerd\ Font:h12
     else
-        set guifont=CaskaydiaCove\ Nerd\ Font:h10:b
+        " set guifont=CaskaydiaCove\ Nerd\ Font:h10
+        set guifont=0xProto\ Nerd\ Font:h10
     endif
-    let g:neovide_hide_mouse_when_typing = v:true
-    let g:neovide_cursor_animation_length = 0.10
-    let g:neovide_cursor_trail_size = 0.5
+    let g:neovide_hide_mouse_when_typing = v:false
+    let g:neovide_cursor_animation_length = 0.04
+    let g:neovide_cursor_trail_size = 0.1
+    let g:neovide_input_macos_option_key_is_meta = 'only_left'
+    let g:neovide_show_border = v:true
 endif
