@@ -537,8 +537,8 @@ def install():
     # neovim configuration
     neovim_dest_path = PlatformPath(linux='~/.config/nvim', darwin='~/.config/nvim', win32='~/AppData/Local/nvim')
     install_neovim_stage = InstallConfigStage('install neovim configuration')
-    install_neovim_stage.add_step(CloneFolderStep('install neovim config files', pathlib.Path('.config/nvim'), neovim_dest_path))
     stages.append(install_neovim_stage)
+    install_neovim_stage.add_step(CloneFolderStep('install neovim config files', pathlib.Path('.config/nvim'), neovim_dest_path))
     install_neovim_stage.add_step(CloneFolderStep('install neovide config',
                                                        pathlib.Path('neovide'),
                                                        PlatformPath(linux='~/.config/neovide', darwin='~/.config/neovide', win32='~/AppData/Roaming/neovide')))
@@ -557,6 +557,25 @@ def install():
     echo -e "neovim-bin = '$HOME/.var/app/dev.neovide.neovide/data/bin/nvim'" >> ~/.var/app/dev.neovide.neovide/config/neovide/config.toml
     """
     install_neovim_stage.add_step(ExecCommandStep('add neovim config for flatpak', set_neovide_config, when=has_flatpak))
+    # Update sdkman
+    systemd_user_path = PlatformPath(linux='~/.config/systemd/user')
+    sdkman_units_src = pathlib.Path('home-services/sdkman')
+    install_local_services_stage = InstallConfigStage('install local services')
+    stages.append(install_local_services_stage)
+    has_sdkman = Condition(lambda: pathlib.Path('~/.sdkman').expanduser().exists(), is_static=True)
+    has_systemd = Condition.create_command_is_successful('systemctl --version', is_static=True)
+    install_local_services_stage.add_step(CloneFileStep('install sdkman-update.timer',
+                                                             sdkman_units_src / 'sdkman-update.timer',
+                                                             systemd_user_path / 'sdkman-update.timer',
+                                                             when=has_systemd and has_sdkman))
+    install_local_services_stage.add_step(CloneFileStep('install sdkman-update.service',
+                                                             sdkman_units_src / 'sdkman-update.service',
+                                                             systemd_user_path / 'sdkman-update.service',
+                                                             when=has_systemd and has_sdkman))
+    install_local_services_stage.add_step(CloneFileStep('install sdkman-update.sh script',
+                                                             sdkman_units_src / 'sdkman-update.sh',
+                                                             PlatformPath(linux='~/.local/bin/sdkman-update.sh'),
+                                                             when=has_systemd and has_sdkman))
     results = [stage() for stage in stages]
     return results
 

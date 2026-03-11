@@ -1,0 +1,7 @@
+[Unit]
+Description=Update sdkman
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/sdkman-update.sh
+User=%u

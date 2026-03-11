@@ -1,0 +1,12 @@
+[Unit]
+Description=Update sdkman
+After=network.target
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=10m
+Unit=sdkman-update.service
+
+[Install]
+WantedBy=timers.target
