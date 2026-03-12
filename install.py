@@ -275,7 +275,7 @@ class InstallStepResult:
         for step in self.steps:
             step.increment_indent_level(self.indent_level)
 
-    def add_step(self, step: InstallStepResult):
+    def add_step(self, step):
         """
         Add a sub-step result.
         """
@@ -483,6 +483,52 @@ class ExecCommandStep(InstallStep):
         return InstallStepResult(self.description, successful=command_successful, message=message)
 
 
+class InstallSystemdUserTimerStep(InstallStep):
+    """
+    Install a systemd user timer.
+    """
+
+    SOURCE_FOLDER = find_dotfiles_folder_path() / 'home-services'
+
+    def __init__(self, description: str, folder: str, *, when=None) -> None:
+        has_systemd = Condition.create_command_is_successful('systemctl --version', is_static=True)
+        super().__init__(description, when=has_systemd and when if when else has_systemd)
+        self.source = InstallSystemdUserTimerStep.SOURCE_FOLDER / folder
+
+    def run(self) -> InstallStepResult:
+        """
+        Add the user timer.
+        """
+        install_result = InstallStepResult(self.description, successful=True)
+        systemd_user_path = pathlib.Path('~/.config/systemd/user').expanduser()
+        timer_name = None
+        for item in self.source.glob('*'):
+            if item.is_file():
+                destination = systemd_user_path / item.name if item.suffix in set(['.timer', '.service']) else pathlib.Path('~/bin').expanduser() / item.name
+                file_result, file_message = create_config_link(item, destination)
+                step_result = InstallStepResult(f'install systemd user timer file {item.name}', successful=file_result, message=file_message)
+                install_result.add_step(step_result)
+                if not file_result:
+                    install_result.message = f'Error installing systemd user timer {item.name}: {file_message}'
+                    break
+                if item.suffix == '.timer':
+                    timer_name = item.name
+        if timer_name and install_result.successful:
+            # systemctl --user enable --now mytask.timer
+            daemon_reload_result = subprocess.run('systemctl --user daemon-reload', shell=True, capture_output=True, check=False)
+            daemon_reload_message = f'Exit code: {daemon_reload_result.returncode}, stdout: {daemon_reload_result.stdout.decode("utf-8")}, stderr: {daemon_reload_result.stderr.decode("utf-8")}'
+            install_result.add_step(InstallStepResult('reload systemd user daemon',
+                                                           successful=daemon_reload_result.returncode == 0,
+                                                           message=daemon_reload_message))
+            enable_timer_result = subprocess.run(f'systemctl --user enable --now {timer_name}', shell=True, capture_output=True, check=False)
+            enable_timer_message = f'Exit code: {enable_timer_result.returncode}, stdout: {enable_timer_result.stdout.decode("utf-8")}, stderr: {enable_timer_result.stderr.decode("utf-8")}'
+            install_result.add_step(InstallStepResult('enable and start systemd user timer',
+                                                           successful=enable_timer_result.returncode == 0,
+                                                           message=enable_timer_message))
+            enable_timer_result = subprocess.run(f'systemctl --user enable --now {timer_name}', shell=True, capture_output=True, check=False)
+        return install_result
+
+
 class InstallConfigStage:
     """
     Represents installing the configuration for a program.
@@ -558,24 +604,10 @@ def install():
     """
     install_neovim_stage.add_step(ExecCommandStep('add neovim config for flatpak', set_neovide_config, when=has_flatpak))
     # Update sdkman
-    systemd_user_path = PlatformPath(linux='~/.config/systemd/user')
-    sdkman_units_src = pathlib.Path('home-services/sdkman')
     install_local_services_stage = InstallConfigStage('install local services')
     stages.append(install_local_services_stage)
     has_sdkman = Condition(lambda: pathlib.Path('~/.sdkman').expanduser().exists(), is_static=True)
-    has_systemd = Condition.create_command_is_successful('systemctl --version', is_static=True)
-    install_local_services_stage.add_step(CloneFileStep('install sdkman-update.timer',
-                                                             sdkman_units_src / 'sdkman-update.timer',
-                                                             systemd_user_path / 'sdkman-update.timer',
-                                                             when=has_systemd and has_sdkman))
-    install_local_services_stage.add_step(CloneFileStep('install sdkman-update.service',
-                                                             sdkman_units_src / 'sdkman-update.service',
-                                                             systemd_user_path / 'sdkman-update.service',
-                                                             when=has_systemd and has_sdkman))
-    install_local_services_stage.add_step(CloneFileStep('install sdkman-update.sh script',
-                                                             sdkman_units_src / 'sdkman-update.sh',
-                                                             PlatformPath(linux='~/.local/bin/sdkman-update.sh'),
-                                                             when=has_systemd and has_sdkman))
+    install_local_services_stage.add_step(InstallSystemdUserTimerStep('install sdkman update timer', 'sdkman', when=has_sdkman))
     results = [stage() for stage in stages]
     return results
 
