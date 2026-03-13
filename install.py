@@ -161,7 +161,7 @@ class Condition:
             result = False
             exit_code = None
             try:
-                exit_code = subprocess.call(command, shell=True)
+                exit_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE)
             finally:
                 if exit_code is not None:
                     result = exit_code == expected_exit_code
@@ -488,12 +488,12 @@ class InstallSystemdUserTimerStep(InstallStep):
     Install a systemd user timer.
     """
 
-    SOURCE_FOLDER = find_dotfiles_folder_path() / 'home-services'
+    TIMERS_FOLDER = 'home-services'
 
     def __init__(self, description: str, folder: str, *, when=None) -> None:
         has_systemd = Condition.create_command_is_successful('systemctl --version', is_static=True)
         super().__init__(description, when=has_systemd and when if when else has_systemd)
-        self.source = InstallSystemdUserTimerStep.SOURCE_FOLDER / folder
+        self.source = find_dotfiles_folder_path() / InstallSystemdUserTimerStep.TIMERS_FOLDER / folder
 
     def run(self) -> InstallStepResult:
         """
@@ -514,7 +514,6 @@ class InstallSystemdUserTimerStep(InstallStep):
                 if item.suffix == '.timer':
                     timer_name = item.name
         if timer_name and install_result.successful:
-            # systemctl --user enable --now mytask.timer
             daemon_reload_result = subprocess.run('systemctl --user daemon-reload', shell=True, capture_output=True, check=False)
             daemon_reload_message = f'Exit code: {daemon_reload_result.returncode}, stdout: {daemon_reload_result.stdout.decode("utf-8")}, stderr: {daemon_reload_result.stderr.decode("utf-8")}'
             install_result.add_step(InstallStepResult('reload systemd user daemon',
