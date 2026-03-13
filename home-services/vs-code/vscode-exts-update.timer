@@ -1,0 +1,12 @@
+[Unit]
+Description=Update visual studio code extensions
+After=network.target
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=12m
+Unit=vscode-exts-update.service
+
+[Install]
+WantedBy=timers.target

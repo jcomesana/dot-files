@@ -602,11 +602,13 @@ def install():
     echo -e "neovim-bin = '$HOME/.var/app/dev.neovide.neovide/data/bin/nvim'" >> ~/.var/app/dev.neovide.neovide/config/neovide/config.toml
     """
     install_neovim_stage.add_step(ExecCommandStep('add neovim config for flatpak', set_neovide_config, when=has_flatpak))
-    # Update sdkman
+    # Local services
     install_local_services_stage = InstallConfigStage('install local services')
     stages.append(install_local_services_stage)
     has_sdkman = Condition(lambda: pathlib.Path('~/.sdkman').expanduser().exists(), is_static=True)
     install_local_services_stage.add_step(InstallSystemdUserTimerStep('install sdkman update timer', 'sdkman', when=has_sdkman))
+    has_vs_code = Condition.create_command_is_successful('code --version', is_static=True)
+    install_local_services_stage.add_step(InstallSystemdUserTimerStep('install vs code extensions update timer', 'vs-code', when=has_vs_code))
     results = [stage() for stage in stages]
     return results
 

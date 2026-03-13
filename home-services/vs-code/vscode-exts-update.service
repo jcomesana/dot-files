@@ -1,0 +1,7 @@
+[Unit]
+Description=Update visual studio code extensions
+
+[Service]
+Type=oneshot
+ExecStart=code --update-extensions
+User=%u
