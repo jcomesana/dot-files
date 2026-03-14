@@ -3,7 +3,7 @@ Description=Update sdkman
 After=network.target
 
 [Timer]
-OnCalendar=daily
+OnCalendar=Mon,Wed,Fri 08:00
 Persistent=true
 RandomizedDelaySec=10m
 Unit=sdkman-update.service

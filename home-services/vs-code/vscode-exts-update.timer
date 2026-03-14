@@ -3,7 +3,9 @@ Description=Update visual studio code extensions
 After=network.target
 
 [Timer]
-OnCalendar=daily
+OnCalendar=07:00
+OnCalendar=13:00
+OnCalendar=19:00
 Persistent=true
 RandomizedDelaySec=12m
 Unit=vscode-exts-update.service
