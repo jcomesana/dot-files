@@ -609,6 +609,8 @@ def install():
     install_local_services_stage.add_step(InstallSystemdUserTimerStep('install sdkman update timer', 'sdkman', when=has_sdkman))
     has_vs_code = Condition.create_command_is_successful('code --version', is_static=True)
     install_local_services_stage.add_step(InstallSystemdUserTimerStep('install vs code extensions update timer', 'vs-code', when=has_vs_code))
+    has_nvim = Condition.create_command_is_successful('nvim --version', is_static=True)
+    install_local_services_stage.add_step(InstallSystemdUserTimerStep('install neovim update timer', 'nvim', when=has_nvim))
     results = [stage() for stage in stages]
     return results
 

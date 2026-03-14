@@ -1,0 +1,7 @@
+[Unit]
+Description=Update neovim plugins
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/nvim-update.sh
+User=%u

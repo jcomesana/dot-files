@@ -1,0 +1,12 @@
+[Unit]
+Description=Update neovim plugins
+After=network.target
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=10m
+Unit=nvim-update.service
+
+[Install]
+WantedBy=timers.target
