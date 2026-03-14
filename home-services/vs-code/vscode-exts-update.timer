@@ -6,8 +6,9 @@ After=network.target
 OnCalendar=07:00
 OnCalendar=13:00
 OnCalendar=19:00
+OnBootSec=10min
 Persistent=true
-RandomizedDelaySec=12m
+RandomizedDelaySec=3m
 Unit=vscode-exts-update.service
 
 [Install]
