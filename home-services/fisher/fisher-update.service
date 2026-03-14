@@ -1,0 +1,7 @@
+[Unit]
+Description=Update fisher plugins
+
+[Service]
+Type=oneshot
+ExecStart=fisher-update.fish
+User=%u

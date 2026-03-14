@@ -1,0 +1,12 @@
+[Unit]
+Description=Update fisher
+After=network.target
+
+[Timer]
+OnCalendar=Mon 07:00
+Persistent=true
+RandomizedDelaySec=15m
+Unit=fisher-update.service
+
+[Install]
+WantedBy=timers.target
