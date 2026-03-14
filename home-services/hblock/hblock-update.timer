@@ -1,0 +1,12 @@
+[Unit]
+Description=Update hblock list
+After=network.target
+
+[Timer]
+OnCalendar=Tue,Thu,Sun 07:00
+Persistent=true
+RandomizedDelaySec=12m
+Unit=hblock-update.service
+
+[Install]
+WantedBy=timers.target

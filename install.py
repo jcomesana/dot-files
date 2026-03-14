@@ -161,7 +161,7 @@ class Condition:
             result = False
             exit_code = None
             try:
-                exit_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE)
+                exit_code = subprocess.call(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             finally:
                 if exit_code is not None:
                     result = exit_code == expected_exit_code
@@ -492,7 +492,7 @@ class InstallSystemdUserTimerStep(InstallStep):
 
     def __init__(self, description: str, folder: str, *, when=None) -> None:
         has_systemd = Condition.create_command_is_successful('systemctl --version', is_static=True)
-        super().__init__(description, when=has_systemd and when if when else has_systemd)
+        super().__init__(description, when=has_systemd and when if when is not None else has_systemd)
         self.source = find_dotfiles_folder_path() / InstallSystemdUserTimerStep.TIMERS_FOLDER / folder
 
     def run(self) -> InstallStepResult:
@@ -611,6 +611,8 @@ def install():
     install_local_services_stage.add_step(InstallSystemdUserTimerStep('install vs code extensions update timer', 'vs-code', when=has_vs_code))
     has_nvim = Condition.create_command_is_successful('nvim --version', is_static=True)
     install_local_services_stage.add_step(InstallSystemdUserTimerStep('install neovim update timer', 'nvim', when=has_nvim))
+    has_hblock_from_brew = Condition.create_command_is_successful('brew info hblock', is_static=True)
+    install_local_services_stage.add_step(InstallSystemdUserTimerStep('install hblock update timer', 'hblock', when=has_hblock_from_brew))
     results = [stage() for stage in stages]
     return results
 

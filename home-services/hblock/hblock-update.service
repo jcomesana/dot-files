@@ -1,0 +1,7 @@
+[Unit]
+Description=Update hblock list
+
+[Service]
+Type=oneshot
+ExecStart=hblock
+User=%u
