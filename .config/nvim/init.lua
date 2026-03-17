@@ -605,6 +605,14 @@ require("lazy").setup({
           desc = "Grep files with fzf-lua",
           mode = "n"
         },
+        ["\\ov"] = {
+          callback = function()
+            local opts = { vertical = true }
+            require("oil").open_preview(opts)
+          end,
+          desc = "Open preview",
+          mode = "n"
+        },
       },
     }
   },
