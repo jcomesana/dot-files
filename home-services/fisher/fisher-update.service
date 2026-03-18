@@ -3,5 +3,5 @@ Description=Update fisher plugins
 
 [Service]
 Type=oneshot
-ExecStart=fisher-update.fish
+ExecStart=%h/bin/fisher-update.fish
 User=%u
