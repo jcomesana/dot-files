@@ -1545,9 +1545,21 @@ vim.keymap.set("n", "<Leader>gu", "<CMD>SignifyHunkUndo<CR>", { noremap = true, 
 vim.g["sandwich#recipes"] = vim.deepcopy(vim.g["sandwich#default_recipes"])
 
 -- [[ Configure oil ]]
+local function get_downloads_folder()
+  local xdg_result = vim.system({"xdg-user-dir", "DOWNLOAD"}, { text = true }):wait()
+  print(xdg_result.code)  -- exit code
+  if xdg_result.code == 0 then
+    return xdg_result.stdout
+  elseif jit.os:find("Windows") then
+    vim.fs.joinpath(vim.env.USERPROFILE, "Downloads")
+  end
+  return vim.fs.joinpath(vim.env.HOME, "Downloads")
+end
+
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 vim.keymap.set("n", "<Leader>od", "<CMD>Oil " .. vim.fn.stdpath("data") .. "<CR>", { desc = "Open [D]ata directory" })
 vim.keymap.set("n", "<Leader>ol", "<CMD>Oil " .. vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") .. "<CR>", { desc = "Open [L]azy data directory" })
+vim.keymap.set("n", "<Leader>oD", "<CMD>Oil " .. get_downloads_folder() .. "<CR>", { desc = "Open [D]ownloads folder" })
 
 -- [[ Configure mini.trailspace ]]
 vim.keymap.set('n', '<Leader>st', function ()
