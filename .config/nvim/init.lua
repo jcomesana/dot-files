@@ -1546,10 +1546,13 @@ vim.g["sandwich#recipes"] = vim.deepcopy(vim.g["sandwich#default_recipes"])
 
 -- [[ Configure oil ]]
 local function get_downloads_folder()
-  local xdg_result = vim.system({"xdg-user-dir", "DOWNLOAD"}, { text = true }):wait()
-  if xdg_result.code == 0 then
-    return xdg_result.stdout
-  elseif jit.os:find("Windows") then
+  if vim.fn.executable("xdg-user-dir") == 1 then
+    local xdg_result = vim.system({"xdg-user-dir", "DOWNLOAD"}, { text = true }):wait()
+    if xdg_result.code == 0 then
+      return xdg_result.stdout
+    end
+  end
+  if jit.os:find("Windows") then
     vim.fs.joinpath(vim.env.USERPROFILE, "Downloads")
   end
   return vim.fs.joinpath(vim.env.HOME, "Downloads")
