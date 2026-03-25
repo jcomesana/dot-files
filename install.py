@@ -564,14 +564,14 @@ def install():
     stages = []
     # dot files
     install_single_dotfiles = InstallConfigStage('install single dotfiles')
-    install_single_dotfiles.add_step(CloneFileStep('install .tmux.conf', pathlib.Path('.tmux.conf'), PlatformPath(linux='~/.tmux.conf', darwin='~/.tmux.conf')))
+    install_single_dotfiles.add_step(CloneFileStep('install .tmux.conf', pathlib.Path('.tmux.conf'), PlatformPath(android='~/.tmux.conf', linux='~/.tmux.conf', darwin='~/.tmux.conf')))
     install_single_dotfiles.add_step(CloneFileStep('install .ruff.toml', pathlib.Path('.ruff.toml'), PlatformPath(linux='~/.ruff.toml', darwin='~/.ruff.toml', win32='~/.ruff.toml')))
     stages.append(install_single_dotfiles)
     # vim configuration
     install_vim_stage = InstallConfigStage('install vim configuration')
-    install_vim_stage.add_step(CloneFileStep('install vimrc', pathlib.Path('_vimrc'), PlatformPath(linux='~/_vimrc', darwin='~/_vimrc', win32='~/_vimrc')))
+    install_vim_stage.add_step(CloneFileStep('install vimrc', pathlib.Path('_vimrc'), PlatformPath(android='~/_vimrc', linux='~/_vimrc', darwin='~/_vimrc', win32='~/_vimrc')))
     install_vim_stage.add_step(CloneFileStep('install gvimrc', pathlib.Path('_gvimrc'), PlatformPath(linux='~/_gvimrc', darwin='~/_gvimrc', win32='~/_gvimrc')))
-    dest_vim_extras_path = PlatformPath(linux='~/.vim/extras', darwin='~/.vim/extras', win32='~/vimfiles/extras')
+    dest_vim_extras_path = PlatformPath(android='~/.vim/extras', linux='~/.vim/extras', darwin='~/.vim/extras', win32='~/vimfiles/extras')
     install_vim_stage.add_step(CloneFolderStep('install vim extras', pathlib.Path('vimextras'), dest_vim_extras_path))
     source_efm_path = pathlib.Path('efm-langserver')
     destination_efm_path = dest_vim_extras_path.with_platforms('linux', 'win32') / 'efm-langserver'
@@ -580,7 +580,7 @@ def install():
     install_vim_stage.add_step(CloneFolderStep('install efm-langserver executables', source_efm_exe_path, destination_efm_path))
     stages.append(install_vim_stage)
     # neovim configuration
-    neovim_dest_path = PlatformPath(linux='~/.config/nvim', darwin='~/.config/nvim', win32='~/AppData/Local/nvim')
+    neovim_dest_path = PlatformPath(android='~/.config/nvim', linux='~/.config/nvim', darwin='~/.config/nvim', win32='~/AppData/Local/nvim')
     install_neovim_stage = InstallConfigStage('install neovim configuration')
     stages.append(install_neovim_stage)
     install_neovim_stage.add_step(CloneFolderStep('install neovim config files', pathlib.Path('.config/nvim'), neovim_dest_path))
