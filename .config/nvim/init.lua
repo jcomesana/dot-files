@@ -241,7 +241,7 @@ require("lazy").setup({
 
   {
     -- Diff integration
-    "sindrets/diffview.nvim",
+    "dlyongemallo/diffview.nvim",
     config = true,
     cmd = { "DiffviewOpen", "DiffviewFileHistory" }
   },
