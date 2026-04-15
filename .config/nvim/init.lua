@@ -1,4 +1,5 @@
 -- Based on https://github.com/nvim-lua/kickstart.nvim
+vim.loader.enable()
 
 -- Disable netrw
 vim.g.loaded_netrwPlugin = 1
