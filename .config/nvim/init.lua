@@ -75,6 +75,7 @@ end
 require("lazy").setup({
   {
     "folke/snacks.nvim",
+    cond = not vim.g.vscode,
     priority = 1000,
     lazy = false,
     opts = {
@@ -232,6 +233,7 @@ require("lazy").setup({
   {
     -- A session manager
     "olimorris/persisted.nvim",
+    cond = not vim.g.vscode,
     lazy = false, -- make sure the plugin is always loaded at startup
     opts = {
       autostart = false,
@@ -243,25 +245,34 @@ require("lazy").setup({
   {
     -- Diff integration
     "dlyongemallo/diffview.nvim",
+    cond = not vim.g.vscode,
     config = true,
     cmd = { "DiffviewOpen", "DiffviewFileHistory" }
   },
 
   -- Git, P4
-  "mhinz/vim-signify",
+  {
+    "mhinz/vim-signify",
+    cond = not vim.g.vscode,
+  },
 
   -- Detect tabstop and shiftwidth automatically
   {
     "tpope/vim-sleuth",
+    cond = not vim.g.vscode,
     event = "VeryLazy",
   },
 
   -- Remember last position
-  "farmergreg/vim-lastplace",
+  {
+    "farmergreg/vim-lastplace",
+    cond = not vim.g.vscode,
+  },
 
   -- Auto pairs completion
   {
     "windwp/nvim-autopairs",
+    cond = not vim.g.vscode,
     opts = {
       fast_wrap = {
         map = "<M-w>",
@@ -281,6 +292,7 @@ require("lazy").setup({
   -- To close html or xml tags
   {
     "windwp/nvim-ts-autotag",
+    cond = not vim.g.vscode,
     event = "InsertEnter",
     opts = {
       opts = {
@@ -301,6 +313,7 @@ require("lazy").setup({
 
   {
     "nvim-mini/mini.trailspace",
+    cond = not vim.g.vscode,
     version = "*",
     event = "BufReadPost",
     opts = {
@@ -311,14 +324,14 @@ require("lazy").setup({
   -- To diff specific parts of 2 files
   {
     "AndrewRadev/linediff.vim",
+    cond = not vim.g.vscode,
     cmd = "Linediff"
   },
 
-  -- NOTE: This is where your plugins related to LSP can be installed.
-  --  The configuration is done below. Search for lspconfig to find it below.
   {
     -- LSP Configuration & Plugins
     "neovim/nvim-lspconfig",
+    cond = not vim.g.vscode,
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
       {
@@ -333,6 +346,7 @@ require("lazy").setup({
   {
     -- Code actions indicator
     "kosayoda/nvim-lightbulb",
+    cond = not vim.g.vscode,
     event = "LspAttach",
     opts = {
       sign = {
@@ -356,12 +370,14 @@ require("lazy").setup({
   {
     -- Integrates linters with the diagnostics system
     "nvimtools/none-ls.nvim",
+    cond = not vim.g.vscode,
     event = "VeryLazy",
   },
 
   {
     -- To display diagnostics
     "folke/trouble.nvim",
+    cond = not vim.g.vscode,
     opts = {
       auto_preview = false,
     },
@@ -370,26 +386,28 @@ require("lazy").setup({
 
   {
     -- different inline diagnostic display
-      "rachartier/tiny-inline-diagnostic.nvim",
-      event = "VeryLazy",
-      priority = 1000,
-      config = function()
-          require("tiny-inline-diagnostic").setup({
-            options = {
-              -- Display the source of diagnostics (e.g., "lua_ls", "pyright")
-              show_source = {
-                enabled = true,           -- Enable showing source names
-                if_many = false,           -- Only show source if multiple sources exist for the same diagnostic
-              },
-            }
-          })
-          vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
-      end,
+    "rachartier/tiny-inline-diagnostic.nvim",
+    cond = not vim.g.vscode,
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+        require("tiny-inline-diagnostic").setup({
+          options = {
+            -- Display the source of diagnostics (e.g., "lua_ls", "pyright")
+            show_source = {
+              enabled = true,           -- Enable showing source names
+              if_many = false,           -- Only show source if multiple sources exist for the same diagnostic
+            },
+          }
+        })
+        vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+    end,
   },
 
   {
     -- For using LuaLS with neovim config files
     "folke/lazydev.nvim",
+    cond = not vim.g.vscode,
     ft = "lua",
     opts = {
       library = {
@@ -402,6 +420,7 @@ require("lazy").setup({
 
   {
     "saghen/blink.cmp",
+    cond = not vim.g.vscode,
     -- optional: provides snippets for the snippet source
     dependencies = {
       {
@@ -553,6 +572,7 @@ require("lazy").setup({
   {
     -- File navigation
     "stevearc/oil.nvim",
+    cond = not vim.g.vscode,
     lazy = false,
     ---@module 'oil'
     ---@type oil.SetupOpts
@@ -619,6 +639,7 @@ require("lazy").setup({
   },
   {
       "FerretDetective/oil-git-signs.nvim",
+      cond = not vim.g.vscode,
       ft = "oil",
       opts = {},
   },
@@ -635,44 +656,53 @@ require("lazy").setup({
   -- Colorschemes
   {
     "bluz71/vim-nightfly-guicolors",
+    cond = not vim.g.vscode,
     priority = 1000,
   },
   {
     "drewtempelmeyer/palenight.vim",
+    cond = not vim.g.vscode,
     priority = 1000,
   },
   {
     "eldritch-theme/eldritch.nvim",
+    cond = not vim.g.vscode,
     priority = 1000,
     opts = {},
   },
   {
     "embark-theme/vim",
+    cond = not vim.g.vscode,
     name = "embark",
     priority = 1000,
   },
   {
     "folke/tokyonight.nvim",
+    cond = not vim.g.vscode,
     lazy = false,
     priority = 1000,
     opts = {},
   },
   {
     "sainnhe/everforest",
+    cond = not vim.g.vscode,
     priority = 1000,
   },
   {
     "EdenEast/nightfox.nvim",
+    cond = not vim.g.vscode,
     priority = 1000,
   },
   {
     "uhs-robert/oasis.nvim",
+    cond = not vim.g.vscode,
     priority = 1000,
   },
 
   {
     -- Set lualine as statusline
     "nvim-lualine/lualine.nvim",
+    cond = not vim.g.vscode,
     opts = {
       options = {
         icons_enabled = true,
@@ -841,12 +871,14 @@ require("lazy").setup({
 
   {
     "nvim-treesitter/nvim-treesitter-context",
+    cond = not vim.g.vscode,
     lazy = false,
   },
 
   {
     -- auto-save plugin
     "okuuva/auto-save.nvim",
+    cond = not vim.g.vscode,
     version = "*",
     event = { "InsertLeave", "TextChanged" }, -- optional for lazy loading on trigger events
     opts = {
@@ -862,18 +894,19 @@ require("lazy").setup({
       reset_font = vim.api.nvim_get_option_value("guifont", { scope = "global" }),
     },
     config = true,
-    cond = vim.fn.has("gui_running") == 1,
+    cond = vim.fn.has("gui_running") == 1 and not vim.g.vscode,
   },
 
   {
     -- GUI shim
     "equalsraf/neovim-gui-shim",
-    cond = vim.fn.has("gui_running") == 1 and not vim.fn.exists("g.neovide"),
+    cond = vim.fn.has("gui_running") == 1 and not vim.fn.exists("g.neovide") and not vim.g.vscode,
   },
 
   {
     -- Copilot
     "zbirenbaum/copilot.lua",
+    cond = not vim.g.vscode,
     cmd = "Copilot",
     event = "InsertEnter",
     opts = {
@@ -887,11 +920,13 @@ require("lazy").setup({
   },
 
   {
-    "AndreM222/copilot-lualine"
+    "AndreM222/copilot-lualine",
+    cond = not vim.g.vscode,
   },
 
   {
     "olimorris/codecompanion.nvim",
+    cond = not vim.g.vscode,
     version = "19.*",
     opts = {
       strategies = {
@@ -911,22 +946,27 @@ require("lazy").setup({
   -- File type specific plugins
   {
     "blankname/vim-fish",
+    cond = not vim.g.vscode,
     ft = "fish"
   },
   {
     "ckipp01/nvim-jenkinsfile-linter",
+    cond = not vim.g.vscode,
     ft = "Jenkinsfile"
   },
   {
     "PProvost/vim-ps1",
+    cond = not vim.g.vscode,
     ft = "ps1"
   },
   {
     "Vimjas/vim-python-pep8-indent",
+    cond = not vim.g.vscode,
     ft = "python"
   },
   {
     "benomahony/uv.nvim",
+    cond = not vim.g.vscode,
     opts = {
       picker_integration = true,
       keymaps = {
@@ -936,6 +976,7 @@ require("lazy").setup({
   },
   {
     "MTDL9/vim-log-highlighting",
+    cond = not vim.g.vscode,
     ft = "log"
   },
   {
@@ -945,6 +986,7 @@ require("lazy").setup({
   },
   {
     "davidmh/mdx.nvim",
+    cond = not vim.g.vscode,
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -1238,13 +1280,17 @@ vim.keymap.set("n", "<Leader>fgh", require("fzf-lua").git_bcommits, { desc = "[G
 -- vim.keymap.set("n", "<Leader>fgb", require("fzf-lua").git_branches, { desc = "[G]it [B]ranches" })
 vim.keymap.set("n", "<Leader>fgf", require("fzf-lua").git_files, { desc = "[G]it [F]iles" })
 vim.keymap.set("n", "<Leader>fgs", require("fzf-lua").git_status, { desc = "[G]it [S]tatus" })
-vim.keymap.set("n", "<Leader>fd", require("fzf-lua").diagnostics_workspace, { desc = "[D]iagnostics" })
 vim.keymap.set("n", "<Leader>fh", require("fzf-lua").helptags, { desc = "[H]elp tags" })
-vim.keymap.set("n", "<Leader>fla", require("fzf-lua").lsp_code_actions, { desc = "[L]SP [A]ctions" })
-vim.keymap.set("n", "<Leader>flf", require("fzf-lua").lsp_finder, { desc = "[L]SP [F]inder" })
-vim.keymap.set("n", "<Leader>flr", require("fzf-lua").lsp_references, { desc = "[L]SP [R]eferences" })
-vim.keymap.set("n", "<Leader>fls", require("fzf-lua").lsp_document_symbols, { desc = "[L]SP document [s]ymbols" })
-vim.keymap.set("n", "<Leader>flS", require("fzf-lua").lsp_workspace_symbols, { desc = "[L]SP workspace [S]ymbols" })
+
+if not vim.g.vscode then
+  vim.keymap.set("n", "<Leader>fd", require("fzf-lua").diagnostics_workspace, { desc = "[D]iagnostics" })
+  vim.keymap.set("n", "<Leader>fla", require("fzf-lua").lsp_code_actions, { desc = "[L]SP [A]ctions" })
+  vim.keymap.set("n", "<Leader>flf", require("fzf-lua").lsp_finder, { desc = "[L]SP [F]inder" })
+  vim.keymap.set("n", "<Leader>flr", require("fzf-lua").lsp_references, { desc = "[L]SP [R]eferences" })
+  vim.keymap.set("n", "<Leader>fls", require("fzf-lua").lsp_document_symbols, { desc = "[L]SP document [s]ymbols" })
+  vim.keymap.set("n", "<Leader>flS", require("fzf-lua").lsp_workspace_symbols, { desc = "[L]SP workspace [S]ymbols" })
+end
+
 vim.keymap.set("n", "<Leader>ft", require("fzf-lua").treesitter, { desc = "[T]reesitter symbols" })
 vim.keymap.set("n", "<Leader>fll", require("fzf-lua").loclist, { desc = "[L]oc[L]ist" })
 vim.keymap.set("n", "<Leader>fq", require("fzf-lua").quickfix, { desc = "[Q]uickfix" })
@@ -1297,447 +1343,458 @@ vim.keymap.set("n", "<Leader>xd", "<cmd>Trouble diagnostics toggle focus=false f
 vim.keymap.set("n", "<Leader>xl", "<cmd>Trouble lsp toggle focus=false<cr>", { noremap = true, silent = true, desc = "Toggle trouble.nvim with lsp" })
 
 -- [[ Configure LSP ]]
-local null_ls = require("null-ls")
-null_ls.setup({
-  sources = {
-    null_ls.builtins.diagnostics.npm_groovy_lint.with({ filetypes = { "groovy", "Jenkinsfile" }, })
-  },
-})
+if not vim.g.vscode then
+  local null_ls = require("null-ls")
+  null_ls.setup({
+    sources = {
+      null_ls.builtins.diagnostics.npm_groovy_lint.with({ filetypes = { "groovy", "Jenkinsfile" }, })
+    },
+  })
 
-vim.lsp.inlay_hint.enable()
+  vim.lsp.inlay_hint.enable()
 
---  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
-  -- NOTE: Remember that lua is a real programming language, and as such it is possible
-  -- to define small helper and utility functions so you don"t have to repeat yourself
-  -- many times.
-  --
-  -- In this case, we create a function that lets us more easily define mappings specific
-  -- for LSP related items. It sets the mode, buffer and description for us each time.
+  --  This function gets run when an LSP connects to a particular buffer.
+  local on_attach = function(_, bufnr)
+    -- NOTE: Remember that lua is a real programming language, and as such it is possible
+    -- to define small helper and utility functions so you don"t have to repeat yourself
+    -- many times.
+    --
+    -- In this case, we create a function that lets us more easily define mappings specific
+    -- for LSP related items. It sets the mode, buffer and description for us each time.
 
-  local nmap = function(keys, func, desc)
-    if desc then
-      desc = "LSP: " .. desc
+    local nmap = function(keys, func, desc)
+      if desc then
+        desc = "LSP: " .. desc
+      end
+
+      vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
     end
 
-    vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+    nmap("<Leader>ln", vim.lsp.buf.rename, "Re[N]ame")
+    nmap("<Leader>la", vim.lsp.buf.code_action, "Code [A]ction")
+    nmap("<Leader>ld", vim.lsp.buf.definition, "Goto [D]efinition")
+    nmap("<Leader>lr", require("fzf-lua").lsp_references, "[R]eferences")
+    nmap("<Leader>li", require("fzf-lua").lsp_implementations, "Goto [I]mplementation")
+    nmap("<Leader>lt", require("fzf-lua").lsp_typedefs, "[T]ype Definition")
+    nmap("<Leader>lm", require("fzf-lua").lsp_document_symbols, "Document Sy[M]bols")
+    nmap("<Leader>lh", vim.lsp.buf.hover, "[H]over Documentation")
+    nmap("<Leader>ls", vim.lsp.buf.signature_help, "[S]ignature Documentation")
+    nmap("<Leader>ly", function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, "Toggle inla[Y] hints")
+
+    -- Lesser used LSP functionality
+    nmap("<Leader>lD", vim.lsp.buf.declaration, "Goto [D]eclaration")
+    nmap("<Leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
+    nmap("<Leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
+    nmap("<Leader>wl", function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, "[W]orkspace [L]ist Folders")
+
+    -- Create a command `:Format` local to the LSP buffer
+    vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
+      vim.lsp.buf.format()
+    end, { desc = "Format current buffer with LSP" })
   end
 
-  nmap("<Leader>ln", vim.lsp.buf.rename, "Re[N]ame")
-  nmap("<Leader>la", vim.lsp.buf.code_action, "Code [A]ction")
-  nmap("<Leader>ld", vim.lsp.buf.definition, "Goto [D]efinition")
-  nmap("<Leader>lr", require("fzf-lua").lsp_references, "[R]eferences")
-  nmap("<Leader>li", require("fzf-lua").lsp_implementations, "Goto [I]mplementation")
-  nmap("<Leader>lt", require("fzf-lua").lsp_typedefs, "[T]ype Definition")
-  nmap("<Leader>lm", require("fzf-lua").lsp_document_symbols, "Document Sy[M]bols")
-  nmap("<Leader>lh", vim.lsp.buf.hover, "[H]over Documentation")
-  nmap("<Leader>ls", vim.lsp.buf.signature_help, "[S]ignature Documentation")
-  nmap("<Leader>ly", function()
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-  end, "Toggle inla[Y] hints")
+  -- Enable the language servers
+  local groovy_lsp_classpath = {}
+  if vim.env.GROOVY_HOME then
+    local groovy_lib = vim.env.GROOVY_HOME .. "/lib"
+    table.insert(groovy_lsp_classpath, groovy_lib)
+  end
 
-  -- Lesser used LSP functionality
-  nmap("<Leader>lD", vim.lsp.buf.declaration, "Goto [D]eclaration")
-  nmap("<Leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
-  nmap("<Leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
-  nmap("<Leader>wl", function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, "[W]orkspace [L]ist Folders")
-
-  -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
-    vim.lsp.buf.format()
-  end, { desc = "Format current buffer with LSP" })
-end
-
--- Enable the language servers
-local groovy_lsp_classpath = {}
-if vim.env.GROOVY_HOME then
-  local groovy_lib = vim.env.GROOVY_HOME .. "/lib"
-  table.insert(groovy_lsp_classpath, groovy_lib)
-end
-
-local lsp_servers = {
-  clangd = {
-    mason = false,
-    cmd = {
-      "clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu"
-    },
-  },
-
-  dockerls = {
-    mason = not is_termux,
-  },
-
-  docker_compose_language_service = {
-    mason = not is_termux,
-  },
-
-  groovyls = {
-    mason = not is_termux,
-    filetypes = { "groovy", "Jenkinsfile"},
-    settings = {
-      groovy = {
-        classpath = groovy_lsp_classpath,
+  local lsp_servers = {
+    clangd = {
+      mason = false,
+      cmd = {
+        "clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu"
       },
     },
-    cmd = { "groovy-language-server" },
-  },
 
-  lua_ls = {
-    mason = not is_termux,
-    settings = {
-      Lua = {
-        workspace = {
-          checkThirdParty = false,
-          library = {
-            vim.env.VIMRUNTIME,
-          },
-        },
-        telemetry = { enable = false },
-      },
+    dockerls = {
+      mason = not is_termux,
     },
-  },
 
-  basedpyright = {
-    mason = not is_termux,
-    filetypes = { "python" },
-    settings = {
-      -- Reference: https://docs.basedpyright.com/v1.29.1/configuration/language-server-settings/
-      basedpyright = {
-        analysis = {
-          autoSearchPaths = true,
-          diagnosticMode = "openFilesOnly",
-          useLibraryCodeForTypes = true,
-          typeCheckingMode = "basic",
-        },
-      },
+    docker_compose_language_service = {
+      mason = not is_termux,
     },
-  },
 
-  ruff = {
-    mason = not is_termux,
-    -- Reference: https://docs.astral.sh/ruff/editors/settings/
-    init_options = {
+    groovyls = {
+      mason = not is_termux,
+      filetypes = { "groovy", "Jenkinsfile"},
       settings = {
-        configurationPreference = "filesystemFirst",
-        lineLength = 200,
-        -- Organize imports on save
-        organizeImports = true,
-        -- Show syntax errors
-        showSyntaxErrors = true,
-        -- Log level
-        logLevel = 'info',
-        fixAll = true,
-        lint = {
-          enable = true,
-          preview = true,
-          select = {
-            -- Reference: https://docs.astral.sh/ruff/rules/
-            "E",   -- pycodestyle
-            "EXE", -- flake8-executable
-            "F",   -- pyflakes
-            "A",   -- flake8-builtins
-            "B",   -- flake8-bugbear
-            "W",   -- pycodestyle
-            "D",   -- pydocstyle
-            "PGH", -- pygrep-hooks
-            "PIE", -- flake8-pie
-            "YTT", -- flake8-2020
-            "PLC", -- pylint
-            "PLE", -- pylint
-            "PLR", -- pylint
-            "PLW", -- pylint
-            "RUF", -- ruff rules
-            "SIM", -- flake8-simplify
-            "UP",  -- pyupgrade
+        groovy = {
+          classpath = groovy_lsp_classpath,
+        },
+      },
+      cmd = { "groovy-language-server" },
+    },
+
+    lua_ls = {
+      mason = not is_termux,
+      settings = {
+        Lua = {
+          workspace = {
+            checkThirdParty = false,
+            library = {
+              vim.env.VIMRUNTIME,
+            },
           },
-          ignore = {
-            "D105", -- Missing docstring in magic method
-            "D107", -- Missing docstring in __init__
-            "D200", -- One-line docstring should fit within a single line
-            "D212", -- Multi-line docstring summary should start at the first line
-            "SIM102", -- Use single if statement
+          telemetry = { enable = false },
+        },
+      },
+    },
+
+    basedpyright = {
+      mason = not is_termux,
+      filetypes = { "python" },
+      settings = {
+        -- Reference: https://docs.basedpyright.com/v1.29.1/configuration/language-server-settings/
+        basedpyright = {
+          analysis = {
+            autoSearchPaths = true,
+            diagnosticMode = "openFilesOnly",
+            useLibraryCodeForTypes = true,
+            typeCheckingMode = "basic",
           },
         },
       },
     },
-  },
 
-  rust_analyzer = {
-    mason = not is_termux,
-    skip_lspconfig_setup = true,
-  },
+    ruff = {
+      mason = not is_termux,
+      -- Reference: https://docs.astral.sh/ruff/editors/settings/
+      init_options = {
+        settings = {
+          configurationPreference = "filesystemFirst",
+          lineLength = 200,
+          -- Organize imports on save
+          organizeImports = true,
+          -- Show syntax errors
+          showSyntaxErrors = true,
+          -- Log level
+          logLevel = 'info',
+          fixAll = true,
+          lint = {
+            enable = true,
+            preview = true,
+            select = {
+              -- Reference: https://docs.astral.sh/ruff/rules/
+              "E",   -- pycodestyle
+              "EXE", -- flake8-executable
+              "F",   -- pyflakes
+              "A",   -- flake8-builtins
+              "B",   -- flake8-bugbear
+              "W",   -- pycodestyle
+              "D",   -- pydocstyle
+              "PGH", -- pygrep-hooks
+              "PIE", -- flake8-pie
+              "YTT", -- flake8-2020
+              "PLC", -- pylint
+              "PLE", -- pylint
+              "PLR", -- pylint
+              "PLW", -- pylint
+              "RUF", -- ruff rules
+              "SIM", -- flake8-simplify
+              "UP",  -- pyupgrade
+            },
+            ignore = {
+              "D105", -- Missing docstring in magic method
+              "D107", -- Missing docstring in __init__
+              "D200", -- One-line docstring should fit within a single line
+              "D212", -- Multi-line docstring summary should start at the first line
+              "SIM102", -- Use single if statement
+            },
+          },
+        },
+      },
+    },
 
-  sourcekit = {
-    mason = false,
-    filetypes = { "swift" }
-  },
-}
+    rust_analyzer = {
+      mason = not is_termux,
+      skip_lspconfig_setup = true,
+    },
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+    sourcekit = {
+      mason = false,
+      filetypes = { "swift" }
+    },
+  }
 
-vim.g.rustaceanvim = {
-  server = {
-    cmd = function()
-      local mason_registry = require("mason-registry")
-      if mason_registry.is_installed("rust-analyzer") then
-	      -- This may need to be tweaked depending on the operating system.
-	      local ra_exe_path = vim.fn.expand("$MASON/bin/rust-analyzer")
-	      return { ra_exe_path }
-      else
-	      -- global installation
-	      return { "rust-analyzer" }
-      end
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+
+  vim.g.rustaceanvim = {
+    server = {
+      cmd = function()
+        local mason_registry = require("mason-registry")
+        if mason_registry.is_installed("rust-analyzer") then
+	        -- This may need to be tweaked depending on the operating system.
+	        local ra_exe_path = vim.fn.expand("$MASON/bin/rust-analyzer")
+	        return { ra_exe_path }
+        else
+	        -- global installation
+	        return { "rust-analyzer" }
+        end
+      end,
+      on_attach = on_attach,
+    },
+  }
+
+  local lsp_servers_handled_with_mason = {}
+  if (not is_termux) then
+    table.insert(lsp_servers_handled_with_mason, { "npm-groovy-lint", version = "17.0.4" })
+  end
+
+  for server_name, server_config in pairs(lsp_servers) do
+    if server_config.mason or server_config.mason == nil then
+      table.insert(lsp_servers_handled_with_mason, server_name)
+    end
+    -- Configure the LSP servers
+    if not server_config.skip_lspconfig_setup then
+      vim.lsp.enable(server_name)
+      vim.lsp.config(server_name, {
+                     capabilities = capabilities,
+                     on_attach = on_attach,
+                     init_options = (server_config or {}).init_options,
+                     settings = (server_config or {}).settings,
+                     filetypes = (server_config or {}).filetypes,
+                     cmd = (server_config or {}).cmd,
+                     flags = (server_config or {}).flags,
+                    })
+    end
+  end
+  require("mason-tool-installer").setup {
+    ensure_installed = lsp_servers_handled_with_mason,
+    auto_update = true,
+  }
+
+  -- autocmd to stop the LSPs on leave
+  local leavepre_group = vim.api.nvim_create_augroup("leavepre_group", { clear = true })
+  vim.api.nvim_create_autocmd("VimLeavePre", {
+    callback = function()
+      vim.iter(vim.lsp.get_clients()):each(function(client) client:stop() end)
     end,
-    on_attach = on_attach,
-  },
-}
-
-local lsp_servers_handled_with_mason = {}
-if (not is_termux) then
-  table.insert(lsp_servers_handled_with_mason, { "npm-groovy-lint", version = "17.0.4" })
+    group = leavepre_group,
+  })
 end
-
-for server_name, server_config in pairs(lsp_servers) do
-  if server_config.mason or server_config.mason == nil then
-    table.insert(lsp_servers_handled_with_mason, server_name)
-  end
-  -- Configure the LSP servers
-  if not server_config.skip_lspconfig_setup then
-    vim.lsp.enable(server_name)
-    vim.lsp.config(server_name, {
-                   capabilities = capabilities,
-                   on_attach = on_attach,
-                   init_options = (server_config or {}).init_options,
-                   settings = (server_config or {}).settings,
-                   filetypes = (server_config or {}).filetypes,
-                   cmd = (server_config or {}).cmd,
-                   flags = (server_config or {}).flags,
-                  })
-  end
-end
-require("mason-tool-installer").setup {
-  ensure_installed = lsp_servers_handled_with_mason,
-  auto_update = true,
-}
-
--- autocmd to stop the LSPs on leave
-local leavepre_group = vim.api.nvim_create_augroup("leavepre_group", { clear = true })
-vim.api.nvim_create_autocmd("VimLeavePre", {
-  callback = function()
-    vim.iter(vim.lsp.get_clients()):each(function(client) client:stop() end)
-  end,
-  group = leavepre_group,
-})
 
 -- [[ Configure signify ]]
-vim.g["signify_sign_add"]               = "+"
-vim.g["signify_sign_delete"]            = "-"
-vim.g["signify_sign_delete_first_line"] = "‾"
-vim.g["signify_sign_change"]            = "*"
-vim.g["signify_sign_change_delete"]     = "d"
-vim.keymap.set("n", "<Leader>gh", "<CMD>SignifyHunkDiff<CR>", { noremap = true, silent = false, desc = "Si[g]nify [H]unk diff" })
-vim.keymap.set("n", "<Leader>gd", "<CMD>SignifyDiff<CR>", { noremap = true, silent = false, desc = "Si[g]nify [D]iff" })
-vim.keymap.set("n", "<Leader>gu", "<CMD>SignifyHunkUndo<CR>", { noremap = true, silent = false, desc = "Si[g]nify hunk [U]ndo" })
-
--- [[ Configure vim-sandwich ]]
-vim.g["sandwich#recipes"] = vim.deepcopy(vim.g["sandwich#default_recipes"])
-
--- [[ Configure oil ]]
-local function get_downloads_folder()
-  if vim.fn.executable("xdg-user-dir") == 1 then
-    local xdg_result = vim.system({"xdg-user-dir", "DOWNLOAD"}, { text = true }):wait()
-    if xdg_result.code == 0 then
-      return xdg_result.stdout
-    end
-  end
-  if jit.os:find("Windows") then
-    vim.fs.joinpath(vim.env.USERPROFILE, "Downloads")
-  end
-  return vim.fs.joinpath(vim.env.HOME, "Downloads")
+if not vim.g.vscode then
+  vim.g["signify_sign_add"]               = "+"
+  vim.g["signify_sign_delete"]            = "-"
+  vim.g["signify_sign_delete_first_line"] = "‾"
+  vim.g["signify_sign_change"]            = "*"
+  vim.g["signify_sign_change_delete"]     = "d"
+  vim.keymap.set("n", "<Leader>gh", "<CMD>SignifyHunkDiff<CR>", { noremap = true, silent = false, desc = "Si[g]nify [H]unk diff" })
+  vim.keymap.set("n", "<Leader>gd", "<CMD>SignifyDiff<CR>", { noremap = true, silent = false, desc = "Si[g]nify [D]iff" })
+  vim.keymap.set("n", "<Leader>gu", "<CMD>SignifyHunkUndo<CR>", { noremap = true, silent = false, desc = "Si[g]nify hunk [U]ndo" })
 end
 
-vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-vim.keymap.set("n", "<Leader>od", "<CMD>Oil " .. vim.fn.stdpath("data") .. "<CR>", { desc = "Open [D]ata directory" })
-vim.keymap.set("n", "<Leader>ol", "<CMD>Oil " .. vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") .. "<CR>", { desc = "Open [L]azy data directory" })
-vim.keymap.set("n", "<Leader>oD", "<CMD>Oil " .. get_downloads_folder() .. "<CR>", { desc = "Open [D]ownloads folder" })
+-- [[ Configure oil ]]
+if not vim.g.vscode then
+  local function get_downloads_folder()
+    if vim.fn.executable("xdg-user-dir") == 1 then
+      local xdg_result = vim.system({"xdg-user-dir", "DOWNLOAD"}, { text = true }):wait()
+      if xdg_result.code == 0 then
+        return xdg_result.stdout
+      end
+    end
+    if jit.os:find("Windows") then
+      vim.fs.joinpath(vim.env.USERPROFILE, "Downloads")
+    end
+    return vim.fs.joinpath(vim.env.HOME, "Downloads")
+  end
+
+  vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+  vim.keymap.set("n", "<Leader>od", "<CMD>Oil " .. vim.fn.stdpath("data") .. "<CR>", { desc = "Open [D]ata directory" })
+  vim.keymap.set("n", "<Leader>ol", "<CMD>Oil " .. vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") .. "<CR>", { desc = "Open [L]azy data directory" })
+  vim.keymap.set("n", "<Leader>oD", "<CMD>Oil " .. get_downloads_folder() .. "<CR>", { desc = "Open [D]ownloads folder" })
+end
 
 -- [[ Configure mini.trailspace ]]
-vim.keymap.set('n', '<Leader>st', function ()
-  require('mini.trailspace').setup()
-  MiniTrailspace.trim()
-end, { noremap = true, silent = false, desc = 'Trim [T]railing whitespace' })
-vim.keymap.set('n', '<Leader>sl', function ()
-  require('mini.trailspace').setup()
-  MiniTrailspace.trim_last_lines()
-end, { noremap = true, silent = false, desc = 'Trim [L]ast empty lines' })
+if not vim.g.vscode then
+  vim.keymap.set('n', '<Leader>st', function ()
+    require('mini.trailspace').setup()
+    MiniTrailspace.trim()
+  end, { noremap = true, silent = false, desc = 'Trim [T]railing whitespace' })
+  vim.keymap.set('n', '<Leader>sl', function ()
+    require('mini.trailspace').setup()
+    MiniTrailspace.trim_last_lines()
+  end, { noremap = true, silent = false, desc = 'Trim [L]ast empty lines' })
+end
 
 -- [[ Configure persisted.nvim ]]
 
-local persisted_config = require("persisted.config")
+if not vim.g.vscode then
+  local persisted_config = require("persisted.config")
 
-local function get_session_name_and_branch(session_file)
-  local file = session_file:sub(#persisted_config.save_dir + 1, -5)
-  local dir_path, branch = unpack(vim.split(file, "@@", { plain = true }))
-  dir_path = dir_path:gsub("%%", "/")
-  if (branch) then
-    branch = branch:gsub("%%", "/")
-  end
-  if jit.os:find("Windows") then
-    dir_path = dir_path:gsub("^(%w)/", "%1:/")
+  local function get_session_name_and_branch(session_file)
+    local file = session_file:sub(#persisted_config.save_dir + 1, -5)
+    local dir_path, branch = unpack(vim.split(file, "@@", { plain = true }))
+    dir_path = dir_path:gsub("%%", "/")
+    if (branch) then
+      branch = branch:gsub("%%", "/")
+    end
+    if jit.os:find("Windows") then
+      dir_path = dir_path:gsub("^(%w)/", "%1:/")
+    end
+
+    dir_path = vim.fn.fnamemodify(dir_path, ":p:~"):sub(3, -2)
+    if branch then
+      return dir_path .. "  (" .. branch .. ")", branch
+    end
+    return dir_path, nil
   end
 
-  dir_path = vim.fn.fnamemodify(dir_path, ":p:~"):sub(3, -2)
-  if branch then
-    return dir_path .. "  (" .. branch .. ")", branch
+  local function get_persisted_sessions()
+	  local items = {}
+	  local sessions_list = require("persisted").list()
+    for _, session_file in ipairs(sessions_list) do
+      local session_name, branch = get_session_name_and_branch(session_file)
+		  table.insert(items, { text = session_name, file = session_file, branch = branch })
+    end
+	  return items
   end
-  return dir_path, nil
-end
 
-local function get_persisted_sessions()
-	local items = {}
-	local sessions_list = require("persisted").list()
-  for _, session_file in ipairs(sessions_list) do
-    local session_name, branch = get_session_name_and_branch(session_file)
-		table.insert(items, { text = session_name, file = session_file, branch = branch })
-  end
-	return items
-end
-
-function Show_persisted_sessions()
-  Snacks.picker.pick({
-	  source = "persisted",
-	  finder = get_persisted_sessions,
-	  preview = "none",
-	  layout = { preset = "vscode" },
-	  title = "Persisted Sessions",
-	  format = "text",
-	  confirm = function(picker, item)
-		  picker:close()
-      vim.api.nvim_input("<ESC>:%bd!<CR>")
-      vim.schedule(function()
-		    require("persisted").load({ session = item.file})
-      end)
-	  end,
-	  actions = {
-	    delete_session = function(picker)
-        local uv = vim.uv or vim.loop
-        for _, selected_item in ipairs(picker:selected({ fallback = true })) do
-	        local selected_session_file = selected_item.file
-	        if selected_session_file and uv.fs_stat(selected_session_file) then
-            if vim.fn.confirm("Delete [" .. selected_item.text .. "]?", "&Yes\n&No") == 1 then
-              vim.fn.delete(selected_item.file)
-            end
+  function Show_persisted_sessions()
+    Snacks.picker.pick({
+	    source = "persisted",
+	    finder = get_persisted_sessions,
+	    preview = "none",
+	    layout = { preset = "vscode" },
+	    title = "Persisted Sessions",
+	    format = "text",
+	    confirm = function(picker, item)
+		    picker:close()
+        vim.api.nvim_input("<ESC>:%bd!<CR>")
+        vim.schedule(function()
+		      require("persisted").load({ session = item.file})
+        end)
+	    end,
+	    actions = {
+	      delete_session = function(picker)
+          local uv = vim.uv or vim.loop
+          for _, selected_item in ipairs(picker:selected({ fallback = true })) do
+	          local selected_session_file = selected_item.file
+	          if selected_session_file and uv.fs_stat(selected_session_file) then
+              if vim.fn.confirm("Delete [" .. selected_item.text .. "]?", "&Yes\n&No") == 1 then
+                vim.fn.delete(selected_item.file)
+              end
+	          end
+            picker.list:unselect(selected_item)
 	        end
-          picker.list:unselect(selected_item)
+          local cursor = picker.list.cursor
+          picker:find({
+            on_done = function()
+              picker.list:view(cursor)
+            end,
+          })
 	      end
-        local cursor = picker.list.cursor
-        picker:find({
-          on_done = function()
-            picker.list:view(cursor)
-          end,
-        })
-	    end
-	  },
-    win = {
-      input = {
-        keys = {
-          ["<c-x>"] = { "delete_session", mode = { "n", "i" }, desc = "Delete session" },
+	    },
+      win = {
+        input = {
+          keys = {
+            ["<c-x>"] = { "delete_session", mode = { "n", "i" }, desc = "Delete session" },
+          },
         },
       },
-    },
+    })
+  end
+  vim.api.nvim_create_user_command("PickerSessions", ":lua Show_persisted_sessions()", {})
+
+  vim.keymap.set("n", "<Leader>pS", Show_persisted_sessions, { noremap = true, silent = true, desc = "Persisted [S]essions" })
+  vim.keymap.set("n", "<Leader>mr", "<CMD>Persisted start<CR>", { noremap = true, silent = false, desc = "Start [R]ecording session" })
+  vim.keymap.set("n", "<Leader>mt", "<CMD>Persisted stop<CR>", { noremap = true, silent = false, desc = "S[T]op recording session" })
+  vim.keymap.set("n", "<Leader>mv", "<CMD>Persisted save<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
+  vim.keymap.set("n", "<Leader>ml", "<CMD>Persisted load<CR>", { noremap = true, silent = false, desc = "Session [L]oad for current dir" })
+  vim.keymap.set("n", "<Leader>ms", "<CMD>Persisted select<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
+
+  local persisted_group = vim.api.nvim_create_augroup("persisted_group", { clear = true })
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "PersistedStart",
+    callback = function()
+      Snacks.notify.info("Session started", { title = "persisted.nvim" })
+    end,
+    group = persisted_group,
   })
-end
-vim.api.nvim_create_user_command("PickerSessions", ":lua Show_persisted_sessions()", {})
 
-vim.keymap.set("n", "<Leader>pS", Show_persisted_sessions, { noremap = true, silent = true, desc = "Persisted [S]essions" })
-vim.keymap.set("n", "<Leader>mr", "<CMD>Persisted start<CR>", { noremap = true, silent = false, desc = "Start [R]ecording session" })
-vim.keymap.set("n", "<Leader>mt", "<CMD>Persisted stop<CR>", { noremap = true, silent = false, desc = "S[T]op recording session" })
-vim.keymap.set("n", "<Leader>mv", "<CMD>Persisted save<CR>", { noremap = true, silent = false, desc = "Session sa[V]e" })
-vim.keymap.set("n", "<Leader>ml", "<CMD>Persisted load<CR>", { noremap = true, silent = false, desc = "Session [L]oad for current dir" })
-vim.keymap.set("n", "<Leader>ms", "<CMD>Persisted select<CR>", { noremap = true, silent = false, desc = "Session [S]elect" })
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "PersistedStop",
+    callback = function()
+      Snacks.notify.info("Session stopped", { title = "persisted.nvim" })
+    end,
+    group = persisted_group,
+  })
 
-local persisted_group = vim.api.nvim_create_augroup("persisted_group", { clear = true })
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "PersistedStart",
-  callback = function()
-    Snacks.notify.info("Session started", { title = "persisted.nvim" })
-  end,
-  group = persisted_group,
-})
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "PersistedStop",
-  callback = function()
-    Snacks.notify.info("Session stopped", { title = "persisted.nvim" })
-  end,
-  group = persisted_group,
-})
-
-vim.api.nvim_create_autocmd("User", {
-  pattern = "PersistedLoadPost",
-  callback = function()
-    local message = "Session loaded"
-    if vim.g.persisted_loaded_session then
-      local session_name, branch = get_session_name_and_branch(vim.g.persisted_loaded_session)
-      message = ("%s: `%s`"):format(message, session_name)
-      if branch then
-        local dir_branch = vim.fn.systemlist("git branch --show-current")[1]
-        if vim.v.shell_error == 0 and dir_branch and branch ~= dir_branch then
-          vim.fn.systemlist("git switch " .. branch)
-          if vim.v.shell_error == 0 then
-            Snacks.notify.info(("Switched to git branch: `%s`"):format(branch), { title = "picker" })
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "PersistedLoadPost",
+    callback = function()
+      local message = "Session loaded"
+      if vim.g.persisted_loaded_session then
+        local session_name, branch = get_session_name_and_branch(vim.g.persisted_loaded_session)
+        message = ("%s: `%s`"):format(message, session_name)
+        if branch then
+          local dir_branch = vim.fn.systemlist("git branch --show-current")[1]
+          if vim.v.shell_error == 0 and dir_branch and branch ~= dir_branch then
+            vim.fn.systemlist("git switch " .. branch)
+            if vim.v.shell_error == 0 then
+              Snacks.notify.info(("Switched to git branch: `%s`"):format(branch), { title = "picker" })
+            end
           end
         end
       end
-    end
-    Snacks.notify.info(message, { title = "persisted.nvim" })
-  end,
-  group = persisted_group,
-})
+      Snacks.notify.info(message, { title = "persisted.nvim" })
+    end,
+    group = persisted_group,
+  })
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = "PersistedSavePost",
-  callback = function()
-    Snacks.notify.info("Session saved", { title = "persisted.nvim" })
-  end,
-  group = persisted_group,
-})
-
--- [[ Configure nvim-jenkinsfile-linter ]]
-if vim.env.JENKINS_URL then
-  vim.keymap.set("n", "<Leader>jv", require("jenkinsfile_linter").validate, { noremap = true, silent = false, desc = "Jenkinsfile Validation" })
-
-  -- Run with autocommand too
-  local jenkinsfile_linter_group = vim.api.nvim_create_augroup("jenkinsfile_linter_group", { clear = true })
-  vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWritePost" }, {
-    pattern = {"*.Jenkinsfile"},
-    callback = require("jenkinsfile_linter").validate,
-    group = jenkinsfile_linter_group
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "PersistedSavePost",
+    callback = function()
+      Snacks.notify.info("Session saved", { title = "persisted.nvim" })
+    end,
+    group = persisted_group,
   })
 end
 
--- [[ Configuration for auto-save ]]
-local autosave_augroup = vim.api.nvim_create_augroup("autosave", {})
+-- [[ Configure nvim-jenkinsfile-linter ]]
+if not vim.g.vscode then
+  if vim.env.JENKINS_URL then
+    vim.keymap.set("n", "<Leader>jv", require("jenkinsfile_linter").validate, { noremap = true, silent = false, desc = "Jenkinsfile Validation" })
 
-vim.api.nvim_create_autocmd("User", {
-    pattern = "AutoSaveWritePost",
-    group = autosave_augroup,
-    callback = function(opts)
-      if opts.data.saved_buffer ~= nil then
-        local filename = vim.fs.basename(vim.api.nvim_buf_get_name(opts.data.saved_buffer))
-        if filename ~= "/" and filename ~= "" then
-          Snacks.notify.info(("File saved: `%s`"):format(filename), { title = "auto-save" })
+    -- Run with autocommand too
+    local jenkinsfile_linter_group = vim.api.nvim_create_augroup("jenkinsfile_linter_group", { clear = true })
+    vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWritePost" }, {
+      pattern = {"*.Jenkinsfile"},
+      callback = require("jenkinsfile_linter").validate,
+      group = jenkinsfile_linter_group
+    })
+  end
+end
+
+-- [[ Configuration for auto-save ]]
+if not vim.g.vscode then
+  local autosave_augroup = vim.api.nvim_create_augroup("autosave", {})
+
+  vim.api.nvim_create_autocmd("User", {
+      pattern = "AutoSaveWritePost",
+      group = autosave_augroup,
+      callback = function(opts)
+        if opts.data.saved_buffer ~= nil then
+          local filename = vim.fs.basename(vim.api.nvim_buf_get_name(opts.data.saved_buffer))
+          if filename ~= "/" and filename ~= "" then
+            Snacks.notify.info(("File saved: `%s`"):format(filename), { title = "auto-save" })
+          end
         end
-      end
-    end,
-})
+      end,
+  })
+end
 
 -- [[ Configuration for size-matters ]]
-if vim.fn.has("gui_running") == 1 then
+if vim.fn.has("gui_running") == 1 and not vim.g.vscode then
   local size_matters = require("size-matters")
 	vim.keymap.set("n", "<C-=>", function() size_matters.update_font "grow" end, { desc = "Increase font size" })
 	vim.keymap.set("n", "<C-S-+>", function() size_matters.update_font "grow" end, { desc = "Increase font size" })
@@ -1748,8 +1805,8 @@ if vim.fn.has("gui_running") == 1 then
 end
 
 -- [[ random colorscheme ]]
-
-local function select_colorscheme()
+if not vim.g.vscode then
+  local function select_colorscheme()
   local colorschemes_table = {}
   local excluded_colorschemes = {
     "blue",
@@ -1798,22 +1855,25 @@ local function select_colorscheme()
   local selected_index = math.random(#colorschemes_table)
   vim.cmd.colorscheme(colorschemes_table[selected_index])
   -- Snacks.notify.info(("  `%s`"):format(colorschemes_table[selected_index]), { title = "colorscheme" })
+  end
+  select_colorscheme()
 end
-select_colorscheme()
 
-local dashboard_update_callback = function()
-  require("snacks").dashboard.update()
+if not vim.g.vscode then
+  local dashboard_update_callback = function()
+    require("snacks").dashboard.update()
+  end
+  local dashboard_update_group = vim.api.nvim_create_augroup("dashboard_update", { clear = true })
+  vim.api.nvim_create_autocmd("User", {
+    pattern = { "LazyCheck", "LazyUpdate", "LazySync", "LazyVimStarted" },
+	  callback = dashboard_update_callback,
+    group = dashboard_update_group,
+  })
+  vim.api.nvim_create_autocmd({ "ColorScheme" }, {
+	  callback = dashboard_update_callback,
+    group = dashboard_update_group,
+  })
 end
-local dashboard_update_group = vim.api.nvim_create_augroup("dashboard_update", { clear = true })
-vim.api.nvim_create_autocmd("User", {
-  pattern = { "LazyCheck", "LazyUpdate", "LazySync", "LazyVimStarted" },
-	callback = dashboard_update_callback,
-  group = dashboard_update_group,
-})
-vim.api.nvim_create_autocmd({ "ColorScheme" }, {
-	callback = dashboard_update_callback,
-  group = dashboard_update_group,
-})
 
 -- Fix for neovide on macOS
 if vim.fn.exists("g.neovide") and vim.fn.has("macunix") == 1 then
