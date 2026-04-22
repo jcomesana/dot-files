@@ -73,6 +73,9 @@ end
 ---@module "snacks"
 
 require("lazy").setup({
+	{ import = "plugins_notvscode", cond = (function() return not vim.g.vscode end) },
+	{ import = "plugins_always",    cond = true },
+	{ import = "plugins_vscode",    cond = (function() return vim.g.vscode end) },
   {
     "folke/snacks.nvim",
     priority = 1000,
@@ -227,17 +230,6 @@ require("lazy").setup({
           }) end, desc = "[G]it [B]ranches" },
       { "<Leader>pm", function() Snacks.picker.pick("resume") end, desc = "Resu[m]e last query" },
     },
-  },
-
-  {
-    -- A session manager
-    "olimorris/persisted.nvim",
-    lazy = false, -- make sure the plugin is always loaded at startup
-    opts = {
-      autostart = false,
-      use_git_branch = true,
-    },
-    config = true
   },
 
   {
@@ -623,52 +615,9 @@ require("lazy").setup({
       opts = {},
   },
 
-  {
-    -- Secure mode lines
-    "ciaranm/securemodelines"
-  },
-
   -- nvim-web-devicons
   { "nvim-tree/nvim-web-devicons" },
   { "nvim-mini/mini.icons", opts = {} },
-
-  -- Colorschemes
-  {
-    "bluz71/vim-nightfly-guicolors",
-    priority = 1000,
-  },
-  {
-    "drewtempelmeyer/palenight.vim",
-    priority = 1000,
-  },
-  {
-    "eldritch-theme/eldritch.nvim",
-    priority = 1000,
-    opts = {},
-  },
-  {
-    "embark-theme/vim",
-    name = "embark",
-    priority = 1000,
-  },
-  {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
-  {
-    "sainnhe/everforest",
-    priority = 1000,
-  },
-  {
-    "EdenEast/nightfox.nvim",
-    priority = 1000,
-  },
-  {
-    "uhs-robert/oasis.nvim",
-    priority = 1000,
-  },
 
   {
     -- Set lualine as statusline
@@ -1748,58 +1697,59 @@ if vim.fn.has("gui_running") == 1 then
 end
 
 -- [[ random colorscheme ]]
+if not vim.g.vscode then
+  local function select_colorscheme()
+    local colorschemes_table = {}
+    local excluded_colorschemes = {
+      "blue",
+      "darkblue",
+      "default",
+      "delek",
+      "desert",
+      "elflord",
+      "evening",
+      "habamax",
+      "industry",
+      "koehler",
+      "lunaperche",
+      "morning",
+      "murphy",
+      "pablo",
+      "peachpuff",
+      "quiet",
+      "retrobox",
+      "ron",
+      "shine",
+      "slate",
+      "sorbet",
+      "torte",
+      "unokai",
+      "vim",
+      "wildcharm",
+      "zaibatsu",
+      "zellner",
+      "tokyonight-day",
+      "dayfox",
+      "dawnfox",
+    }
 
-local function select_colorscheme()
-  local colorschemes_table = {}
-  local excluded_colorschemes = {
-    "blue",
-    "darkblue",
-    "default",
-    "delek",
-    "desert",
-    "elflord",
-    "evening",
-    "habamax",
-    "industry",
-    "koehler",
-    "lunaperche",
-    "morning",
-    "murphy",
-    "pablo",
-    "peachpuff",
-    "quiet",
-    "retrobox",
-    "ron",
-    "shine",
-    "slate",
-    "sorbet",
-    "torte",
-    "unokai",
-    "vim",
-    "wildcharm",
-    "zaibatsu",
-    "zellner",
-    "tokyonight-day",
-    "dayfox",
-    "dawnfox",
-  }
-
-  local color_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim", false, true)
-  for _, lua_color_file in ipairs(vim.fn.globpath(vim.o.runtimepath, "colors/*.lua", false, true)) do
-    table.insert(color_files, lua_color_file)
-  end
-  for _, color_file in ipairs(color_files) do
-    local colorscheme_name = vim.fn.fnamemodify(color_file, ":t:r")
-    if (not vim.tbl_contains(excluded_colorschemes, colorscheme_name)) then
-      table.insert(colorschemes_table, colorscheme_name)
+    local color_files = vim.fn.globpath(vim.o.runtimepath, "colors/*.vim", false, true)
+    for _, lua_color_file in ipairs(vim.fn.globpath(vim.o.runtimepath, "colors/*.lua", false, true)) do
+      table.insert(color_files, lua_color_file)
     end
+    for _, color_file in ipairs(color_files) do
+      local colorscheme_name = vim.fn.fnamemodify(color_file, ":t:r")
+      if (not vim.tbl_contains(excluded_colorschemes, colorscheme_name)) then
+        table.insert(colorschemes_table, colorscheme_name)
+      end
+    end
+    math.randomseed(os.time())
+    local selected_index = math.random(#colorschemes_table)
+    vim.cmd.colorscheme(colorschemes_table[selected_index])
+    -- Snacks.notify.info(("  `%s`"):format(colorschemes_table[selected_index]), { title = "colorscheme" })
   end
-  math.randomseed(os.time())
-  local selected_index = math.random(#colorschemes_table)
-  vim.cmd.colorscheme(colorschemes_table[selected_index])
-  -- Snacks.notify.info(("  `%s`"):format(colorschemes_table[selected_index]), { title = "colorscheme" })
+  select_colorscheme()
 end
-select_colorscheme()
 
 local dashboard_update_callback = function()
   require("snacks").dashboard.update()
