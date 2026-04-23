@@ -3,6 +3,5 @@ Description=Update hblock list
 
 [Service]
 Type=oneshot
-ExecStart=hblock
 ExecStart=%h/bin/hblock-update.sh
 User=%u
