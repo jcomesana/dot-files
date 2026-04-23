@@ -800,6 +800,7 @@ require("lazy").setup({
   -- FZF
   {
     "ibhagwan/fzf-lua",
+    cond = not vim.g.vscode,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     event = "VeryLazy",
   },
@@ -981,6 +982,7 @@ require("lazy").setup({
   },
   {
     "mrcjkb/rustaceanvim",
+    cond = not vim.g.vscode,
     version = '^8', -- Recommended
     lazy = false, -- This plugin is already lazy
   },
@@ -989,19 +991,9 @@ require("lazy").setup({
     cond = not vim.g.vscode,
   },
 
-  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
-  --       These are some example plugins that I've included in the kickstart repository.
-  --       Uncomment any of the lines below to enable them.
   -- require 'kickstart.plugins.autoformat',
   require "kickstart.plugins.debug",
 
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
-  --    up-to-date with whatever is in the kickstart repo.
-  --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  --
-  --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
 }, lazy_opts)
 
 -- [[ Setting options ]]
@@ -1232,69 +1224,69 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- [[ Configure fzf-lua ]]
-require("fzf-lua").setup({
-  fzf_opts = {
-      ["--no-scrollbar"] = false,
-      ["--cycle"] = true,
-      ["--ansi"] = true,
-      ["--height"] = "100%",
-      ["--highlight-line"] = true,
-  },
-  winopts = {
-      -- fullscreen = "true",
-      height = 0.95,
-      width = 0.95,
-  },
-  files = {
-    hidden = true,
-    no_ignore = true,
-  },
-  grep = {
-    hidden = true,
-    no_ignore = true,
-    rg_opts = "--no-ignore-vcs --hidden " .. require("fzf-lua").defaults.grep.rg_opts
-  },
-  lsp = {
-    -- make lsp requests synchronous so they work with null-ls
-    async_or_timeout = 3000,
-  },
-})
-
-vim.keymap.set("n", "<Leader>ff", require("fzf-lua").files, { desc = "FZF Files" })
-vim.keymap.set("n", "<Leader>fF", function()
-  return require("fzf-lua").files({ cmd = "fd --hidden --no-ignore-vcs --exclude .git/ " .. vim.fn.expand("<cword>") })
-end, { desc = "[F]iles under cursor" })
-vim.keymap.set("n", "<Leader>fb", require("fzf-lua").buffers, { desc = "[B]uffers" })
-vim.keymap.set("n", "<Leader>fo", require("fzf-lua").oldfiles, { desc = "Recent or [O]ld files" })
-vim.keymap.set("n", "<Leader>fr", require("fzf-lua").grep, { desc = "G[R]ep" })
-vim.keymap.set("n", "<Leader>fv", require("fzf-lua").grep_visual, { desc = "Grep [V]isual selection" })
-vim.keymap.set("n", "<Leader>fn", require("fzf-lua").live_grep_native, { desc = "Live grep [N]ative" })
-vim.keymap.set("n", "<Leader>fp", require("fzf-lua").grep_project, { desc = "Grep [P]roject" })
-vim.keymap.set("n", "<Leader>fm", function()
-  return require("fzf-lua").live_grep({ resume = true })
-end, { desc = "Resu[m]e last query" })
-vim.keymap.set("n", "<Leader>fw", require("fzf-lua").grep_cword, { desc = "Ripgrep with word under cursor" })
-vim.keymap.set("n", "<Leader>fc", require("fzf-lua").lines, { desc = "FZF Lines of open buffers" })
-vim.keymap.set("n", "<Leader>fgc", require("fzf-lua").git_commits, { desc = "[G]it [C]ommits" })
-vim.keymap.set("n", "<Leader>fgh", require("fzf-lua").git_bcommits, { desc = "[G]it buffer commits ([H]istory)" })
--- vim.keymap.set("n", "<Leader>fgb", require("fzf-lua").git_branches, { desc = "[G]it [B]ranches" })
-vim.keymap.set("n", "<Leader>fgf", require("fzf-lua").git_files, { desc = "[G]it [F]iles" })
-vim.keymap.set("n", "<Leader>fgs", require("fzf-lua").git_status, { desc = "[G]it [S]tatus" })
-vim.keymap.set("n", "<Leader>fh", require("fzf-lua").helptags, { desc = "[H]elp tags" })
-
 if not vim.g.vscode then
+  require("fzf-lua").setup({
+    fzf_opts = {
+        ["--no-scrollbar"] = false,
+        ["--cycle"] = true,
+        ["--ansi"] = true,
+        ["--height"] = "100%",
+        ["--highlight-line"] = true,
+    },
+    winopts = {
+        -- fullscreen = "true",
+        height = 0.95,
+        width = 0.95,
+    },
+    files = {
+      hidden = true,
+      no_ignore = true,
+    },
+    grep = {
+      hidden = true,
+      no_ignore = true,
+      rg_opts = "--no-ignore-vcs --hidden " .. require("fzf-lua").defaults.grep.rg_opts
+    },
+    lsp = {
+      -- make lsp requests synchronous so they work with null-ls
+      async_or_timeout = 3000,
+    },
+  })
+
+  vim.keymap.set("n", "<Leader>ff", require("fzf-lua").files, { desc = "FZF Files" })
+  vim.keymap.set("n", "<Leader>fF", function()
+    return require("fzf-lua").files({ cmd = "fd --hidden --no-ignore-vcs --exclude .git/ " .. vim.fn.expand("<cword>") })
+  end, { desc = "[F]iles under cursor" })
+  vim.keymap.set("n", "<Leader>fb", require("fzf-lua").buffers, { desc = "[B]uffers" })
+  vim.keymap.set("n", "<Leader>fo", require("fzf-lua").oldfiles, { desc = "Recent or [O]ld files" })
+  vim.keymap.set("n", "<Leader>fr", require("fzf-lua").grep, { desc = "G[R]ep" })
+  vim.keymap.set("n", "<Leader>fv", require("fzf-lua").grep_visual, { desc = "Grep [V]isual selection" })
+  vim.keymap.set("n", "<Leader>fn", require("fzf-lua").live_grep_native, { desc = "Live grep [N]ative" })
+  vim.keymap.set("n", "<Leader>fp", require("fzf-lua").grep_project, { desc = "Grep [P]roject" })
+  vim.keymap.set("n", "<Leader>fm", function()
+    return require("fzf-lua").live_grep({ resume = true })
+  end, { desc = "Resu[m]e last query" })
+  vim.keymap.set("n", "<Leader>fw", require("fzf-lua").grep_cword, { desc = "Ripgrep with word under cursor" })
+  vim.keymap.set("n", "<Leader>fc", require("fzf-lua").lines, { desc = "FZF Lines of open buffers" })
+  vim.keymap.set("n", "<Leader>fgc", require("fzf-lua").git_commits, { desc = "[G]it [C]ommits" })
+  vim.keymap.set("n", "<Leader>fgh", require("fzf-lua").git_bcommits, { desc = "[G]it buffer commits ([H]istory)" })
+  -- vim.keymap.set("n", "<Leader>fgb", require("fzf-lua").git_branches, { desc = "[G]it [B]ranches" })
+  vim.keymap.set("n", "<Leader>fgf", require("fzf-lua").git_files, { desc = "[G]it [F]iles" })
+  vim.keymap.set("n", "<Leader>fgs", require("fzf-lua").git_status, { desc = "[G]it [S]tatus" })
+  vim.keymap.set("n", "<Leader>fh", require("fzf-lua").helptags, { desc = "[H]elp tags" })
+
   vim.keymap.set("n", "<Leader>fd", require("fzf-lua").diagnostics_workspace, { desc = "[D]iagnostics" })
   vim.keymap.set("n", "<Leader>fla", require("fzf-lua").lsp_code_actions, { desc = "[L]SP [A]ctions" })
   vim.keymap.set("n", "<Leader>flf", require("fzf-lua").lsp_finder, { desc = "[L]SP [F]inder" })
   vim.keymap.set("n", "<Leader>flr", require("fzf-lua").lsp_references, { desc = "[L]SP [R]eferences" })
   vim.keymap.set("n", "<Leader>fls", require("fzf-lua").lsp_document_symbols, { desc = "[L]SP document [s]ymbols" })
   vim.keymap.set("n", "<Leader>flS", require("fzf-lua").lsp_workspace_symbols, { desc = "[L]SP workspace [S]ymbols" })
-end
 
-vim.keymap.set("n", "<Leader>ft", require("fzf-lua").treesitter, { desc = "[T]reesitter symbols" })
-vim.keymap.set("n", "<Leader>fll", require("fzf-lua").loclist, { desc = "[L]oc[L]ist" })
-vim.keymap.set("n", "<Leader>fq", require("fzf-lua").quickfix, { desc = "[Q]uickfix" })
-vim.keymap.set("n", "<Leader>fM", require("fzf-lua").manpages, { desc = "[M]an" })
+  vim.keymap.set("n", "<Leader>ft", require("fzf-lua").treesitter, { desc = "[T]reesitter symbols" })
+  vim.keymap.set("n", "<Leader>fll", require("fzf-lua").loclist, { desc = "[L]oc[L]ist" })
+  vim.keymap.set("n", "<Leader>fq", require("fzf-lua").quickfix, { desc = "[Q]uickfix" })
+  vim.keymap.set("n", "<Leader>fM", require("fzf-lua").manpages, { desc = "[M]an" })
+end
 
 -- [[ Diagnostics ]]
 local diagnostic_opts = {
@@ -1339,9 +1331,10 @@ vim.keymap.set("n", "<Leader>dm", vim.diagnostic.open_float, { desc = "Open floa
 vim.keymap.set("n", "<Leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- [[ Configure trouble.nvim ]]
-vim.keymap.set("n", "<Leader>xd", "<cmd>Trouble diagnostics toggle focus=false filter.buf=0<cr>", { noremap = true, silent = true, desc = "Toggle trouble.nvim with diagnostics" })
-vim.keymap.set("n", "<Leader>xl", "<cmd>Trouble lsp toggle focus=false<cr>", { noremap = true, silent = true, desc = "Toggle trouble.nvim with lsp" })
-
+if not vim.g.vscode then
+  vim.keymap.set("n", "<Leader>xd", "<cmd>Trouble diagnostics toggle focus=false filter.buf=0<cr>", { noremap = true, silent = true, desc = "Toggle trouble.nvim with diagnostics" })
+  vim.keymap.set("n", "<Leader>xl", "<cmd>Trouble lsp toggle focus=false<cr>", { noremap = true, silent = true, desc = "Toggle trouble.nvim with lsp" })
+end
 -- [[ Configure LSP ]]
 if not vim.g.vscode then
   local null_ls = require("null-ls")
