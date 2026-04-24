@@ -1115,9 +1115,6 @@ vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { expr = false, silent = true })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { expr = false, silent = true })
 
--- move through buffers with F8 and F9
-vim.keymap.set("n", "<F8>", ":bprevious<CR>", { noremap = true, silent = true, desc = "Go to previous buffer" })
-vim.keymap.set("n", "<F9>", ":bnext<CR>", { noremap = true, silent = true, desc = "Go to next buffer"  })
 -- to skip the quicklist buffer when going through buffers
 local qf_augroup = vim.api.nvim_create_augroup("qf", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
