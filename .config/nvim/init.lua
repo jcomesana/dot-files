@@ -559,6 +559,7 @@ require("lazy").setup({
   -- Useful plugin to show you pending keybinds.
   {
     "folke/which-key.nvim",
+    cond = not vim.g.vscode,
     event = "VeryLazy",
     opts = {
       icons = {
@@ -1045,7 +1046,9 @@ vim.g["python_highlight_all"] = 1
 
 -- Searching --
 vim.o.incsearch = true
-vim.o.inccommand = "split"
+if not vim.g.vscode then
+  vim.o.inccommand = "split"
+end
 vim.o.hlsearch = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -1124,20 +1127,21 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Disable highlighting and redraw
-vim.keymap.set({ "n", "v" }, "<Space>", ":noh<CR>:syn sync fromstart<CR>:redrawstatus<CR>", { silent = true })
+if not vim.g.vscode then
+  vim.keymap.set({ "n", "v" }, "<Space>", ":noh<CR>:syn sync fromstart<CR>:redrawstatus<CR>", { silent = true })
+end
 
 -- Keymaps to copy the current filename to the clipboard
 vim.keymap.set("n", ",cs", ':let @+=expand("%")<CR>', { noremap = true, silent = false, desc = "Copy short file name to clipboard" })
 vim.keymap.set("n", ",cl", ':let @+=expand("%:p")<CR>', { noremap = true, silent = false, desc = "Copy long file name to clipboard" })
 
--- Copy the current buffer
-vim.keymap.set("n", ",yA", ":%y<CR>", { noremap = true, silent = false, desc = "[Y]ank [A]ll" })
-
 -- Split windows
-vim.keymap.set("n", "<Leader>ih", ":split<CR>", { noremap = true, silent = false, desc = "[H]orizontal window spl[i]t" })
-vim.keymap.set("n", "<Leader>iv", ":vsplit<CR>", { noremap = true, silent = false, desc = "[V]ertical window spl[i]t" })
-vim.keymap.set("n", "<Leader>in", ":vsplit<CR>:bnext<CR>", { noremap = true, silent = false, desc = "[V]ertical window split & [N]ext buffer" })
-vim.keymap.set("n", "<Leader>ip", ":vsplit<CR>:bprevious<CR>", { noremap = true, silent = false, desc = "[V]ertical window split & [P]revious buffer" })
+if not vim.g.vscode then
+  vim.keymap.set("n", "<Leader>ih", ":split<CR>", { noremap = true, silent = false, desc = "[H]orizontal window spl[i]t" })
+  vim.keymap.set("n", "<Leader>iv", ":vsplit<CR>", { noremap = true, silent = false, desc = "[V]ertical window spl[i]t" })
+  vim.keymap.set("n", "<Leader>in", ":vsplit<CR>:bnext<CR>", { noremap = true, silent = false, desc = "[V]ertical window split & [N]ext buffer" })
+  vim.keymap.set("n", "<Leader>ip", ":vsplit<CR>:bprevious<CR>", { noremap = true, silent = false, desc = "[V]ertical window split & [P]revious buffer" })
+end
 
 -- Remove empty lines
 vim.keymap.set("n", "<Leader>se", ":g/^$/d<CR>:noh<CR>", { noremap = true, silent = false, desc = "Remove [E]mpty lines" })
@@ -1149,65 +1153,79 @@ vim.keymap.set("n", "<Leader>sb", ":%s/^\\s\\+//ge<CR>:noh<CR>", { noremap = tru
 vim.keymap.set("n", "<Leader>s,", ":g/^$/d<CR>:%s/^\\s\\+//ge<CR>:noh<CR>:%y<CR>", { noremap = true, silent = false, desc = "Remove empty lines, leading spaces and copy" })
 
 -- Keymaps for P4 operations
-vim.keymap.set("n", "<Leader>p4a", ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [a]dd" })
-vim.keymap.set("n", "<Leader>p4e", ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [e]dit" })
-vim.keymap.set("n", "<Leader>p4r", ':!p4 revert "%"<CR>', { noremap = true, silent = false, desc = "P4 [r]evert" })
+if not vim.g.vscode then
+  vim.keymap.set("n", "<Leader>p4a", ':!p4 add "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [a]dd" })
+  vim.keymap.set("n", "<Leader>p4e", ':!p4 edit "%"<CR>', { noremap = true, silent = false, desc = "P4 open for [e]dit" })
+  vim.keymap.set("n", "<Leader>p4r", ':!p4 revert "%"<CR>', { noremap = true, silent = false, desc = "P4 [r]evert" })
+end
 
 -- Keymaps for Git operations
 vim.keymap.set("n", "<Leader>gp", ':!git pull && git submodule update --init --recursive<CR>', { noremap = true, silent = false, desc = "Git pull and submodules" })
 
 -- which-key
-vim.keymap.set("n", "<Leader>wk", "<CMD>WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
+if not vim.g.vscode then
+  vim.keymap.set("n", "<Leader>wk", "<CMD>WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
+end
 
 -- Make current file executable
 vim.keymap.set("n", "<Leader>sx", ":!chmod +x %<CR>", { noremap = true, silent = false, desc = "Make current [S]cript e[X]ecutable" })
 
 -- Start CodeCompanionChat
-vim.keymap.set("n", "<Leader>cc", ":CodeCompanionChat Toggle<CR>", { noremap = true, silent = false, desc = "Toggle [C]ode[C]ompanionChat" })
+if not vim.g.vscode then
+  vim.keymap.set("n", "<Leader>cc", ":CodeCompanionChat Toggle<CR>", { noremap = true, silent = false, desc = "Toggle [C]ode[C]ompanionChat" })
+end
 
 -- Go to normal mode in the terminal with Ctrl-Esc
-vim.keymap.set("t", "<C-Esc>", "<C-\\><C-n>", { desc = "Go to normal mode in terminal" })
+if not vim.g.vscode then
+  vim.keymap.set("t", "<C-Esc>", "<C-\\><C-n>", { desc = "Go to normal mode in terminal" })
+end
 
 -- Custom commands
 -- CDC = Change to Directory of Current file
-vim.api.nvim_create_user_command("CDC", "cd %:p:h", {})
+if not vim.g.vscode then
+  vim.api.nvim_create_user_command("CDC", "cd %:p:h", {})
+end
 
 -- [[ Workaround for autoread not working, use autocommands ]]
-local autoread_fix_augroup = vim.api.nvim_create_augroup("autoread_fix", { clear = true })
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
-  pattern = "*",
-  group = autoread_fix_augroup,
-  command = "if mode() != 'c' | checktime | endif"
-})
-vim.api.nvim_create_autocmd({ "FileChangedShellPost" }, {
-  pattern = "*",
-  group = autoread_fix_augroup,
-  callback = function (ev)
-    if ev.file ~= nil then
-      local filename = vim.fs.basename(ev.file)
-      Snacks.notify.warn(("File `%s` changed on disk. Buffer reloaded."):format(filename), { title = "File modified" })
+if not vim.g.vscode then
+  local autoread_fix_augroup = vim.api.nvim_create_augroup("autoread_fix", { clear = true })
+  vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+    pattern = "*",
+    group = autoread_fix_augroup,
+    command = "if mode() != 'c' | checktime | endif"
+  })
+  vim.api.nvim_create_autocmd({ "FileChangedShellPost" }, {
+    pattern = "*",
+    group = autoread_fix_augroup,
+    callback = function (ev)
+      if ev.file ~= nil then
+        local filename = vim.fs.basename(ev.file)
+        Snacks.notify.warn(("File `%s` changed on disk. Buffer reloaded."):format(filename), { title = "File modified" })
+      end
     end
-  end
-})
+  })
+end
 
 -- [[ New filetypes ]]
-vim.filetype.add({
-  filename = {
-    ["docker-compose.yml"] = "yaml.docker-compose",
-    ["docker-compose.yaml"] = "yaml.docker-compose",
-    ["compose.yml"] = "yaml.docker-compose",
-    ["compose.yaml"] = "yaml.docker-compose",
-  },
-  pattern = {
-    ["Dockerfile.*"] = "dockerfile",
-    ["Jenkinsfile"] = "groovy",
-    ["Jenkinsfile.*"] = "groovy",
-    ["*.Jenkinsfile"] = "groovy",
-  },
-  extension = {
-    ["jobdsl"] = "groovy"
-  }
-})
+if not vim.g.vscode then
+  vim.filetype.add({
+    filename = {
+      ["docker-compose.yml"] = "yaml.docker-compose",
+      ["docker-compose.yaml"] = "yaml.docker-compose",
+      ["compose.yml"] = "yaml.docker-compose",
+      ["compose.yaml"] = "yaml.docker-compose",
+    },
+    pattern = {
+      ["Dockerfile.*"] = "dockerfile",
+      ["Jenkinsfile"] = "groovy",
+      ["Jenkinsfile.*"] = "groovy",
+      ["*.Jenkinsfile"] = "groovy",
+    },
+    extension = {
+      ["jobdsl"] = "groovy"
+    }
+  })
+end
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
