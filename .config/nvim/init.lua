@@ -1015,7 +1015,12 @@ vim.o.modeline = true
 vim.wo.number = true
 vim.o.showmode = false
 vim.o.showcmd = true
-vim.o.cmdheight = 2
+if not vim.g.vscode then
+  vim.o.cmdheight = 2
+else
+  -- Workaround for a bug in vscode-neovim
+  vim.o.cmdheight = 100
+end
 vim.o.history = 50
 vim.o.wildmenu = true
 vim.o.wildignore = "*.bak,*.o,*~,*.pyc,*.lib,*.swp"
