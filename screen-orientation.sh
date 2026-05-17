@@ -66,20 +66,7 @@ kscreen_set() {
     local orientation="$2"
 
     validate_orientation "$orientation"
-
-    # kscreen-doctor uses: normal=1, left=2, inverted=4, right=8 — but also accepts names
-    # Map our names to kscreen-doctor rotation values
-    local rot_value
-    case "$orientation" in
-        normal)   rot_value=1 ;;
-        left)     rot_value=2 ;;
-        inverted) rot_value=4 ;;
-        right)    rot_value=8 ;;
-    esac
-
-    echo "Setting '$output' to '$orientation' (rotation=$rot_value) via kscreen-doctor..."
-    kscreen-doctor "output.$output.rotation.$rot_value"
-    echo "Done."
+    kscreen-doctor "output.$output.rotation.$orientation"
 }
 
 # -----------------------------------------------------------------------------
