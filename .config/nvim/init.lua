@@ -651,8 +651,15 @@ require("lazy").setup({
   },
 
   -- nvim-web-devicons
-  { "nvim-tree/nvim-web-devicons" },
-  { "nvim-mini/mini.icons", opts = {} },
+  {
+    "nvim-tree/nvim-web-devicons",
+    cond = not vim.g.vscode,
+  },
+  {
+    "nvim-mini/mini.icons",
+    cond = not vim.g.vscode,
+    opts = {},
+  },
 
   -- Colorschemes
   {
@@ -796,6 +803,7 @@ require("lazy").setup({
   {
     -- Library used by several plugins
     "nvim-lua/plenary.nvim",
+    cond = not vim.g.vscode,
   },
 
   -- FZF
@@ -1309,46 +1317,48 @@ if not vim.g.vscode then
 end
 
 -- [[ Diagnostics ]]
-local diagnostic_opts = {
-  virtual_text = true,
-  signs = true,
-  underline = false,
-  update_in_insert = false,
-  severity_sort = true,
-  float = {
-    border = "rounded",
-    scope = "line",
-    source = true,
+if not vim.g.vscode then
+  local diagnostic_opts = {
+    virtual_text = true,
+    signs = true,
+    underline = false,
+    update_in_insert = false,
     severity_sort = true,
-  },
-}
+    float = {
+      border = "rounded",
+      scope = "line",
+      source = true,
+      severity_sort = true,
+    },
+  }
 
-diagnostic_opts["virtual_lines"] = false -- { current_line = true }
-diagnostic_opts["signs"] = {
-  text = {
-    [vim.diagnostic.severity.ERROR] = diagnostics_signs["Error"],
-    [vim.diagnostic.severity.WARN]  = diagnostics_signs["Warn"],
-    [vim.diagnostic.severity.HINT]  = diagnostics_signs["Hint"],
-    [vim.diagnostic.severity.INFO]  = diagnostics_signs["Info"],
-  },
-  numhl = {
-    [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
-    [vim.diagnostic.severity.WARN]  = "DiagnosticSignWarn",
-    [vim.diagnostic.severity.HINT]  = "DiagnosticSignHint",
-    [vim.diagnostic.severity.INFO]  = "DiagnosticSignInfo",
-  },
-}
-vim.diagnostic.config(diagnostic_opts)
+  diagnostic_opts["virtual_lines"] = false -- { current_line = true }
+  diagnostic_opts["signs"] = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = diagnostics_signs["Error"],
+      [vim.diagnostic.severity.WARN]  = diagnostics_signs["Warn"],
+      [vim.diagnostic.severity.HINT]  = diagnostics_signs["Hint"],
+      [vim.diagnostic.severity.INFO]  = diagnostics_signs["Info"],
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+      [vim.diagnostic.severity.WARN]  = "DiagnosticSignWarn",
+      [vim.diagnostic.severity.HINT]  = "DiagnosticSignHint",
+      [vim.diagnostic.severity.INFO]  = "DiagnosticSignInfo",
+    },
+  }
+  vim.diagnostic.config(diagnostic_opts)
 
--- Diagnostic keymaps
-vim.keymap.set("n", "[d", function ()
-  vim.diagnostic.jump({ count = -1, float = false })
-end, { desc = "Go to previous diagnostic message" })
-vim.keymap.set("n", "]d", function ()
-  vim.diagnostic.jump({ count = 1, float = false })
-end, { desc = "Go to next diagnostic message" })
-vim.keymap.set("n", "<Leader>dm", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set("n", "<Leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+  -- Diagnostic keymaps
+  vim.keymap.set("n", "[d", function ()
+    vim.diagnostic.jump({ count = -1, float = false })
+  end, { desc = "Go to previous diagnostic message" })
+  vim.keymap.set("n", "]d", function ()
+    vim.diagnostic.jump({ count = 1, float = false })
+  end, { desc = "Go to next diagnostic message" })
+  vim.keymap.set("n", "<Leader>dm", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
+  vim.keymap.set("n", "<Leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+end
 
 -- [[ Configure trouble.nvim ]]
 if not vim.g.vscode then
