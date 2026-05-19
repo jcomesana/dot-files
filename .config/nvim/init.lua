@@ -1180,7 +1180,11 @@ end
 vim.keymap.set("n", "<Leader>gp", ':!git pull && git submodule update --init --recursive<CR>', { noremap = true, silent = false, desc = "Git pull and submodules" })
 
 -- which-key
-if not vim.g.vscode then
+if vim.g.vscode then
+  vim.keymap.set("n", "<Leader>wk", function()
+    return require("vscode").action("neovim-keymaps-list.searchKeymaps")
+  end, { noremap = true, silent = false, desc = "[W]hich [K]ey" })
+else
   vim.keymap.set("n", "<Leader>wk", "<CMD>WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
 end
 
