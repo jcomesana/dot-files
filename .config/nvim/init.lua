@@ -1025,6 +1025,11 @@ vim.o.showmode = false
 vim.o.showcmd = true
 if not vim.g.vscode then
   vim.o.cmdheight = 2
+  vim.o.scrolloff = 4
+  vim.o.listchars = "tab:> ,trail:-,extends:>,precedes:<,nbsp:␣"
+  vim.o.guicursor = "n-v-c:block,i-ci-ve:ver45,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff600-blinkon450-Cursor/lCursor,sm:block-blinkwait175-blinkoff350-blinkon375"
+  vim.o.pumwidth = 32
+  vim.o.winborder = "rounded"
 else
   -- Workaround for a bug in vscode-neovim
   vim.o.cmdheight = 100
@@ -1036,7 +1041,6 @@ vim.o.wildoptions = "pum,tagfile"
 vim.o.shortmess = "atc"
 vim.o.updatetime = 250
 vim.o.cursorline = false
-vim.o.ruler = true
 vim.o.laststatus = 2
 vim.o.visualbell = true
 vim.o.splitbelow = true
@@ -1045,13 +1049,13 @@ vim.o.clipboard = "unnamedplus"
 vim.o.timeout = true
 vim.o.timeoutlen = 2000
 vim.o.ttimeoutlen = 100
-vim.o.display = "lastline,msgsep"
 vim.o.sidescroll = 1
-vim.o.scrolloff = 4
-vim.o.listchars = "tab:> ,trail:-,extends:>,precedes:<,nbsp:␣"
-vim.o.guicursor = "n-v-c:block,i-ci-ve:ver45,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff600-blinkon450-Cursor/lCursor,sm:block-blinkwait175-blinkoff350-blinkon375"
-vim.o.pumwidth = 32
-vim.o.winborder = "rounded"
+if vim.g.vscode then
+  vim.g.statusline="%f %m"
+  vim.o.showmode = true
+  vim.o.title = false
+  vim.o.ruler = false
+end
 
 -- Syntax highlighting --
 vim.o.syntax = "ON"
