@@ -1127,6 +1127,14 @@ vim.g.snacks_animate = false
 
 -- [[ Keymaps ]]
 
+if vim.g.vscode then
+  function Create_vscode_action_wrapper(action_name)
+    return function()
+      require("vscode").action(action_name)
+    end
+  end
+end
+
 -- remaps for dealing with word wrap
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -1181,11 +1189,15 @@ vim.keymap.set("n", "<Leader>gp", ':!git pull && git submodule update --init --r
 
 -- which-key
 if vim.g.vscode then
-  vim.keymap.set("n", "<Leader>wk", function()
-    return require("vscode").action("neovim-keymaps-list.searchKeymaps")
-  end, { noremap = true, silent = false, desc = "[W]hich [K]ey" })
+  vim.keymap.set("n", "<Leader>wk", Create_vscode_action_wrapper("neovim-keymaps-list.searchKeymaps"), { noremap = true, silent = false, desc = "[w]hich [k]ey" })
+  vim.keymap.set("n", "<Leader>wK", Create_vscode_action_wrapper("code-telescope.fuzzy.keybindings"), { noremap = true, silent = false, desc = "[w]hich [K]ey vscode keybindings" })
 else
   vim.keymap.set("n", "<Leader>wk", "<CMD>WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
+end
+
+-- lazygit on vscode
+if vim.g.vscode then
+  vim.keymap.set("n", "<Leader>G", Create_vscode_action_wrapper("lazygit.openLazygit"), { noremap = true, silent = false, desc = "Open lazy[G]it" })
 end
 
 -- Make current file executable
@@ -1260,7 +1272,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- [[ Configure fzf-lua ]]
-if not vim.g.vscode then
+if vim.g.vscode then
+  vim.keymap.set("n", "<Leader>ff", Create_vscode_action_wrapper("code-telescope.fuzzy.file"), { desc = "FZF Files" })
+  vim.keymap.set("n", "<Leader>fp", Create_vscode_action_wrapper("code-telescope.fuzzy.wsText"), { desc = "Grep [p]roject" })
+  vim.keymap.set("n", "<Leader>b", Create_vscode_action_wrapper("code-telescope.fuzzy.recentFiles"), { desc = "Active [b]uffers (tabs)" })
+  vim.keymap.set("n", "<Leader>fM", Create_vscode_action_wrapper("manpages.openFromInput"), { desc = "[M]an" })
+else
   require("fzf-lua").setup({
     fzf_opts = {
         ["--no-scrollbar"] = false,
