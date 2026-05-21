@@ -1275,6 +1275,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 if vim.g.vscode then
   vim.keymap.set("n", "<Leader>ff", Create_vscode_action_wrapper("code-telescope.fuzzy.file"), { desc = "FZF Files" })
   vim.keymap.set("n", "<Leader>fp", Create_vscode_action_wrapper("code-telescope.fuzzy.wsText"), { desc = "Grep [p]roject" })
+  vim.keymap.set("n", "<Leader>fn", Create_vscode_action_wrapper("workbench.action.findInFiles"), { desc = "Search text" })
+  vim.keymap.set("n", "<Leader>fF", Create_vscode_action_wrapper("workbench.action.quickOpen"), { desc = "Find files" })
   vim.keymap.set("n", "<Leader>b", Create_vscode_action_wrapper("code-telescope.fuzzy.recentFiles"), { desc = "Active [b]uffers (tabs)" })
   vim.keymap.set("n", "<Leader>fM", Create_vscode_action_wrapper("manpages.openFromInput"), { desc = "[M]an" })
 else
