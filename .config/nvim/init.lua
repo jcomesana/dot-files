@@ -1190,7 +1190,6 @@ vim.keymap.set("n", "<Leader>gp", ':!git pull && git submodule update --init --r
 -- which-key
 if vim.g.vscode then
   vim.keymap.set("n", "<Leader>wk", Create_vscode_action_wrapper("neovim-keymaps-list.searchKeymaps"), { noremap = true, silent = false, desc = "[w]hich [k]ey" })
-  vim.keymap.set("n", "<Leader>wK", Create_vscode_action_wrapper("code-telescope.fuzzy.keybindings"), { noremap = true, silent = false, desc = "[w]hich [K]ey vscode keybindings" })
 else
   vim.keymap.set("n", "<Leader>wk", "<CMD>WhichKey<CR>", { noremap = true, silent = false, desc = "[W]hich [K]ey" })
 end
@@ -1273,11 +1272,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- [[ Configure fzf-lua ]]
 if vim.g.vscode then
-  vim.keymap.set("n", "<Leader>ff", Create_vscode_action_wrapper("code-telescope.fuzzy.file"), { desc = "FZF Files" })
-  vim.keymap.set("n", "<Leader>fp", Create_vscode_action_wrapper("code-telescope.fuzzy.wsText"), { desc = "Grep [p]roject" })
-  vim.keymap.set("n", "<Leader>fn", Create_vscode_action_wrapper("workbench.action.findInFiles"), { desc = "Search text" })
-  vim.keymap.set("n", "<Leader>fF", Create_vscode_action_wrapper("workbench.action.quickOpen"), { desc = "Find files" })
-  vim.keymap.set("n", "<Leader>b", Create_vscode_action_wrapper("code-telescope.fuzzy.recentFiles"), { desc = "Active [b]uffers (tabs)" })
+  vim.keymap.set("n", "<Leader>fp", Create_vscode_action_wrapper("workbench.action.findInFiles"), { desc = "Search text" })
+  vim.keymap.set("n", "<Leader>ff", Create_vscode_action_wrapper("workbench.action.quickOpen"), { desc = "Find [f]iles" })
+  vim.keymap.set("n", "<Leader>b", Create_vscode_action_wrapper("workbench.action.showAllEditors"), { desc = "Active [b]uffers (tabs)" })
   vim.keymap.set("n", "<Leader>fM", Create_vscode_action_wrapper("manpages.openFromInput"), { desc = "[M]an" })
 else
   require("fzf-lua").setup({
