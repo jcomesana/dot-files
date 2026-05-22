@@ -1661,7 +1661,9 @@ if not vim.g.vscode then
 end
 
 -- [[ Configure mini.trailspace ]]
-if not vim.g.vscode then
+if vim.g.vscode then
+  vim.keymap.set('n', '<Leader>st', Create_vscode_action_wrapper("trailing-spaces.deleteTrailingSpaces"), { noremap = true, silent = false, desc = 'Trim [T]railing whitespace' })
+else
   vim.keymap.set('n', '<Leader>st', function ()
     require('mini.trailspace').setup()
     MiniTrailspace.trim()
