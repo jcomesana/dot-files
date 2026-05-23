@@ -1390,7 +1390,10 @@ if not vim.g.vscode then
   vim.keymap.set("n", "<Leader>xl", "<cmd>Trouble lsp toggle focus=false<cr>", { noremap = true, silent = true, desc = "Toggle trouble.nvim with lsp" })
 end
 -- [[ Configure LSP ]]
-if not vim.g.vscode then
+if vim.g.vscode then
+  vim.keymap.set("n", "<Leader>lr", Create_vscode_action_wrapper("references-view.findReferences"), { desc = "LSP [r]eferences" })
+  vim.keymap.set("n", "<Leader>lgr", Create_vscode_action_wrapper("editor.action.goToReferences"), { desc = "LSP [g]o to [r]eferences" })
+else
   local null_ls = require("null-ls")
   null_ls.setup({
     sources = {
