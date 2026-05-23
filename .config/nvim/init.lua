@@ -1272,10 +1272,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- [[ Configure fzf-lua ]]
 if vim.g.vscode then
-  vim.keymap.set("n", "<Leader>fp", Create_vscode_action_wrapper("workbench.action.findInFiles"), { desc = "Search text" })
+  vim.keymap.set("n", "<Leader>fp", Create_vscode_action_wrapper("workbench.action.findInFiles"), { desc = "Find [p]roject text" })
   vim.keymap.set("n", "<Leader>ff", Create_vscode_action_wrapper("workbench.action.quickOpen"), { desc = "Find [f]iles" })
   vim.keymap.set("n", "<Leader>b", Create_vscode_action_wrapper("workbench.action.showAllEditors"), { desc = "Active [b]uffers (tabs)" })
-  vim.keymap.set("n", "<Leader>fM", Create_vscode_action_wrapper("manpages.openFromInput"), { desc = "[M]an" })
+  vim.keymap.set("n", "<Leader>fM", Create_vscode_action_wrapper("manpages.openFromInput"), { desc = "Find [M]an page" })
 else
   require("fzf-lua").setup({
     fzf_opts = {
