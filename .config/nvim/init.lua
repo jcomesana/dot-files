@@ -1643,7 +1643,10 @@ if not vim.g.vscode then
 end
 
 -- [[ Configure oil ]]
-if not vim.g.vscode then
+if vim.g.vscode then
+  vim.keymap.set("n", "-", Create_vscode_action_wrapper("workbench.files.action.showActiveFileInExplorer"), { desc = "Open Explorer View" })
+  vim.keymap.set("n", "<Leader>x", Create_vscode_action_wrapper("workbench.action.terminal.toggleTerminal"), { desc = "Toggle terminal" })
+else
   local function get_downloads_folder()
     if vim.fn.executable("xdg-user-dir") == 1 then
       local xdg_result = vim.system({"xdg-user-dir", "DOWNLOAD"}, { text = true }):wait()
@@ -1854,43 +1857,6 @@ if vim.fn.has("gui_running") == 1 and not vim.g.vscode then
 	vim.keymap.set("n", "<C-ScrollWheelUp>", function() size_matters.update_font "grow" end, { desc = "Increase font size" })
 	vim.keymap.set("n", "<C-ScrollWheelDown>", function() size_matters.update_font "shrink" end, { desc = "Decrease font size" })
 	vim.keymap.set("n", "<C-S-!>", size_matters.reset_font, { desc = "Reset to default font" })
-end
-
--- [[ For vscode extension, colorful mode ]]
-if vim.g.vscode then
-  -- See https://marketplace.visualstudio.com/items?itemName=wrathcodes.nvim-ui-plus
-  local function notify_vscode_mode()
-      local mode = vim.api.nvim_get_mode().mode
-      local mode_name = ""
-      -- Convert Neovim mode to readable name
-      if mode == "n" then
-          mode_name = "normal"
-      elseif mode == "i" then
-          mode_name = "insert"
-      elseif mode == "v" then
-          mode_name = "visual"
-      elseif mode == "V" then
-          mode_name = "visual"
-      elseif mode == "\22" then
-          mode_name = "visual"
-      elseif mode == "c" then
-          mode_name = "cmdline"
-      elseif mode == "R" then
-          mode_name = "replace"
-      else
-          mode_name = mode
-      end
-      --  Call VSCode extension to update UI asynchronously
-      require("vscode").action("nvim-ui-plus.setMode", {
-          args = { mode = mode_name }
-      })
-  end
-
-  -- Mode change notification autocmd
-  vim.api.nvim_create_autocmd("ModeChanged", {
-      pattern = "*",
-      callback = notify_vscode_mode,
-  })
 end
 
 -- [[ random colorscheme ]]
