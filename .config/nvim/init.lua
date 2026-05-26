@@ -1856,6 +1856,43 @@ if vim.fn.has("gui_running") == 1 and not vim.g.vscode then
 	vim.keymap.set("n", "<C-S-!>", size_matters.reset_font, { desc = "Reset to default font" })
 end
 
+-- [[ For vscode extension, colorful mode ]]
+if vim.g.vscode then
+  -- See https://marketplace.visualstudio.com/items?itemName=wrathcodes.nvim-ui-plus
+  local function notify_vscode_mode()
+      local mode = vim.api.nvim_get_mode().mode
+      local mode_name = ""
+      -- Convert Neovim mode to readable name
+      if mode == "n" then
+          mode_name = "normal"
+      elseif mode == "i" then
+          mode_name = "insert"
+      elseif mode == "v" then
+          mode_name = "visual"
+      elseif mode == "V" then
+          mode_name = "visual"
+      elseif mode == "\22" then
+          mode_name = "visual"
+      elseif mode == "c" then
+          mode_name = "cmdline"
+      elseif mode == "R" then
+          mode_name = "replace"
+      else
+          mode_name = mode
+      end
+      --  Call VSCode extension to update UI asynchronously
+      require("vscode").action("nvim-ui-plus.setMode", {
+          args = { mode = mode_name }
+      })
+  end
+
+  -- Mode change notification autocmd
+  vim.api.nvim_create_autocmd("ModeChanged", {
+      pattern = "*",
+      callback = notify_vscode_mode,
+  })
+end
+
 -- [[ random colorscheme ]]
 if not vim.g.vscode then
   local function select_colorscheme()
