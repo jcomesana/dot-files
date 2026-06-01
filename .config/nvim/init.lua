@@ -1682,7 +1682,9 @@ end
 
 -- [[ Configure persisted.nvim ]]
 
-if not vim.g.vscode then
+if vim.g.vscode then
+  vim.keymap.set("n", "<Leader>ms", Create_vscode_action_wrapper("projectManager.listProjectsNewWindow"), { noremap = true, silent = false, desc = "Session [S]elect" })
+else
   local persisted_config = require("persisted.config")
 
   local function get_session_name_and_branch(session_file)
