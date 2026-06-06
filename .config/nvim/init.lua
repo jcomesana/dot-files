@@ -1273,9 +1273,19 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- [[ Configure fzf-lua ]]
 if vim.g.vscode then
   vim.keymap.set("n", "<Leader>fp", Create_vscode_action_wrapper("workbench.action.findInFiles"), { desc = "Find [p]roject text" })
+  vim.keymap.set("n", "<Leader>fw",
+    function()
+      require("vscode").action("workbench.action.findInFiles", { args = { query = vim.fn.expand("<cword>") } })
+    end,
+    { desc = "Find [w]ord in files" })
   vim.keymap.set("n", "<Leader>ff", Create_vscode_action_wrapper("workbench.action.quickOpen"), { desc = "Find [f]iles" })
   vim.keymap.set("n", "<Leader>b", Create_vscode_action_wrapper("workbench.action.showAllEditors"), { desc = "Active [b]uffers (tabs)" })
   vim.keymap.set("n", "<Leader>fM", Create_vscode_action_wrapper("manpages.openFromInput"), { desc = "Find [M]an page" })
+  vim.keymap.set("n", "<Leader>fN",
+    function()
+      require("vscode").action("manpages.openFromCursor", { args = { query = vim.fn.expand("<cword>") } })
+    end,
+    { desc = "Find man page for word under cursor" })
 else
   require("fzf-lua").setup({
     fzf_opts = {
