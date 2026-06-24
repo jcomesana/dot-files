@@ -1196,7 +1196,7 @@ end
 
 -- lazygit on vscode
 if vim.g.vscode then
-  vim.keymap.set("n", "<Leader>G", Create_vscode_action_wrapper("lazygit.openLazygit"), { noremap = true, silent = false, desc = "Open lazy[G]it" })
+  vim.keymap.set("n", "<Leader>G", Create_vscode_action_wrapper("lazygit-vscode.toggle"), { noremap = true, silent = false, desc = "Open lazy[G]it" })
 end
 
 -- Make current file executable
