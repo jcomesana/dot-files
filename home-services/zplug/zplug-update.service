@@ -1,0 +1,7 @@
+[Unit]
+Description=Update zplug plugins
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/zplug-update.sh
+User=%u

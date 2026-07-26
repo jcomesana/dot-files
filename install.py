@@ -54,21 +54,21 @@ class PlatformPath:
     @property
     def platforms(self):
         """
-        Return the supported platforms.
+        List the supported platforms.
         """
         return sorted(self._platform_paths.keys())
 
     @property
     def is_valid(self):
         """
-        Return true if the path is valid for the current platform.
+        Check if the path is valid for the current platform.
         """
         return self._path is not None
 
     @property
     def value(self):
         """
-        Return the path value.
+        Access the path value.
         """
         if not self.is_valid:
             raise ValueError(f'Path is not valid for platform {sys.platform}, supported platforms: {self.platforms}')
@@ -82,7 +82,7 @@ class PlatformPath:
 
     def __bool__(self):
         """
-        Return true if the path is valid for the current platform.
+        Check if the path is valid for the current platform.
         """
         return self.is_valid
 
@@ -263,7 +263,7 @@ class InstallStepResult:
     @property
     def failed(self):
         """
-        Return true if the step failed.
+        Check if the step failed.
         """
         return not self.successful
 
@@ -307,28 +307,28 @@ class InstallStageResult:
     @property
     def was_executed(self):
         """
-        Return true if at least one step was executed.
+        Check if at least one step was executed.
         """
         return len(self.step_results) > 0
 
     @property
     def was_successful(self):
         """
-        Return true if all the steps were successful.
+        Check if all the steps were successful.
         """
         return all(not step_result.failed for step_result in self.step_results)
 
     @property
     def successful_results(self):
         """
-        Return a list with the successful results.
+        List the successful results.
         """
         return [result for result in self.step_results if result.successful]
 
     @property
     def failed_results(self):
         """
-        Return a list with the failed results.
+        List the failed results.
         """
         return [result for result in self.step_results if result.failed]
 
@@ -567,6 +567,10 @@ def install():
     install_single_dotfiles.add_step(CloneFileStep('install .tmux.conf', pathlib.Path('.tmux.conf'), PlatformPath(android='~/.tmux.conf', linux='~/.tmux.conf', darwin='~/.tmux.conf')))
     install_single_dotfiles.add_step(CloneFileStep('install .ruff.toml', pathlib.Path('.ruff.toml'), PlatformPath(linux='~/.ruff.toml', darwin='~/.ruff.toml', win32='~/.ruff.toml')))
     stages.append(install_single_dotfiles)
+    install_single_dotfiles.add_step(CloneFileStep('install .zshrc', pathlib.Path('.zshrc'), PlatformPath(linux='~/.zshrc', darwin='~/.zshrc', win32='~/.zshrc')))
+    install_single_dotfiles.add_step(CloneFileStep('install starship.toml',
+                                                        pathlib.Path('.config/starship.toml'),
+                                                        PlatformPath(linux='~/.config/starship.toml', darwin='~/.config/starship.toml', win32='~/.config/starship.toml')))
     # vim configuration
     install_vim_stage = InstallConfigStage('install vim configuration')
     install_vim_stage.add_step(CloneFileStep('install vimrc', pathlib.Path('_vimrc'), PlatformPath(android='~/_vimrc', linux='~/_vimrc', darwin='~/_vimrc', win32='~/_vimrc')))
@@ -614,6 +618,7 @@ def install():
     has_hblock_from_brew = Condition.create_command_is_successful('brew info hblock', is_static=True)
     install_local_services_stage.add_step(InstallSystemdUserTimerStep('install hblock update timer', 'hblock', when=has_hblock_from_brew))
     install_local_services_stage.add_step(InstallSystemdUserTimerStep('install fisher update timer', 'fisher'))
+    install_local_services_stage.add_step(InstallSystemdUserTimerStep('install zplug update timer', 'zplug'))
     results = [stage() for stage in stages]
     return results
 
