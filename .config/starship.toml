@@ -123,7 +123,7 @@ success_symbol = ''
 format = '[ $symbol $status ]($style)'
 
 [cmd_duration]
-format = '[ 󰔟 $duration ]($style)'
+format = '[ 󱦟 $duration ]($style)'
 style = 'bg:#FFFFFF fg:#000000'
 min_time = 500
 
