@@ -100,6 +100,7 @@ source ~/.zplug/init.zsh
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-syntax-highlighting"
 
 if ! zplug check; then
@@ -107,15 +108,8 @@ if ! zplug check; then
 fi
 zplug load
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS: Ctrl+↑ and Ctrl+↓ are taken by Mission Control, use Alt+↑/↓ instead
-    bindkey '^[^[[A' history-substring-search-up   # Alt+↑
-    bindkey '^[^[[B' history-substring-search-down # Alt+↓
-else
-    # Linux
-    bindkey '^[[1;5A' history-substring-search-up   # Ctrl+↑
-    bindkey '^[[1;5B' history-substring-search-down # Ctrl+↓
-fi
+bindkey -M emacs '^P' history-substring-search-up
+bindkey -M emacs '^N' history-substring-search-down
 
 eval "$(starship init zsh)"
 eval "$(fzf --zsh)"
