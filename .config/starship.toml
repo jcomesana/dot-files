@@ -18,9 +18,8 @@ $docker_context\
 # [](fg:#06969A bg:#33658A)\
 
 right_format = """
-[](fg:#33658A)\
 $status\
-[](fg:#ffffff bg:#33658A)\
+[](fg:#ffffff bg:#000000)\
 $cmd_duration
 """
 
@@ -90,25 +89,12 @@ Uos = " "
 Void = " "
 Windows = "󰍲 "
 Zorin = " "
+
 [directory]
 style = "bg:#33658A"
-format = "[ $path ]($style)"
+format = "[  $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
-
-# Here is how you can shorten some long paths by text replacement
-# similar to mapped_locations in Oh My Posh:
-[directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = " "
-"Pictures" = " "
-# Keep in mind that the order matters. For example:
-# "Important Documents" = " 󰈙 "
-# will not be replaced, because "Documents" was already substituted before.
-# So either put "Important Documents" before "Documents" or use the substituted version:
-# "Important 󰈙 " = " 󰈙 "
-
 
 [git_branch]
 symbol = ""
@@ -130,14 +116,14 @@ format = '[$all_status$ahead_behind ]($style)'
 
 [status]
 disabled = false
-style = 'bg:#33658A fg:#FFFFFF'
-failure_style = 'bold bg:#33658A fg:#FCF40C'
-symbol = ''
-success_symbol = ''
+style = 'bold green'
+failure_style = 'bold red'
+symbol = ''
+success_symbol = ''
 format = '[ $symbol $status ]($style)'
 
 [cmd_duration]
-format = '[ $duration ]($style)'
+format = '[ 󰔟 $duration ]($style)'
 style = 'bg:#FFFFFF fg:#000000'
 min_time = 500
 
