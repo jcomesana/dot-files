@@ -1661,7 +1661,8 @@ else
     if vim.fn.executable("xdg-user-dir") == 1 then
       local xdg_result = vim.system({"xdg-user-dir", "DOWNLOAD"}, { text = true }):wait()
       if xdg_result.code == 0 then
-        return xdg_result.stdout
+        local xdg_downloads = vim.trim(xdg_result.stdout)
+        return xdg_downloads
       end
     end
     if jit.os:find("Windows") then
@@ -1673,7 +1674,11 @@ else
   vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
   vim.keymap.set("n", "<Leader>od", "<CMD>Oil " .. vim.fn.stdpath("data") .. "<CR>", { desc = "Open [D]ata directory" })
   vim.keymap.set("n", "<Leader>ol", "<CMD>Oil " .. vim.fs.joinpath(vim.fn.stdpath("data"), "lazy") .. "<CR>", { desc = "Open [L]azy data directory" })
-  vim.keymap.set("n", "<Leader>oD", "<CMD>Oil " .. get_downloads_folder() .. "<CR>", { desc = "Open [D]ownloads folder" })
+  vim.keymap.set("n", "<Leader>oD",
+    function()
+        require("oil").set_sort({ { "ctime", "desc" } })
+        require("oil").open(get_downloads_folder())
+    end, { desc = "Open [D]ownloads folder" })
 end
 
 -- [[ Configure mini.trailspace ]]
