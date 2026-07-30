@@ -111,6 +111,13 @@ zplug load
 bindkey -M emacs '^P' history-substring-search-up
 bindkey -M emacs '^N' history-substring-search-down
 
+# For starship
+
+function set_win_title(){
+    echo -ne "\033]0; $(basename "$PWD") \007"
+}
+precmd_functions+=(set_win_title)
+
 eval "$(starship init zsh)"
 eval "$(fzf --zsh)"
 
