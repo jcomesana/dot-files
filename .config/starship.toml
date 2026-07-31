@@ -103,13 +103,13 @@ format = '[ $symbol $branch ]($style)'
 
 [git_status]
 conflicted = ''
-ahead = '${count} '
-behind = '${count} '
-diverged = '󰹹'
+ahead = '${count} '
+behind = '${count} '
+diverged = '${count}'
 untracked = '${count} '
-modified = '󱈸${count} '
+modified = '${count} '
 staged = '${count} '
-stashed = 'S'
+stashed = ''
 deleted = '${count} '
 style = "bg:#f28213"
 format = '[$all_status$ahead_behind ]($style)'
