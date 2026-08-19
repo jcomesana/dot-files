@@ -8,10 +8,10 @@ format = """
 $os\
 [](bg:#33658A fg:#FFFFFF)\
 $directory\
-[](fg:#33658A bg:#f28213)\
+[](fg:#33658A bg:#ffffff)\
 $git_branch\
 $git_status\
-[](fg:#f28213 bg:#33658A)\
+[](fg:#ffffff bg:#33658A)\
 $docker_context\
 [ ](fg:#33658A)\
 """
@@ -98,20 +98,20 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:#f28213"
+style = "bg:#ffffff fg:#000000"
 format = '[ $symbol $branch ]($style)'
 
 [git_status]
 conflicted = ''
-ahead = '${count} '
-behind = '${count} '
-diverged = '${count}'
-untracked = '${count} '
-modified = '${count} '
-staged = '${count} '
-stashed = ''
-deleted = '${count} '
-style = "bg:#f28213"
+ahead = '  ${count} '
+behind = '  ${count} '
+diverged = '  ${count} '
+untracked = '  ${count} '
+modified = '  ${count} '
+staged = '  ${count} '
+stashed = '  '
+deleted = '  ${count} '
+style = "bg:#ffffff fg:#000000"
 format = '[$all_status$ahead_behind ]($style)'
 
 [status]
