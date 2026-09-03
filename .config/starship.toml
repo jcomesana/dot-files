@@ -6,6 +6,7 @@ add_newline = true
 
 format = """
 $os\
+$shell\
 [](bg:#33658A fg:#FFFFFF)\
 $directory\
 [](fg:#33658A bg:#ffffff)\
@@ -15,7 +16,6 @@ $git_status\
 $docker_context\
 [ ](fg:#33658A)\
 """
-# [](fg:#06969A bg:#33658A)\
 
 right_format = """
 $status\
@@ -26,7 +26,7 @@ $cmd_duration
 # An alternative to the username module which displays a symbol that
 # represents the current operating system
 [os]
-format = '[  $symbol]($style)'
+format = '[ $symbol]($style)'
 style = "bg:#FFFFFF fg:#000000"
 disabled = false
 
@@ -89,6 +89,12 @@ Uos = " "
 Void = " "
 Windows = "󰍲 "
 Zorin = " "
+
+[shell]
+disabled = false
+style = "bg:#FFFFFF fg:#000000"
+format = '[$indicator]($style)'
+fish_indicator = 'fish'
 
 [directory]
 style = "bg:#33658A"
