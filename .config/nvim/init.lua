@@ -943,7 +943,8 @@ require("lazy").setup({
         chat = {
           adapter = {
             name = "copilot",
-            model = "gpt-4.1",
+            -- model = "gpt-5.6-luna",
+            model = vim.env.NVIM_COPILOT_MODEL or "gpt-4.1",
           },
         },
         inline = {
