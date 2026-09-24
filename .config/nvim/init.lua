@@ -1280,6 +1280,10 @@ if vim.g.vscode then
     end,
     { desc = "Find [w]ord in files" })
   vim.keymap.set("n", "<Leader>ff", Create_vscode_action_wrapper("workbench.action.quickOpen"), { desc = "Find [f]iles" })
+  vim.keymap.set("n", "<Leader>fF", function()
+    local word = vim.fn.expand("<cword>")
+    require("vscode").action("workbench.action.quickOpen", { args = { word } })
+  end, { desc = "[F]iles under cursor" })
   vim.keymap.set("n", "<Leader>b", Create_vscode_action_wrapper("workbench.action.showAllEditors"), { desc = "Active [b]uffers (tabs)" })
   vim.keymap.set("n", "<Leader>fM", Create_vscode_action_wrapper("manpages.openFromInput"), { desc = "Find [M]an page" })
   vim.keymap.set("n", "<Leader>fN",
