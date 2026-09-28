@@ -618,7 +618,7 @@ def install():
     has_hblock_from_brew = Condition.create_command_is_successful('brew info hblock', is_static=True)
     install_local_services_stage.add_step(InstallSystemdUserTimerStep('install hblock update timer', 'hblock', when=has_hblock_from_brew))
     install_local_services_stage.add_step(InstallSystemdUserTimerStep('install fisher update timer', 'fisher'))
-    install_local_services_stage.add_step(InstallSystemdUserTimerStep('install zplug update timer', 'zplug'))
+    install_local_services_stage.add_step(InstallSystemdUserTimerStep('install zplug update timer', 'zsh-plugins'))
     results = [stage() for stage in stages]
     return results
 

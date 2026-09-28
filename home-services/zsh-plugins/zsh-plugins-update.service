@@ -1,0 +1,7 @@
+[Unit]
+Description=Update zsh plugins
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/zsh-plugins-update.sh
+User=%u
