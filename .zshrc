@@ -94,20 +94,6 @@ alias lla='ls -lA'
 # Wrap journal logs viewed in terminal rather than truncating; friendlier for reading and copying
 export SYSTEMD_LESS=FRXMK
 
-# Add autosuggestions, substring history search and syntax highlighting.
-export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-source ~/.local/share/zinit/zinit.git/zinit.zsh
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-zi load "zsh-users/zsh-history-substring-search"
-zi load "zsh-users/zsh-autosuggestions"
-zi load "zsh-users/zsh-completions"
-zi load "zsh-users/zsh-syntax-highlighting"
-zi load "gradle/gradle-completion"
-
-bindkey -M emacs '^P' history-substring-search-up
-bindkey -M emacs '^N' history-substring-search-down
-
 # For starship
 
 function set_win_title(){
@@ -117,11 +103,6 @@ precmd_functions+=(set_win_title)
 
 eval "$(starship init zsh)"
 eval "$(fzf --zsh)"
-
-if [[ -e ~/.profile ]]; then
-    source ~/.profile
-fi
-
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
@@ -145,3 +126,18 @@ zinit light-mode for \
     zdharma-continuum/zinit-annex-rust
 
 ### End of Zinit's installer chunk
+
+# Add autosuggestions, substring history search and syntax highlighting.
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+zi load "zsh-users/zsh-history-substring-search"
+zi load "zsh-users/zsh-autosuggestions"
+zi load "zsh-users/zsh-completions"
+zi load "zsh-users/zsh-syntax-highlighting"
+zi load "gradle/gradle-completion"
+
+bindkey -M emacs '^P' history-substring-search-up
+bindkey -M emacs '^N' history-substring-search-down
+
+if [[ -e ~/.profile ]]; then
+    source ~/.profile
+fi
