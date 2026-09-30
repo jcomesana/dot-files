@@ -134,6 +134,7 @@ zi load "zsh-users/zsh-autosuggestions"
 zi load "zsh-users/zsh-completions"
 zi load "zsh-users/zsh-syntax-highlighting"
 zi load "gradle/gradle-completion"
+zi load "Aloxaf/fzf-tab"
 
 bindkey -M emacs '^P' history-substring-search-up
 bindkey -M emacs '^N' history-substring-search-down
