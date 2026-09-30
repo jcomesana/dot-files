@@ -62,6 +62,20 @@ ZLE_SPACE_SUFFIX_CHARS=$';&|'
 zstyle ':completion:*' menu no
 # Make completions case-insensitive.
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# Suggested by fzf-tab
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+# NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# switch group using `<` and `>`
+zstyle ':fzf-tab:*' switch-group '<' '>'
 
 # Turn on completions.
 autoload -U compinit
@@ -70,11 +84,6 @@ compinit
 # Set up a nicer prompt than the default.
 autoload -U colors && colors
 setopt PROMPT_SUBST
-
-# local path_segment='[%f%F{yellow}%n@%m%f:%F{cyan}%(4~|…/%3~|%~)%f]%f'
-# local prompt_symbol='%(?. . %F{red}[%?]%f )%(#.#.$) '
-
-# PROMPT="${path_segment}${prompt_symbol}"
 
 # Add colored output for various commands.
 alias ls='ls --color=auto'
