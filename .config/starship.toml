@@ -146,8 +146,8 @@ symbol = '󱘗 '
 style = "bg:#ffffff fg:#000000"
 
 [character]
-success_symbol = '[](green)'
-error_symbol = '[](fg:#ef0b0b)'
+success_symbol = '[](fg:ffffff)'
+error_symbol = '[](fg:#ffffff)'
 
 [status]
 disabled = false
