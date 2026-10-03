@@ -2,7 +2,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 # Inserts a blank line between shell prompts
-add_newline = true
+add_newline = false
 
 format = """
 $os\
@@ -12,9 +12,14 @@ $directory\
 [](fg:#33658A bg:#ffffff)\
 $git_branch\
 $git_status\
-[](fg:#ffffff bg:#33658A)\
 $docker_context\
-[ ](fg:#33658A)\
+$nodejs\
+$gradle\
+$package\
+$python\
+$rust\
+[ ](fg:#ffffff)
+$character
 """
 
 right_format = """
@@ -120,10 +125,34 @@ deleted = '  ${count} '
 style = "bg:#ffffff fg:#000000"
 format = '[$all_status$ahead_behind ]($style)'
 
+[gradle]
+format = '[ $symbol($version )]($style)'
+symbol = ' '
+style = "bg:#ffffff fg:#000000"
+
+[nodejs]
+format = '[ $symbol($version )]($style)'
+symbol = ' '
+style = "bg:#ffffff fg:#000000"
+
+[python]
+format = '[ ${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+symbol = ' '
+style = "bg:#ffffff fg:#000000"
+
+[rust]
+format = '[ $symbol($version )]($style)'
+symbol = '󱘗 '
+style = "bg:#ffffff fg:#000000"
+
+[character]
+success_symbol = '[](green)'
+error_symbol = '[](fg:#ef0b0b)'
+
 [status]
 disabled = false
 style = 'bold green'
-failure_style = 'bold red'
+failure_style = 'fg:#ef0b0b'
 symbol = ''
 success_symbol = ''
 format = '[ $symbol $status ]($style)'
@@ -135,7 +164,7 @@ min_time = 500
 
 # Disable the package module, hiding it from the prompt completely
 [package]
-disabled = true
+disabled = false
 
 [aws]
 disabled = true
