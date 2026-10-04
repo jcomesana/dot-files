@@ -13,13 +13,14 @@ $directory\
 $git_branch\
 $git_status\
 $docker_context\
-$nodejs\
+$cmake\
 $gradle\
+$nodejs\
 $package\
 $python\
 $rust\
 [ ](fg:#ffffff)
-$character
+[ ](bg:#FFFFFF fg:#000000)[ ](fg:#ffffff)
 """
 
 right_format = """
@@ -125,6 +126,11 @@ deleted = '  ${count} '
 style = "bg:#ffffff fg:#000000"
 format = '[$all_status$ahead_behind ]($style)'
 
+[cmake]
+format = '[ $symbol($version )]($style)'
+symbol = ' '
+style = "bg:#ffffff fg:#000000"
+
 [gradle]
 format = '[ $symbol($version )]($style)'
 symbol = ' '
@@ -144,10 +150,6 @@ style = "bg:#ffffff fg:#000000"
 format = '[ $symbol($version )]($style)'
 symbol = '󱘗 '
 style = "bg:#ffffff fg:#000000"
-
-[character]
-success_symbol = '[](fg:ffffff)'
-error_symbol = '[](fg:#ffffff)'
 
 [status]
 disabled = false
