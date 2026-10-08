@@ -9,7 +9,7 @@ $os\
 $shell\
 [](bg:#33658A fg:#FFFFFF)\
 $directory\
-[](fg:#33658A bg:#ffffff)\
+[](fg:#33658A)\
 $git_branch\
 $git_status\
 $docker_context\
@@ -18,14 +18,14 @@ $gradle\
 $nodejs\
 $package\
 $python\
-$rust\
-[ ](fg:#ffffff)
+$rust
 [ ](bg:#FFFFFF fg:#000000)[ ](fg:#ffffff)
 """
 
 right_format = """
+[](fg:#2f332f)\
 $status\
-[](fg:#ffffff bg:#000000)\
+[](fg:#ffffff bg:#2f332f)\
 $cmd_duration
 """
 
@@ -110,8 +110,8 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:#ffffff fg:#000000"
-format = '[ $symbol $branch ]($style)'
+style = "bg:#FFFFFF fg:#000000"
+format = "\b[](fg:#33658A bg:#FFFFFF)[ $symbol $branch ]($style)"
 
 [git_status]
 conflicted = ''
@@ -124,37 +124,37 @@ staged = '  ${count} '
 stashed = '  '
 deleted = '  ${count} '
 style = "bg:#ffffff fg:#000000"
-format = '[$all_status$ahead_behind ]($style)'
+format = '[$all_status$ahead_behind ]($style)[](fg:#FFFFFF)'
 
 [cmake]
-format = '[ $symbol($version )]($style)'
+format = "\b[ $symbol($version )]($style)[](fg:#FFFFFF)"
 symbol = ' '
 style = "bg:#ffffff fg:#000000"
 
 [gradle]
-format = '[ $symbol($version )]($style)'
+format = "\b[ $symbol($version )]($style)[](fg:#FFFFFF)"
 symbol = ' '
 style = "bg:#ffffff fg:#000000"
 
 [nodejs]
-format = '[ $symbol($version )]($style)'
+format = "\b[ $symbol($version )]($style)[](fg:#FFFFFF)"
 symbol = ' '
 style = "bg:#ffffff fg:#000000"
 
 [python]
-format = '[ ${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+format = "\b[ ${symbol}${pyenv_prefix}(${version} )(($virtualenv) )]($style)[](fg:#FFFFFF)"
 symbol = ' '
 style = "bg:#ffffff fg:#000000"
 
 [rust]
-format = '[ $symbol($version )]($style)'
+format = "\b[ $symbol($version )]($style)[](fg:#FFFFFF)"
 symbol = '󱘗 '
 style = "bg:#ffffff fg:#000000"
 
 [status]
 disabled = false
-style = 'bold green'
-failure_style = 'fg:#ef0b0b'
+style = 'bold green bg:#2f332f'
+failure_style = 'fg:#ef0b0b bg:#2f332f'
 symbol = ''
 success_symbol = ''
 format = '[ $symbol $status ]($style)'
@@ -167,6 +167,9 @@ min_time = 500
 # Disable the package module, hiding it from the prompt completely
 [package]
 disabled = false
+format = "\b[ $symbol($version )]($style)[](fg:#FFFFFF)"
+symbol = ' '
+style = "bg:#ffffff fg:#000000"
 
 [aws]
 disabled = true
