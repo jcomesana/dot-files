@@ -7,9 +7,10 @@ add_newline = false
 format = """
 $os\
 $shell\
-[](bg:#33658A fg:#FFFFFF)\
+[](bg:#33658A fg:#ffffff)\
 $directory\
-[](fg:#33658A)\
+[](fg:#33658A bg:#ffffff)\
+[](fg:#ffffff)\
 $git_branch\
 $git_status\
 $docker_context\
@@ -111,7 +112,7 @@ truncation_symbol = "…/"
 [git_branch]
 symbol = ""
 style = "bg:#FFFFFF fg:#000000"
-format = "\b[](fg:#33658A bg:#FFFFFF)[ $symbol $branch ]($style)"
+format = "\b[ $symbol $branch ]($style)"
 
 [git_status]
 conflicted = ''
