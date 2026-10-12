@@ -17,16 +17,15 @@ $docker_context\
 $cmake\
 $gradle\
 $nodejs\
-$package\
 $python\
-$rust
+$rust\
+$package
 [ ](bg:#FFFFFF fg:#000000)[ ](fg:#ffffff)
 """
 
 right_format = """
 [](fg:#2f332f)\
 $status\
-[](fg:#ffffff bg:#2f332f)\
 $cmd_duration
 """
 
@@ -161,7 +160,7 @@ success_symbol = ''
 format = '[ $symbol $status ]($style)'
 
 [cmd_duration]
-format = '[ 󱦟 $duration ]($style)'
+format = '[](fg:#ffffff bg:#2f332f)[ 󱦟 $duration ]($style)'
 style = 'bg:#FFFFFF fg:#000000'
 min_time = 500
 
