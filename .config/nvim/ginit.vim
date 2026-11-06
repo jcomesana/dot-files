@@ -93,13 +93,16 @@ if exists("g:neovide")
         execute 'set guifont=' . substitute($NVIM_GUI_FONT, ' ', '\\ ', 'g')
     elseif has('win32')
         " set guifont=CaskaydiaCove\ Nerd\ Font:h8
-        set guifont=0xProto\ Nerd\ Font:h8
+        "set guifont=0xProto\ Nerd\ Font:h8
+        set guifont=CommitMono\ Nerd\ Font:h8
     elseif has('macunix')
         " set guifont=CaskaydiaCove\ Nerd\ Font:h12
-        set guifont=0xProto\ Nerd\ Font:h12
+        " set guifont=0xProto\ Nerd\ Font:h12
+        set guifont=CommitMono\ Nerd\ Font:h12
     else
         " set guifont=CaskaydiaCove\ Nerd\ Font:h10
-        set guifont=0xProto\ Nerd\ Font:h10
+        " set guifont=0xProto\ Nerd\ Font:h10
+        set guifont=CommitMono\ Nerd\ Font:h10
     endif
     let g:neovide_hide_mouse_when_typing = v:false
     let g:neovide_cursor_animation_length = 0.04
